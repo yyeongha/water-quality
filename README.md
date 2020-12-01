@@ -1,6 +1,12 @@
 
 # water-quality
 
+### explanation
+```
+directory 'gain' is preprocess + gain custom
+directory 'tensor2' is gain custom by shevious
+```
+
 ### let's start project (dev)
 ```
 git clone https://github.com/kotechnia/water-quality
