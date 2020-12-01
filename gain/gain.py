@@ -42,12 +42,8 @@ class GAIN():
         self.dim = dim
         self.alpha = alpha
         self.h_dim = int(dim)
-
         self.build_generator()
-        #self.generator.summary()
         self.build_discriminator()
-        #self.discriminator.summary()
-
         self.generator_optimizer = Adam()
         self.discriminator_optimizer = Adam()
         if load == True:
@@ -115,6 +111,7 @@ class GAIN():
                         + (1-M) * tf.keras.backend.log(1. - D_prob + 1e-8)) 
 
     def save(self, save_dir='savedata'):
+        print('### def save')
         if not os.path.exists(save_dir):
             os.makedirs(save_dir)
         disc_savefile = os.path.join(save_dir, 'discriminator.h5')
@@ -123,6 +120,7 @@ class GAIN():
         self.generator.save_weights(gen_savefile)
 
     def load(self, save_dir='savedata'):
+        print('### def load')
         disc_savefile = os.path.join(save_dir, 'discriminator.h5')
         gen_savefile = os.path.join(save_dir, 'generator.h5')
         try:
@@ -163,10 +161,22 @@ class DataGenerator(keras.utils.Sequence):
         self.batch_size = batch_size
         self.hint_rate = hint_rate
         self.data_m = 1 - np.isnan(data_x)
-        self.norm_data_x = np.nan_to_num(self.norm_data, 0)
-        self.idx = 0
-        self.batch_cnt = self.no // self.batch_size
-        self.shuffle_idx = np.random.permutation(self.no)
+        self.norm_data_x = np.nan_to_num(data_x, 0)
+
+        self.idx = 0 # new param
+        self.batch_cnt = self.no // self.batch_size # new param
+        self.shuffle_idx = np.random.permutation(self.no) # new param
+
+        # debug
+        print('self.no = ', self.no)
+        print('self.dim = ', self.dim)
+        print('self.batch_size = ', self.batch_size)
+        print('self.hint_rate = ', self.hint_rate)
+        print('self.data_m = ', self.data_m)
+        print('self.norm_data_x = ', self.norm_data_x)
+        print('self.idx = ', self.idx)
+        print('self.batch_cnt = ', self.batch_cnt)
+        print('self.shuffle_idx = ', self.shuffle_idx)
 
     def __len__(self):
         'Denotes the number of batches per epoch'
@@ -174,8 +184,8 @@ class DataGenerator(keras.utils.Sequence):
 
     def __getitem__(self, index):
         'Generate one batch of data'
-        batch_idx = self.shuffle_idx[self.idx*self.batch_size:(self.idx+1)*self.batch_size]
-        self.idx = (self.idx+1)%self.batch_cnt
+        batch_idx = self.shuffle_idx[self.idx * self.batch_size:(self.idx + 1) * self.batch_size]
+        self.idx = (self.idx + 1) % self.batch_cnt
         if (self.idx == 0):
             self.shuffle_idx = np.random.permutation(self.no)
         X_mb = self.norm_data_x[batch_idx, :]  
@@ -219,47 +229,43 @@ def gain (train_data, test_data, gain_parameters):
 
     # Define mask matrix
     if useTrain:
-        train_mask = 1 - np.isnan(train_data)
-        train_row, dim = train_data.shape # 4287, 27
-        train_data = np.nan_to_num(train_data, 0)
-        h_dim = int(dim)
+        train_mask = 1 - np.isnan(train_data) # not use
+        train_row, dim = train_data.shape # not use
+        train_data = np.nan_to_num(train_data, 0) # not use
+        h_dim = int(dim) # not use
 
     test_mask = 1 - np.isnan(test_data)
-    test_row, dim = test_data.shape # 4287, 27
+    test_row, dim = test_data.shape 
     test_data = np.nan_to_num(test_data, 0)
     
     ''' 학습 '''
-    # main logic
-    train_generator = DataGenerator(train_data, batch_size, hint_rate)
+    if useTrain:
+        train_generator = DataGenerator(train_data, batch_size, hint_rate)
 
-    # break point
-    exit(0)
+        ds = tf.data.Dataset.from_generator(
+            #lambda: train_generator.__iter__(),
+            lambda: train_generator,
+            output_types=(tf.float32, tf.float32, tf.float32),
+            output_shapes=(
+                [batch_size, train_generator.dim],
+                [batch_size, train_generator.dim],
+                [batch_size, train_generator.dim],
+            )
+        ).repeat(-1).prefetch(10)
 
-    ds = tf.data.Dataset.from_generator(
-        #lambda: train_generator.__iter__(),
-        lambda: train_generator,
-        output_types=(tf.float32, tf.float32, tf.float32),
-        output_shapes=(
-            [batch_size, train_generator.dim],
-            [batch_size, train_generator.dim],
-            [batch_size, train_generator.dim],
-        )
-    ).repeat(-1).prefetch(10)
+        ## Iterations
+        gain = GAIN(dim, alpha, load=False)
 
-    # it = iter(ds)
-    # X_mb, M_mb, H_mb = next(it)
-  
-    ## Iterations
-    gain = GAIN(dim, alpha, load=True)
+        it_ds = iter(ds)
 
-    it_ds = iter(ds)
-
-    # Start Iterations
-    progress = tqdm(range(iterations))
-    for it in progress:
-        X_mb, M_mb, H_mb = next(it_ds)
-        gain.train_step([X_mb, M_mb, H_mb])
-    gain.save()
+        # Start Iterations
+        progress = tqdm(range(iterations))
+        for it in progress:
+            X_mb, M_mb, H_mb = next(it_ds)
+            gain.train_step([X_mb, M_mb, H_mb])
+        gain.save()
+    else:
+        gain = GAIN(dim, alpha, load=True)
       
     ''' 테스트 '''
     ## Return imputed data      
