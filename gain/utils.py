@@ -18,12 +18,9 @@
 import os
 import numpy as np
 import pandas as pd
-import tensorflow.compat.v1 as tf
+import tensorflow as tf
 
 from preProcess import PreProcess
-
-
-tf.disable_v2_behavior()
 
 
 def normalization (data, parameters=None):

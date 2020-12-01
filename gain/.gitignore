@@ -18,3 +18,5 @@ weight/*.npy
 !input/화천_2019.xlsx
 
 !output/result_reshape.xlsx
+
+savedata

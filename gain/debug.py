@@ -8,39 +8,9 @@ import numpy as np
 import pandas as pd
 
 from gain import gain
-# from utils import rmse_loss, data_loader, init_preprocess, getUseTrain
+from utils import rmse_loss, data_loader, init_preprocess, getUseTrain
 
-from data_loader import data_loader
-from utils import rmse_loss
 
-def main (parameters):
-
-    data_name = parameters['data_name']
-    miss_rate = parameters['miss_rate']
-
-    gain_parameters = {
-        'batch_size': parameters['batch_size'],
-        'hint_rate': parameters['hint_rate'],
-        'alpha': parameters['alpha'],
-        'iterations': parameters['iterations']
-    }
-
-    print('data_name = ', data_name)
-    print('miss_rate = ', miss_rate)
-    print('gain_parameters = ', gain_parameters)
-
-    # Load data and introduce missingness
-    ori_data_x, miss_data_x, data_m = data_loader(data_name, miss_rate)
-
-    print('ori_data_x = ', ori_data_x)
-    print('miss_data_x = ', miss_data_x)
-    print('data_m = ', data_m)
-    print('miss_data_x.shape = ', miss_data_x.shape)
-
-    # Impute missing data
-    imputed_data_x = gain(miss_data_x, gain_parameters)
-
-"""
 # usage example
 # python debug.py
 # check your file named parameters.json
@@ -106,14 +76,14 @@ def main (parameters):
         # print('[debug] $$ normalization_df = ', normalization_df)
 
         # debug
-        normalization_df.to_excel('./output/before_random.xlsx', index=False)
+        # normalization_df.to_excel('./output/before_random.xlsx', index=False)
 
         # Division train data set, test data set
         output_df_70, output_df_30 = preprocess.splitDf(normalization_df)
 
         # Debug
-        # output_df_70.to_excel('./output/70.xlsx', index=False)
-        # output_df_30.to_excel('./output/30.xlsx', index=False)
+        output_df_70.to_excel('./output/70.xlsx', index=False)
+        output_df_30.to_excel('./output/30.xlsx', index=False)
 
         # Processing division data
         data_list = []
@@ -158,14 +128,9 @@ def main (parameters):
         # preprocess.npToExcel(test_data['miss_data_x'], './output/miss_data_x_30.xlsx')
         # preprocess.npToExcel(test_data['data_m'], './output/data_m_30.xlsx')
 
-        # imputed_data_x = gain(
-        #     train_data = train_data['miss_data_x'], 
-        #     test_data = test_data['miss_data_x'], 
-        #     gain_parameters = gain_parameters
-        # )
-
         imputed_data_x = gain(
-            data_x = train_data['miss_data_x'],
+            train_data = train_data['miss_data_x'], 
+            test_data = test_data['miss_data_x'], 
             gain_parameters = gain_parameters
         )
 
@@ -223,7 +188,7 @@ def main (parameters):
         test_data = { 'ori_data_x': ori_data_x, 'miss_data_x': normalization_np_reshape, 'data_m': data_m, 'M': M, 'S': S }
 
         # break point
-        # exit(0)
+        exit(0)
 
         imputed_data_x = gain(
             train_data = None, 
@@ -251,14 +216,13 @@ def main (parameters):
     # Make result excel
     imputed_df.to_excel('./output/result_reshape.xlsx', index=False)
     preprocess.npToExcel(imputed_df, './output/가평_2019.xlsx', True)
-"""
+
 
 if __name__ == '__main__':
     # parameters_path = './parameters.json'
-    # parameters_path = './parameters_train.json'
+    parameters_path = './parameters_train.json'
     # parameters_path = './parameters_test.json'
     # parameters_path = './parameters_train_dir.json'
-    parameters_path = './parameters_tensor2.json'
     with open(parameters_path, encoding='utf8') as json_file:
         parameters = json.load(json_file)
   
