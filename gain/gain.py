@@ -14,7 +14,6 @@ from tqdm import tqdm
 from utils import normalization, renormalization, rounding
 from utils import xavier_init
 from utils import binary_sampler, uniform_sampler, sample_batch_index
-from utils import getUseTrain
 
 from tensorflow import keras
 
@@ -220,113 +219,138 @@ class DataGenerator(keras.utils.Sequence):
         'Updates indexes after each epoch'
         return
 
-def gain(train_data, test_data, gain_parameters):
-    '''Impute missing values in data_x
-    
-    Args:
-        - data_x: original data with missing values
-        - gain_parameters: GAIN network parameters:
-        - batch_size: Batch size
-        - hint_rate: Hint rate
-        - alpha: Hyperparameter
-        - iterations: Iterations
-        
-    Returns:
-        - imputed_data: imputed data
-    '''
+def gain (data_x, gain_parameters):
+  '''Impute missing values in data_x
+  
+  Args:
+    - data_x: original data with missing values
+    - gain_parameters: GAIN network parameters:
+      - batch_size: Batch size
+      - hint_rate: Hint rate
+      - alpha: Hyperparameter
+      - iterations: Iterations
+      
+  Returns:
+    - imputed_data: imputed data
+  '''
 
-    # System parameters
-    batch_size = gain_parameters['batch_size']
-    hint_rate = gain_parameters['hint_rate']
-    alpha = gain_parameters['alpha']
-    iterations = gain_parameters['iterations']
-    useTrain = getUseTrain(gain_parameters) 
+  # test
+  print('-------------------------- ### test')
+  dataset = tf.data.Dataset.range(2)
+  iterator = iter(dataset)
+  print('-------------------------- ### test')
 
-    # Define mask matrix
-    if useTrain:
-        train_mask = 1 - np.isnan(train_data)
-        train_row, dim = train_data.shape # 4287, 27
-        train_data = np.nan_to_num(train_data, 0)
-        h_dim = int(dim)
-    
-    test_mask = 1 - np.isnan(test_data)
-    test_row, dim = test_data.shape # 4287, 27
-    test_data = np.nan_to_num(test_data, 0)
+  # Define mask matrix
+  data_m = 1-np.isnan(data_x)
+  
+  # System parameters
+  batch_size = gain_parameters['batch_size']
+  hint_rate = gain_parameters['hint_rate']
+  alpha = gain_parameters['alpha']
+  iterations = gain_parameters['iterations']
+  
+  # Other parameters
+  no, dim = data_x.shape
+  
+  # Hidden state dimensions
+  h_dim = int(dim)
+  
+  # Normalization
+  norm_data, norm_parameters = normalization(data_x)
+  norm_data_x = np.nan_to_num(norm_data, 0)
+  norm_data_x = norm_data_x.astype(np.float32)
+  data_x = data_x.astype(np.float32)
 
-    # Define mask matrix
-    # data_m = 1-np.isnan(data_x)
+  print('data_x = ', data_x)
+  print('data_x.shape = ', data_x.shape)
 
-    # Other parameters
-    # no, dim = data_x.shape
-    
-    # Hidden state dimensions
-    # h_dim = int(dim)
+  train_generator = DataGenerator(data_x, batch_size, hint_rate)
 
-    # Normalization
-    # norm_data, norm_parameters = normalization(data_x)
-    # norm_data_x = np.nan_to_num(norm_data, 0)
-    # norm_data_x = norm_data_x.astype(np.float32)
-    # data_x = data_x.astype(np.float32)
+  ''' check
+  it = iter(train_generator)
+  #(x_mb, m_mb, h_mb) = train_generator.__getitem__(0)
+  (x_mb, m_mb, h_mb) = next(it)
+  print(x_mb.shape, x_mb.dtype)
+  print(m_mb.shape, m_mb.dtype)
+  print(h_mb.shape, m_mb.dtype)
 
-    print('train_data = ', train_data)
-    print('train_data.shape = ', train_data.shape)
+  (x_mb, m_mb, h_mb) = next(it)
+  (x_mb, m_mb, h_mb) = next(it)
+  import sys
+  sys.exit(0)
+  '''
+  ds = tf.data.Dataset.from_generator(
+      #lambda: train_generator.__iter__(),
+      lambda: train_generator,
+      output_types=(tf.float32, tf.float32, tf.float32),
+      output_shapes=(
+        [batch_size, train_generator.dim],
+        [batch_size, train_generator.dim],
+        [batch_size, train_generator.dim],
+      )
+  ).repeat(-1).prefetch(10)
 
-    train_generator = DataGenerator(train_data, batch_size, hint_rate)
-    
-    ds = tf.data.Dataset.from_generator(
-        #lambda: train_generator.__iter__(),
-        lambda: train_generator,
-        output_types=(tf.float32, tf.float32, tf.float32),
-        output_shapes=(
-            [batch_size, train_generator.dim],
-            [batch_size, train_generator.dim],
-            [batch_size, train_generator.dim],
-        )
-    ).repeat(-1).prefetch(10)
+  ''' check ds
+  print(ds.element_spec)
+  it_ds = iter(ds)
+  print(ds.element_spec)
+  for x_mb, m_mb, h_mb in ds.take(1):
+    print(x_mb.shape, x_mb.dtype)
+    print(m_mb.shape, m_mb.dtype)
+    print(h_mb.shape, m_mb.dtype)
+    print(x_mb.numpy())
+    print(m_mb.numpy())
+    print(h_mb.numpy())
+  it = iter(ds)
+  x_mb, m_mb, h_mb = next(it)
+  '''
 
-    ''' RuntimeError: __iter__() is only supported inside of tf.function or when eager execution is enabled. '''
-    print('-------------------------- ###')
-    it = iter(ds)
-    X_mb, M_mb, H_mb = next(it)
-    print('-------------------------- ###')
+  print('--------------------- ###')
+  it = iter(ds)
+  X_mb, M_mb, H_mb = next(it)
+  print('--------------------- ###')
+  
+  ## Iterations
+  gain = GAIN(dim, alpha, load=True)
 
-    ## Iterations
-    gain = GAIN(dim, alpha, load=True)
+  it_ds = iter(ds)
 
-    it_ds = iter(ds)
-    
-    # break point
-    print('### break')
-    # exit(0)
+  #warm up
+  '''
+  for i in range(10):
+    X_mb, M_mb, H_mb = next(it_ds)
+    gain.train_step([X_mb, M_mb, H_mb])
+  '''
+   
+  #tf.profiler.experimental.start('logdir')
+  # Start Iterations
+  progress = tqdm(range(iterations))
+  for it in progress:
+    X_mb, M_mb, H_mb = next(it_ds)
+    gain.train_step([X_mb, M_mb, H_mb])
 
-    # Start Iterations
-    progress = tqdm(range(iterations))
-    for it in progress:
-        X_mb, M_mb, H_mb = next(it_ds)
-        gain.train_step([X_mb, M_mb, H_mb])
-
-    gain.save()
-        
-    #tf.profiler.experimental.stop()
-                
-    ## Return imputed data      
-    Z_mb = uniform_sampler(0, 0.01, no, dim) 
-    M_mb = data_m
-    X_mb = norm_data_x          
-    X_mb = M_mb * X_mb + (1-M_mb) * Z_mb 
-        
-    #imputed_data = sess.run([G_sample], feed_dict = {X: X_mb, M: M_mb})[0]
-    X_mb = X_mb.astype(np.float32)
-    M_mb = M_mb.astype(np.float32)
-    imputed_data = gain.generator.predict([X_mb, M_mb])
-    #imputed_data = imputed_data.numpy()
-    
-    imputed_data = data_m * norm_data_x + (1-data_m) * imputed_data
-    
-    # Renormalization
-    imputed_data = renormalization(imputed_data, norm_parameters)  
-    
-    # Rounding
-    imputed_data = rounding(imputed_data, data_x)  
+  gain.save()
+      
+  #tf.profiler.experimental.stop()
             
-    return imputed_data
+  ## Return imputed data      
+  Z_mb = uniform_sampler(0, 0.01, no, dim) 
+  M_mb = data_m
+  X_mb = norm_data_x          
+  X_mb = M_mb * X_mb + (1-M_mb) * Z_mb 
+      
+  #imputed_data = sess.run([G_sample], feed_dict = {X: X_mb, M: M_mb})[0]
+  X_mb = X_mb.astype(np.float32)
+  M_mb = M_mb.astype(np.float32)
+  imputed_data = gain.generator.predict([X_mb, M_mb])
+  #imputed_data = imputed_data.numpy()
+  
+  imputed_data = data_m * norm_data_x + (1-data_m) * imputed_data
+  
+  # Renormalization
+  imputed_data = renormalization(imputed_data, norm_parameters)  
+  
+  # Rounding
+  imputed_data = rounding(imputed_data, data_x)  
+          
+  return imputed_data
