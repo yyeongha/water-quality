@@ -128,14 +128,15 @@ def main (parameters):
         # preprocess.npToExcel(test_data['miss_data_x'], './output/miss_data_x_30.xlsx')
         # preprocess.npToExcel(test_data['data_m'], './output/data_m_30.xlsx')
 
-        # break point
-        exit(0)
-
         imputed_data_x = gain(
             train_data = train_data['miss_data_x'], 
             test_data = test_data['miss_data_x'], 
             gain_parameters = gain_parameters
-        )   
+        )
+
+        # break point
+        exit(0)
+
         rmse = rmse_loss(
             test_data['ori_data_x'], 
             imputed_data_x, 
