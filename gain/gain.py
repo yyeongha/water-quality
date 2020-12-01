@@ -124,13 +124,6 @@ class GAIN():
         print('### def load')
         disc_savefile = os.path.join(save_dir, 'discriminator.h5')
         gen_savefile = os.path.join(save_dir, 'generator.h5')
-
-        # temp
-        disc_savefile = './savedata/discriminator.h5'
-        gen_savefile = './savedata/generator.h5'
-
-        print('disc_savefile = ', disc_savefile)
-        print('gen_savefile = ', gen_savefile)
         try:
             self.discriminator.load_weights(disc_savefile)
             self.generator.load_weights(gen_savefile)
@@ -236,19 +229,13 @@ def gain (train_data, test_data, gain_parameters):
     iterations = gain_parameters['iterations']
     useTrain = getUseTrain(gain_parameters) 
 
-    # Define mask matrix
+    ''' 학습 '''
     if useTrain:
         train_mask = 1 - np.isnan(train_data) # not use
         train_row, dim = train_data.shape # not use
         train_data = np.nan_to_num(train_data, 0) # not use
         h_dim = int(dim) # not use
 
-    test_mask = 1 - np.isnan(test_data)
-    test_row, dim = test_data.shape 
-    test_data = np.nan_to_num(test_data, 0)
-    
-    ''' 학습 '''
-    if useTrain:
         train_generator = DataGenerator(train_data, batch_size, hint_rate)
 
         ds = tf.data.Dataset.from_generator(
@@ -274,6 +261,9 @@ def gain (train_data, test_data, gain_parameters):
             gain.train_step([X_mb, M_mb, H_mb])
         gain.save()
     else:
+        test_mask = 1 - np.isnan(test_data)
+        test_row, dim = test_data.shape 
+        test_data = np.nan_to_num(test_data, 0)
         gain = GAIN(dim, alpha, load=True)
       
     ''' 테스트 '''
