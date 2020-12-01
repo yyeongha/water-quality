@@ -162,63 +162,39 @@ class DataGenerator(keras.utils.Sequence):
         self.no, self.dim = data_x.shape
         self.batch_size = batch_size
         self.hint_rate = hint_rate
-
-        # Define mask matrix
-        self.data_m = 1-np.isnan(data_x)
-
-        # Normalization
-        self.norm_data, self.norm_parameters = normalization(data_x)
+        self.data_m = 1 - np.isnan(data_x)
         self.norm_data_x = np.nan_to_num(self.norm_data, 0)
-        #norm_data_x = norm_data_x.astype(np.float32)
-        #data_x = data_x.astype(np.float32)
-
         self.idx = 0
         self.batch_cnt = self.no // self.batch_size
         self.shuffle_idx = np.random.permutation(self.no)
 
     def __len__(self):
         'Denotes the number of batches per epoch'
-        #return int(128/self.batch_size)
-        #return 2
         return 1
 
     def __getitem__(self, index):
         'Generate one batch of data'
-        #print('index =', index)
-        # Sample batch
-        #batch_idx = sample_batch_index(self.no, self.batch_size)
         batch_idx = self.shuffle_idx[self.idx*self.batch_size:(self.idx+1)*self.batch_size]
         self.idx = (self.idx+1)%self.batch_cnt
         if (self.idx == 0):
             self.shuffle_idx = np.random.permutation(self.no)
         X_mb = self.norm_data_x[batch_idx, :]  
         M_mb = self.data_m[batch_idx, :]  
-        #X_mb = tf.convert_to_tensor(X_mb, dtype=tf.float32)
-        #M_mb = tf.convert_to_tensor(M_mb, dtype=tf.float32)
-        
+
         # Sample random vectors  
         Z_mb = uniform_sampler(0, 0.01, self.batch_size, self.dim)
-        #Z_mb = tf.keras.backend.random_uniform(shape=(self.batch_size,self.dim), minval=0.0, maxval=0.01)
-        # Sample hint vectors
         H_mb_temp = binary_sampler(self.hint_rate, self.batch_size, self.dim)
-        #print('H_mb_temp.shape=',H_mb_temp.shape)
-        #print('M_mb.shape=', M_mb.shape)
-
         H_mb = M_mb * H_mb_temp
           
         # Combine random vectors with observed vectors
         X_mb = M_mb * X_mb + (1-M_mb) * Z_mb 
 
         return X_mb, M_mb, H_mb
-        #return {
-          #'model_input_x': X_mb,
-          #'model_input_m': M_mb,
-          #'model_input_h': H_mb,
-        #}
 
     def on_epoch_end(self):
         'Updates indexes after each epoch'
         return
+
 
 def gain (train_data, test_data, gain_parameters):
     '''Impute missing values in data_x
