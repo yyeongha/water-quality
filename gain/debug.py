@@ -187,9 +187,6 @@ def main (parameters):
         # Save the return data of data loader 
         test_data = { 'ori_data_x': ori_data_x, 'miss_data_x': normalization_np_reshape, 'data_m': data_m, 'M': M, 'S': S }
 
-        # break point
-        exit(0)
-
         imputed_data_x = gain(
             train_data = None, 
             test_data = test_data['miss_data_x'], 
@@ -220,8 +217,8 @@ def main (parameters):
 
 if __name__ == '__main__':
     # parameters_path = './parameters.json'
-    parameters_path = './parameters_train.json'
-    # parameters_path = './parameters_test.json'
+    # parameters_path = './parameters_train.json'
+    parameters_path = './parameters_test.json'
     # parameters_path = './parameters_train_dir.json'
     with open(parameters_path, encoding='utf8') as json_file:
         parameters = json.load(json_file)

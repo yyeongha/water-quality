@@ -61,7 +61,8 @@ class GAIN():
 
         a = Dense(self.h_dim, activation='relu', kernel_initializer=xavier_initializer)(a)
         a = Dense(self.h_dim, activation='relu', kernel_initializer=xavier_initializer)(a)
-        G_prob = Dense(self.dim, activation='sigmoid', kernel_initializer=xavier_initializer)(a)
+        # G_prob = Dense(self.dim, activation='sigmoid', kernel_initializer=xavier_initializer)(a)
+        G_prob = Dense(self.dim, activation=None, kernel_initializer=xavier_initializer)(a)
         self.generator = keras.models.Model([x, m], G_prob, name='generator')
 
     def build_discriminator(self):
@@ -123,11 +124,19 @@ class GAIN():
         print('### def load')
         disc_savefile = os.path.join(save_dir, 'discriminator.h5')
         gen_savefile = os.path.join(save_dir, 'generator.h5')
+
+        # temp
+        disc_savefile = './savedata/discriminator.h5'
+        gen_savefile = './savedata/generator.h5'
+
+        print('disc_savefile = ', disc_savefile)
+        print('gen_savefile = ', gen_savefile)
         try:
             self.discriminator.load_weights(disc_savefile)
             self.generator.load_weights(gen_savefile)
             print('model weights loaded')
-        except:
+        except BaseException as err:
+            print('err = ', err)
             print('model loadinng error')
 
     # `tf.function`이 어떻게 사용되는지 주목해 주세요.

@@ -17,6 +17,4 @@ weight/*.npy
 !input/의암호_2019.xlsx
 !input/화천_2019.xlsx
 
-!output/result_reshape.xlsx
-
 savedata
