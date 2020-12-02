@@ -8,6 +8,7 @@ import numpy as np
 import pandas as pd
 
 from gain import gain
+# from origin_gain_custom import gain
 from utils import rmse_loss, data_loader, init_preprocess, getUseTrain
 
 
@@ -217,8 +218,8 @@ def main (parameters):
 
 if __name__ == '__main__':
     # parameters_path = './parameters.json'
-    # parameters_path = './parameters_train.json'
-    parameters_path = './parameters_test.json'
+    parameters_path = './parameters_train.json'
+    # parameters_path = './parameters_test.json'
     # parameters_path = './parameters_train_dir.json'
     with open(parameters_path, encoding='utf8') as json_file:
         parameters = json.load(json_file)

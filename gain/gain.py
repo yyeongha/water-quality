@@ -229,6 +229,10 @@ def gain (train_data, test_data, gain_parameters):
     iterations = gain_parameters['iterations']
     useTrain = getUseTrain(gain_parameters) 
 
+    test_mask = 1 - np.isnan(test_data)
+    test_row, dim = test_data.shape 
+    test_data = np.nan_to_num(test_data, 0)
+
     ''' 학습 '''
     if useTrain:
         train_mask = 1 - np.isnan(train_data) # not use
@@ -261,9 +265,6 @@ def gain (train_data, test_data, gain_parameters):
             gain.train_step([X_mb, M_mb, H_mb])
         gain.save()
     else:
-        test_mask = 1 - np.isnan(test_data)
-        test_row, dim = test_data.shape 
-        test_data = np.nan_to_num(test_data, 0)
         gain = GAIN(dim, alpha, load=True)
       
     ''' 테스트 '''

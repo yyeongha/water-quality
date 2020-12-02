@@ -140,6 +140,7 @@ def gain (train_data, test_data, gain_parameters):
         G_prob = tf.matmul(G_h2, G_W3) + G_b3
         return G_prob
 
+
     # Discriminator
     def discriminator(x, h):
         # Concatenate Data and Hint
