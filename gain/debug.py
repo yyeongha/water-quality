@@ -76,6 +76,7 @@ def main (parameters):
         normalization_df = preprocess.normalization(output_df, M, S)
         # print('[debug] $$ normalization_df = ', normalization_df)
 
+
         # debug
         # normalization_df.to_excel('./output/before_random.xlsx', index=False)
 

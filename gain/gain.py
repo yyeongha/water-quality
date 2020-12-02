@@ -237,7 +237,7 @@ def gain (train_data, test_data, gain_parameters):
     if useTrain:
         train_mask = 1 - np.isnan(train_data) # not use
         train_row, dim = train_data.shape # not use
-        train_data = np.nan_to_num(train_data, 0) # not use
+        # train_data = np.nan_to_num(train_data, 0) # not use
         h_dim = int(dim) # not use
 
         train_generator = DataGenerator(train_data, batch_size, hint_rate)
