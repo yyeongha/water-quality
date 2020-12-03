@@ -2,6 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import os
 import time
 import random
 import json
@@ -37,7 +38,8 @@ def main (parameters):
         'hint_rate': parameters['hint_rate'],
         'alpha': parameters['alpha'],
         'iterations': parameters['iterations'],
-        'dir_name': parameters['data_name'].split('/')[-1]
+        'dir_name': parameters['data_name'].split('/')[-2],
+        'file_name': parameters['data_name'].split('/')[-1]
     }
 
     # Make Parameter Dictionary for Pre-Process
@@ -67,7 +69,6 @@ def main (parameters):
     print('output_df => ', output_df)
     # output_df.to_excel('./output/merge.xlsx', index=False)
     print("---{}s seconds---".format(time.time()-start_time))
-    # exit(0)
 
     # temp
     before_shift_df = pd.read_excel('./output/before_shift.xlsx')
@@ -157,7 +158,7 @@ def main (parameters):
 
         # Debug
         # tempDf3 = pd.DataFrame(normalization_np)
-        output_df.to_excel('./output/output_df.xlsx', index=False)
+        # output_df.to_excel('./output/output_df.xlsx', index=False)
 
         # Standard normal distribution normalization
         normalization_df = preprocess.normalization(output_df, M, S)
@@ -166,7 +167,7 @@ def main (parameters):
 
         # temp
         x_df = preprocess.denormalization(normalization_df, M, S)
-        x_df.to_excel('./output/x_df.xlsx', index=False)
+        # x_df.to_excel('./output/x_df.xlsx', index=False)
 
         # Discard data for reshape
         normalization_df = preprocess.getDiscardDf(normalization_df)
@@ -176,21 +177,21 @@ def main (parameters):
 
         # Debug
         tempDf3 = pd.DataFrame(normalization_np)
-        tempDf3.to_excel('./output/normalization_np.xlsx', index=False)
+        # tempDf3.to_excel('./output/normalization_np.xlsx', index=False)
 
         # Numpy object reshape
         normalization_np_reshape = preprocess.getReshapeNp(normalization_np)
 
         # Debug
         tempDf = pd.DataFrame(normalization_np_reshape)
-        tempDf.to_excel('./output/normalization_np_reshape.xlsx', index=False)
+        # tempDf.to_excel('./output/normalization_np_reshape.xlsx', index=False)
 
         # Load data and introduce missingness
         ori_data_x, miss_data_x, data_m = data_loader(normalization_np_reshape, parameters['miss_rate'])
 
         # Debug
         tempDf2 = pd.DataFrame(miss_data_x)
-        tempDf2.to_excel('./output/miss_data_x.xlsx', index=False)
+        # tempDf2.to_excel('./output/miss_data_x.xlsx', index=False)
 
         # Save the return data of data loader 
         test_data = { 'ori_data_x': ori_data_x, 'miss_data_x': normalization_np_reshape, 'data_m': data_m, 'M': M, 'S': S }
@@ -202,7 +203,7 @@ def main (parameters):
         )
         
     # Debug
-    print('imputed_data_x.shape = ', imputed_data_x.shape)
+    # print('imputed_data_x.shape = ', imputed_data_x.shape)
 
     # fix
     imputed_data_x = preprocess.reverseReShape(imputed_data_x)
@@ -220,60 +221,49 @@ def main (parameters):
 
     # Make result excel
     # imputed_df.to_excel('./output/result_reshape.xlsx', index=False)
-    # preprocess.npToExcel(imputed_df, './output/가평_2019.xlsx', True)
+    os.makedirs("./classfy_result/{dir_name}".format(dir_name=gain_parameters['dir_name']), exist_ok=True)
+    preprocess.npToExcel(
+        imputed_df, 
+        './classfy_result/{dir}/{file}'.format(dir=gain_parameters['dir_name'], file=gain_parameters['file_name']), 
+        True
+    )
 
 
 if __name__ == '__main__':
     # parameters_path = './parameters.json'
     # parameters_path = './parameters_train.json'
     # parameters_path = './parameters_test.json'
-    parameters_path = './parameters_train_dir.json'
+    # parameters_path = './parameters_train_dir.json'
+    parameters_path = './parameters_test_dir.json'
     with open(parameters_path, encoding='utf8') as json_file:
         parameters = json.load(json_file)
   
     inject_data_name_list = [
-        # './classfy/2546087781705908382', no
-        # './classfy/2753029681805320370', yes
-        # './classfy/1868617106871301337', yes
-        # './classfy/3464694848574796523', no
-        # './classfy/1530373521792743778', no
-        # './classfy/6759354446250977078', no
-        # './classfy/6992528307228056028', no
-        # './classfy/5682481196855854459', no
-        # './classfy/3054652060032968249', yes
-        # './classfy/6551795653332579301', no
-        # './classfy/4245234164211946156', yes
-        # './classfy/8800330005351799323', no
-        # './classfy/7705551329510827169', no
-        # './classfy/9592735753895240', yes
-        # './classfy/2053391929074247952', no
-        # './classfy/9041759046289129891', no
-        # './classfy/1692182177243629754', no
-        # './classfy/7989656796853978982', no
-        # './classfy/7684844176936782008', no
-        # './classfy/1614748674163524857', no
-        # './classfy/7339366309677307016', no
-        # './classfy/6724235619583583672', yes
-        # './classfy/355326747347266483', no
-        # './classfy/6685387669464724421', no
-        # './classfy/511305924109714059', no
-        # './classfy/6325248669386095902', no
-        # './classfy/7483783171719641308', yes
-        # './classfy/6552429313030480690', yes
-        # './classfy/3045107374348052150', no
-        # './classfy/4214509389030386299', no
-        # './classfy/1381859547695611593', no
-        # './classfy/3270375920874359045', no
-        # './classfy/3228431611117038571', no
-        # './classfy/99488762247561991', no
-        # './classfy/2124000557585122617', yes
-        # './classfy/679348088764031629', no
-        # './classfy/3223433592508912514', no
-        # './classfy/6160567172594793923', no
-        # './classfy/8546483254449251397' no
+        # "./classfy/9592735753895240", # ok
+        # "./classfy/1868617106871301337", # ok 의암호_2015
+        # "./classfy/2124000557585122617", # ok
+        # "./classfy/2753029681805320370", # ok
+
+        # "./classfy/3054652060032968249", # ok 한탄강 2015 외
+        # "./classfy/4245234164211946156", # ok 단양 2018, 2019 외
+        # "./classfy/6552429313030480690", # ok
+        "./classfy/6724235619583583672",
+        "./classfy/7483783171719641308"
     ]
-    for inject_data_name in inject_data_name_list:
-        parameters['data_name'] = inject_data_name
-        # Calls main function
-        main(parameters)
-        exit(0)
+    for d in inject_data_name_list:
+        for root, subdirs, files in os.walk(d):
+            for file in files:
+                if file.find('감천') != -1:
+                    continue
+                if file.find('남강') != -1:
+                    continue
+                if file.find('달천') != -1:
+                    continue
+                if file.find('북하천') != -1:
+                    continue
+                if file.find('안동댐하류') != -1:
+                    continue
+                path = d + '/' + file
+                print('path = ', path)
+                parameters['data_name'] = path
+                main(parameters)
