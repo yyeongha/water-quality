@@ -231,5 +231,48 @@ if __name__ == '__main__':
     with open(parameters_path, encoding='utf8') as json_file:
         parameters = json.load(json_file)
   
-    # Calls main function
-    main(parameters)
+    inject_data_name_list = [
+        './classfy/2546087781705908382',
+        './classfy/2753029681805320370',
+        './classfy/1868617106871301337',
+        './classfy/3464694848574796523',
+        './classfy/1530373521792743778',
+        './classfy/6759354446250977078',
+        './classfy/6992528307228056028',
+        './classfy/5682481196855854459',
+        './classfy/3054652060032968249',
+        './classfy/6551795653332579301',
+        './classfy/4245234164211946156',
+        './classfy/8800330005351799323',
+        './classfy/7705551329510827169',
+        './classfy/9592735753895240',
+        './classfy/2053391929074247952',
+        './classfy/9041759046289129891',
+        './classfy/1692182177243629754',
+        './classfy/7989656796853978982',
+        './classfy/7684844176936782008',
+        './classfy/1614748674163524857',
+        './classfy/7339366309677307016',
+        './classfy/6724235619583583672',
+        './classfy/355326747347266483',
+        './classfy/6685387669464724421',
+        './classfy/511305924109714059',
+        './classfy/6325248669386095902',
+        './classfy/7483783171719641308',
+        './classfy/6552429313030480690',
+        './classfy/3045107374348052150',
+        './classfy/4214509389030386299',
+        './classfy/1381859547695611593',
+        './classfy/3270375920874359045',
+        './classfy/3228431611117038571',
+        './classfy/99488762247561991',
+        './classfy/2124000557585122617',
+        './classfy/679348088764031629',
+        './classfy/3223433592508912514',
+        './classfy/6160567172594793923',
+        './classfy/8546483254449251397'
+    ]
+    for inject_data_name in inject_data_name_list:
+        parameters['data_name'] = inject_data_name
+        # Calls main function
+        main(parameters)
