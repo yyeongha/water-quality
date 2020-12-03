@@ -238,17 +238,11 @@ if __name__ == '__main__':
     with open(parameters_path, encoding='utf8') as json_file:
         parameters = json.load(json_file)
   
-    inject_data_name_list = [
-        # "./classfy/9592735753895240", # ok
-        # "./classfy/1868617106871301337", # ok 의암호_2015
-        # "./classfy/2124000557585122617", # ok
-        # "./classfy/2753029681805320370", # ok
+    # main(parameters)
+    # exit(0)
 
-        # "./classfy/3054652060032968249", # ok 한탄강 2015 외
-        # "./classfy/4245234164211946156", # ok 단양 2018, 2019 외
-        # "./classfy/6552429313030480690", # ok
-        "./classfy/6724235619583583672",
-        "./classfy/7483783171719641308"
+    inject_data_name_list = [
+        "./classfy/2317597176753900225"
     ]
     for d in inject_data_name_list:
         for root, subdirs, files in os.walk(d):

@@ -226,6 +226,8 @@ def gain (train_data, test_data, gain_parameters):
         np.save("./classfy_weight/{dir_name}/G_W3".format(dir_name=dir_name), G_W3.eval(session=sess))
         np.save("./classfy_weight/{dir_name}/G_b3".format(dir_name=dir_name), G_b3.eval(session=sess))
 
+    # exit(0)
+
     ## Return imputed data
     Z_mb = uniform_sampler(0, 0.01, test_row, dim)
     M_mb = test_mask
