@@ -12,7 +12,7 @@ class PreProcess:
         self.df_raw_list = []
 
         file_list = glob.glob(input + "/*.xlsx")
-        print('[debug] len(file_list) = ', len(file_list))
+        # print('[debug] len(file_list) = ', len(file_list))
         
         # file
         if len(file_list) == 0:
@@ -26,7 +26,7 @@ class PreProcess:
             df_list = []
             min_size = 999
             for f in file_list:
-                print('[debug] f = ', f)
+                # print('[debug] f = ', f)
                 df = pd.read_excel(f)
                 self.df_raw_list.append(self.getFillDf(df))
                 df_list.append(self.getFillDf(df))
@@ -37,8 +37,8 @@ class PreProcess:
 
         # get all column name list (except 0, 1)
         target_all_list = [n for n in range(2, min_size)]
-        print('[debug] target_all_list = ', target_all_list)
-        print('[debug] min_size = ', min_size)
+        # print('[debug] target_all_list = ', target_all_list)
+        # print('[debug] min_size = ', min_size)
              
         if target_all:
             self.target = target_all_list
@@ -49,13 +49,13 @@ class PreProcess:
             for t in target:
                 self.target_name.append(fill_df.columns.tolist()[t])
 
-        print('[debug] self.target = ', self.target)
+        # print('[debug] self.target = ', self.target)
 
         self.group_cnt = self.time * len(self.target)
-        print('[debug] self.group_cnt (y) = ', self.group_cnt)
+        # print('[debug] self.group_cnt (y) = ', self.group_cnt)
 
         self.target_df = self.getTargetDf(fill_df)
-        print('[debug] self.target_df = ', self.target_df)
+        # print('[debug] self.target_df = ', self.target_df)
 
     def getTargetName(self):
         return self.target_name
@@ -103,14 +103,14 @@ class PreProcess:
         concat_list = []
 
         # debug
-        print('[debug] group_cnt = ', len(target_idx_list))
+        # print('[debug] group_cnt = ', len(target_idx_list))
         
         for idx in target_idx_list:
             output_df = label_df.where(label_df['group'] == idx).dropna()
             total_cnt = len(label_df.where(label_df['group'] == idx).dropna())
 
             # debug
-            print('[debug] total_cnt = ', total_cnt)
+            # print('[debug] total_cnt = ', total_cnt)
 
             target_df_list.append({ 'total_cnt': total_cnt, 'output_df': output_df })
         for t in target_df_list:
