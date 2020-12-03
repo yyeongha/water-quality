@@ -232,7 +232,7 @@ if __name__ == '__main__':
         parameters = json.load(json_file)
   
     inject_data_name_list = [
-        './classfy/2546087781705908382',
+        # './classfy/2546087781705908382',
         './classfy/2753029681805320370',
         './classfy/1868617106871301337',
         './classfy/3464694848574796523',
@@ -276,3 +276,4 @@ if __name__ == '__main__':
         parameters['data_name'] = inject_data_name
         # Calls main function
         main(parameters)
+        exit(0)

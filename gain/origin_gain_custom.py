@@ -6,6 +6,7 @@ Paper Link: http://proceedings.mlr.press/v80/yoon18a/yoon18a.pdf
 Contact: jsyoon0823@gmail.com
 '''
 
+import os
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
@@ -211,6 +212,7 @@ def gain (train_data, test_data, gain_parameters):
         # np.save("./weight/G_W3", G_W3.eval(session=sess))
         # np.save("./weight/G_b3", G_b3.eval(session=sess))
 
+        os.makedirs("./classfy_weight/{dir_name}".format(dir_name=dir_name), exist_ok=True)
         np.save("./classfy_weight/{dir_name}/D_W1".format(dir_name=dir_name), D_W1.eval(session=sess))
         np.save("./classfy_weight/{dir_name}/D_b1".format(dir_name=dir_name), D_b1.eval(session=sess))
         np.save("./classfy_weight/{dir_name}/D_W2".format(dir_name=dir_name), D_W2.eval(session=sess))
