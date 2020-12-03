@@ -2,6 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import time
 import random
 import json
 import numpy as np
@@ -35,7 +36,8 @@ def main (parameters):
         'batch_size': parameters['batch_size'],
         'hint_rate': parameters['hint_rate'],
         'alpha': parameters['alpha'],
-        'iterations': parameters['iterations']
+        'iterations': parameters['iterations'],
+        'dir_name': parameters['data_name'].split('/')[-1]
     }
 
     # Make Parameter Dictionary for Pre-Process
@@ -57,11 +59,15 @@ def main (parameters):
     # Init Pre-Process and Make Traing Data
     preprocess = init_preprocess(preprocess_parameters)
     # output_df = preprocess.getDataFrame()
+
+    start_time = time.time() # time check
     output_df = preprocess.getDataFrame()
     
     # Debug
     print('output_df => ', output_df)
-    output_df.to_excel('./output/merge.xlsx', index=False)
+    # output_df.to_excel('./output/merge.xlsx', index=False)
+    print("---{}s seconds---".format(time.time()-start_time))
+    # exit(0)
 
     # temp
     before_shift_df = pd.read_excel('./output/before_shift.xlsx')
@@ -84,8 +90,8 @@ def main (parameters):
         output_df_70, output_df_30 = preprocess.splitDf(normalization_df)
 
         # Debug
-        output_df_70.to_excel('./output/70.xlsx', index=False)
-        output_df_30.to_excel('./output/30.xlsx', index=False)
+        # output_df_70.to_excel('./output/70.xlsx', index=False)
+        # output_df_30.to_excel('./output/30.xlsx', index=False)
 
         # Processing division data
         data_list = []
@@ -207,21 +213,21 @@ def main (parameters):
     # Make result dataframe
     imputed_df = pd.DataFrame(data=imputed_data_x)
     imputed_df.columns = preprocess.getTargetName()
-    imputed_df.to_excel('./output/before_denormal.xlsx', index=False)
+    # imputed_df.to_excel('./output/before_denormal.xlsx', index=False)
 
     # denormalization
     imputed_df = preprocess.denormalization(imputed_df, test_data['M'], test_data['S'])
 
     # Make result excel
-    imputed_df.to_excel('./output/result_reshape.xlsx', index=False)
-    preprocess.npToExcel(imputed_df, './output/가평_2019.xlsx', True)
+    # imputed_df.to_excel('./output/result_reshape.xlsx', index=False)
+    # preprocess.npToExcel(imputed_df, './output/가평_2019.xlsx', True)
 
 
 if __name__ == '__main__':
     # parameters_path = './parameters.json'
-    parameters_path = './parameters_train.json'
+    # parameters_path = './parameters_train.json'
     # parameters_path = './parameters_test.json'
-    # parameters_path = './parameters_train_dir.json'
+    parameters_path = './parameters_train_dir.json'
     with open(parameters_path, encoding='utf8') as json_file:
         parameters = json.load(json_file)
   

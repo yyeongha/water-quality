@@ -47,6 +47,7 @@ def gain (train_data, test_data, gain_parameters):
     hint_rate = gain_parameters['hint_rate']
     alpha = gain_parameters['alpha']
     iterations = gain_parameters['iterations']
+    dir_name = gain_parameters['dir_name']
     useTrain = getUseTrain(gain_parameters) 
 
     # Define mask matrix
@@ -197,18 +198,31 @@ def gain (train_data, test_data, gain_parameters):
             _, G_loss_curr, MSE_loss_curr = sess.run([G_solver, G_loss_temp, MSE_loss], feed_dict = {X: X_mb, M: M_mb, H: H_mb})
 
         # Save weights
-        np.save("./weight/D_W1", D_W1.eval(session=sess))
-        np.save("./weight/D_b1", D_b1.eval(session=sess))
-        np.save("./weight/D_W2", D_W2.eval(session=sess))
-        np.save("./weight/D_b2", D_b2.eval(session=sess))
-        np.save("./weight/D_W3", D_W3.eval(session=sess))
-        np.save("./weight/D_b3", D_b3.eval(session=sess))
-        np.save("./weight/G_W1", G_W1.eval(session=sess))
-        np.save("./weight/G_b1", G_b1.eval(session=sess))
-        np.save("./weight/G_W2", G_W2.eval(session=sess))
-        np.save("./weight/G_b2", G_b2.eval(session=sess))
-        np.save("./weight/G_W3", G_W3.eval(session=sess))
-        np.save("./weight/G_b3", G_b3.eval(session=sess))
+        # np.save("./weight/D_W1", D_W1.eval(session=sess))
+        # np.save("./weight/D_b1", D_b1.eval(session=sess))
+        # np.save("./weight/D_W2", D_W2.eval(session=sess))
+        # np.save("./weight/D_b2", D_b2.eval(session=sess))
+        # np.save("./weight/D_W3", D_W3.eval(session=sess))
+        # np.save("./weight/D_b3", D_b3.eval(session=sess))
+        # np.save("./weight/G_W1", G_W1.eval(session=sess))
+        # np.save("./weight/G_b1", G_b1.eval(session=sess))
+        # np.save("./weight/G_W2", G_W2.eval(session=sess))
+        # np.save("./weight/G_b2", G_b2.eval(session=sess))
+        # np.save("./weight/G_W3", G_W3.eval(session=sess))
+        # np.save("./weight/G_b3", G_b3.eval(session=sess))
+
+        np.save("./classfy_weight/{dir_name}/D_W1".format(dir_name), D_W1.eval(session=sess))
+        np.save("./classfy_weight/{dir_name}/D_b1".format(dir_name), D_b1.eval(session=sess))
+        np.save("./classfy_weight/{dir_name}/D_W2".format(dir_name), D_W2.eval(session=sess))
+        np.save("./classfy_weight/{dir_name}/D_b2".format(dir_name), D_b2.eval(session=sess))
+        np.save("./classfy_weight/{dir_name}/D_W3".format(dir_name), D_W3.eval(session=sess))
+        np.save("./classfy_weight/{dir_name}/D_b3".format(dir_name), D_b3.eval(session=sess))
+        np.save("./classfy_weight/{dir_name}/G_W1".format(dir_name), G_W1.eval(session=sess))
+        np.save("./classfy_weight/{dir_name}/G_b1".format(dir_name), G_b1.eval(session=sess))
+        np.save("./classfy_weight/{dir_name}/G_W2".format(dir_name), G_W2.eval(session=sess))
+        np.save("./classfy_weight/{dir_name}/G_b2".format(dir_name), G_b2.eval(session=sess))
+        np.save("./classfy_weight/{dir_name}/G_W3".format(dir_name), G_W3.eval(session=sess))
+        np.save("./classfy_weight/{dir_name}/G_b3".format(dir_name), G_b3.eval(session=sess))
 
     ## Return imputed data
     Z_mb = uniform_sampler(0, 0.01, test_row, dim)

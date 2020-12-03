@@ -26,6 +26,7 @@ class PreProcess:
             df_list = []
             min_size = 999
             for f in file_list:
+                print('[debug] f = ', f)
                 df = pd.read_excel(f)
                 self.df_raw_list.append(self.getFillDf(df))
                 df_list.append(self.getFillDf(df))
