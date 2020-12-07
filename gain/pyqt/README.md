@@ -24,6 +24,7 @@ bugfix
 ```
 https://www.microsoft.com/en-us/download/details.aspx?id=30679
 ```
+install Visual C++ Redistributable for Visual Studio 2012
 
 ### start deploy
 ```
@@ -41,5 +42,6 @@ install nsis and set env path
 
 ### reference
 
-fbs tutorial
+fbs tutorial  
+
 https://github.com/mherrmann/fbs-tutorial
