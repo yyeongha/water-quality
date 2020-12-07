@@ -1,0 +1,7 @@
+.DS_Store
+rnn/data/
+rnn/*.csv
+rnn/__pycache__
+gain/data/
+gain/output/
+gain/__pycache__
