@@ -3,21 +3,20 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 import math
+from tensorflow import keras
+from tensorflow.keras.layers import LSTM, Dense
+from tensorflow.keras.models import Sequential
+import tensorflow.keras.backend as K
+from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
 
-# from sklearn.preprocessing import MinMaxScaler, StandardScaler
-
-# df = pd.read_csv('data/cansim-0800020-eng-6674700030567901031.csv',
-#                  skiprows=6, skipfooter=9,
-#                  engine='python')
 
 path = "./data/1/"
+predict_rate = 24*7
+test_rate = 24 * 7
+timestep = 12
 #
 excelfiles = []
 df = []
-
-# timestep = 7*24
-
-
 
 def normalization(df):
     M = df.mean() # 평균
@@ -63,9 +62,7 @@ for fname in excelfiles:
     columnlist = df.columns.tolist()
 
 
-predict_rate = 24*7
-test_rate = 24 * 7
-timestep = 1
+
 
 print("rows : " + str(rows))
 print("predict_rate : " + str(rows - predict_rate))
@@ -162,7 +159,7 @@ column_list = list(train_x)
 
 print(column_list)
 
-'''
+
 for s in range(1, timestep + 1):
     tmp_train_x = train_x[column_list].shift(s)
     tmp_train_y = train_y[column_list].shift(s)
@@ -176,7 +173,7 @@ for s in range(1, timestep + 1):
     train_y[tmp_train_y.columns] = train_y[column_list].shift(-s)
     test_x[tmp_test_x.columns] = test_x[column_list].shift(-s)
     test_y[tmp_test_y.columns] = test_y[column_list].shift(-s)
-'''
+
 
 
 
@@ -200,8 +197,8 @@ for s in range(1, timestep + 1):
 
 # X_train1 = train_x_sc_df.dropna()
 # X_train = train_x_sc_df.dropna().drop(['총유기탄소', '수온'], axis=1)
-# X_train = train_x.dropna().drop(column_list, axis=1)
-X_train = train_x.dropna()
+X_train = train_x.dropna().drop(column_list, axis=1)
+# X_train = train_x.dropna()
 y_train = train_y.dropna()[['총유기탄소']]
 
 # X_train1.to_csv('./X_train1.csv', header=False, index=False ,encoding='utf-8-sig')
@@ -210,8 +207,8 @@ y_train = train_y.dropna()[['총유기탄소']]
 
 # X_test = test_x_sc_df.dropna(axis=1)
 # X_test = test_x_sc_df.dropna().drop(['총유기탄소', '수온'], axis=1)
-# X_test = test_x.dropna().drop(column_list, axis=1)
-X_test = test_x.dropna()
+X_test = test_x.dropna().drop(column_list, axis=1)
+# X_test = test_x.dropna()
 y_test = test_y.dropna()[['총유기탄소']]
 
 
@@ -300,17 +297,11 @@ print(X_test_t.shape)
 # print(X_train_t)
 # print(y_train)
 
-from tensorflow import keras
-from tensorflow.keras.layers import LSTM
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense
-import tensorflow.keras.backend as K
-from tensorflow.keras.callbacks import EarlyStopping
-from tensorflow.keras.callbacks import ReduceLROnPlateau
+
 # import keras
 
 
-# K.clear_session()
+    # K.clear_session()
 # model = Sequential() # Sequeatial Model
 # model.add(LSTM(32, input_shape=(timestep, len(column_list)), return_sequences = True, activation='tanh')) # (timestep, feature)
 # model.add(LSTM(32, input_shape=(timestep, len(column_list)), activation='tanh'  )) # (timestep, feature)
@@ -322,14 +313,14 @@ from tensorflow.keras.callbacks import ReduceLROnPlateau
 #
 # model.summary()
 #
-# early_stop = EarlyStopping(monitor='loss', patience=50, verbose=1)
-#
-# reduceLR = ReduceLROnPlateau(
-#     monitor='loss',  # 검증 손실을 기준으로 callback이 호출됩니다
-#     factor=0.5,          # callback 호출시 학습률을 1/2로 줄입니다
-#     patience=10,         # epoch 10 동안 개선되지 않으면 callback이 호출됩니다
-#     min_lr=0.001,
-# )
+early_stop = EarlyStopping(monitor='loss', patience=30, verbose=1)
+
+reduceLR = ReduceLROnPlateau(
+    monitor='loss',  # 검증 손실을 기준으로 callback이 호출됩니다
+    factor=0.5,          # callback 호출시 학습률을 1/2로 줄입니다
+    patience=10,         # epoch 10 동안 개선되지 않으면 callback이 호출됩니다
+    min_lr=0.001,
+)
 #
 # # model.fit(X_train_t, y_train, epochs=10000,
 # #           batch_size=128, verbose=1, callbacks=[`early_stop`])
@@ -353,13 +344,22 @@ from tensorflow.keras.callbacks import ReduceLROnPlateau
 # with open("loss_curr.txt", "a") as myfile:
 #     print(hist.history['loss'], file=myfile)
 
-
+K.clear_session()
 model = Sequential()
-model.add(LSTM(10, activation='tanh'))
+model.add(LSTM(10, input_shape=(timestep, len(column_list)), activation='tanh'))
+# model.add(LSTM(10, activation='tanh'))
 model.add(Dense(1, activation='tanh'))
-model.compile(optimizer='adam', loss='mse')
 
-history = model.fit(X_train_t, y_train, epochs=15, verbose=1)
+opt = keras.optimizers.Adam(learning_rate=0.1)
+model.compile(loss='mse', optimizer=opt)
+
+model.compile(optimizer='adam', loss='mse')
+# model.summary()
+
+history = model.fit(X_train_t, y_train, shuffle=False, epochs=1000, verbose=1, callbacks=[reduceLR])
+
+model.summary()
+
 
 plt.plot(history.history['loss'], label="loss")
 plt.legend(loc="upper right")
@@ -395,29 +395,29 @@ plt.legend(['y_test','y_pred'])
 
 plt.show()
 
-y_test   = pd.DataFrame(y_test, columns=['총유기탄소'])
-result = pd.DataFrame(y_pred, columns=['총유기탄소'])
-# result = pd.DataFrame(sc.inverse_transform(y_pred, 1))
-result.to_csv('./result111.csv', header=False, index=False ,encoding='utf-8-sig')
-
-y_test = denormalization(y_test, mean_test_y, std_test_y)
-result = denormalization(result, mean_test_y, std_test_y)
-
-plt.plot(y_test)
-plt.plot(result)
-plt.legend(['real','predict'])
-
-plt.show()
-
-# result = denormalization(result, mean, std)
-# print(y_pred)
-# plt.plot(y_test1)
+# y_test   = pd.DataFrame(y_test, columns=['총유기탄소'])
+# result = pd.DataFrame(y_pred, columns=['총유기탄소'])
+# # result = pd.DataFrame(sc.inverse_transform(y_pred, 1))
+# result.to_csv('./result111.csv', header=False, index=False ,encoding='utf-8-sig')
+#
+# y_test = denormalization(y_test, mean_test_y, std_test_y)
+# result = denormalization(result, mean_test_y, std_test_y)
+#
+# plt.plot(y_test)
 # plt.plot(result)
-# plt.legend(['inv_y_test','inv_result'])
+# plt.legend(['real','predict'])
 #
 # plt.show()
-
-
-
-
-result.to_csv('./result.csv', header=False, index=False ,encoding='utf-8-sig')
+#
+# # result = denormalization(result, mean, std)
+# # print(y_pred)
+# # plt.plot(y_test1)
+# # plt.plot(result)
+# # plt.legend(['inv_y_test','inv_result'])
+# #
+# # plt.show()
+#
+#
+#
+#
+# result.to_csv('./result.csv', header=False, index=False ,encoding='utf-8-sig')
