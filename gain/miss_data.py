@@ -16,34 +16,35 @@ class MissData(object):
 
         idxarr = self.idxarr
         missarr = self.missarr
-        #print(total_miss_no)
+        # print('self.idxarr',self.idxarr)
+        # print('self.missarr',self.missarr)
         miss_no = 0
         cum_no = self.idxarr[:,3:4]
         cum_no = cum_no.reshape((total_idx))
         #print(cum_no)
         #print(total_idx)
         while True:
+            print ('=====================================')
             loc_count = np.around(np.random.random()*total_idx)
-            #print('loc_count =', loc_count)
+            # print('loc_count =', loc_count)
             idx = len(cum_no[cum_no <= loc_count])
-            #print(cum_no[cum_no <= loc_count])
+            print('idxarr[idx]',idxarr[idx])
+            print('cum_no[cum_no <= loc_count]',cum_no[cum_no <= loc_count])
             startnan = idxarr[idx][0]
             nanlen = idxarr[idx][2]
             loc = np.around(np.random.random()*(rows-nanlen)).astype(int)
-            #print(loc_count, idx)
-            #print(idxarr[idx])
+            print(loc_count, idx)
             #data_copy = data[loc:loc+nanlen].copy()
             data_copy = data[loc:loc+nanlen]
-            #print('startnan=', startnan)
+            # print('startnan=', startnan)
             #isnan = missarr[startnan:startnan+nanlen].copy()
             isnan = missarr[startnan:startnan+nanlen]
-            #print('isnan =',isnan)
+            print('isnan =',isnan)
             miss_no += idxarr[idx][1]
             if (miss_no > total_miss_no):
                 break
             data_copy[isnan==1] = np.nan
             data[loc:loc+nanlen] = data_copy
-        #print('miss_data =', data)
         return data
         
     def save(self, data, max_tseq, save_dir='save'):

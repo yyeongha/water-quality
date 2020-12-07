@@ -28,12 +28,15 @@ def main():
     
 
     miss_data = MissData(load_dir='save')
-    miss_data.save(block,100)
-
+    # miss_data.save(block,100)
     # create miss data
+    # shape(row,column)
+    
+    # print(org_data)
+
     org_data = np.zeros(shape=(100,5))
     data_x = miss_data.make_missdata(org_data, missrate=0.2)
-    print(data_x)
+    # print(data_x)
 
 if __name__ == "__main__":
     main()
