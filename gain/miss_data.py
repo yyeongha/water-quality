@@ -16,18 +16,21 @@ class MissData(object):
 
         idxarr = self.idxarr
         missarr = self.missarr
-        # print('self.idxarr',self.idxarr)
-        # print('self.missarr',self.missarr)
+        print('self.idxarr',self.idxarr)
+        print('self.missarr',self.missarr)
         miss_no = 0
         cum_no = self.idxarr[:,3:4]
         cum_no = cum_no.reshape((total_idx))
-        #print(cum_no)
-        #print(total_idx)
+        cum_sum = np.sum(cum_no)
+        print('cum_no =', cum_no)
+        print('cum_sum =', cum_sum)
+        print('totla_idx = ', total_idx)
         while True:
             print ('=====================================')
-            loc_count = np.around(np.random.random()*total_idx)
-            # print('loc_count =', loc_count)
-            idx = len(cum_no[cum_no <= loc_count])
+            loc_count = np.around(np.random.random()*cum_sum)
+            print('loc_count =', loc_count)
+            idx = len(cum_no[cum_no <= loc_count])-1
+            print('idx =', idx)
             print('idxarr[idx]',idxarr[idx])
             print('cum_no[cum_no <= loc_count]',cum_no[cum_no <= loc_count])
             startnan = idxarr[idx][0]
