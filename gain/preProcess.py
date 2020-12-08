@@ -112,13 +112,17 @@ class PreProcess:
         return size_sr
 
     def getDiscard(self, target_df):
-        print('len(target_df) = ', len(target_df))
-        print('len(self.target) = ', len(self.target))
-        print('( self.group_cnt ) = ', ( self.group_cnt ))
-        return ( len(target_df) * (len(self.target) + 4) ) % ( self.group_cnt )
+        print('####################################')
+        print('len(target_df) = ', len(target_df)) # 8760
+        print('len(self.target) = ', len(self.target)) # 10
+        print('( self.group_cnt ) = ', ( self.group_cnt )) # 1008
+        print('####################################')
+        return ( len(target_df) * (len(self.target) + 4) ) // ( self.group_cnt ) # 121
 
     def sliceDf(self, target_df, discard):
-        return target_df[:len(target_df) - int(discard / len(self.target))]
+        # 8689 - (120 / 14)
+        # 8689 - 8 = 8681
+        return target_df[:(discard * self.group_cnt) // (len(self.target) + 4)]
 
     def shiftDf(self, label_df, size_sr):
         target_idx_list = size_sr.where(size_sr >= self.time).dropna().index.tolist()
@@ -169,6 +173,7 @@ class PreProcess:
 
     def getDiscardDf(self, df):
         discard = self.getDiscard(df)
+        print('discard => ', discard)
         discard_df = self.sliceDf(df, discard)
         return discard_df
 

@@ -7,8 +7,8 @@ import json
 import numpy as np
 import pandas as pd
 
-# from gain import gain
-from origin_gain_custom import gain
+from gain import gain
+# from origin_gain_custom import gain
 from utils import rmse_loss, data_loader, init_preprocess, getUseTrain
 from miss_data import MissData 
 
@@ -65,11 +65,11 @@ def main (parameters):
 
     # temp
     before_shift_df = pd.read_excel('./output/before_shift.xlsx')
-    
+
     # parrern 생성 
     pattern1 = before_shift_df.values
     MissData('save')
-    MissData.save(pattern1,7)
+    MissData.save(pattern1, 14)
 
     M, S = preprocess.getMeanAndStand(before_shift_df)
     print('[debug] M = ', M)
@@ -189,7 +189,9 @@ def main (parameters):
         # x_df.to_excel('./output/x_df.xlsx', index=False)
 
         # Discard data for reshape
-        normalization_df = preprocess.getDiscardDf(normalization_df)
+        # print('normalization_df (before discard) = ', normalization_df.shape)
+        # normalization_df = preprocess.getDiscardDf(normalization_df)
+        # print('normalization_df (after discard) = ', normalization_df.shape)
 
         # Convert dataframe to numpy
         normalization_np = preprocess.getNp(normalization_df)
