@@ -145,7 +145,13 @@ def main (parameters):
             test_data['data_m']
         )
         print('[debug] rmse = ', round(rmse, 4))
+
+        exit(0)
     else:
+        # 소스정리 필요 (측정시간 추출)
+        raw_df = pd.read_excel(parameters['data_name'])
+        time_df = raw_df.iloc[:, 0:1]
+        
         output_df = preprocess.getRawDataFrame()
         print('[debug] output_df = ', output_df)
 
@@ -214,13 +220,16 @@ def main (parameters):
 
     # Make result excel
     imputed_df.to_excel('./output/result_reshape.xlsx', index=False)
-    preprocess.npToExcel(imputed_df, './output/가평_2019.xlsx', True)
+
+    result_df = pd.concat([time_df, imputed_df], axis=1)
+
+    result_df.to_excel('./output/가평_2019.xlsx', index=False)
 
 
 if __name__ == '__main__':
     # parameters_path = './parameters.json'
-    parameters_path = './parameters_train.json'
-    # parameters_path = './parameters_test.json'
+    # parameters_path = './parameters_train.json'
+    parameters_path = './parameters_test.json'
     # parameters_path = './parameters_train_dir.json'
     with open(parameters_path, encoding='utf8') as json_file:
         parameters = json.load(json_file)
