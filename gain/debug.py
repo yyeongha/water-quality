@@ -10,7 +10,7 @@ import pandas as pd
 # from gain import gain
 from origin_gain_custom import gain
 from utils import rmse_loss, data_loader, init_preprocess, getUseTrain
-
+from miss_data import MissData 
 
 # usage example
 # python debug.py
@@ -65,6 +65,11 @@ def main (parameters):
 
     # temp
     before_shift_df = pd.read_excel('./output/before_shift.xlsx')
+    # parrern 생성 
+    pattern1 = before_shift_df.values
+    MissData('save')
+    MissData.save(pattern1,100)
+
     M, S = preprocess.getMeanAndStand(before_shift_df)
     print('[debug] M = ', M)
     print('[debug] S = ', S)
@@ -78,8 +83,11 @@ def main (parameters):
 
 
         # debug
-        # normalization_df.to_excel('./output/before_random.xlsx', index=False)
-
+        normalization_df.to_excel('./output/before_random.xlsx', index=False)
+        org_data = np.zeros(shape=(100,10))
+        T = MissData()
+        T.make_missdata( data_x=org_data,missrate=0.5)
+        print('normalization_df-------------2',kk)
         # Division train data set, test data set
         output_df_70, output_df_30 = preprocess.splitDf(normalization_df)
 

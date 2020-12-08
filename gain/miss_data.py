@@ -3,15 +3,19 @@ import numpy as np
 
 class MissData(object):
     def __init__(self, load_dir=None):
+        print('load_dir',load_dir)
         if load_dir:
+            np_load_old = np.load
+            np.load = lambda *a,**k: np_load_old(*a, allow_pickle=True, **k)
             self.missarr = np.load(os.path.join(load_dir, 'miss.npy'))
             self.idxarr = np.load(os.path.join(load_dir, 'idx.npy'))
-    def make_missdata(self, data_x, missrate=0.2):
+    def make_missdata(self, data_x, missrate=None):
+        print('data_x',data_x)
+        print('missrate',missrate)
         data = data_x.copy()
         rows, cols = data_x.shape
         total_no = rows*cols
         total_miss_no = np.round(total_no*missrate).astype(int)
-
         total_idx = self.idxarr.shape[0]
 
         idxarr = self.idxarr
@@ -49,9 +53,14 @@ class MissData(object):
             data_copy[isnan==1] = np.nan
             data[loc:loc+nanlen] = data_copy
         return data
-        
-    def save(self, data, max_tseq, save_dir='save'):
-        
+    # 테스트용
+    # def save(self, data, max_tseq, save_dir='save'):    
+
+    # 실전용
+    def save(data, max_tseq, save_dir='save'):
+        print('data',data)
+        print('max_tseq',max_tseq)
+
         no, dim = data.shape
         #print((no, dim))
         isnan = np.isnan(data).astype(int)
