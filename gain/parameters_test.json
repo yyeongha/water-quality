@@ -1,9 +1,9 @@
 {
   "data_name": "./input/가평_2019.xlsx",
-  "target": "2,3,4,5,6,7,8,9", 
-  "target_all": false,
-  "time": 3,
-  "fill_cnt": 0,
+  "target": "0", 
+  "target_all": true,
+  "time": 24,
+  "fill_cnt": 2,
   "miss_rate": 0.2,
   "batch_size": 128,
   "hint_rate": 0.9,

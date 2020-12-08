@@ -68,7 +68,7 @@ def main (parameters):
     # parrern 생성 
     pattern1 = before_shift_df.values
     MissData('save')
-    MissData.save(pattern1,100)
+    MissData.save(pattern1,7)
 
     M, S = preprocess.getMeanAndStand(before_shift_df)
     print('[debug] M = ', M)
@@ -84,10 +84,21 @@ def main (parameters):
 
         # debug
         normalization_df.to_excel('./output/before_random.xlsx', index=False)
-        org_data = np.zeros(shape=(100,10))
-        T = MissData()
-        T.make_missdata( data_x=org_data,missrate=0.5)
-        print('normalization_df-------------2',kk)
+        backup_col = normalization_df.columns
+
+        # org_data = np.zeros(shape=(100,10))
+        T = MissData(load_dir='save')
+        miss = T.make_missdata( 
+            data_x=normalization_df.to_numpy(), 
+            missrate=parameters['miss_rate']
+        )
+        print ('miss_data result =>', miss)
+
+        normalization_df = pd.DataFrame(miss, columns=backup_col)
+        normalization_df.to_excel('./output/miss_excel.xlsx', index=False)
+
+        # exit(0)
+
         # Division train data set, test data set
         output_df_70, output_df_30 = preprocess.splitDf(normalization_df)
 
@@ -123,7 +134,7 @@ def main (parameters):
             #     tempDf2.to_excel('./output/miss_data_x.xlsx', index=False)
 
             # Save the return data of data loader 
-            data = { 'ori_data_x': ori_data_x, 'miss_data_x': miss_data_x, 'data_m': data_m, 'M': M, 'S': S }
+            data = { 'ori_data_x': ori_data_x, 'miss_data_x': normalization_np_reshape, 'data_m': data_m, 'M': M, 'S': S }
             data_list.append(data)
             idx += 1
 
@@ -152,7 +163,10 @@ def main (parameters):
             imputed_data_x, 
             test_data['data_m']
         )
+        print('[debug] rmse = ', rmse)
         print('[debug] rmse = ', round(rmse, 4))
+
+        exit(0)
     else:
         output_df = preprocess.getRawDataFrame()
         print('[debug] output_df = ', output_df)
@@ -227,8 +241,8 @@ def main (parameters):
 
 if __name__ == '__main__':
     # parameters_path = './parameters.json'
-    parameters_path = './parameters_train.json'
-    # parameters_path = './parameters_test.json'
+    # parameters_path = './parameters_train.json'
+    parameters_path = './parameters_test.json'
     # parameters_path = './parameters_train_dir.json'
     with open(parameters_path, encoding='utf8') as json_file:
         parameters = json.load(json_file)
