@@ -10,6 +10,11 @@ class PreProcess:
         self.fill_cnt = fill_cnt
         self.time = time
         self.df_raw_list = []
+        self.time_df = None
+        self.day_sin = None
+        self.day_cos = None
+        self.year_sin = None
+        self.year_cos = None
 
         file_list = glob.glob(input + "/*.xlsx")
         print('[debug] len(file_list) = ', len(file_list))
@@ -19,6 +24,18 @@ class PreProcess:
             df = pd.read_excel(input)
             fill_df = self.getFillDf(df)
             min_size = fill_df.columns.size
+
+            # 측정시간 추출
+            self.time_df = df.iloc[:, 0:1]
+            date_time = pd.to_datetime(df['측정날짜'], format='%Y.%m.%d %H:%M:%S')
+            timestamp_sr = date_time.map(datetime.datetime.timestamp)
+            day1 = 24 * 60 * 60
+            week = day1 * 7
+            year1 = (365.2425) * day1
+            self.day_sin = np.sin(timestamp_sr * (2 * np.pi / day1))
+            self.day_cos = np.cos(timestamp_sr * (2 * np.pi / day1))
+            self.year_sin = np.sin(timestamp_sr * (2 * np.pi / day1))
+            self.year_cos = np.cos(timestamp_sr * (2 * np.pi / day1))
 
         # directory
         else:
@@ -50,13 +67,17 @@ class PreProcess:
 
         print('[debug] self.target = ', self.target)
 
-        self.group_cnt = self.time * len(self.target)
+        self.group_cnt = self.time * (len(self.target) + 4) # 4 is "sin, cos, sin, cos"
         print('[debug] self.group_cnt (y) = ', self.group_cnt)
 
         self.target_df = self.getTargetDf(fill_df)
         print('[debug] self.target_df = ', self.target_df)
 
     def getTargetName(self):
+        self.target_name.append('day_sin')
+        self.target_name.append('day_cos')
+        self.target_name.append('year_sin')
+        self.target_name.append('year_cos')
         return self.target_name
 
     def getFillDf(self, df):
@@ -91,7 +112,10 @@ class PreProcess:
         return size_sr
 
     def getDiscard(self, target_df):
-        return ( len(target_df) * len(self.target) ) % ( self.group_cnt )
+        print('len(target_df) = ', len(target_df))
+        print('len(self.target) = ', len(self.target))
+        print('( self.group_cnt ) = ', ( self.group_cnt ))
+        return ( len(target_df) * (len(self.target) + 4) ) % ( self.group_cnt )
 
     def sliceDf(self, target_df, discard):
         return target_df[:len(target_df) - int(discard / len(self.target))]
@@ -150,6 +174,12 @@ class PreProcess:
 
     # custom
     def getDataFrame(self):
+
+        # sin cos 추가
+        self.target_df['day_sin'] = self.day_sin
+        self.target_df['day_cos'] = self.day_cos
+        self.target_df['year_sin'] = self.year_sin
+        self.target_df['year_cos'] = self.year_cos
 
         # temp
         # self.target_df.to_excel('./output/before_shift.xlsx', index=False)
@@ -211,23 +241,28 @@ class PreProcess:
                 output_np_list.append(output_np)
             return output_np_list
 
-    def npToExcel(self, input_np, save_path, timeFormat=False):
-        df = pd.DataFrame(data=input_np)
-        # df = input_np # temp
+    # def npToExcel(self, input_np, save_path, timeFormat=False):
+    #     df = pd.DataFrame(data=input_np)
+    #     # df = input_np # temp
 
-        if timeFormat:
-            hour_add = datetime.timedelta(hours = 1)
-            target = datetime.datetime(2020, 1, 1, 0, 0) - hour_add
-            date_list = []
-            for day in range(0, len(df)):
-                target = (target + hour_add)
-                date_list.append(target.strftime("%m.%d %H:%S"))
-            df.insert(loc=0, column='date', value=date_list)
+    #     if timeFormat:
+    #         hour_add = datetime.timedelta(hours = 1)
+    #         target = datetime.datetime(2020, 1, 1, 0, 0) - hour_add
+    #         date_list = []
+    #         for day in range(0, len(df)):
+    #             target = (target + hour_add)
+    #             date_list.append(target.strftime("%m.%d %H:%S"))
+    #         df.insert(loc=0, column='date', value=date_list)
 
-        df.to_excel(save_path, index=False)
+    #     df.to_excel(save_path, index=False)
+
+    def addTimeFormat(self, imputed_df, output_path):
+        result_df = pd.concat([self.time_df, imputed_df], axis=1)
+        result_df.drop(['day_sin', 'day_cos', 'year_sin', 'year_cos'], axis='columns', inplace=True)
+        result_df.to_excel(output_path, index=False)
 
     def reverseReShape(self, input_np):
-        return input_np.reshape(-1, len(self.target))
+        return input_np.reshape(-1, len(self.target) + 4)
 
     def getMeanAndStand(self, df):
         M = df.mean() # 평균

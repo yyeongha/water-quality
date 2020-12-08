@@ -104,6 +104,7 @@ def main (parameters):
 
             # Convert dataframe to numpy
             normalization_np = preprocess.getNp(normalization_df)
+            print('normalization_np.shape = ', normalization_np.shape)
 
             # Numpy object reshape
             normalization_np_reshape = preprocess.getReshapeNp(normalization_np)
@@ -148,10 +149,6 @@ def main (parameters):
 
         exit(0)
     else:
-        # 소스정리 필요 (측정시간 추출)
-        raw_df = pd.read_excel(parameters['data_name'])
-        time_df = raw_df.iloc[:, 0:1]
-        
         output_df = preprocess.getRawDataFrame()
         print('[debug] output_df = ', output_df)
 
@@ -159,14 +156,16 @@ def main (parameters):
         # tempDf3 = pd.DataFrame(normalization_np)
         output_df.to_excel('./output/output_df.xlsx', index=False)
 
+        # exit(0)
+
         # Standard normal distribution normalization
         normalization_df = preprocess.normalization(output_df, M, S)
         print('[debug] normalization_df = ', normalization_df)
         normalization_df.to_excel('./output/normalization_df.xlsx', index=False)
 
         # temp
-        x_df = preprocess.denormalization(normalization_df, M, S)
-        x_df.to_excel('./output/x_df.xlsx', index=False)
+        # x_df = preprocess.denormalization(normalization_df, M, S)
+        # x_df.to_excel('./output/x_df.xlsx', index=False)
 
         # Discard data for reshape
         normalization_df = preprocess.getDiscardDf(normalization_df)
@@ -209,6 +208,7 @@ def main (parameters):
 
     # Debug
     print('imputed_data_x.shape = ', imputed_data_x.shape)
+    print('imputed_data_x => ', imputed_data_x)
 
     # Make result dataframe
     imputed_df = pd.DataFrame(data=imputed_data_x)
@@ -221,9 +221,7 @@ def main (parameters):
     # Make result excel
     imputed_df.to_excel('./output/result_reshape.xlsx', index=False)
 
-    result_df = pd.concat([time_df, imputed_df], axis=1)
-
-    result_df.to_excel('./output/가평_2019.xlsx', index=False)
+    preprocess.addTimeFormat(imputed_df, './output/가평_2019.xlsx')
 
 
 if __name__ == '__main__':
