@@ -93,24 +93,48 @@ class Interface:
         # layout 6
         # debug_label_6 = QLabel('debug label 6')
         # debug_label_6.setStyleSheet("border: 1px solid red;")
+        debug_label_6_1 = QLabel('예측 그래프')
+        debug_label_6_1.setStyleSheet("border: 1px solid red;")
+
         data = [random.random() for i in range(10)] 
         figure = plt.figure() 
         ax = figure.add_subplot(111)
         ax.plot(data, '*-') 
-        debug_label_6 = FigureCanvas(figure)
+        debug_label_6_2 = FigureCanvas(figure)
 
         # layout 7
-        debug_label_7 = QLabel('debug label 7')
-        debug_label_7.setStyleSheet("border: 1px solid red;")
+        debug_label_7_1 = QLabel('예측 수질 (3일간)')
+        debug_label_7_1.setStyleSheet("border: 1px solid red;")
+
+        debug_label_7_2_1 = QLabel('debug label 7 2 1')
+        debug_label_7_2_1.setStyleSheet("border: 1px solid red;")
+
+        debug_label_7_2_2 = QLabel('debug label 7 2 2')
+        debug_label_7_2_2.setStyleSheet("border: 1px solid red;")
+
+        debug_label_7_2_3 = QLabel('debug label 7 2 3')
+        debug_label_7_2_3.setStyleSheet("border: 1px solid red;")
+
+        debug_label_7_3_1 = QLabel('debug label 7 3 1')
+        debug_label_7_3_1.setStyleSheet("border: 1px solid red;")
+
+        debug_label_7_3_2 = QLabel('debug label 7 3 2')
+        debug_label_7_3_2.setStyleSheet("border: 1px solid red;")
+
+        debug_label_7_3_3 = QLabel('debug label 7 3 3')
+        debug_label_7_3_3.setStyleSheet("border: 1px solid red;")
 
         # layout 8
         # debug_label_8 = QLabel('debug label 8')
         # debug_label_8.setStyleSheet("border: 1px solid red;")
+        debug_label_8_1 = QLabel('예측 강우량 및 기온')
+        debug_label_8_1.setStyleSheet("border: 1px solid red;")
+
         data = [random.random() for i in range(10)] 
         figure = plt.figure() 
         ax = figure.add_subplot(111)
         ax.plot(data, '*-') 
-        debug_label_8 = FigureCanvas(figure)
+        debug_label_8_2 = FigureCanvas(figure)
 
 
         ''' layout '''
@@ -119,7 +143,7 @@ class Interface:
         # row, col, row_span, col_span
         
         # top
-        grid_layout.addWidget(label_title, 0, 0, 1, 6)
+        grid_layout.addWidget(label_title, 0, 0, 1, 7)
 
         # left
         gab = 3
@@ -127,21 +151,33 @@ class Interface:
         grid_layout.addWidget(debug_label_3, 5, 0, 3, 1)
 
         # right
-        grid_layout.addWidget(debug_label_4_1, 1, 1, 1, 1)
-        grid_layout.addWidget(debug_label_4_2, 1, 2, 1, 1)
-        grid_layout.addWidget(debug_label_4_3, 1, 3, 1, 1)
-        grid_layout.addWidget(debug_label_4_4, 1, 4, 1, 1)
-        grid_layout.addWidget(debug_label_4_5, 1, 5, 1, 1)
+        grid_layout.addWidget(debug_label_4_1, 1, 1, 1, 2)
+        grid_layout.addWidget(debug_label_4_2, 1, 3, 1, 1)
+        grid_layout.addWidget(debug_label_4_3, 1, 4, 1, 1)
+        grid_layout.addWidget(debug_label_4_4, 1, 5, 1, 1)
+        grid_layout.addWidget(debug_label_4_5, 1, 6, 1, 1)
 
-        grid_layout.addWidget(debug_label_5_1, 2, 1, 1, 1)
-        grid_layout.addWidget(debug_label_5_2, 2, 2, 1, 1)
-        grid_layout.addWidget(debug_label_5_3, 2, 3, 1, 1)
-        grid_layout.addWidget(debug_label_5_4, 2, 4, 1, 1)
-        grid_layout.addWidget(debug_label_5_5, 2, 5, 1, 1)
+        grid_layout.addWidget(debug_label_5_1, 2, 1, 1, 2)
+        grid_layout.addWidget(debug_label_5_2, 2, 3, 1, 1)
+        grid_layout.addWidget(debug_label_5_3, 2, 4, 1, 1)
+        grid_layout.addWidget(debug_label_5_4, 2, 5, 1, 1)
+        grid_layout.addWidget(debug_label_5_5, 2, 6, 1, 1)
 
-        grid_layout.addWidget(debug_label_6, 3, 1, 2, 5)
-        grid_layout.addWidget(debug_label_7, 5, 1, 1, 5)
-        grid_layout.addWidget(debug_label_8, 6, 1, 2, 5)
+        grid_layout.addWidget(debug_label_6_1, 3, 1, 1, 6)
+        grid_layout.addWidget(debug_label_6_2, 4, 1, 1, 6)
+
+        grid_layout.addWidget(debug_label_7_1, 5, 1, 1, 6)
+
+        grid_layout.addWidget(debug_label_7_2_1, 6, 1, 1, 2)
+        grid_layout.addWidget(debug_label_7_2_2, 6, 3, 1, 2)
+        grid_layout.addWidget(debug_label_7_2_3, 6, 5, 1, 2)
+        
+        grid_layout.addWidget(debug_label_7_3_1, 7, 1, 1, 2)
+        grid_layout.addWidget(debug_label_7_3_2, 7, 3, 1, 2)
+        grid_layout.addWidget(debug_label_7_3_3, 7, 5, 1, 2)
+        
+        grid_layout.addWidget(debug_label_8_1, 8, 1, 1, 6)
+        grid_layout.addWidget(debug_label_8_2, 9, 1, 1, 6)
        
 
         self.window.setLayout(grid_layout)
