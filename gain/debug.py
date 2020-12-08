@@ -226,8 +226,8 @@ def main (parameters):
 
 if __name__ == '__main__':
     # parameters_path = './parameters.json'
-    # parameters_path = './parameters_train.json'
-    parameters_path = './parameters_test.json'
+    parameters_path = './parameters_train.json'
+    # parameters_path = './parameters_test.json'
     # parameters_path = './parameters_train_dir.json'
     with open(parameters_path, encoding='utf8') as json_file:
         parameters = json.load(json_file)
