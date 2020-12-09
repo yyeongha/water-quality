@@ -1,423 +1,343 @@
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
 import os
-import math
-from tensorflow import keras
-from tensorflow.keras.layers import LSTM, Dense
-from tensorflow.keras.models import Sequential
-import tensorflow.keras.backend as K
-from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
-
-
-path = "./data/1/"
-predict_rate = 24*7
-test_rate = 24 * 7
-timestep = 12
-#
-excelfiles = []
-df = []
-
-def normalization(df):
-    M = df.mean() # 평균
-    S = df.std(ddof=0) # 표준편차
-    normalization_df = (df - M)/S
-    normalization_df = normalization_df.fillna(0)
-    return normalization_df, M, S
-
-def denormalization(normalization_df, M, S):
-    df = normalization_df * S + M
-    df = df.fillna(0)
-    return df
-
-def create_dataset(origin_data, look_back=1):
-    # start_row = origin_data.shape[0]
-    # print("origin_data.shape[0] : " + str(origin_data.shape[0]))
-    # print(origin_data.head())
-    # end_row = origin_data.shape[0] - look_back
-    end_row = math.floor(origin_data.shape[0]/2)
-    dataX = origin_data.iloc[:end_row, :]
-    dataY = origin_data.iloc[end_row:end_row*2, :]
-
-
-
-for root, dirs, files in os.walk(path):
-    for filename in files:
-        if filename == '.DS_Store':
-            continue
-        excelfiles.append(path+filename)
-# print(excelfiles)
-
-for fname in excelfiles:
-
-    # print(os.path.splitext(fname)[1])
-
-    if os.path.splitext(fname)[1] == '.csv':
-        df = pd.read_csv(fname,encoding='utf-8-sig')
-    elif os.path.splitext(fname)[1] == '.xlsx':
-        df = pd.read_excel(fname)
-    rows = df.shape[0]
-    cols = df.shape[1]
-
-    columnlist = df.columns.tolist()
-
-
-
-
-print("rows : " + str(rows))
-print("predict_rate : " + str(rows - predict_rate))
-
-# split_rate = int(math.ceil(rows * 0.96))
-# split_rate2 = int(math.ceil((rows-split_rate) * 0.5))
-
-# split_rate = rows - (predict_rate*2 + test_rate)
-#
-# print("split_rate : " + str(split_rate))
-#
-# train_x = df.iloc[:split_rate,1:]
-# train_y = df.iloc[split_rate:split_rate+predict_rate,1: ]
-# test_x = df.iloc[split_rate+predict_rate:split_rate+predict_rate+test_rate,1: ]
-# test_y = df.iloc[split_rate+predict_rate+test_rate:,1: ]
-
-# df, mean, std = normalization(df)
-
-
-split_rate = int(math.ceil((rows - predict_rate*2)/2))
-
-print("split_rate : " + str(split_rate))
-
-train_x = df.iloc[:split_rate,1:]
-train_y = df.iloc[split_rate:split_rate+split_rate,1: ]
-test_x = df.iloc[split_rate+split_rate:split_rate+split_rate+predict_rate,1: ]
-test_y = df.iloc[split_rate+predict_rate+split_rate:,1: ]
-
-
-
-
-
-
-print("train_x")
-print(train_x.shape)
-print("train_y")
-print(train_y.shape)
-
-# print(columnlist)
-
-# train = df.iloc[:split_rate,:]
-# test = df.iloc[split_rate:,:]
-
-# train = df.iloc[:split_rate,1:]
-# # test = df.iloc[split_rate:,6 ]
-# test = df.iloc[split_rate:split_rate+split_rate2,1: ]
-#
-# real = df.iloc[split_rate+split_rate2:,1: ]
-
-# train_x.to_csv("./train_x.csv", header=False, index=False, encoding='utf-8-sig')
-# train_y.to_csv("./train_y.csv", header=False, index=False, encoding='utf-8-sig')
-# test_x.to_csv("./test_x.csv", header=False, index=False, encoding='utf-8-sig')
-# test_y.to_csv("./test_y.csv", header=False, index=False, encoding='utf-8-sig')
-
-
-# train_sc_df, mean_train, std_train = normalization(train)
-# test_sc_df, mean_test, std_test = normalization(test)
-# real_sc_df, mean_real, std_real = normalization(real)
-
-# train_x_sc_df, mean_train_x, std_train_x = normalization(train_x)
-# train_y_sc_df, mean_train_y, std_train_y = normalization(train_y)
-# test_x_sc_df, mean_test_x, std_test_x = normalization(test_x)
-# test_y_sc_df, mean_test_y, std_test_y = normalization(test_y)
-
-# print("mean_test_y1")
-# print(mean_test_y)
-# print(std_test_y)
-
-#
-# train_x_sc_df.to_csv('./train_x_sc_df.csv', header=False, index=False ,encoding='utf-8-sig')
-# test_x_sc_df.to_csv('./test_x_sc_df.csv', header=False, index=False ,encoding='utf-8-sig')
-# train_y_sc_df.to_csv('./train_y_sc_df.csv', header=False, index=False ,encoding='utf-8-sig')
-# test_y_sc_df.to_csv('./test_y_sc_df.csv', header=False, index=False ,encoding='utf-8-sig')
-#
-# de_train_x_sc_df = denormalization(train_x_sc_df, mean_train_x, std_train_x)
-# de_train_y_sc_df = denormalization(train_y_sc_df, mean_train_y, std_train_y)
-# de_test_x_sc_df = denormalization(test_x_sc_df, mean_test_x, mean_test_x)
-# de_test_y_sc_df = denormalization(test_y_sc_df, mean_test_y, std_test_y)
-#
-#
-# de_train_x_sc_df.to_csv('./de_train_x_sc_df.csv', header=False, index=False ,encoding='utf-8-sig')
-# de_test_x_sc_df.to_csv('./de_test_x_sc_df.csv', header=False, index=False ,encoding='utf-8-sig')
-# de_train_y_sc_df.to_csv('./de_train_y_sc_df.csv', header=False, index=False ,encoding='utf-8-sig')
-# de_test_y_sc_df.to_csv('./de_test_y_sc_df.csv', header=False, index=False ,encoding='utf-8-sig')
-# #
-#
-# de_train_sc_df = denormalization(train_sc_df, mean_train, std_train)
-# de_test_sc_df = denormalization(test_sc_df, mean_test, std_test)
-#
-# de_train_sc_df.to_csv('./de_train_sc_df.csv', header=False, index=False ,encoding='utf-8-sig')
-# test_sc_df.to_csv('./de_test_sc_df.csv', header=False, index=False ,encoding='utf-8-sig')
-
-column_list = list(train_x)
-
-print(column_list)
-
-
-for s in range(1, timestep + 1):
-    tmp_train_x = train_x[column_list].shift(s)
-    tmp_train_y = train_y[column_list].shift(s)
-    tmp_test_x = test_x[column_list].shift(s)
-    tmp_test_y = test_y[column_list].shift(s)
-    tmp_train_x.columns = "shift_" + tmp_train_x.columns + "_" + str(s)
-    tmp_train_y.columns = "shift_" + tmp_train_y.columns + "_" + str(s)
-    tmp_test_x.columns = "shift_" + tmp_test_x.columns + "_" + str(s)
-    tmp_test_y.columns = "shift_" + tmp_test_y.columns + "_" + str(s)
-    train_x[tmp_train_x.columns] = train_x[column_list].shift(-s)
-    train_y[tmp_train_y.columns] = train_y[column_list].shift(-s)
-    test_x[tmp_test_x.columns] = test_x[column_list].shift(-s)
-    test_y[tmp_test_y.columns] = test_y[column_list].shift(-s)
-
-
-
-
-# for s in range(1, timestep+1):
-#     train_x_sc_df['shift_{}'.format(s)] = None
-#     train_y_sc_df['shift_{}'.format(s)] = None
-#     test_x_sc_df['shift_{}'.format(s)] = None
-#     test_y_sc_df['shift_{}'.format(s)] = None
-#     train_x_sc_df['shift_{}'.format(s)] = train_x_sc_df[column_list].shift(s)
-#     train_y_sc_df['shift_{}'.format(s)] = train_y_sc_df.shift(s)
-#     test_x_sc_df['shift_{}'.format(s)] = test_x_sc_df.shift(s)
-#     test_y_sc_df['shift_{}'.format(s)] = test_y_sc_df.shift(s)
-
-# print(train_sc_df.head(13))
-
-
-# train_x_sc_df.to_csv('./train_x_sc_df1.csv', header=False, index=False ,encoding='utf-8-sig')
-# test_x_sc_df.to_csv('./test_x_sc_df1.csv', header=False, index=False ,encoding='utf-8-sig')
-
-
-
-# X_train1 = train_x_sc_df.dropna()
-# X_train = train_x_sc_df.dropna().drop(['총유기탄소', '수온'], axis=1)
-X_train = train_x.dropna().drop(column_list, axis=1)
-# X_train = train_x.dropna()
-y_train = train_y.dropna()[['총유기탄소']]
-
-# X_train1.to_csv('./X_train1.csv', header=False, index=False ,encoding='utf-8-sig')
-# X_train.to_csv('./X_train.csv', header=False, index=False ,encoding='utf-8-sig')
-# y_train.to_csv('./y_train.csv', header=False, index=False ,encoding='utf-8-sig')
-
-# X_test = test_x_sc_df.dropna(axis=1)
-# X_test = test_x_sc_df.dropna().drop(['총유기탄소', '수온'], axis=1)
-X_test = test_x.dropna().drop(column_list, axis=1)
-# X_test = test_x.dropna()
-y_test = test_y.dropna()[['총유기탄소']]
-
-
-y_train.to_csv('./y_train.csv', header=False, index=False ,encoding='utf-8-sig')
-X_test.to_csv('./y_test.csv', header=False, index=False ,encoding='utf-8-sig')
-
-
-X_train, mean_train_x, std_train_x = normalization(X_train)
-y_train, mean_train_y, std_train_y = normalization(y_train)
-X_test, mean_test_x, std_test_x = normalization(X_test)
-y_test, mean_test_y, std_test_y = normalization(y_test)
-
-
-
-# result = denormalization(y_test, mean_test_y, std_test_y )
-#
-# result.to_csv('./result.csv', header=False, index=False ,encoding='utf-8-sig')
-
-# print('y_test')
-# print(y_test)
-
-# y_test1 = pd.DataFrame(sc.inverse_transform(y_test))
-# y_test1 = denormalization(y_test, mean_test, std_test)
-# y_test1 = pd.DataFrame(denormalization(y_test, mean, std))
-
-# X_test.to_csv('./X_test.csv', header=False, index=False ,encoding='utf-8-sig')
-# y_test.to_csv('./y_test.csv', header=False, index=False ,encoding='utf-8-sig')
-# y_test1.to_csv('./y_test1.csv', header=False, index=False ,encoding='utf-8-sig')
-
-# X_real = real_sc_df.dropna(axis=1)
-
-# X_real = real_sc_df.dropna().drop('총유기탄소', axis=1)
-# y_real = real_sc_df.dropna()[['총유기탄소']]
-# y_real.to_csv('./y_real.csv', header=False, index=False ,encoding='utf-8-sig')
-
-
-# print(X_train.head())
-# print(y_train.head())
-
-
-X_train = X_train.values
-y_train = y_train.values
-
-print("X_train")
-print(X_train.shape)
-print("y_train")
-print(y_train.shape)
-
-# X_real= X_real.values
-
-X_test= X_test.to_numpy()
-y_test = y_test.to_numpy()
-# y_test = y_test.values
-# y_real = y_real.values
-
-
-# print(X_train.shape[0])
-# print(X_train)
-# print(y_train.shape[0])
-# print(y_train)
-
-
-
-
-
-# X_train_t = X_train.reshape(X_train.shape[0], X_train.shape[1], 1).astype(float)
-# X_test_t = X_test.reshape(X_test.shape[0], X_test.shape[1], 1).astype(float)
-# X_real_t = X_test.reshape(X_real.shape[0], X_real.shape[1], 1).astype(float)
-
-print((len(column_list)))
-
-X_train_t = X_train.reshape(X_train.shape[0], timestep, len(column_list)).astype(float)
-X_test_t = X_test.reshape(X_test.shape[0], timestep, len(column_list)).astype(float)
-# y_train_t = X_test.reshape(-1, timestep, 1).astype(float)
-
-print("X_train_t")
-print(X_train_t.shape)
-
-print("X_test_t")
-print(X_test_t.shape)
-
-
-
-# print("최종 DATA")
-# print(X_train_t.shape)
-# print(X_train_t)
-# print(y_train)
-
-
-# import keras
-
-
-    # K.clear_session()
-# model = Sequential() # Sequeatial Model
-# model.add(LSTM(32, input_shape=(timestep, len(column_list)), return_sequences = True, activation='tanh')) # (timestep, feature)
-# model.add(LSTM(32, input_shape=(timestep, len(column_list)), activation='tanh'  )) # (timestep, feature)
-# model.add(Dense(1))# output = 1
-#
-# opt = keras.optimizers.Adam(learning_rate=0.1)
-# model.compile(loss='mean_squared_error', optimizer=opt)
-# # model.compile(loss='mean_squared_error', optimizer='adam')
-#
-# model.summary()
-#
-early_stop = EarlyStopping(monitor='loss', patience=30, verbose=1)
-
-reduceLR = ReduceLROnPlateau(
-    monitor='loss',  # 검증 손실을 기준으로 callback이 호출됩니다
-    factor=0.5,          # callback 호출시 학습률을 1/2로 줄입니다
-    patience=10,         # epoch 10 동안 개선되지 않으면 callback이 호출됩니다
-    min_lr=0.001,
-)
-#
-# # model.fit(X_train_t, y_train, epochs=10000,
-# #           batch_size=128, verbose=1, callbacks=[`early_stop`])
-#
-# # hist =  model.fit(X_train_t, y_train, epochs=10000,
-# #           batch_size=64, verbose=1)
-#
-# hist =  model.fit(X_train_t, y_train, epochs=100, shuffle=False,
-#           batch_size=64, verbose=1, callbacks=[reduceLR, early_stop])
-
-
-# print(hist.history['loss'])
-#
-# fig, loss_ax = plt.subplots()
-# loss_ax.plot(hist.history['loss'], label='train loss')
-# loss_ax.set_xlabel('epoch')
-# loss_ax.set_ylabel('loss')
-# loss_ax.legend(loc='upper left')
+import datetime
+
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import seaborn as sns
+import tensorflow as tf
+
+import matplotlib.font_manager as fm  # 폰트 관련 용도
+
+# matpotlib 에서 한글 깨짐 현상(mac)
+mpl.rcParams['axes.unicode_minus'] = False
+mpl.rcParams['font.family'] = "AppleGothic"
+
+
+#target_col = '클로로필-a'
+target_col = '수온'
+
+# mpl.rcParams['figure.figsize'] = (8, 6)
+# mpl.rcParams['axes.grid'] = False
+df = pd.read_excel("./data/8/1.xlsx")
+# slice [start:stop:step], starting from index 5 take every 6th record.
+#df1 = df1[5::6]
+#df1['측정날짜']
+date_time = pd.to_datetime(df.pop('측정날짜'), format='%Y.%m.%d %H:%M:%S')
+# date_time = pd.to_datetime(df['측정날짜'], format='%Y.%m.%d %H:%M:%S')
+# print(date_time)
+# print(df.head())
+
+timestamp_s = date_time.map(datetime.datetime.timestamp)
+
+day = 24*60*60
+week = day * 7
+year = (365.2425)*day
+
+df['Day sin'] = np.sin(timestamp_s * (2 * np.pi / day))
+df['Day cos'] = np.cos(timestamp_s * (2 * np.pi / day))
+df['Week sin'] = np.sin(timestamp_s * (2 * np.pi / week))
+df['Week cos'] = np.cos(timestamp_s * (2 * np.pi / week))
+df['Year sin'] = np.sin(timestamp_s * (2 * np.pi / year))
+df['Year cos'] = np.cos(timestamp_s * (2 * np.pi / year))
+
+# plt.plot(np.array(df['Day sin'])[:25])
+# plt.plot(np.array(df['Day cos'])[:25])
+# plt.xlabel('Time [h]')
+# plt.title('Time of day signal')
 # plt.show()
+
+column_indices = {name: i for i, name in enumerate(df.columns)}
+
+n = len(df)
+train_df = df[0:int(n*0.7)]
+val_df = df[int(n*0.7):int(n*0.9)]
+test_df = df[int(n*0.9):]
+
+num_features = df.shape[1]
+
+
+train_mean = train_df.mean()
+train_std = train_df.std()
+
+train_df = (train_df - train_mean) / train_std
+val_df = (val_df - train_mean) / train_std
+test_df = (test_df - train_mean) / train_std
+
+
+
+# Data Window
+class WindowGenerator():
+  def __init__(self, input_width, label_width, shift,
+               train_df=train_df, val_df=val_df, test_df=test_df,
+               label_columns=None):
+    # Store the raw data.
+    self.train_df = train_df
+    self.val_df = val_df
+    self.test_df = test_df
+
+    # Work out the label column indices.
+    self.label_columns = label_columns
+    if label_columns is not None:
+      self.label_columns_indices = {name: i for i, name in
+                                    enumerate(label_columns)}
+    self.column_indices = {name: i for i, name in
+                           enumerate(train_df.columns)}
+
+    # Work out the window parameters.
+    self.input_width = input_width
+    self.label_width = label_width
+    self.shift = shift
+
+    self.total_window_size = input_width + shift
+
+    self.input_slice = slice(0, input_width)
+    self.input_indices = np.arange(self.total_window_size)[self.input_slice]
+
+    self.label_start = self.total_window_size - self.label_width
+    self.labels_slice = slice(self.label_start, None)
+    self.label_indices = np.arange(self.total_window_size)[self.labels_slice]
+
+  def __repr__(self):
+    return '\n'.join([
+        f'Total window size: {self.total_window_size}',
+        f'Input indices: {self.input_indices}',
+        f'Label indices: {self.label_indices}',
+        f'Label column name(s): {self.label_columns}'])
+
+
+# w1 = WindowGenerator(input_width=24, label_width=1, shift=24,
+#                      label_columns=['총유기탄소'])
+# # print(w1)
 #
-# with open("loss_curr.txt", "a") as myfile:
-#     print(hist.history['loss'], file=myfile)
-
-K.clear_session()
-model = Sequential()
-model.add(LSTM(10, input_shape=(timestep, len(column_list)), activation='tanh'))
-# model.add(LSTM(10, activation='tanh'))
-model.add(Dense(1, activation='tanh'))
-
-opt = keras.optimizers.Adam(learning_rate=0.1)
-model.compile(loss='mse', optimizer=opt)
-
-model.compile(optimizer='adam', loss='mse')
-# model.summary()
-
-history = model.fit(X_train_t, y_train, shuffle=False, epochs=1000, verbose=1, callbacks=[reduceLR])
-
-model.summary()
+# w2 = WindowGenerator(input_width=6, label_width=1, shift=1,
+#                      label_columns=['총유기탄소'])
+# print(w2)
 
 
-plt.plot(history.history['loss'], label="loss")
-plt.legend(loc="upper right")
-plt.show()
+# Data 분할
+def split_window(self, features):
+  inputs = features[:, self.input_slice, :]
+  labels = features[:, self.labels_slice, :]
+  if self.label_columns is not None:
+    labels = tf.stack(
+        [labels[:, :, self.column_indices[name]] for name in self.label_columns],
+        axis=-1)
+
+  # Slicing doesn't preserve static shape information, so set the shapes
+  # manually. This way the `tf.data.Datasets` are easier to inspect.
+  inputs.set_shape([None, self.input_width, None])
+  labels.set_shape([None, self.label_width, None])
+
+  return inputs, labels
+
+WindowGenerator.split_window = split_window
 
 
-# print(X_test_t)
+# # Stack three slices, the length of the total window:
+# example_window = tf.stack([np.array(train_df[:w1.total_window_size]),
+#                            np.array(train_df[100:100+w1.total_window_size]),
+#                            np.array(train_df[200:200+w1.total_window_size])])
 
 
-y_pred = model.predict(X_test_t)
+# example_inputs, example_labels = w1.split_window(example_window)
 
-# print(type(y_pred))
-# print(type(y_test))
+# print('All shapes are: (batch, time, features)')
+# print(f'Window shape: {example_window.shape}')
+# print(f'Inputs shape: {example_inputs.shape}')
+# print(f'labels shape: {example_labels.shape}')
 
-# pd.DataFrame()
+# w1.example = example_inputs, example_labels
 
-# print("mean_test_y2")
-# print(mean_test_y)
-# print(std_test_y)
-# y_test1 = pd.DataFrame(y_test)
-# y_pred = denormalization(pd.DataFrame(y_pred), mean_test_y, std_test_y)
-# y_test2 = denormalization(y_test1, mean_test_y, std_test_y)
+def plot(self, model=None, plot_col=target_col, max_subplots=3):
+  inputs, labels = self.example
+  plt.figure(figsize=(12, 8))
+  plot_col_index = self.column_indices[plot_col]
+  max_n = min(max_subplots, len(inputs))
+  for n in range(max_n):
+    plt.subplot(3, 1, n+1)
+    plt.ylabel(f'{plot_col} [normed]')
+    plt.plot(self.input_indices, inputs[n, :, plot_col_index],
+             label='Inputs', marker='.', zorder=-10)
+
+    if self.label_columns:
+      label_col_index = self.label_columns_indices.get(plot_col, None)
+    else:
+      label_col_index = plot_col_index
+
+    if label_col_index is None:
+      continue
+
+    plt.scatter(self.label_indices, labels[n, :, label_col_index],
+                edgecolors='k', label='Labels', c='#2ca02c', s=64)
+    if model is not None:
+      predictions = model(inputs)
+      plt.scatter(self.label_indices, predictions[n, :, label_col_index],
+                  marker='X', edgecolors='k', label='Predictions',
+                  c='#ff7f0e', s=64)
+
+    if n == 0:
+      plt.legend()
+
+  plt.xlabel('Time [h]')
+  plt.show()
+
+
+WindowGenerator.plot = plot
+# plot()
+# w1.plot()
+
+
+def make_dataset(self, data):
+  data = np.array(data, dtype=np.float32)
+  ds = tf.keras.preprocessing.timeseries_dataset_from_array(
+      data=data,
+      targets=None,
+      sequence_length=self.total_window_size,
+      sequence_stride=1,
+      shuffle=True,
+      batch_size=32,)
+
+  ds = ds.map(self.split_window)
+
+  return ds
+
+WindowGenerator.make_dataset = make_dataset
+
+@property
+def train(self):
+  return self.make_dataset(self.train_df)
+
+@property
+def val(self):
+  return self.make_dataset(self.val_df)
+
+@property
+def test(self):
+  return self.make_dataset(self.test_df)
+
+@property
+def example(self):
+  """Get and cache an example batch of `inputs, labels` for plotting."""
+  result = getattr(self, '_example', None)
+  if result is None:
+    # No example batch was found, so get one from the `.train` dataset
+    result = next(iter(self.train))
+    # And cache it for next time
+    self._example = result
+  return result
+
+WindowGenerator.train = train
+WindowGenerator.val = val
+WindowGenerator.test = test
+WindowGenerator.example = example
 #
-# print(type(y_pred))
-# print(type(y_test))
+# print(w1.train.take(1))
 
-# y_test2.to_csv('./y_test1111.csv', header=False, index=False ,encoding='utf-8-sig')
-# y_pred.to_csv('./y_pred.csv', header=False, index=False ,encoding='utf-8-sig')
+# for example_inputs, example_labels in w1.train.take(1):
+#   print(f'Inputs shape (batch, time, features): {example_inputs.shape}')
+#   print(f'Labels shape (batch, time, features): {example_labels.shape}')
 
-plt.plot(y_test)
-plt.plot(y_pred)
-plt.legend(['y_test','y_pred'])
 
-plt.show()
+# wide_window = WindowGenerator(
+#     input_width=24, label_width=24, shift=1,
+#     label_columns=['총유기탄소'])
 
-# y_test   = pd.DataFrame(y_test, columns=['총유기탄소'])
-# result = pd.DataFrame(y_pred, columns=['총유기탄소'])
-# # result = pd.DataFrame(sc.inverse_transform(y_pred, 1))
-# result.to_csv('./result111.csv', header=False, index=False ,encoding='utf-8-sig')
+wide_window = WindowGenerator(
+    input_width=24, label_width=24, shift=1)
+
+# print(wide_window)
+
+# CONV_WIDTH = 3
+# conv_window = WindowGenerator(
+#     input_width=CONV_WIDTH,
+#     label_width=1,
+#     shift=1,
+#     label_columns=['총유기탄소'])
+
+# print(conv_window)
+val_performance = {}
+performance = {}
+multi_val_performance = {}
+multi_performance = {}
+
+OUT_STEPS = 24
+multi_window = WindowGenerator(input_width=24,
+                               label_width=OUT_STEPS,
+                               shift=OUT_STEPS)
+
+multi_window.plot()
+
+MAX_EPOCHS = 1000
+
+def compile_and_fit(model, window, patience=10):
+  early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss',
+                                                    patience=patience,
+                                                    mode='min')
+
+  model.compile(loss=tf.losses.MeanSquaredError(),
+                optimizer=tf.optimizers.Adam(),
+                metrics=[tf.metrics.MeanAbsoluteError()])
+
+  # history = model.fit(window.train, epochs=MAX_EPOCHS,
+  #                     validation_data=window.val,
+  #                     callbacks=[early_stopping])
+  history = model.fit(window.train, epochs=MAX_EPOCHS,
+                          validation_data=window.val)
+
+  return history
+
+
+
+
+# lstm_model = tf.keras.models.Sequential([
+#     # Shape [batch, time, features] => [batch, time, lstm_units]
+#     tf.keras.layers.LSTM(32, return_sequences=True),
+#     # Shape => [batch, time, features]
+#     tf.keras.layers.Dense(units=1)
+# ])
+# lstm_model = tf.keras.models.Sequential([
+#     # Shape [batch, time, features] => [batch, time, lstm_units]
+#     tf.keras.layers.LSTM(32, return_sequences=True),
+#     # Shape => [batch, time, features]
+#     tf.keras.layers.Dense(units=num_features)
+# ])
+
+multi_lstm_model = tf.keras.Sequential([
+    # Shape [batch, time, features] => [batch, lstm_units]
+    # Adding more `lstm_units` just overfits more quickly.
+    tf.keras.layers.LSTM(32, return_sequences=False),
+    # Shape => [batch, out_steps*features]
+    tf.keras.layers.Dense(OUT_STEPS*num_features,
+                          kernel_initializer=tf.initializers.zeros),
+    # Shape => [batch, out_steps, features]
+    tf.keras.layers.Reshape([OUT_STEPS, num_features])
+])
+
+
+# print('Input shape:', wide_window.example[0].shape)
+# print('Output shape:', lstm_model(wide_window.example[0]).shape)
+
+
+# history = compile_and_fit(lstm_model, wide_window)
 #
-# y_test = denormalization(y_test, mean_test_y, std_test_y)
-# result = denormalization(result, mean_test_y, std_test_y)
+# val_performance['LSTM'] = lstm_model.evaluate(wide_window.val)
+# performance['LSTM'] = lstm_model.evaluate(wide_window.test, verbose=0)
 #
-# plt.plot(y_test)
-# plt.plot(result)
-# plt.legend(['real','predict'])
+# wide_window.plot(lstm_model)
 #
-# plt.show()
-#
-# # result = denormalization(result, mean, std)
-# # print(y_pred)
-# # plt.plot(y_test1)
-# # plt.plot(result)
-# # plt.legend(['inv_y_test','inv_result'])
-# #
-# # plt.show()
-#
-#
-#
-#
-# result.to_csv('./result.csv', header=False, index=False ,encoding='utf-8-sig')
+
+
+history = compile_and_fit(multi_lstm_model, multi_window)
+
+multi_val_performance['LSTM'] = multi_lstm_model.evaluate(multi_window.val)
+multi_performance['LSTM'] = multi_lstm_model.evaluate(multi_window.test, verbose=0)
+multi_window.plot(multi_lstm_model)
+
+pred = multi_lstm_model.predict(multi_window.test)
+
+
+
+
+# model.predict()
