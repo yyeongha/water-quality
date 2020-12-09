@@ -8,6 +8,8 @@ import pandas as pd
 import seaborn as sns
 import tensorflow as tf
 
+from tensorflow.keras import backend as K
+
 import matplotlib.font_manager as fm  # 폰트 관련 용도
 
 # matpotlib 에서 한글 깨짐 현상(mac)
@@ -15,12 +17,13 @@ mpl.rcParams['axes.unicode_minus'] = False
 mpl.rcParams['font.family'] = "AppleGothic"
 
 
+target_col = '총유기탄소'
 #target_col = '클로로필-a'
-target_col = '수온'
+#target_col = '수온'
 
 # mpl.rcParams['figure.figsize'] = (8, 6)
 # mpl.rcParams['axes.grid'] = False
-df = pd.read_excel("./data/8/1.xlsx")
+df = pd.read_excel("./data/8/2.xlsx")
 # slice [start:stop:step], starting from index 5 take every 6th record.
 #df1 = df1[5::6]
 #df1['측정날짜']
@@ -37,8 +40,8 @@ year = (365.2425)*day
 
 df['Day sin'] = np.sin(timestamp_s * (2 * np.pi / day))
 df['Day cos'] = np.cos(timestamp_s * (2 * np.pi / day))
-df['Week sin'] = np.sin(timestamp_s * (2 * np.pi / week))
-df['Week cos'] = np.cos(timestamp_s * (2 * np.pi / week))
+#df['Week sin'] = np.sin(timestamp_s * (2 * np.pi / week))
+#df['Week cos'] = np.cos(timestamp_s * (2 * np.pi / week))
 df['Year sin'] = np.sin(timestamp_s * (2 * np.pi / year))
 df['Year cos'] = np.cos(timestamp_s * (2 * np.pi / year))
 
@@ -245,7 +248,7 @@ WindowGenerator.example = example
 #     label_columns=['총유기탄소'])
 
 wide_window = WindowGenerator(
-    input_width=24, label_width=24, shift=1)
+    input_width=24*7, label_width=24*7, shift=1)
 
 # print(wide_window)
 
@@ -262,16 +265,16 @@ performance = {}
 multi_val_performance = {}
 multi_performance = {}
 
-OUT_STEPS = 24
-multi_window = WindowGenerator(input_width=24,
+OUT_STEPS = 3
+multi_window = WindowGenerator(input_width=24*7,
                                label_width=OUT_STEPS,
                                shift=OUT_STEPS)
 
-multi_window.plot()
+#multi_window.plot()
 
-MAX_EPOCHS = 1000
+MAX_EPOCHS = 100
 
-def compile_and_fit(model, window, patience=10):
+def compile_and_fit(model, window, patience=20):
   early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss',
                                                     patience=patience,
                                                     mode='min')
@@ -280,11 +283,11 @@ def compile_and_fit(model, window, patience=10):
                 optimizer=tf.optimizers.Adam(),
                 metrics=[tf.metrics.MeanAbsoluteError()])
 
-  # history = model.fit(window.train, epochs=MAX_EPOCHS,
-  #                     validation_data=window.val,
-  #                     callbacks=[early_stopping])
   history = model.fit(window.train, epochs=MAX_EPOCHS,
-                          validation_data=window.val)
+                      validation_data=window.val,
+                      callbacks=[early_stopping])
+  #history = model.fit(window.train, epochs=MAX_EPOCHS,
+  #                        validation_data=window.val)
 
   return history
 
@@ -328,16 +331,20 @@ multi_lstm_model = tf.keras.Sequential([
 # wide_window.plot(lstm_model)
 #
 
-
+K.clear_session()
 history = compile_and_fit(multi_lstm_model, multi_window)
 
 multi_val_performance['LSTM'] = multi_lstm_model.evaluate(multi_window.val)
 multi_performance['LSTM'] = multi_lstm_model.evaluate(multi_window.test, verbose=0)
 multi_window.plot(multi_lstm_model)
 
+
+'''
 pred = multi_lstm_model.predict(multi_window.test)
-
-
+plt.plot(pred)
+#print(pred)
+plt.show()
+'''
 
 
 # model.predict()
