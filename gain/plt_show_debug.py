@@ -247,10 +247,13 @@ def main (parameters):
     # Make result excel
     imputed_df.to_excel('./output/result_reshape.xlsx', index=False)
 
+    print("parameters['output_data_name'] => ", parameters['output_data_name'])
     preprocess.addTimeFormat(imputed_df, parameters['output_data_name'])
+    print("# write complete")
     
     # ========== 시각화 ===============
     if parameters['plt_show'] == "Y":
+        print ('plt_show')
         # 원본
         origin_input = parameters['data_name']
         origin_df = pd.read_excel(origin_input)

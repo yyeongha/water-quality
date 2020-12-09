@@ -5,7 +5,7 @@
   "target_all": true,
   "time": 48,
   "fill_cnt": 0,
-  "miss_rate": 0.2,
+  "miss_rate": 0.1,
   "batch_size": 128,
   "hint_rate": 0.9,
   "alpha": 100,

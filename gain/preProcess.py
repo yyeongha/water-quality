@@ -45,11 +45,27 @@ class PreProcess:
             for f in file_list:
                 df = pd.read_excel(f)
                 self.df_raw_list.append(self.getFillDf(df))
+
+                # temp
+                self.time_df = df.iloc[:, 0:1]
+                date_time = pd.to_datetime(df['측정날짜'], format='%Y.%m.%d %H:%M:%S')
+                timestamp_sr = date_time.map(datetime.datetime.timestamp)
+                day1 = 24 * 60 * 60
+                week = day1 * 7
+                year1 = (365.2425) * day1
+                self.day_sin = np.sin(timestamp_sr * (2 * np.pi / day1))
+                self.day_cos = np.cos(timestamp_sr * (2 * np.pi / day1))
+                self.year_sin = np.sin(timestamp_sr * (2 * np.pi / day1))
+                self.year_cos = np.cos(timestamp_sr * (2 * np.pi / day1))
+
                 df_list.append(self.getFillDf(df))
                 df_list.append(dn)
                 if min_size > df.columns.size:
                     min_size = df.columns.size
             fill_df = pd.concat(df_list).drop('line', axis=1)
+
+        # temp
+        # fill_df.to_excel('./output/fff.xlsx', index=False)
 
         # get all column name list (except 0, 1)
         target_all_list = [n for n in range(2, min_size)]
@@ -193,6 +209,9 @@ class PreProcess:
 
         label_df = self.getLabelDf(self.target_df) # diff
         size_sr = self.getSizeSr(label_df) # diff
+
+        print('size_sr = ', size_sr)
+
         target_df = self.shiftDf(label_df, size_sr) # diff
 
         # print('## target_df => ', target_df)
