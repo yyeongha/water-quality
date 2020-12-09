@@ -72,7 +72,7 @@ def main (parameters):
     # parrern 생성 
     pattern1 = before_shift_df.values
     MissData('save')
-    MissData.save(pattern1, parameters['alpha']//4)
+    MissData.save(pattern1, parameters['time']//4)
 
     M, S = preprocess.getMeanAndStand(before_shift_df)
     print('[debug] M = ', M)

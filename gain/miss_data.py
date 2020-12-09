@@ -28,23 +28,23 @@ class MissData(object):
         print('cum_sum =', cum_sum)
         print('totla_idx = ', total_idx)
         while True:
-            print ('=====================================')
+            # print ('=====================================')
             loc_count = np.around(np.random.random()*cum_sum)
-            print('loc_count =', loc_count)
+            # print('loc_count =', loc_count)
             idx = len(cum_no[cum_no <= loc_count])-1
-            print('idx =', idx)
-            print('idxarr[idx]',idxarr[idx])
-            print('cum_no[cum_no <= loc_count]',cum_no[cum_no <= loc_count])
+            # print('idx =', idx)
+            # print('idxarr[idx]',idxarr[idx])
+            # print('cum_no[cum_no <= loc_count]',cum_no[cum_no <= loc_count])
             startnan = idxarr[idx][0]
             nanlen = idxarr[idx][2]
             loc = np.around(np.random.random()*(rows-nanlen)).astype(int)
-            print(loc_count, idx)
+            # print(loc_count, idx)
             #data_copy = data[loc:loc+nanlen].copy()
             data_copy = data[loc:loc+nanlen]
             # print('startnan=', startnan)
             #isnan = missarr[startnan:startnan+nanlen].copy()
             isnan = missarr[startnan:startnan+nanlen]
-            print('isnan =',isnan)
+            # print('isnan =',isnan)
             miss_no += idxarr[idx][1]
             if (miss_no > total_miss_no):
                 break

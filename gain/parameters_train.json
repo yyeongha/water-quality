@@ -10,5 +10,5 @@
   "hint_rate": 0.9,
   "alpha": 100,
   "iterations": 3000,
-  "plt_show":"Y"
+  "plt_show":"N"
 }
