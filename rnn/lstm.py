@@ -8,18 +8,21 @@ import pandas as pd
 import seaborn as sns
 import tensorflow as tf
 
-from tensorflow.keras import backend as K
-
-import matplotlib.font_manager as fm  # 폰트 관련 용도
-
-# matpotlib 에서 한글 깨짐 현상(mac)
+# font for korean
+import matplotlib.font_manager as fm
+font_list = fm.findSystemFonts(fontpaths=None, fontext='ttf')
 mpl.rcParams['axes.unicode_minus'] = False
-mpl.rcParams['font.family'] = "AppleGothic"
+plt.rcParams["font.family"] = 'NanumGothicCoding-Bold'
 
 
-target_col = '총유기탄소'
-#target_col = '클로로필-a'
-#target_col = '수온'
+
+
+
+#target_col = '총유기탄소'
+target_col = '수온'
+
+input_step = 24*7
+OUT_STEPS = 24
 
 # mpl.rcParams['figure.figsize'] = (8, 6)
 # mpl.rcParams['axes.grid'] = False
@@ -27,7 +30,7 @@ df = pd.read_excel("./data/8/2.xlsx")
 # slice [start:stop:step], starting from index 5 take every 6th record.
 #df1 = df1[5::6]
 #df1['측정날짜']
-date_time = pd.to_datetime(df.pop('측정날짜'), format='%Y.%m.%d %H:%M:%S')
+date_time = pd.to_datetime(df.pop('측정날짜'), format='%Y.%m.%d %H:%M:%S', utc=True )
 # date_time = pd.to_datetime(df['측정날짜'], format='%Y.%m.%d %H:%M:%S')
 # print(date_time)
 # print(df.head())
@@ -40,8 +43,8 @@ year = (365.2425)*day
 
 df['Day sin'] = np.sin(timestamp_s * (2 * np.pi / day))
 df['Day cos'] = np.cos(timestamp_s * (2 * np.pi / day))
-#df['Week sin'] = np.sin(timestamp_s * (2 * np.pi / week))
-#df['Week cos'] = np.cos(timestamp_s * (2 * np.pi / week))
+df['Week sin'] = np.sin(timestamp_s * (2 * np.pi / week))
+df['Week cos'] = np.cos(timestamp_s * (2 * np.pi / week))
 df['Year sin'] = np.sin(timestamp_s * (2 * np.pi / year))
 df['Year cos'] = np.cos(timestamp_s * (2 * np.pi / year))
 
@@ -247,8 +250,8 @@ WindowGenerator.example = example
 #     input_width=24, label_width=24, shift=1,
 #     label_columns=['총유기탄소'])
 
-wide_window = WindowGenerator(
-    input_width=24*7, label_width=24*7, shift=1)
+# wide_window = WindowGenerator(
+#     input_width=24, label_width=24, shift=1)
 
 # print(wide_window)
 
@@ -265,17 +268,22 @@ performance = {}
 multi_val_performance = {}
 multi_performance = {}
 
-OUT_STEPS = 3
-multi_window = WindowGenerator(input_width=24*7,
+
+#input_step = 24*7
+#OUT_STEPS = 24
+multi_window = WindowGenerator(input_width=input_step,
                                label_width=OUT_STEPS,
                                shift=OUT_STEPS)
 
-#multi_window.plot()
+# multi_window.plot()
 
 MAX_EPOCHS = 100
 
-def compile_and_fit(model, window, patience=20):
-  early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss',
+def compile_and_fit(model, window, patience=5):
+  #early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss',
+  #                                                  patience=patience,
+  #                                                  mode='min')
+  early_stopping = tf.keras.callbacks.EarlyStopping(monitor='loss',
                                                     patience=patience,
                                                     mode='min')
 
@@ -319,32 +327,53 @@ multi_lstm_model = tf.keras.Sequential([
 ])
 
 
-# print('Input shape:', wide_window.example[0].shape)
-# print('Output shape:', lstm_model(wide_window.example[0]).shape)
-
-
-# history = compile_and_fit(lstm_model, wide_window)
-#
-# val_performance['LSTM'] = lstm_model.evaluate(wide_window.val)
-# performance['LSTM'] = lstm_model.evaluate(wide_window.test, verbose=0)
-#
-# wide_window.plot(lstm_model)
-#
-
-K.clear_session()
 history = compile_and_fit(multi_lstm_model, multi_window)
 
 multi_val_performance['LSTM'] = multi_lstm_model.evaluate(multi_window.val)
 multi_performance['LSTM'] = multi_lstm_model.evaluate(multi_window.test, verbose=0)
 multi_window.plot(multi_lstm_model)
 
+''' Dense
+multi_dense_model = tf.keras.Sequential([
+    # Take the last time step.
+    # Shape [batch, time, features] => [batch, 1, features]
+    tf.keras.layers.Lambda(lambda x: x[:, -1:, :]),
+    # Shape => [batch, 1, dense_units]
+    tf.keras.layers.Dense(512, activation='relu'),
+    # Shape => [batch, out_steps*features]
+    tf.keras.layers.Dense(OUT_STEPS*num_features,
+                          kernel_initializer=tf.initializers.zeros),
+    # Shape => [batch, out_steps, features]
+    tf.keras.layers.Reshape([OUT_STEPS, num_features])
+])
 
+history = compile_and_fit(multi_dense_model, multi_window)
+
+multi_val_performance['Dense'] = multi_dense_model.evaluate(multi_window.val)
+multi_performance['Dense'] = multi_dense_model.evaluate(multi_window.test, verbose=0)
+multi_window.plot(multi_dense_model)
 '''
-pred = multi_lstm_model.predict(multi_window.test)
-plt.plot(pred)
-#print(pred)
-plt.show()
+
+
+''' CONV
+CONV_WIDTH = 3
+multi_conv_model = tf.keras.Sequential([
+    # Shape [batch, time, features] => [batch, CONV_WIDTH, features]
+    tf.keras.layers.Lambda(lambda x: x[:, -CONV_WIDTH:, :]),
+    # Shape => [batch, 1, conv_units]
+    tf.keras.layers.Conv1D(256, activation='relu', kernel_size=(CONV_WIDTH)),
+    # Shape => [batch, 1,  out_steps*features]
+    tf.keras.layers.Dense(OUT_STEPS*num_features,
+                          kernel_initializer=tf.initializers.zeros),
+    # Shape => [batch, out_steps, features]
+    tf.keras.layers.Reshape([OUT_STEPS, num_features])
+])
+
+history = compile_and_fit(multi_conv_model, multi_window)
+
+# IPython.display.clear_output()
+
+multi_val_performance['Conv'] = multi_conv_model.evaluate(multi_window.val)
+multi_performance['Conv'] = multi_conv_model.evaluate(multi_window.test, verbose=0)
+multi_window.plot(multi_conv_model)
 '''
-
-
-# model.predict()
