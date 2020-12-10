@@ -19,14 +19,15 @@ plt.rcParams["font.family"] = 'NanumGothicCoding-Bold'
 
 
 #target_col = '총유기탄소'
-target_col = '수온'
+target_col = '클로로필-a'
+#target_col = '수온'
 
 input_step = 24*7
 OUT_STEPS = 24
 
 # mpl.rcParams['figure.figsize'] = (8, 6)
 # mpl.rcParams['axes.grid'] = False
-df = pd.read_excel("./data/8/2.xlsx")
+df = pd.read_excel("./data/8/가평_2018-2019.xlsx")
 # slice [start:stop:step], starting from index 5 take every 6th record.
 #df1 = df1[5::6]
 #df1['측정날짜']
