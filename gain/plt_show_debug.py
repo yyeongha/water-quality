@@ -10,8 +10,8 @@ import pandas as pd
 
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
-from gain import gain
-# from origin_gain_custom import gain
+# from gain import gain
+from origin_gain_custom import gain
 from utils import rmse_loss, data_loader, init_preprocess, getUseTrain
 from miss_data import MissData 
 
@@ -280,7 +280,8 @@ def main (parameters):
             # plt.title(col, fontproperties=fontprop) 
             # plt.xlabel('시간', fontproperties=fontprop)
             # plt.ylabel('값', fontproperties=fontprop)
-            plt.show()
+            # plt.show()
+            plt.savefig('./visual/{}.png'.format(col))
 
 
 if __name__ == '__main__':

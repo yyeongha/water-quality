@@ -7,8 +7,8 @@ import json
 import numpy as np
 import pandas as pd
 
-from gain import gain
-# from origin_gain_custom import gain
+# from gain import gain
+from origin_gain_custom import gain
 from utils import rmse_loss, data_loader, init_preprocess, getUseTrain
 from miss_data import MissData 
 
@@ -69,7 +69,7 @@ def main (parameters):
     # parrern 생성 
     pattern1 = before_shift_df.values
     MissData('save')
-    MissData.save(pattern1, 12)
+    MissData.save(pattern1, 4)
 
     M, S = preprocess.getMeanAndStand(before_shift_df)
     print('[debug] M = ', M)

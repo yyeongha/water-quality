@@ -1,5 +1,5 @@
 {
-  "data_name": "./group",
+  "data_name": "./input/가평_2019.xlsx",
   "output_data_name": "./output/가평_2019.xlsx",
   "target": "0", 
   "target_all": true,
