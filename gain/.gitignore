@@ -1,21 +1,15 @@
 venv
-data/*
-output/*
 __pycache__
 .DS_Store
 
-weight/*.npy
+output/*
+save/*
+savedata/*
+visual/*
+weight/*
 
-!data/가평_2019.xlsx
-!data/가평_full_2019.xlsx
-!data/서상_2019.xlsx
-!data/의암호_2019.xlsx
-!data/의암호_full_2019.xlsx
-!data/화천_2019.xlsx
-
-!input/가평_2019.xlsx
-!input/서상_2019.xlsx
-!input/의암호_2019.xlsx
-!input/화천_2019.xlsx
-
-savedata
+!output/dummy
+!save/dummy
+!savedata/dummy
+!visual/dummy
+!weight/dummy

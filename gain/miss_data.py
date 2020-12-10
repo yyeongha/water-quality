@@ -1,6 +1,7 @@
 import os
 import numpy as np
 
+
 class MissData(object):
     def __init__(self, load_dir=None):
         print('load_dir',load_dir)
@@ -9,6 +10,7 @@ class MissData(object):
             # np.load = lambda *a,**k: np_load_old(*a, allow_pickle=True, **k)
             self.missarr = np.load(os.path.join(load_dir, 'miss.npy'))
             self.idxarr = np.load(os.path.join(load_dir, 'idx.npy'))
+            
     def make_missdata(self, data_x, missrate=None):
         data = data_x.copy()
         rows, cols = data_x.shape

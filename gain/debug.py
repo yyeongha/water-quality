@@ -6,11 +6,14 @@ import random
 import json
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 
-# from gain import gain
-from origin_gain_custom import gain
+from gain import gain
+# from gain_shevious import gain
+
 from utils import rmse_loss, data_loader, init_preprocess, getUseTrain
 from miss_data import MissData 
+
 
 # usage example
 # python debug.py
@@ -245,6 +248,38 @@ def main (parameters):
     imputed_df.to_excel('./output/result_reshape.xlsx', index=False)
 
     preprocess.addTimeFormat(imputed_df, './output/가평_2019.xlsx')
+
+    # ========== 시각화 ===============
+    if parameters['plt_show'] == "Y":
+        print ('plt_show')
+        # 원본
+        origin_input = parameters['data_name']
+        origin_df = pd.read_excel(origin_input)
+        # 비교대상
+        result_input = parameters['output_data_name']
+        result_df = pd.read_excel(result_input)
+
+        # 한글 폰트 설정
+        # path = '/usr/share/fonts/truetype/nanum/NanumGothicCoding-Bold.ttf'
+        # fontprop = fm.FontProperties(fname=path, size=18)
+
+        for col in result_df.columns.tolist()[1:]:
+            diff_column = col
+            origin_list = origin_df[diff_column].to_numpy()
+            result_list = result_df[diff_column].to_numpy()
+            idx_list = list(range(0, len(result_list)))
+            imputed = result_list.copy()
+            imputed[np.isnan(origin_list)==False] = np.nan
+            plt.figure()
+            plt.plot(idx_list, origin_list, 'b')
+            plt.plot(idx_list, imputed, 'r')
+            # plt.rcParams['figure.figsize'] = [20, 10]
+            # plt.rcParams['figure.dpi'] = 100
+            # plt.title(col, fontproperties=fontprop) 
+            # plt.xlabel('시간', fontproperties=fontprop)
+            # plt.ylabel('값', fontproperties=fontprop)
+            # plt.show()
+            plt.savefig('./visual/{}.png'.format(col))
 
 
 if __name__ == '__main__':

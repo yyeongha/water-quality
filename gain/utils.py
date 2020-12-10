@@ -20,7 +20,7 @@ import numpy as np
 import pandas as pd
 import tensorflow as tf
 
-from preProcess import PreProcess
+from pre_process import PreProcess
 
 
 def normalization (data, parameters=None):
