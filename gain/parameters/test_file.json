@@ -3,7 +3,7 @@
   "target": "0", 
   "target_all": true,
   "time": 24,
-  "fill_cnt": 2,
+  "fill_cnt": 0,
   "miss_rate": 0.2,
   "batch_size": 128,
   "hint_rate": 0.9,

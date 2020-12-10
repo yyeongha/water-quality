@@ -227,7 +227,7 @@ def main (parameters):
         result_df.to_excel('./debug/result_df.xlsx', index=False)
 
     # write excel for result_df
-    preprocess.addTimeFormat(result_df, './debug/가평_2019.xlsx')
+    preprocess.addTimeFormat(result_df, './output/가평_2019.xlsx')
 
     # visualize debug
     if plt_show:
