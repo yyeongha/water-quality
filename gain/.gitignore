@@ -5,9 +5,11 @@ __pycache__
 output/*
 save/*
 visual/*
+visual_backup/*
 debug/*
 
 !output/dummy
 !save/dummy
 !visual/dummy
+!visual_backup/dummy
 !debug/dummy

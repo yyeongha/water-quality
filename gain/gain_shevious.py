@@ -168,15 +168,15 @@ class DataGenerator(keras.utils.Sequence):
         self.shuffle_idx = np.random.permutation(self.no) # new param
 
         # debug
-        print('self.no = ', self.no)
-        print('self.dim = ', self.dim)
-        print('self.batch_size = ', self.batch_size)
-        print('self.hint_rate = ', self.hint_rate)
-        print('self.data_m = ', self.data_m)
-        print('self.norm_data_x = ', self.norm_data_x)
-        print('self.idx = ', self.idx)
-        print('self.batch_cnt = ', self.batch_cnt)
-        print('self.shuffle_idx = ', self.shuffle_idx)
+        # print('self.no = ', self.no)
+        # print('self.dim = ', self.dim)
+        # print('self.batch_size = ', self.batch_size)
+        # print('self.hint_rate = ', self.hint_rate)
+        # print('self.data_m = ', self.data_m)
+        # print('self.norm_data_x = ', self.norm_data_x)
+        # print('self.idx = ', self.idx)
+        # print('self.batch_cnt = ', self.batch_cnt)
+        # print('self.shuffle_idx = ', self.shuffle_idx)
 
     def __len__(self):
         'Denotes the number of batches per epoch'

@@ -260,10 +260,10 @@ if __name__ == '__main__':
     parameters_dir = './parameters'
 
     # 파일에 대한 학습
-    parameters_file = 'train_file.json'
+    # parameters_file = 'train_file.json'
 
     # 파일에 대한 테스트
-    # parameters_file = 'test_file.json'
+    parameters_file = 'test_file.json'
 
     # 디렉토리에 대한 학습
     # parameters_file = 'train_dir.json'
