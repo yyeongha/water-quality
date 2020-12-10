@@ -24,24 +24,18 @@ def gain (train_data, test_data, gain_parameters):
     '''Impute missing values in data_x
 
     Args:
-        - train_data: original train data with missing values
-        - test_data: original test data with missing values
-        - gain_parameters: GAIN network parameters:
-        - batch_size: Batch size
-        - hint_rate: Hint rate
-        - alpha: Hyperparameter
-        - iterations: Iterations
+    - train_data: original train data with missing values
+    - test_data: original test data with missing values
+    - gain_parameters: GAIN network parameters:
+    - batch_size: Batch size
+    - hint_rate: Hint rate
+    - alpha: Hyperparameter
+    - iterations: Iterations
 
     Returns:
-        - imputed_data: imputed data
+    - imputed_data: imputed data
     '''
-
-    # Debug
-    # print('train_data = ', train_data)
-    # print('test_data = ', test_data)
-    # print('train_data.shape = ', train_data.shape) # (4287, 27)
-    # print('test_data.shape = ', test_data.shape) # (1837, 27)
-
+    
     # System parameters
     batch_size = gain_parameters['batch_size']
     hint_rate = gain_parameters['hint_rate']
@@ -55,30 +49,12 @@ def gain (train_data, test_data, gain_parameters):
         train_row, dim = train_data.shape # 4287, 27
         train_data = np.nan_to_num(train_data, 0)
 
-        # debug
-        # tddf = pd.DataFrame(train_data)
-        # tddf.to_excel('./output/train_data.xlsx', index=False)
-
         # Hidden state dimensions
         h_dim = int(dim)
 
-        # Debug
-        print('train_data = ', train_data)
-
     test_mask = 1 - np.isnan(test_data)
-
-    # tddf = pd.DataFrame(test_mask)
-    # tddf.to_excel('./output/test_mask.xlsx', index=False)
-
     test_row, dim = test_data.shape # 4287, 27
     test_data = np.nan_to_num(test_data, 0)
-
-    # debug
-    # tddf = pd.DataFrame(test_data)
-    # tddf.to_excel('./output/test_data.xlsx', index=False)
-
-    # Debug
-    print('test_data = ', test_data)
 
     ''' GAIN architecture'''
     # Input placeholders
@@ -111,18 +87,18 @@ def gain (train_data, test_data, gain_parameters):
         G_W3 = tf.Variable(xavier_init([h_dim, dim]))
         G_b3 = tf.Variable(tf.zeros(shape = [dim]))
     else:
-        D_W1 = tf.Variable(np.load("./weight/D_W1.npy"))
-        D_b1 = tf.Variable(np.load("./weight/D_b1.npy"))
-        D_W2 = tf.Variable(np.load("./weight/D_W2.npy"))
-        D_b2 = tf.Variable(np.load("./weight/D_b2.npy"))
-        D_W3 = tf.Variable(np.load("./weight/D_W3.npy"))
-        D_b3 = tf.Variable(np.load("./weight/D_b3.npy"))
-        G_W1 = tf.Variable(np.load("./weight/G_W1.npy"))
-        G_b1 = tf.Variable(np.load("./weight/G_b1.npy"))
-        G_W2 = tf.Variable(np.load("./weight/G_W2.npy"))
-        G_b2 = tf.Variable(np.load("./weight/G_b2.npy"))
-        G_W3 = tf.Variable(np.load("./weight/G_W3.npy"))
-        G_b3 = tf.Variable(np.load("./weight/G_b3.npy"))
+        D_W1 = tf.Variable(np.load("./save/D_W1.npy"))
+        D_b1 = tf.Variable(np.load("./save/D_b1.npy"))
+        D_W2 = tf.Variable(np.load("./save/D_W2.npy"))
+        D_b2 = tf.Variable(np.load("./save/D_b2.npy"))
+        D_W3 = tf.Variable(np.load("./save/D_W3.npy"))
+        D_b3 = tf.Variable(np.load("./save/D_b3.npy"))
+        G_W1 = tf.Variable(np.load("./save/G_W1.npy"))
+        G_b1 = tf.Variable(np.load("./save/G_b1.npy"))
+        G_W2 = tf.Variable(np.load("./save/G_W2.npy"))
+        G_b2 = tf.Variable(np.load("./save/G_b2.npy"))
+        G_W3 = tf.Variable(np.load("./save/G_W3.npy"))
+        G_b3 = tf.Variable(np.load("./save/G_b3.npy"))
 
     theta_D = [D_W1, D_W2, D_W3, D_b1, D_b2, D_b3]
     theta_G = [G_W1, G_W2, G_W3, G_b1, G_b2, G_b3]
@@ -197,18 +173,18 @@ def gain (train_data, test_data, gain_parameters):
             _, G_loss_curr, MSE_loss_curr = sess.run([G_solver, G_loss_temp, MSE_loss], feed_dict = {X: X_mb, M: M_mb, H: H_mb})
 
         # Save weights
-        np.save("./weight/D_W1", D_W1.eval(session=sess))
-        np.save("./weight/D_b1", D_b1.eval(session=sess))
-        np.save("./weight/D_W2", D_W2.eval(session=sess))
-        np.save("./weight/D_b2", D_b2.eval(session=sess))
-        np.save("./weight/D_W3", D_W3.eval(session=sess))
-        np.save("./weight/D_b3", D_b3.eval(session=sess))
-        np.save("./weight/G_W1", G_W1.eval(session=sess))
-        np.save("./weight/G_b1", G_b1.eval(session=sess))
-        np.save("./weight/G_W2", G_W2.eval(session=sess))
-        np.save("./weight/G_b2", G_b2.eval(session=sess))
-        np.save("./weight/G_W3", G_W3.eval(session=sess))
-        np.save("./weight/G_b3", G_b3.eval(session=sess))
+        np.save("./save/D_W1", D_W1.eval(session=sess))
+        np.save("./save/D_b1", D_b1.eval(session=sess))
+        np.save("./save/D_W2", D_W2.eval(session=sess))
+        np.save("./save/D_b2", D_b2.eval(session=sess))
+        np.save("./save/D_W3", D_W3.eval(session=sess))
+        np.save("./save/D_b3", D_b3.eval(session=sess))
+        np.save("./save/G_W1", G_W1.eval(session=sess))
+        np.save("./save/G_b1", G_b1.eval(session=sess))
+        np.save("./save/G_W2", G_W2.eval(session=sess))
+        np.save("./save/G_b2", G_b2.eval(session=sess))
+        np.save("./save/G_W3", G_W3.eval(session=sess))
+        np.save("./save/G_b3", G_b3.eval(session=sess))
 
     ## Return imputed data
     Z_mb = uniform_sampler(0, 0.01, test_row, dim)

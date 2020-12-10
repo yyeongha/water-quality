@@ -111,8 +111,7 @@ class GAIN():
         return -tf.reduce_mean(M * tf.keras.backend.log(D_prob + 1e-8) \
                         + (1-M) * tf.keras.backend.log(1. - D_prob + 1e-8)) 
 
-    def save(self, save_dir='savedata'):
-        print('### def save')
+    def save(self, save_dir='save'):
         if not os.path.exists(save_dir):
             os.makedirs(save_dir)
         disc_savefile = os.path.join(save_dir, 'discriminator.h5')
@@ -120,8 +119,7 @@ class GAIN():
         self.discriminator.save_weights(disc_savefile)
         self.generator.save_weights(gen_savefile)
 
-    def load(self, save_dir='savedata'):
-        print('### def load')
+    def load(self, save_dir='save'):
         disc_savefile = os.path.join(save_dir, 'discriminator.h5')
         gen_savefile = os.path.join(save_dir, 'generator.h5')
         try:

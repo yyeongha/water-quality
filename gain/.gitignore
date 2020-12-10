@@ -4,12 +4,10 @@ __pycache__
 
 output/*
 save/*
-savedata/*
 visual/*
-weight/*
+debug/*
 
 !output/dummy
 !save/dummy
-!savedata/dummy
 !visual/dummy
-!weight/dummy
+!debug/dummy

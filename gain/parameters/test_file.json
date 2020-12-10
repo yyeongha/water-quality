@@ -1,14 +1,15 @@
 {
-  "data_name": "./input/가평_2019.xlsx",
-  "output_data_name": "./output/가평_2019.xlsx",
+  "data_name": "./classfy/7483783171719641308/가평_2019.xlsx",
   "target": "0", 
   "target_all": true,
   "time": 24,
-  "fill_cnt": 0,
+  "fill_cnt": 2,
   "miss_rate": 0.2,
   "batch_size": 128,
   "hint_rate": 0.9,
   "alpha": 100,
   "iterations": 0,
-  "plt_show":"Y"
+  "max_tseq": 4,
+  "plt_show": true,
+  "debug_mode": true
 }

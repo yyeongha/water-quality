@@ -8,31 +8,19 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-from gain import gain
-# from gain_shevious import gain
+'''select gain version
+gain - gain source by origin
+gain_shevious - gain source by shevious
+'''
+# from gain import gain
+from gain_shevious import gain
 
 from utils import rmse_loss, data_loader, init_preprocess, getUseTrain
 from miss_data import MissData 
 
 
-# usage example
-# python debug.py
-# check your file named parameters.json
 def main (parameters):
-    '''Main function for UCI letter and spam datasets.
 
-    Args:
-      - data_name: directory or file
-      - miss_rate: probability of missing components
-      - batch:size: batch size
-      - hint_rate: hint rate
-      - alpha: hyperparameter
-      - iterations: iterations
-
-    Returns:
-      - imputed_data_x: imputed data
-      - rmse: Root Mean Squared Error
-    '''
     # Make Parameter Dictionary for gain
     gain_parameters = {
         'batch_size': parameters['batch_size'],
@@ -50,175 +38,163 @@ def main (parameters):
         'fill_cnt': parameters['fill_cnt']
     }
 
-    # Return status of use train flag
-    useTrain = getUseTrain(parameters) 
+    data_name = parameters['data_name']
+    debug_mode = parameters['debug_mode']
+    miss_rate = parameters['miss_rate']
+    max_tseq = parameters['max_tseq']
+    plt_show = parameters['plt_show']
 
+    # Just debug, remove code after complete development
+    print('[debug] debug_mode = ', debug_mode)
+    print('[debug] miss_rate = ', miss_rate)
+
+    # Return status of use train flag
+    # if iterations == 0 then False
+    # if iterations != 0 then True
+    useTrain = getUseTrain(parameters) 
+    
+    # Just debug, remove code after complete development
     print('[debug] gain_parameters = ', gain_parameters)
     print('[debug] preprocess_parameters = ', preprocess_parameters)
     print('[debug] useTrain = ', useTrain)
 
     # Init Pre-Process and Make Traing Data
+    # Using "input", "target", "time", "target_all", "fill_cnt"
     preprocess = init_preprocess(preprocess_parameters)
-    # output_df = preprocess.getDataFrame()
+
+    # Make group shift data for train
+    # check init function and getDataFrame function 
     output_df = preprocess.getDataFrame()
     
-    # Debug
-    print('output_df => ', output_df)
-    output_df.to_excel('./output/merge.xlsx', index=False)
+    # Just debug, remove code after complete development
+    print('[debug] output_df = ', output_df)
+    if debug_mode == True:
+        output_df.to_excel('./debug/output_df.xlsx', index=False)
 
-    # temp
-    before_shift_df = pd.read_excel('./output/before_shift.xlsx')
+    # Save miss data pattern
+    miss_data_save = MissData(load_dir=False)
+    miss_data_save.save(preprocess.getSelfTargetDf(), max_tseq)
 
-    # parrern 생성 
-    pattern1 = before_shift_df.values
-    MissData('save')
-    MissData.save(pattern1, 4)
+    # get mean and standard
+    M, S = preprocess.getMeanAndStand()
+    
+    # Just debug, remove code after complete development
+    print('[debug] 각 열에 대한 평균 = ', M)
+    print('[debug] 각 열에 대한 표준편차 = ', S)
 
-    M, S = preprocess.getMeanAndStand(before_shift_df)
-    print('[debug] M = ', M)
-    print('[debug] S = ', S)
-
-    # Read the raw excel, Not use miss_data_x created data_loader (차후 디렉토리 검토)
     if useTrain:
-
-        # print('[debug] $$ output_df = ', output_df)
+        # make normalization dataframe
         normalization_df = preprocess.normalization(output_df, M, S)
-        # print('[debug] $$ normalization_df = ', normalization_df)
 
+        # Just debug, remove code after complete development
+        print('[debug] normalization_df = ', normalization_df)
+        if debug_mode == True:
+            normalization_df.to_excel('./debug/normalization_df.xlsx', index=False)
 
-        # debug
-        normalization_df.to_excel('./output/before_random.xlsx', index=False)
-        backup_col = normalization_df.columns
-
-        # org_data = np.zeros(shape=(100,10))
-        T = MissData(load_dir='save')
-        miss = T.make_missdata( 
-            data_x=normalization_df.to_numpy(), 
-            missrate=parameters['miss_rate']
+        # Make miss data
+        miss_data_load = MissData(load_dir=True)
+        miss_normalization_df = miss_data_load.make_missdata( 
+            data_x=normalization_df, 
+            missrate=miss_rate
         )
-        print ('miss_data result =>', miss)
 
-        normalization_df = pd.DataFrame(miss, columns=backup_col)
-        normalization_df.to_excel('./output/miss_excel.xlsx', index=False)
-
-        # exit(0)
+        # Just debug, remove code after complete development
+        print('[debug] miss_normalization_df = ', miss_normalization_df)
+        if debug_mode == True:
+            miss_normalization_df.to_excel('./debug/miss_normalization_df.xlsx', index=False)
 
         # Division train data set, test data set
-        output_df_70, output_df_30 = preprocess.splitDf(normalization_df)
+        output_df_70, output_df_30 = preprocess.splitDf(miss_normalization_df)
 
-        # Debug
-        output_df_70.to_excel('./output/70.xlsx', index=False)
-        output_df_30.to_excel('./output/30.xlsx', index=False)
+        # Just debug, remove code after complete development
+        print('[debug] output_df_70 = ', output_df_70)
+        print('[debug] output_df_30 = ', output_df_30)
+        if debug_mode == True:
+            output_df_70.to_excel('./debug/output_df_70.xlsx', index=False)
+            output_df_30.to_excel('./debug/output_df_30.xlsx', index=False)
 
         # Processing division data
         data_list = []
         output_df_list = [output_df_70, output_df_30]
         idx = 0
         for output_df in output_df_list:
-            # Standard normal distribution normalization
-            # normalization_df, M, S = preprocess.normalization(output_df)
-
             # Discard data for reshape
-            normalization_df = preprocess.getDiscardDf(normalization_df)
-
-            # if idx == 0:
-            #     tempDf2 = pd.DataFrame(normalization_df)
-            #     tempDf2.to_excel('./output/normalization_df.xlsx', index=False)
+            discard_df = preprocess.getDiscardDf(output_df)
 
             # Convert dataframe to numpy
-            normalization_np = preprocess.getNp(normalization_df)
-            print('normalization_np.shape = ', normalization_np.shape)
+            discard_np = preprocess.getNp(discard_df)
 
             # Numpy object reshape
-            normalization_np_reshape = preprocess.getReshapeNp(normalization_np)
+            reshape_np = preprocess.getReshapeNp(discard_np)
 
             # Load data and introduce missingness
-            ori_data_x, miss_data_x, data_m = data_loader(normalization_np_reshape, parameters['miss_rate'])
-            # if idx == 0:
-            #     tempDf2 = pd.DataFrame(miss_data_x)
-            #     tempDf2.to_excel('./output/miss_data_x.xlsx', index=False)
+            ori_data_x, miss_data_x, data_m = data_loader(reshape_np, miss_rate)
 
             # Save the return data of data loader 
-            data = { 'ori_data_x': ori_data_x, 'miss_data_x': normalization_np_reshape, 'data_m': data_m, 'M': M, 'S': S }
+            data = { 
+                'ori_data_x': ori_data_x, 
+                'miss_data_x': reshape_np, 
+                'data_m': data_m, 
+                'M': M, 
+                'S': S 
+            }
             data_list.append(data)
             idx += 1
 
+        # init data variable
         train_data = data_list[0]
         test_data = data_list[1]
-  
-        # Debug
-        # preprocess.npToExcel(train_data['ori_data_x'], './output/ori_data_x_70.xlsx')
-        # preprocess.npToExcel(train_data['miss_data_x'], './output/miss_data_x_70.xlsx')
-        # preprocess.npToExcel(train_data['data_m'], './output/data_m_70.xlsx')
-        # preprocess.npToExcel(test_data['ori_data_x'], './output/ori_data_x_30.xlsx')
-        # preprocess.npToExcel(test_data['miss_data_x'], './output/miss_data_x_30.xlsx')
-        # preprocess.npToExcel(test_data['data_m'], './output/data_m_30.xlsx')
 
+        # core logic
         imputed_data_x = gain(
             train_data = train_data['miss_data_x'], 
             test_data = test_data['miss_data_x'], 
             gain_parameters = gain_parameters
         )
 
-        # break point
-        # exit(0)
-
+        # calculate rmse
         rmse = rmse_loss(
             test_data['ori_data_x'], 
             imputed_data_x, 
             test_data['data_m']
         )
+
+        # Just debug, remove code after complete development
         print('[debug] rmse = ', rmse)
-        print('[debug] rmse = ', round(rmse, 4))
+        print('[debug] rmse (round) = ', round(rmse, 4))
 
         exit(0)
     else:
         output_df = preprocess.getRawDataFrame()
+
+        # Just debug, remove code after complete development
         print('[debug] output_df = ', output_df)
-
-        # Debug
-        # tempDf3 = pd.DataFrame(normalization_np)
-        output_df.to_excel('./output/output_df.xlsx', index=False)
-
-        # exit(0)
+        if debug_mode == True:
+            output_df.to_excel('./debug/output_df.xlsx', index=False)
 
         # Standard normal distribution normalization
         normalization_df = preprocess.normalization(output_df, M, S)
         print('[debug] normalization_df = ', normalization_df)
-        normalization_df.to_excel('./output/normalization_df.xlsx', index=False)
-
-        # temp
-        # x_df = preprocess.denormalization(normalization_df, M, S)
-        # x_df.to_excel('./output/x_df.xlsx', index=False)
-
-        # Discard data for reshape
-        # print('normalization_df (before discard) = ', normalization_df.shape)
-        # normalization_df = preprocess.getDiscardDf(normalization_df)
-        # print('normalization_df (after discard) = ', normalization_df.shape)
+        if debug_mode == True:
+            normalization_df.to_excel('./debug/normalization_df.xlsx', index=False)
 
         # Convert dataframe to numpy
         normalization_np = preprocess.getNp(normalization_df)
 
-        # Debug
-        tempDf3 = pd.DataFrame(normalization_np)
-        tempDf3.to_excel('./output/normalization_np.xlsx', index=False)
-
         # Numpy object reshape
-        normalization_np_reshape = preprocess.getReshapeNp(normalization_np)
-
-        # Debug
-        tempDf = pd.DataFrame(normalization_np_reshape)
-        tempDf.to_excel('./output/normalization_np_reshape.xlsx', index=False)
+        reshape_np = preprocess.getReshapeNp(normalization_np)
 
         # Load data and introduce missingness
-        ori_data_x, miss_data_x, data_m = data_loader(normalization_np_reshape, parameters['miss_rate'])
-
-        # Debug
-        tempDf2 = pd.DataFrame(miss_data_x)
-        tempDf2.to_excel('./output/miss_data_x.xlsx', index=False)
+        ori_data_x, miss_data_x, data_m = data_loader(reshape_np, miss_rate)
 
         # Save the return data of data loader 
-        test_data = { 'ori_data_x': ori_data_x, 'miss_data_x': normalization_np_reshape, 'data_m': data_m, 'M': M, 'S': S }
+        test_data = {
+            'ori_data_x': ori_data_x, 
+            'miss_data_x': reshape_np, 
+            'data_m': data_m, 
+            'M': M, 
+            'S': S 
+        }
 
         imputed_data_x = gain(
             train_data = None, 
@@ -226,43 +202,44 @@ def main (parameters):
             gain_parameters = gain_parameters
         )
         
-    # Debug
-    print('imputed_data_x.shape = ', imputed_data_x.shape)
+    # Just debug, remove code after complete development
+    print('[debug] imputed_data_x.shape = ', imputed_data_x.shape)
 
-    # fix
-    imputed_data_x = preprocess.reverseReShape(imputed_data_x)
+    # reverse reshape
+    imputed_data = preprocess.reverseReShape(imputed_data_x)
 
-    # Debug
-    print('imputed_data_x.shape = ', imputed_data_x.shape)
-    print('imputed_data_x => ', imputed_data_x)
+    # Just debug, remove code after complete development
+    print('[debug] imputed_data.shape = ', imputed_data.shape)
 
     # Make result dataframe
-    imputed_df = pd.DataFrame(data=imputed_data_x)
+    imputed_df = pd.DataFrame(data=imputed_data)
     imputed_df.columns = preprocess.getTargetName()
-    imputed_df.to_excel('./output/before_denormal.xlsx', index=False)
+
+    # Just debug, remove code after complete development
+    print('[debug] imputed_df = ', imputed_df)
+    if debug_mode == True:
+        imputed_df.to_excel('./debug/imputed_df.xlsx', index=False)
 
     # denormalization
-    imputed_df = preprocess.denormalization(imputed_df, test_data['M'], test_data['S'])
+    result_df = preprocess.denormalization(imputed_df, test_data['M'], test_data['S'])
+    print('[debug] result_df = ', result_df)
+    if debug_mode == True:
+        result_df.to_excel('./debug/result_df.xlsx', index=False)
 
-    # Make result excel
-    imputed_df.to_excel('./output/result_reshape.xlsx', index=False)
+    # write excel for result_df
+    preprocess.addTimeFormat(result_df, './debug/가평_2019.xlsx')
 
-    preprocess.addTimeFormat(imputed_df, './output/가평_2019.xlsx')
-
-    # ========== 시각화 ===============
-    if parameters['plt_show'] == "Y":
-        print ('plt_show')
-        # 원본
-        origin_input = parameters['data_name']
+    # visualize debug
+    if plt_show:
+        # input
+        origin_input = data_name
         origin_df = pd.read_excel(origin_input)
-        # 비교대상
-        result_input = parameters['output_data_name']
+        
+        # output
+        result_input = './output/가평_2019.xlsx'
         result_df = pd.read_excel(result_input)
 
-        # 한글 폰트 설정
-        # path = '/usr/share/fonts/truetype/nanum/NanumGothicCoding-Bold.ttf'
-        # fontprop = fm.FontProperties(fname=path, size=18)
-
+        # write png file to visual directory
         for col in result_df.columns.tolist()[1:]:
             diff_column = col
             origin_list = origin_df[diff_column].to_numpy()
@@ -273,22 +250,29 @@ def main (parameters):
             plt.figure()
             plt.plot(idx_list, origin_list, 'b')
             plt.plot(idx_list, imputed, 'r')
-            # plt.rcParams['figure.figsize'] = [20, 10]
-            # plt.rcParams['figure.dpi'] = 100
-            # plt.title(col, fontproperties=fontprop) 
-            # plt.xlabel('시간', fontproperties=fontprop)
-            # plt.ylabel('값', fontproperties=fontprop)
-            # plt.show()
             plt.savefig('./visual/{}.png'.format(col))
 
 
+# usage example
+# python debug.py
+# check variable "parameters_file"
 if __name__ == '__main__':
-    # parameters_path = './parameters.json'
-    parameters_path = './parameters_train.json'
-    # parameters_path = './parameters_test.json'
-    # parameters_path = './parameters_train_dir.json'
+    parameters_dir = './parameters'
+
+    # 파일에 대한 학습
+    parameters_file = 'train_file.json'
+
+    # 파일에 대한 테스트
+    # parameters_file = 'test_file.json'
+
+    # 디렉토리에 대한 학습
+    # parameters_file = 'train_dir.json'
+
+    # 디렉토리에 대한 테스트
+    # parameters_file = 'test_dir.json'
+
+    parameters_path = '{dir}/{file}'.format(dir=parameters_dir, file=parameters_file)
     with open(parameters_path, encoding='utf8') as json_file:
         parameters = json.load(json_file)
   
-    # Calls main function
     main(parameters)
