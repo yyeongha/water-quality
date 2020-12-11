@@ -280,23 +280,29 @@ multi_window = WindowGenerator(input_width=input_step,
 
 MAX_EPOCHS = 100
 
-def compile_and_fit(model, window, patience=5):
-  #early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss',
-  #                                                  patience=patience,
-  #                                                  mode='min')
-  early_stopping = tf.keras.callbacks.EarlyStopping(monitor='loss',
+def compile_and_fit(model, window, patience=10):
+  early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss',
                                                     patience=patience,
                                                     mode='min')
+  reduce_lr = tf.keras.callbacks.ReduceLROnPlateau(monitor='val_loss', factor=0.5,
+                                         min_lr=1e-4, patience=0, verbose=1)
+
+  adam = tf.keras.optimizers.Adam(learning_rate=0.1)
+
+  # model.compile(loss=tf.losses.MeanSquaredError(),
+  #               optimizer=tf.optimizers.Adam(),
+  #               metrics=[tf.metrics.MeanAbsoluteError()])
 
   model.compile(loss=tf.losses.MeanSquaredError(),
-                optimizer=tf.optimizers.Adam(),
+                optimizer=adam,
                 metrics=[tf.metrics.MeanAbsoluteError()])
 
   history = model.fit(window.train, epochs=MAX_EPOCHS,
                       validation_data=window.val,
-                      callbacks=[early_stopping])
-  #history = model.fit(window.train, epochs=MAX_EPOCHS,
-  #                        validation_data=window.val)
+                      callbacks=[early_stopping, reduce_lr])
+
+  # history = model.fit(window.train, epochs=MAX_EPOCHS, batch_size = 256,
+  #                         validation_data=window.val)
 
   return history
 
