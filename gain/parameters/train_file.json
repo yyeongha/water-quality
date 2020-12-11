@@ -2,7 +2,7 @@
   "data_name": "./classfy/7483783171719641308/가평_2019.xlsx",
   "target": "0", 
   "target_all": true,
-  "time": 80,
+  "time": 90,
   "fill_cnt": 2,
   "miss_rate": 0.2,
   "batch_size": 128,

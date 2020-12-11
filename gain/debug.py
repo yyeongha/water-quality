@@ -278,7 +278,8 @@ if __name__ == '__main__':
     # main(parameters)
 
     # 파라미터 수정 테스트
-    parameters_file = 'train_file.json'
+    # parameters_file = 'train_file.json'
+    parameters_file = 'train_dir.json'
     parameters_path = '{dir}/{file}'.format(dir=parameters_dir, file=parameters_file)
     with open(parameters_path, encoding='utf8') as json_file:
         parameters = json.load(json_file)
