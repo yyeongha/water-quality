@@ -2,14 +2,14 @@
   "data_name": "./classfy/7483783171719641308/가평_2019.xlsx",
   "target": "0", 
   "target_all": true,
-  "time": 24,
+  "time": 80,
   "fill_cnt": 0,
   "miss_rate": 0.2,
   "batch_size": 128,
   "hint_rate": 0.9,
   "alpha": 100,
   "iterations": 0,
-  "max_tseq": 4,
+  "max_tseq": 12,
   "plt_show": true,
-  "debug_mode": true
+  "debug_mode": false
 }

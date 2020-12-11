@@ -142,8 +142,8 @@ class GAIN():
             Hat_X = X * M + G_sample * (1-M)
             D_prob = self.discriminator([Hat_X, H], training=True)
             gen_loss = self.G_loss(M, D_prob, X, G_sample)
-            disc_loss = GAIN.D_loss(M, D_prob)
-            #disc_loss = tf.keras.backend.mean(tf.keras.losses.binary_crossentropy(M, D_prob))
+            # disc_loss = GAIN.D_loss(M, D_prob)
+            disc_loss = tf.keras.backend.mean(tf.keras.losses.binary_crossentropy(M, D_prob))
 
         gradients_of_generator = gen_tape.gradient(gen_loss, self.generator.trainable_variables)
         gradients_of_discriminator = disc_tape.gradient(disc_loss, self.discriminator.trainable_variables)

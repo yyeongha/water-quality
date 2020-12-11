@@ -163,7 +163,7 @@ def main (parameters):
         print('[debug] rmse = ', rmse)
         print('[debug] rmse (round) = ', round(rmse, 4))
 
-        exit(0)
+        return False
     else:
         output_df = preprocess.getRawDataFrame()
 
@@ -263,7 +263,7 @@ if __name__ == '__main__':
     # parameters_file = 'train_file.json'
 
     # 파일에 대한 테스트
-    parameters_file = 'test_file.json'
+    # parameters_file = 'test_file.json'
 
     # 디렉토리에 대한 학습
     # parameters_file = 'train_dir.json'
@@ -271,8 +271,25 @@ if __name__ == '__main__':
     # 디렉토리에 대한 테스트
     # parameters_file = 'test_dir.json'
 
+    # parameters_path = '{dir}/{file}'.format(dir=parameters_dir, file=parameters_file)
+    # with open(parameters_path, encoding='utf8') as json_file:
+    #     parameters = json.load(json_file)
+  
+    # main(parameters)
+
+    # 파라미터 수정 테스트
+    parameters_file = 'train_file.json'
     parameters_path = '{dir}/{file}'.format(dir=parameters_dir, file=parameters_file)
     with open(parameters_path, encoding='utf8') as json_file:
         parameters = json.load(json_file)
   
     main(parameters)
+
+    parameters_file = 'test_file.json'
+    parameters_path = '{dir}/{file}'.format(dir=parameters_dir, file=parameters_file)
+    with open(parameters_path, encoding='utf8') as json_file:
+        parameters = json.load(json_file)
+  
+    main(parameters)
+    
+
