@@ -1,3 +1,12 @@
+import numpy as np
+import tensorflow as tf
+
+from tensorflow.keras.layers import Input, Concatenate, Dot, Add, ReLU, Activation
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.optimizers import Adam
+from tensorflow import keras
+
+
 class GAIN(keras.Model):
     def __init__(self, shape, alpha=100., load=False, hint_rate=0.9, gen_sigmoid=True, **kwargs):
         super(GAIN, self).__init__(**kwargs)

@@ -2,6 +2,7 @@ import numpy as np
 
 from tensorflow import keras
 from utils import *
+from miss_data import MissData
 
 
 class GainDataGenerator(keras.utils.Sequence):
@@ -24,7 +25,10 @@ class GainDataGenerator(keras.utils.Sequence):
         # interpollation
         filled_data = []
         for data in data_list:
+            print('loop data => ', data)
+            print('fill_no => ', fill_no)
             data = interpolate(data, max_gap=fill_no)
+            print('interpolate data => ', data)
             filled_data.append(data)
             
         data_list = filled_data

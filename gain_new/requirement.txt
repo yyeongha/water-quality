@@ -3,3 +3,7 @@ pandas==1.1.5
 tensorflow==2.3.1
 xlrd==1.2.0
 scipy==1.5.4
+
+# for windows 
+# https://stackoverflow.com/questions/64729944/runtimeerror-the-current-numpy-installation-fails-to-pass-a-sanity-check-due-to
+numpy==1.19.3

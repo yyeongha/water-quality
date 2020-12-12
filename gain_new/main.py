@@ -14,6 +14,7 @@ from window_generator import WindowGenerator
 from utils import *
 from miss_data import MissData
 from gain_data_generator import GainDataGenerator
+from gain import GAIN
 
 def main():
     folder = 'data'
@@ -45,27 +46,51 @@ def main():
     val_df = df[0]
     test_df = df[0]
 
-    # 3. ???
-    w2 = WindowGenerator(
+    # 3.
+    train_df = df_all
+    val_df = df_all
+    test_df = df_all
+
+    # 4.
+    wide_window = WindowGenerator(
         train_df=train_df,
         val_df=val_df,
         test_df=test_df,
-        input_width=6, 
-        label_width=1, 
-        shift=1,
-        label_columns=None
+        input_width=24*3, 
+        label_width=24*3, 
+        shift=0
     )
 
-    print(w2)
+    # ???
+    wide_window.plot(plot_col='총질소')
 
-    # 4. miss data
-    norm_df = pd.concat(df,axis=0)
-    norm_data = norm_df.to_numpy()
-    MissData.save(norm_data, max_tseq = 12)
+    # 5.
+    val_performance = {}
+    performance = {}
 
-    # 5. gain data generator
-    print(df)
-    dgen = GainDataGenerator(df)
+    # issue
+    gain = GAIN(shape=wide_window.dg.shape[1:], gen_sigmoid=False)
+    gain.compile(loss=GAIN.RMSE_loss)
+
+    # 6.
+    MAX_EPOCHS = 300
+
+    def compile_and_fit(model, window, patience=10):
+        early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss',
+                                                        patience=patience,
+                                                        mode='min')
+
+        model.compile(loss=GAIN.RMSE_loss)
+        history = model.fit(window.train, 
+                            epochs=MAX_EPOCHS,
+                            validation_data=window.val,
+                            callbacks=[early_stopping])
+        return history
+        
+    history = compile_and_fit(gain, wide_window, patience=MAX_EPOCHS//5)
+    val_performance['Gain'] = gain.evaluate(wide_window.val)
+    performance['Gain'] = gain.evaluate(wide_window.test, verbose=0)
+
 
 
 if __name__ == "__main__":

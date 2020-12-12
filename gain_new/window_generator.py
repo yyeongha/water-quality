@@ -1,4 +1,8 @@
+import tensorflow as tf
 import numpy as np
+
+from gain_data_generator import GainDataGenerator
+from utils import *
 
 
 class WindowGenerator():
@@ -33,15 +37,15 @@ class WindowGenerator():
 
     @property
     def train(self):
-        return self.make_dataset(self.train_df)
+        return self.make_dataset_gain(self.train_df)
 
     @property
     def val(self):
-        return self.make_dataset(self.val_df)
+        return self.make_dataset_gain(self.val_df)
 
     @property
     def test(self):
-        return self.make_dataset(self.test_df)
+        return self.make_dataset_gain(self.test_df)
 
     @property
     def example(self):
@@ -108,3 +112,29 @@ class WindowGenerator():
                 plt.legend()
 
         plt.xlabel('Time [h]')
+
+    def make_dataset_gain(self, data):
+        print('data => ', data)
+        print('data type => ', type(data))
+        dg = GainDataGenerator(
+            data,
+            input_width = self.input_width,
+            label_width = self.label_width,
+            batch_size = 128,
+            normalize = False,
+            miss_pattern = True,
+            miss_rate = 0.2,
+            fill_no = 2
+        )
+        self.dg = dg
+        ds = tf.data.Dataset.from_generator(
+            lambda: dg,
+            output_types=(tf.float32, tf.float32),
+            output_shapes=(
+                dg.shape,
+                dg.shape
+                #[batch_size, train_generator.dim],
+                #[batch_size, train_generator.dim],
+            )
+        )
+        return ds
