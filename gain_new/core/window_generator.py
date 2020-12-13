@@ -1,25 +1,52 @@
 import tensorflow as tf
 import numpy as np
 
-from gain_data_generator import GainDataGenerator
-from utils import *
+from core.gain_data_generator import GainDataGenerator
+from core.utils import *
+import matplotlib.pyplot as plt
+
+
+''' font '''
+import matplotlib
+import matplotlib.font_manager as fm
+
+# 폰트 한글 적용 테스트
+# font_list = fm.findSystemFonts(fontpaths=None, fontext='ttf')
+# for font in font_list:
+#     if font.find('Nanum') != -1:
+#         print(font)
+
+# plt.ylabel('한글', fontproperties=fprop)
+# plt.show()
+# exit(0)
+
+# font list
+fm.get_fontconfig_fonts()
+# font_location = '/usr/share/fonts/truetype/nanum/NanumGothicCoding.ttf'
+#font_location = '/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc'
+# font_location = 'C:/Windows/Fonts/NanumGothic.ttf' # For Windows
+font_location = 'C:/Users/hackx/AppData/Local/Microsoft/Windows/Fonts/NanumGothic.ttf' # For Windows
+fprop = fm.FontProperties(fname=font_location)
 
 
 class WindowGenerator():
-    def __init__(self, input_width, label_width, shift, 
-                train_df, val_df, test_df,
+    def __init__(self, input_width, label_width, shift,
+                # train_df=train_df, val_df=val_df, test_df=test_df,
+                train_df=None, val_df=None, test_df=None, df=None,
                 label_columns=None):
-
         # Store the raw data.
         self.train_df = train_df
         self.val_df = val_df
         self.test_df = test_df
+        self.df = df
 
         # Work out the label column indices.
         self.label_columns = label_columns
         if label_columns is not None:
-            self.label_columns_indices = {name: i for i, name in enumerate(label_columns)}
-        self.column_indices = {name: i for i, name in enumerate(train_df.columns)}
+            self.label_columns_indices = {name: i for i, name in
+                                        enumerate(label_columns)}
+        self.column_indices = {name: i for i, name in
+                            enumerate(train_df.columns)}
 
         # Work out the window parameters.
         self.input_width = input_width
@@ -35,29 +62,6 @@ class WindowGenerator():
         self.labels_slice = slice(self.label_start, None)
         self.label_indices = np.arange(self.total_window_size)[self.labels_slice]
 
-    @property
-    def train(self):
-        return self.make_dataset_gain(self.train_df)
-
-    @property
-    def val(self):
-        return self.make_dataset_gain(self.val_df)
-
-    @property
-    def test(self):
-        return self.make_dataset_gain(self.test_df)
-
-    @property
-    def example(self):
-        """Get and cache an example batch of `inputs, labels` for plotting."""
-        result = getattr(self, '_example', None)
-        if result is None:
-            # No example batch was found, so get one from the `.train` dataset
-            result = next(iter(self.train))
-            # And cache it for next time
-            self._example = result
-        return result
-
     def __repr__(self):
         return '\n'.join([
             f'Total window size: {self.total_window_size}',
@@ -71,8 +75,7 @@ class WindowGenerator():
         if self.label_columns is not None:
             labels = tf.stack(
                 [labels[:, :, self.column_indices[name]] for name in self.label_columns],
-                axis=-1
-            )
+                axis=-1)
 
         # Slicing doesn't preserve static shape information, so set the shapes
         # manually. This way the `tf.data.Datasets` are easier to inspect.
@@ -80,6 +83,9 @@ class WindowGenerator():
         labels.set_shape([None, self.label_width, None])
 
         return inputs, labels
+
+
+
 
     def plot(self, model=None, plot_col='T (degC)', max_subplots=3):
         inputs, labels = self.example
@@ -113,18 +119,44 @@ class WindowGenerator():
 
         plt.xlabel('Time [h]')
 
-    def make_dataset_gain(self, data):
-        print('data => ', data)
-        print('data type => ', type(data))
+    # WindowGenerator.plot = plot
+
+    @property
+    def train(self):
+        print('@@@ train')
+        return self.make_dataset(self.train_df)
+
+    @property
+    def val(self):
+        print('@@@ val')
+        return self.make_dataset(self.val_df)
+
+    @property
+    def test(self):
+        print('@@@ test')
+        return self.make_dataset(self.test_df)
+
+    @property
+    def example(self):
+        """Get and cache an example batch of `inputs, labels` for plotting."""
+        result = getattr(self, '_example', None)
+        if result is None:
+            # No example batch was found, so get one from the `.train` dataset
+            result = next(iter(self.train))
+            # And cache it for next time
+            self._example = result
+        return result
+
+    def make_dataset(self, data):
         dg = GainDataGenerator(
-            data,
+            self.df,
             input_width = self.input_width,
             label_width = self.label_width,
             batch_size = 128,
             normalize = False,
             miss_pattern = True,
             miss_rate = 0.2,
-            fill_no = 2
+            fill_no = 2,
         )
         self.dg = dg
         ds = tf.data.Dataset.from_generator(

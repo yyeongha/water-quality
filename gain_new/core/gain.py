@@ -25,22 +25,30 @@ class GAIN(keras.Model):
     def build_generator(self):
         last_activation = 'sigmoid' if self.gen_sigmoid else None
         xavier_initializer = tf.keras.initializers.GlorotNormal()
+
         x = Input(shape=(self.dim,), name='generator_input_x')
         m = Input(shape=(self.dim,), name='generator_input_m')
+
         a = Concatenate()([x, m])
+
         a = Dense(self.h_dim, activation='relu', kernel_initializer=xavier_initializer)(a)
         a = Dense(self.h_dim, activation='relu', kernel_initializer=xavier_initializer)(a)
         G_prob = Dense(self.dim, activation=last_activation, kernel_initializer=xavier_initializer)(a)
+
         self.generator = keras.models.Model([x, m], G_prob, name='generator')
 
     def build_discriminator(self):
         xavier_initializer = tf.keras.initializers.GlorotNormal()
+
         x = Input(shape=(self.dim,), name='discriminator_input_x')
         h = Input(shape=(self.dim,), name='discriminator_input_h')
+        
         a = Concatenate()([x, h])
+
         a = Dense(self.h_dim, activation='relu', kernel_initializer=xavier_initializer)(a)
         a = Dense(self.h_dim, activation='relu', kernel_initializer=xavier_initializer)(a)
         D_prob = Dense(self.dim, activation='sigmoid', kernel_initializer=xavier_initializer)(a)
+        
         self.discriminator = keras.models.Model([x, h], D_prob, name='discriminator')
         
     def call(self, inputs):
