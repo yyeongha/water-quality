@@ -1,3 +1,5 @@
+import os
+import datetime
 import pandas as pd
 import numpy as np
 
@@ -16,6 +18,7 @@ def sample_batch_index(total, batch_size):
     batch_idx = total_idx[:batch_size]
     return batch_idx
 
+
 def binary_sampler(p, shape):
     '''Sample binary random variables.
 
@@ -30,6 +33,7 @@ def binary_sampler(p, shape):
     binary_random_matrix = 1*(unif_random_matrix < p)
     return binary_random_matrix
 
+
 def uniform_sampler(low, high, shape):
     '''Sample uniform random variables.
 
@@ -43,6 +47,7 @@ def uniform_sampler(low, high, shape):
     - uniform_random_matrix: generated uniform random matrix.
     '''
     return np.random.uniform(low, high, size = shape)
+
 
 def normalization (data, parameters=None):
     '''Normalize data in [0, 1] range.
@@ -87,6 +92,7 @@ def normalization (data, parameters=None):
 
     return norm_data, norm_parameters
 
+
 def interpolate(np_data, max_gap=3):
     data = pd.DataFrame(np_data)
 
@@ -98,3 +104,33 @@ def interpolate(np_data, max_gap=3):
         mask[i] = (grp.groupby(i)['ones'].transform('count') < max_gap) | data[i].notnull()
     data = data.interpolate(method='polynomial', order=5, limit=max_gap, axis=0).bfill()[mask]
     return data
+
+
+def createDataFrame(folder, file_names):
+    day = 24 * 60 * 60
+    year = (365.2425) * day
+
+    df_full = []
+    df = []
+
+    for i in range(len(file_names)):
+        path = os.path.join(folder, file_names[i])
+        df_full.append(pd.read_excel(path))
+        df.append(df_full[i].iloc[:, 2:11])
+        date_time = pd.to_datetime(df_full[i].iloc[:, 0], format='%Y.%m.%d %H:%M')
+        timestamp_s = date_time.map(datetime.datetime.timestamp)
+        df[i]['Day sin'] = np.sin(timestamp_s * (2 * np.pi / day))
+        df[i]['Day cos'] = np.cos(timestamp_s * (2 * np.pi / day))
+        df[i]['Year sin'] = np.sin(timestamp_s * (2 * np.pi / year))
+        df[i]['Year cos'] = np.cos(timestamp_s * (2 * np.pi / year))
+
+    df_all = pd.concat(df)
+
+    return df, df_full, df_all
+
+
+def standardNormalization(df, df_all):
+    train_mean = df_all.mean()
+    train_std = df_all.std()
+    for i in range(len(df)):
+        df[i] = (df[i]-train_mean)/train_std

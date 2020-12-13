@@ -10,22 +10,20 @@ import matplotlib.pyplot as plt
 import matplotlib
 import matplotlib.font_manager as fm
 
-# 폰트 한글 적용 테스트
-# font_list = fm.findSystemFonts(fontpaths=None, fontext='ttf')
-# for font in font_list:
-#     if font.find('Nanum') != -1:
-#         print(font)
-
-# plt.ylabel('한글', fontproperties=fprop)
-# plt.show()
-# exit(0)
+# 나눔 폰트 리스트업
+avail_font = []
+font_list = fm.findSystemFonts(fontpaths=None, fontext='ttf')
+for font in font_list:
+    if font.find('Nanum') != -1:
+        avail_font.append(font)
 
 # font list
-fm.get_fontconfig_fonts()
 # font_location = '/usr/share/fonts/truetype/nanum/NanumGothicCoding.ttf'
-#font_location = '/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc'
+# font_location = '/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc'
 # font_location = 'C:/Windows/Fonts/NanumGothic.ttf' # For Windows
-font_location = 'C:/Users/hackx/AppData/Local/Microsoft/Windows/Fonts/NanumGothic.ttf' # For Windows
+# font_location = 'C:/Users/hackx/AppData/Local/Microsoft/Windows/Fonts/NanumGothic.ttf' # For Windows
+fm.get_fontconfig_fonts()
+font_location = avail_font[0] # 나눔 폰트 index 0 사용 (리스트 확인 후 변경가능)
 fprop = fm.FontProperties(fname=font_location)
 
 
