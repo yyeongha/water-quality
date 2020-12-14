@@ -15,18 +15,41 @@ mpl.rcParams['axes.unicode_minus'] = False
 plt.rcParams["font.family"] = 'NanumGothicCoding-Bold'
 
 
-target_col = '수온'
+target_col = '총유기탄소'
 
-input_step = 24*7
-OUT_STEPS = 24
+# input_step = 24*7
+# OUT_STEPS = 24
+input_step = 2
+OUT_STEPS = 1
 
 MAX_EPOCHS = 1
 
 # mpl.rcParams['figure.figsize'] = (8, 6)
 # mpl.rcParams['axes.grid'] = False
-df = pd.read_excel("./data/8/가평_2018-2019.xlsx")
+# df = pd.read_excel("./data/8/가평_2018-2019.xlsx")
 # df = pd.read_excel("./data/8/2.xlsx")
 # df = pd.read_csv("./data/8/df4.csv",encoding='utf-8-sig')
+
+df1 = pd.read_excel("./data/9/1.xlsx")
+df = pd.read_excel("./data/9/2.xlsx")
+# df = pd.read_excel("./data/8/1.xlsx")
+
+
+def comfareDf(df1, df2, fill_cnt):
+        if fill_cnt != 0:
+            mask = df1.copy()
+            for i in df1.columns:
+                dfx = pd.DataFrame( df1[i] )
+                dfx['new'] = ((dfx.notnull() != dfx.shift().notnull()).cumsum())
+                dfx['ones'] = 1
+                mask[i] = (dfx.groupby('new')['ones'].transform('count') < fill_cnt + 1) | df1[i].notnull()
+            df = df2.bfill()[mask]
+        return df
+
+# print(df1)
+# print(df2)
+df3 = comfareDf(df1, df, 2)
+print(df3)
 
 # slice [start:stop:step], starting from index 5 take every 6th record.
 #df1 = df1[5::6]
@@ -34,7 +57,7 @@ df = pd.read_excel("./data/8/가평_2018-2019.xlsx")
 date_time = pd.to_datetime(df.pop('측정날짜'), format='%Y.%m.%d %H:%M:%S', utc=True )
 # date_time = pd.to_datetime(df['측정날짜'], format='%Y.%m.%d %H:%M:%S')
 # print(date_time)
-# print(df.head())
+print(df)
 
 timestamp_s = date_time.map(datetime.datetime.timestamp)
 
@@ -49,11 +72,11 @@ df['Day cos'] = np.cos(timestamp_s * (2 * np.pi / day))
 df['Year sin'] = np.sin(timestamp_s * (2 * np.pi / year))
 df['Year cos'] = np.cos(timestamp_s * (2 * np.pi / year))
 
-plt.plot(np.array(df['Day sin'])[:25])
-plt.plot(np.array(df['Day cos'])[:25])
-plt.xlabel('Time [h]')
-plt.title('Time of day signal')
-plt.show()
+# plt.plot(np.array(df['Day sin'])[:25])
+# plt.plot(np.array(df['Day cos'])[:25])
+# plt.xlabel('Time [h]')
+# plt.title('Time of day signal')
+# plt.show()
 
 column_indices = {name: i for i, name in enumerate(df.columns)}
 # print(column_indices)
@@ -79,15 +102,27 @@ train_std = train_df.std()
 # print(train_mean)
 # print(train_std)
 # print('std, mean')
+# print('NONONONONONONONONONONONONONONONONO')
+# print(test_df)
+
 
 train_df = (train_df - train_mean) / train_std
 val_df = (val_df - train_mean) / train_std
 test_df = (test_df - train_mean) / train_std
 
+# print(train_std)
+# print(train_std['총유기탄소'])
 
-print(train_df)
-print(val_df)
-print(val_df)
+# print(train_df)
+# print(val_df)
+# print(test_df)
+#
+# print('DEDEDEDEDEDEDEDEDEDEDEDEDEDEDEDEDEDE')
+# print(test_df * train_std + train_mean)
+# print('DEDEDEDEDEDEDEDEDEDEDEDEDEDEDEDEDEDE')
+
+
+
 
 # Data Window
 class WindowGenerator():
@@ -96,10 +131,17 @@ class WindowGenerator():
                label_columns=None):
     # Store the raw data.
 
-    print(train_df)
+    # print(train_df)
+
+
     self.train_df = train_df
     self.val_df = val_df
     self.test_df = test_df
+
+    # print(type(train_df))
+
+    # print('gen')
+    # print(self.test_df[target_col])
 
     # Work out the label column indices.
     self.label_columns = label_columns
@@ -108,6 +150,7 @@ class WindowGenerator():
                                     enumerate(label_columns)}
     self.column_indices = {name: i for i, name in
                            enumerate(train_df.columns)}
+
 
     # Work out the window parameters.
     self.input_width = input_width
@@ -118,7 +161,7 @@ class WindowGenerator():
 
     self.input_slice = slice(0, input_width)
 
-    # print('self.input_slice')
+    # print('########################################################################')
     # print(self.input_slice)
 
     self.input_indices = np.arange(self.total_window_size)[self.input_slice]
@@ -152,6 +195,7 @@ class WindowGenerator():
 def split_window(self, features):
   inputs = features[:, self.input_slice, :]
   labels = features[:, self.labels_slice, :]
+
   if self.label_columns is not None:
     labels = tf.stack(
         [labels[:, :, self.column_indices[name]] for name in self.label_columns],
@@ -167,10 +211,10 @@ def split_window(self, features):
 WindowGenerator.split_window = split_window
 
 
-# # Stack three slices, the length of the total window:
-# example_window = tf.stack([np.array(train_df[:w1.total_window_size]),
-#                            np.array(train_df[100:100+w1.total_window_size]),
-#                            np.array(train_df[200:200+w1.total_window_size])])
+# Stack three slices, the length of the total window:
+example_window = tf.stack([np.array(train_df[:w1.total_window_size]),
+                           np.array(train_df[100:100+w1.total_window_size]),
+                           np.array(train_df[200:200+w1.total_window_size])])
 
 
 # example_inputs, example_labels = w1.split_window(example_window)
@@ -225,7 +269,7 @@ WindowGenerator.plot = plot
 
 
 def make_dataset(self, data):
-  data = np.array(data, dtype=np.float32)
+  data = np.array(data, dtype=np.float32).dropna()
   ds = tf.keras.preprocessing.timeseries_dataset_from_array(
       data=data,
       targets=None,
@@ -306,6 +350,22 @@ multi_window = WindowGenerator(input_width=input_step,
 
 # multi_window.plot()
 
+# print(multi_window.column_indices.get(target_col, None))
+
+# test_input, test_label = multi_window.example
+
+
+print('********************************')
+print(multi_window.train_df)
+print('********************************')
+print(multi_window.val_df)
+print('********************************')
+print(multi_window.test_df)
+print('********************************')
+
+
+
+
 
 def compile_and_fit(model, window, patience=3):
   early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss',
@@ -363,7 +423,7 @@ multi_lstm_model = tf.keras.Sequential([
     tf.keras.layers.Reshape([OUT_STEPS, num_features])
 ])
 
-
+'''
 history = compile_and_fit(multi_lstm_model, multi_window, 10)
 
 # print(history.history['loss'])
@@ -379,31 +439,46 @@ history = compile_and_fit(multi_lstm_model, multi_window, 10)
 # multi_window.plot(multi_lstm_model)
 
 
-pred = multi_lstm_model.predict(multi_window.test)
+test_input, test_label = multi_window.example
 
-print('***************')
-print(pred[0,:,4])
+pred = multi_lstm_model.predict(test_input)
+
+col_num = multi_window.column_indices.get(target_col, None)
 
 
-print('***************')
+print('***************1111')
+print(test_label[0,:,col_num])
+print('***************22222')
+print(test_label[:,col_num]*train_std[target_col] + train_mean[target_col])
+
+# # print(pred[0])
+# print(pred[0,:,4])
+#
+#
+# print('***************22222')
 
 # print(WindowGenerator.label_columns_indices.get(target_col, None))
 # predictions[n, :, label_col_index]
 
-print('***************')
-tt = pd.DataFrame(pred[0])
+# print('***************')
+# tt = pd.DataFrame(pred[0])
+# print(tt)
+
+tt = pd.DataFrame(pred[0,:,col_num])
 print(tt)
 
-ttt = tt *train_std + train_mean
+
+print('***************33333')
+ttt = tt *train_std[target_col] + train_mean[target_col]
 
 print(ttt)
-
+'''
 # tt = pred * train_std + train_mean
 # print(tt)
-plt.figure()
-plt.plot(pred[0])
-# #print(pred)
-plt.show()
+# plt.figure()
+# plt.plot(pred[0])
+# # #print(pred)
+# plt.show()
 
 ''' Dense
 multi_dense_model = tf.keras.Sequential([
