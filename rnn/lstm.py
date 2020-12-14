@@ -15,12 +15,7 @@ mpl.rcParams['axes.unicode_minus'] = False
 plt.rcParams["font.family"] = 'NanumGothicCoding-Bold'
 
 
-
-
-
-target_col = '총유기탄소'
-# target_col = '클로로필-a'
-#target_col = '수온'
+target_col = '수온'
 
 input_step = 24*7
 OUT_STEPS = 24
@@ -316,29 +311,28 @@ def compile_and_fit(model, window, patience=3):
   early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss',
                                                     patience=patience,
                                                     mode='min')
-  reduce_lr = tf.keras.callbacks.ReduceLROnPlateau(monitor='val_loss', factor=0.5,
-                                         min_lr=1e-4, patience=0, verbose=1)
+  reduce_lr = tf.keras.callbacks.ReduceLROnPlateau(monitor='val_loss', factor=0.1,
+                                         min_lr=0.0001, patience=5, verbose=1)
 
   adam = tf.keras.optimizers.Adam(learning_rate=0.1)
 
-  # model.compile(loss=tf.losses.MeanSquaredError(),
-  #               optimizer=tf.optimizers.Adam(),
-  #               metrics=[tf.metrics.MeanAbsoluteError()])
-
-  # model.compile(loss=tf.losses.MeanSquaredError(),
-  #               optimizer=adam,
-  #               metrics=[tf.metrics.MeanAbsoluteError()])
-
   model.compile(loss=tf.losses.MeanSquaredError(),
-                  optimizer=adam,
-                  metrics=[tf.metrics.MeanSquaredError()])
+                optimizer=tf.optimizers.Adam(),
+                metrics=[tf.metrics.MeanAbsoluteError()])
 
-  history = model.fit(window.train, epochs=MAX_EPOCHS,
-                      validation_data=window.val,
-                      callbacks=[early_stopping, reduce_lr])
+  #model.compile(loss=tf.losses.MeanSquaredError(),
+  #              optimizer=adam,
+  #              metrics=[tf.metrics.MeanAbsoluteError()])
 
-  # history = model.fit(window.train, epochs=MAX_EPOCHS, batch_size = 256,
-  #                         validation_data=window.val)
+  #history = model.fit(window.train, epochs=MAX_EPOCHS,
+  #                    validation_data=window.val,
+  #                    callbacks=[early_stopping, reduce_lr])
+
+  #history = model.fit(window.train, epochs=MAX_EPOCHS,
+  #                    validation_data=window.val,
+  #                    callbacks=[reduce_lr])
+  history = model.fit(window.train, epochs=MAX_EPOCHS, batch_size = 256,
+                           validation_data=window.val)
 
   return history
 
