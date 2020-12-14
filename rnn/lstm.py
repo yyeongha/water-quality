@@ -18,16 +18,21 @@ plt.rcParams["font.family"] = 'NanumGothicCoding-Bold'
 
 
 
-#target_col = '총유기탄소'
-target_col = '클로로필-a'
+target_col = '총유기탄소'
+# target_col = '클로로필-a'
 #target_col = '수온'
 
 input_step = 24*7
 OUT_STEPS = 24
 
+MAX_EPOCHS = 1
+
 # mpl.rcParams['figure.figsize'] = (8, 6)
 # mpl.rcParams['axes.grid'] = False
 df = pd.read_excel("./data/8/가평_2018-2019.xlsx")
+# df = pd.read_excel("./data/8/2.xlsx")
+# df = pd.read_csv("./data/8/df4.csv",encoding='utf-8-sig')
+
 # slice [start:stop:step], starting from index 5 take every 6th record.
 #df1 = df1[5::6]
 #df1['측정날짜']
@@ -44,18 +49,24 @@ year = (365.2425)*day
 
 df['Day sin'] = np.sin(timestamp_s * (2 * np.pi / day))
 df['Day cos'] = np.cos(timestamp_s * (2 * np.pi / day))
-df['Week sin'] = np.sin(timestamp_s * (2 * np.pi / week))
-df['Week cos'] = np.cos(timestamp_s * (2 * np.pi / week))
+# df['Week sin'] = np.sin(timestamp_s * (2 * np.pi / week))
+# df['Week cos'] = np.cos(timestamp_s * (2 * np.pi / week))
 df['Year sin'] = np.sin(timestamp_s * (2 * np.pi / year))
 df['Year cos'] = np.cos(timestamp_s * (2 * np.pi / year))
 
-# plt.plot(np.array(df['Day sin'])[:25])
-# plt.plot(np.array(df['Day cos'])[:25])
-# plt.xlabel('Time [h]')
-# plt.title('Time of day signal')
-# plt.show()
+plt.plot(np.array(df['Day sin'])[:25])
+plt.plot(np.array(df['Day cos'])[:25])
+plt.xlabel('Time [h]')
+plt.title('Time of day signal')
+plt.show()
 
 column_indices = {name: i for i, name in enumerate(df.columns)}
+# print(column_indices)
+
+# print(df)
+
+
+
 
 n = len(df)
 train_df = df[0:int(n*0.7)]
@@ -68,11 +79,20 @@ num_features = df.shape[1]
 train_mean = train_df.mean()
 train_std = train_df.std()
 
+
+# print('std, mean')
+# print(train_mean)
+# print(train_std)
+# print('std, mean')
+
 train_df = (train_df - train_mean) / train_std
 val_df = (val_df - train_mean) / train_std
 test_df = (test_df - train_mean) / train_std
 
 
+print(train_df)
+print(val_df)
+print(val_df)
 
 # Data Window
 class WindowGenerator():
@@ -80,6 +100,8 @@ class WindowGenerator():
                train_df=train_df, val_df=val_df, test_df=test_df,
                label_columns=None):
     # Store the raw data.
+
+    print(train_df)
     self.train_df = train_df
     self.val_df = val_df
     self.test_df = test_df
@@ -100,7 +122,15 @@ class WindowGenerator():
     self.total_window_size = input_width + shift
 
     self.input_slice = slice(0, input_width)
+
+    # print('self.input_slice')
+    # print(self.input_slice)
+
     self.input_indices = np.arange(self.total_window_size)[self.input_slice]
+
+
+    # print('self.input_indices')
+    # print(self.input_indices)
 
     self.label_start = self.total_window_size - self.label_width
     self.labels_slice = slice(self.label_start, None)
@@ -116,7 +146,7 @@ class WindowGenerator():
 
 # w1 = WindowGenerator(input_width=24, label_width=1, shift=24,
 #                      label_columns=['총유기탄소'])
-# # print(w1)
+# print(w1)
 #
 # w2 = WindowGenerator(input_width=6, label_width=1, shift=1,
 #                      label_columns=['총유기탄소'])
@@ -157,6 +187,7 @@ WindowGenerator.split_window = split_window
 
 # w1.example = example_inputs, example_labels
 
+
 def plot(self, model=None, plot_col=target_col, max_subplots=3):
   inputs, labels = self.example
   plt.figure(figsize=(12, 8))
@@ -194,6 +225,8 @@ def plot(self, model=None, plot_col=target_col, max_subplots=3):
 WindowGenerator.plot = plot
 # plot()
 # w1.plot()
+
+
 
 
 def make_dataset(self, data):
@@ -278,9 +311,8 @@ multi_window = WindowGenerator(input_width=input_step,
 
 # multi_window.plot()
 
-MAX_EPOCHS = 100
 
-def compile_and_fit(model, window, patience=10):
+def compile_and_fit(model, window, patience=3):
   early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss',
                                                     patience=patience,
                                                     mode='min')
@@ -293,9 +325,13 @@ def compile_and_fit(model, window, patience=10):
   #               optimizer=tf.optimizers.Adam(),
   #               metrics=[tf.metrics.MeanAbsoluteError()])
 
+  # model.compile(loss=tf.losses.MeanSquaredError(),
+  #               optimizer=adam,
+  #               metrics=[tf.metrics.MeanAbsoluteError()])
+
   model.compile(loss=tf.losses.MeanSquaredError(),
-                optimizer=adam,
-                metrics=[tf.metrics.MeanAbsoluteError()])
+                  optimizer=adam,
+                  metrics=[tf.metrics.MeanSquaredError()])
 
   history = model.fit(window.train, epochs=MAX_EPOCHS,
                       validation_data=window.val,
@@ -334,11 +370,46 @@ multi_lstm_model = tf.keras.Sequential([
 ])
 
 
-history = compile_and_fit(multi_lstm_model, multi_window)
+history = compile_and_fit(multi_lstm_model, multi_window, 10)
 
-multi_val_performance['LSTM'] = multi_lstm_model.evaluate(multi_window.val)
-multi_performance['LSTM'] = multi_lstm_model.evaluate(multi_window.test, verbose=0)
-multi_window.plot(multi_lstm_model)
+# print(history.history['loss'])
+# print(history.history['val_loss'])
+#
+# plt.plot(history.history['loss'], label='loss')
+# plt.show()
+#
+#
+#
+# multi_val_performance['LSTM'] = multi_lstm_model.evaluate(multi_window.val)
+# multi_performance['LSTM'] = multi_lstm_model.evaluate(multi_window.test, verbose=0)
+# multi_window.plot(multi_lstm_model)
+
+
+pred = multi_lstm_model.predict(multi_window.test)
+
+print('***************')
+print(pred[0,:,4])
+
+
+print('***************')
+
+# print(WindowGenerator.label_columns_indices.get(target_col, None))
+# predictions[n, :, label_col_index]
+
+print('***************')
+tt = pd.DataFrame(pred[0])
+print(tt)
+
+ttt = tt *train_std + train_mean
+
+print(ttt)
+
+# tt = pred * train_std + train_mean
+# print(tt)
+plt.figure()
+plt.plot(pred[0])
+# #print(pred)
+plt.show()
 
 ''' Dense
 multi_dense_model = tf.keras.Sequential([
