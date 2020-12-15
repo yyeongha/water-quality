@@ -113,16 +113,21 @@ def createDataFrame(folder, file_names):
     df_full = []
     df = []
 
-    for i in range(len(file_names)):
-        path = os.path.join(folder, file_names[i])
-        df_full.append(pd.read_excel(path))
-        df.append(df_full[i].iloc[:, 2:11])
-        date_time = pd.to_datetime(df_full[i].iloc[:, 0], format='%Y.%m.%d %H:%M')
+    for loc in range(len(file_names)):
+    
+        df_loc = []
+        for y in range(len(file_names[loc])):
+            path = os.path.join(folder, file_names[loc][y])
+            df_loc.append(pd.read_excel(path))
+        df_full.append(pd.concat(df_loc))
+        df.append(df_full[loc].iloc[:, 2:11])
+        date_time = pd.to_datetime(df_full[loc].iloc[:, 0], format='%Y.%m.%d %H:%M', utc=True)
         timestamp_s = date_time.map(datetime.datetime.timestamp)
-        df[i]['Day sin'] = np.sin(timestamp_s * (2 * np.pi / day))
-        df[i]['Day cos'] = np.cos(timestamp_s * (2 * np.pi / day))
-        df[i]['Year sin'] = np.sin(timestamp_s * (2 * np.pi / year))
-        df[i]['Year cos'] = np.cos(timestamp_s * (2 * np.pi / year))
+        df[loc]['Day sin'] = np.sin(timestamp_s * (2 * np.pi / day))
+        df[loc]['Day cos'] = np.cos(timestamp_s * (2 * np.pi / day))
+        df[loc]['Year sin'] = np.sin(timestamp_s * (2 * np.pi / year))
+        df[loc]['Year cos'] = np.cos(timestamp_s * (2 * np.pi / year))
+        df[loc] = df[loc].reset_index(drop=True)
 
     df_all = pd.concat(df)
 

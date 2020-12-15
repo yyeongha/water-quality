@@ -15,7 +15,7 @@ from core.utils import *
 
 
 folder = 'data'
-file_names = ['가평_2019.xlsx', '의암호_2019.xlsx']
+file_names = [['가평_2019.xlsx']]
 
 df, df_full, df_all = createDataFrame(folder, file_names)
 
@@ -26,7 +26,12 @@ dgen = GainDataGenerator(df)
 train_df = df_all
 val_df = df_all
 test_df = df_all
+print('--------------------============-------')
 
+print(df_all.shape)
+print(df[0].shape)
+
+print('----------------------=============-----')
 wide_window = WindowGenerator(
     df=df,
     train_df=df_all,
@@ -54,7 +59,7 @@ performance = {}
 gain = GAIN(shape=wide_window.dg.shape[1:], gen_sigmoid=False)
 gain.compile(loss=GAIN.RMSE_loss)
 
-MAX_EPOCHS = 50
+MAX_EPOCHS = 2000
 
 def compile_and_fit(model, window, patience=10):
     early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss',
@@ -116,9 +121,55 @@ total_n = wide_window.dg.data.shape[0]
 unit_shape = wide_window.dg.shape[1:]
 dim = np.prod(wide_window.dg.shape[1:]).astype(int)
 n = (total_n//dim)*dim
-x_reshape = x.reshape((-1,)+unit_shape)
-y_pred = gain.predict(x_reshape)
-y_pred = y_pred.reshape(y_true.shape)
+
+# x_reshape = x.reshape((-1,)+unit_shape)
+# y_pred = gain.predict(x_reshape)
+# y_pred = y_pred.reshape(y_true.shape)
+##### x, t_pred 병합
+df_y = []
+for df_x in df:
+    x = df_x.to_numpy()
+    total_n = x.shape[0]
+    n = (total_n//dim)*dim
+    x = x[0:n]
+    x_block = x.reshape((-1,)+unit_shape)
+    y = gain.predict(x_block)
+    y_nan = y.reshape(x.shape)
+    y_gan = np.nan_to_num(y_nan)
+    y_gan += np.nan_to_num(x)
+
+
+
+# 테스트 (to_excel)
+# yyy = pd.DataFrame(y_pred)
+# xxx = pd.DataFrame(x)
+# yyy.to_excel('/Users/jhy/workspace/test_y_pred.xlsx', index=False)
+# xxx.to_excel('/Users/jhy/workspace/test_x.xlsx', index=False)
+print("=====================")
+print(df_all.shape)
+y_gan = pd.DataFrame(y_gan)
+# 컬럼명 변환
+y_gan.columns = df_all.columns
+print(y_gan.shape)
+print("=====================")
+
+# denormalized
+print("''''''''''''''''''''''''''''''''''''")
+train_mean = df_all.mean()
+train_std = df_all.std()
+print(train_mean)
+print(train_std)
+print("''''''''''''''''''''''''''''''''''''")
+lll = y_gan * train_std + train_mean
+
+print("//////////////////////////////")
+print(lll.columns)
+print("//////////////////////////////")
+print(y_gan.columns)
+print("//////////////////////////////")
+
+lll.to_excel('/Users/jhy/workspace/result.xlsx', index=False)
+y_gan.to_excel('/Users/jhy/workspace/noralize_result.xlsx', index=False)
 
 ''' result plt '''
 n = 8
