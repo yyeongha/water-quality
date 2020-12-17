@@ -39,7 +39,9 @@ class GainDataGenerator(keras.utils.Sequence):
         last_cum = 0
         cums = []
         for data in data_list:
+            # nan 변환
             isnan = np.isnan(data)
+            # 하나라도 nan 인 경우를 잡기위함
             isany = np.any(isnan, axis=1)
             shifted = np.roll(isany, 1)
             shifted[0] = True # set to nan
@@ -80,7 +82,6 @@ class GainDataGenerator(keras.utils.Sequence):
             time_len = seq_len - window_size + 1
             start_ids = np.arange(start_id, start_id+time_len)
             data_idx = np.append(data_idx, start_ids)
-            
         # start index set for sequence data
         self.data_idx = data_idx
         self.input_width = input_width
@@ -142,7 +143,6 @@ class GainDataGenerator(keras.utils.Sequence):
             #m = np.append(m, [M_mb], axis=0)
             #h = np.append(h, [H_mb], axis=0)
             y = np.append(y, [Y_mb], axis=0)
-            
         #return [x, m, h], y
         return x, y
     

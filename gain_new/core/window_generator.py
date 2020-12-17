@@ -94,7 +94,7 @@ class WindowGenerator():
             plt.subplot(3, 1, n+1)
             plt.ylabel(f'{plot_col} [normed]', fontproperties=fprop)
             plt.plot(self.input_indices, inputs[n, :, plot_col_index],
-                    label='Inputs', marker='.', zorder=-10)
+                        label='Inputs', marker='.', zorder=-10)
 
             if self.label_columns:
                 label_col_index = self.label_columns_indices.get(plot_col, None)

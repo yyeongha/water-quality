@@ -26,12 +26,7 @@ dgen = GainDataGenerator(df)
 train_df = df_all
 val_df = df_all
 test_df = df_all
-print('--------------------============-------')
 
-print(df_all.shape)
-print(df[0].shape)
-
-print('----------------------=============-----')
 wide_window = WindowGenerator(
     df=df,
     train_df=df_all,
@@ -59,7 +54,7 @@ performance = {}
 gain = GAIN(shape=wide_window.dg.shape[1:], gen_sigmoid=False)
 gain.compile(loss=GAIN.RMSE_loss)
 
-MAX_EPOCHS = 2000
+MAX_EPOCHS = 3000
 
 def compile_and_fit(model, window, patience=10):
     early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss',
@@ -99,7 +94,9 @@ gain.evaluate(wide_window.test.repeat(), steps=100)
 total_n = wide_window.dg.data.shape[0]
 unit_shape = wide_window.dg.shape[1:]
 dim = np.prod(wide_window.dg.shape[1:]).astype(int)
+##### 여기서  n 으로 자름
 n = (total_n//dim)*dim
+#####
 x = wide_window.dg.data[0:n].copy()
 y = wide_window.dg.data[0:n].copy()
 m = wide_window.dg.data_m[0:n]
@@ -113,30 +110,86 @@ x = x.reshape((n, 13))
 ''' 원본데이터로 테스트 '''
 norm_df = pd.concat(df,axis=0)
 data = norm_df.to_numpy()
-x = data[0:n].copy()
-y_true = data[0:n].copy()
-isnan = np.isnan(x)
-x[isnan] = np.nan
 total_n = wide_window.dg.data.shape[0]
 unit_shape = wide_window.dg.shape[1:]
-dim = np.prod(wide_window.dg.shape[1:]).astype(int)
+dim = wide_window.dg.shape[1]
 n = (total_n//dim)*dim
+x = data[0:n].copy()
+y_true = data[0:n].copy()
+x_reshape = x.reshape((-1,)+unit_shape)
+isnan = np.isnan(x_reshape)
+isnan = np.isnan(y_true)
+# x[isnan] = np.nan
 
-# x_reshape = x.reshape((-1,)+unit_shape)
-# y_pred = gain.predict(x_reshape)
-# y_pred = y_pred.reshape(y_true.shape)
+
+''' 잘린 부분 추가로 append '''
+# --------기존
+y_pred = gain.predict(x_reshape)
+y_pred = y_pred.reshape(y_true.shape)
+
+# --------remain
+x_remain = data[-wide_window.dg.shape[1]:].copy()
+x_remain_reshape = x_remain.reshape((-1,)+unit_shape)
+x_remain_reshape.shape
+# 잘린부분 predict, 나머지 predict
+y_pred = gain.predict(x_reshape)
+y_remain_pred = gain.predict(x_remain_reshape)
+# 잘린부분 reshape, 나머지 reshape
+y_pred = y_pred.reshape(y_true.shape)
+y_remain_pred = y_remain_pred.reshape(x_remain.shape)
+# 잘린 부분 shape
+print('기존 잘린 부분 shpe',y_pred.shape, y_remain_pred.shape)
+y_pred = np.append(y_pred, y_remain_pred[-(total_n-n):], axis=0)
+# append 이후 shape
+print('append 이후 shape',y_pred.shape)
+print(np.nan_to_num(y_pred))
 ##### x, t_pred 병합
 df_y = []
+'''
+n = (total_n//dim)*dim
+x = data[0:n].copy()
+y_true = data[0:n].copy()
+x_reshape = x.reshape((-1,)+unit_shape)
+isnan = np.isnan(x_reshape)
+isnan = np.isnan(y_true)
+'''
 for df_x in df:
+    ###origin ---
     x = df_x.to_numpy()
     total_n = x.shape[0]
     n = (total_n//dim)*dim
-    x = x[0:n]
-    x_block = x.reshape((-1,)+unit_shape)
-    y = gain.predict(x_block)
-    y_nan = y.reshape(x.shape)
-    y_gan = np.nan_to_num(y_nan)
+    # x = x[0:n]
+    ## ----- 여기까지 origin
+    
+    x_copy = x[0:n].copy()
+    y_true = x_copy[0:n].copy()
+    x_reshape = x_copy.reshape((-1,)+unit_shape)
+    isnan = np.isnan(x_reshape)
+    isnan = np.isnan(y_true)
+    y_pred = gain.predict(x_reshape)
+    y_pred = y_pred.reshape(y_true.shape)
+    x_remain = data[-wide_window.dg.shape[1]:].copy()
+    x_remain_reshape = x_remain.reshape((-1,)+unit_shape)
+    x_remain_reshape.shape
+    # 잘린부분 predict, 나머지 predict
+    y_pred = gain.predict(x_reshape)
+    y_remain_pred = gain.predict(x_remain_reshape)
+    # 잘린부분 reshape, 나머지 reshape
+    y_pred = y_pred.reshape(y_true.shape)
+    y_remain_pred = y_remain_pred.reshape(x_remain.shape)
+    y_pred = np.append(y_pred, y_remain_pred[-(total_n-n):], axis=0)
+
+    #### origin --
+    # x_block = x.reshape((-1,)+unit_shape)
+    # y = gain.predict(x_block)
+    # y_nan = y.reshape(x.shape)
+    # print('y_nany_nany_nan',y_nan)
+    # y_gan = np.nan_to_num(y_nan)
+    # y_gan += np.nan_to_num(x)
+    y_gan = np.nan_to_num(y_pred)
     y_gan += np.nan_to_num(x)
+    ## ----- 여기까지 origin
+print(y_gan)
 
 
 
@@ -145,37 +198,42 @@ for df_x in df:
 # xxx = pd.DataFrame(x)
 # yyy.to_excel('/Users/jhy/workspace/test_y_pred.xlsx', index=False)
 # xxx.to_excel('/Users/jhy/workspace/test_x.xlsx', index=False)
+
 print("=====================")
 print(df_all.shape)
-y_gan = pd.DataFrame(y_gan)
 # 컬럼명 변환
+y_gan = pd.DataFrame(y_gan)
 y_gan.columns = df_all.columns
 print(y_gan.shape)
 print("=====================")
 
-# denormalized
+# Denormalized
 print("''''''''''''''''''''''''''''''''''''")
 train_mean = df_all.mean()
 train_std = df_all.std()
 print(train_mean)
 print(train_std)
 print("''''''''''''''''''''''''''''''''''''")
-lll = y_gan * train_std + train_mean
 
-print("//////////////////////////////")
-print(lll.columns)
-print("//////////////////////////////")
-print(y_gan.columns)
-print("//////////////////////////////")
+result = y_gan * train_std + train_mean
+result.pop("Day sin")
+result.pop("Day cos")
+result.pop("Year sin")
+result.pop("Year cos")
 
-lll.to_excel('/Users/jhy/workspace/result.xlsx', index=False)
+df_date = pd.DataFrame(df_full[0]['측정날짜'][:len(result.index)])
+# df_location = pd.DataFrame(df_full[0]['측정소명'][:len(result.index)])
+result2 = pd.concat([df_date,result],axis=1)
+
+result2.to_excel('/Users/jhy/workspace/result2.xlsx', index=False)
+result.to_excel('/Users/jhy/workspace/result.xlsx', index=False)
 y_gan.to_excel('/Users/jhy/workspace/noralize_result.xlsx', index=False)
 
 ''' result plt '''
-n = 8
-plt.figure(figsize=(9,20))
-for i in range(n):
-    plt.subplot(811+i)
-    plt.plot(x[:, i])
-    plt.plot(y_pred[:, i])
-plt.show()
+# n = 8
+# plt.figure(figsize=(9,20))
+# for i in range(n):
+#     plt.subplot(811+i)
+#     plt.plot(x[:, i])
+#     plt.plot(y_pred[:, i])
+# plt.show()
