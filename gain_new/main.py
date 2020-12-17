@@ -15,7 +15,15 @@ from core.utils import *
 
 
 folder = 'data'
-file_names = [['가평_2019.xlsx']]
+file_names = [['의암호_2019.xlsx']]
+# file_names = [ 
+# ['의암호_2017.xlsx','의암호_2018.xlsx','의암호_2019.xlsx'],
+# ['서상_2017.xlsx','서상_2018.xlsx','서상_2019.xlsx']]
+
+# file_names = [['가평_2016.xlsx','가평_2017.xlsx','가평_2018.xlsx','가평_2019.xlsx'],
+# ['화천_2016.xlsx','화천_2017.xlsx','화천_2018.xlsx','화천_2019.xlsx'],
+# ['의암호_2016.xlsx','의암호_2017.xlsx','의암호_2018.xlsx','의암호_2019.xlsx'],
+# ['서상_2016.xlsx','서상_2017.xlsx','서상_2018.xlsx','서상_2019.xlsx']]
 
 df, df_full, df_all = createDataFrame(folder, file_names)
 
@@ -50,11 +58,12 @@ wide_window.plot(plot_col='총질소') # create dg issue
 
 val_performance = {}
 performance = {}
+load_yn=True
 
-gain = GAIN(shape=wide_window.dg.shape[1:], gen_sigmoid=False)
+gain = GAIN(shape=wide_window.dg.shape[1:], gen_sigmoid=False,load=load_yn)
 gain.compile(loss=GAIN.RMSE_loss)
-
-MAX_EPOCHS = 3000
+# if load_yn !=True:
+MAX_EPOCHS = 1
 
 def compile_and_fit(model, window, patience=10):
     early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss',
@@ -153,22 +162,26 @@ x_reshape = x.reshape((-1,)+unit_shape)
 isnan = np.isnan(x_reshape)
 isnan = np.isnan(y_true)
 '''
+cnt = 0
 for df_x in df:
+    
     ###origin ---
     x = df_x.to_numpy()
     total_n = x.shape[0]
+    print('xxxxx',np.shape(x))
     n = (total_n//dim)*dim
+    print('nnn',n)
     # x = x[0:n]
     ## ----- 여기까지 origin
     
     x_copy = x[0:n].copy()
-    y_true = x_copy[0:n].copy()
+    y_true = x[0:n].copy()
     x_reshape = x_copy.reshape((-1,)+unit_shape)
     isnan = np.isnan(x_reshape)
     isnan = np.isnan(y_true)
-    y_pred = gain.predict(x_reshape)
-    y_pred = y_pred.reshape(y_true.shape)
-    x_remain = data[-wide_window.dg.shape[1]:].copy()
+    # y_pred = gain.predict(x_reshape)
+    # y_pred = y_pred.reshape(y_true.shape)
+    x_remain = x[-wide_window.dg.shape[1]:].copy()
     x_remain_reshape = x_remain.reshape((-1,)+unit_shape)
     x_remain_reshape.shape
     # 잘린부분 predict, 나머지 predict
@@ -189,7 +202,37 @@ for df_x in df:
     y_gan = np.nan_to_num(y_pred)
     y_gan += np.nan_to_num(x)
     ## ----- 여기까지 origin
-print(y_gan)
+    print("=====================")
+    print(df_all.shape)
+    # 컬럼명 변환
+    y_gan = pd.DataFrame(y_gan)
+    y_gan.columns = df_all.columns
+    print(y_gan.shape)
+    print("=====================")
+
+    # Denormalized
+    print("''''''''''''''''''''''''''''''''''''")
+    train_mean = df_all.mean()
+    train_std = df_all.std()
+    print(train_mean)
+    print(train_std)
+    print("''''''''''''''''''''''''''''''''''''")
+
+    result = y_gan * train_std + train_mean
+    result.pop("Day sin")
+    result.pop("Day cos")
+    result.pop("Year sin")
+    result.pop("Year cos")
+
+    df_date = pd.DataFrame(df_full[0]['측정날짜'][:len(result.index)])
+    # df_location = pd.DataFrame(df_full[0]['측정소명'][:len(result.index)])
+    result2 = pd.concat([df_date,result],axis=1)
+
+    result2.to_excel('/Users/jhy/workspace/'+file_names[cnt][0]+'_'+str(MAX_EPOCHS)+'_result.xlsx', index=False)
+    cnt+=1
+    # result.to_excel('/Users/jhy/workspace/result.xlsx', index=False)
+    # y_gan.to_excel('/Users/jhy/workspace/noralize_result.xlsx', index=False)
+# print(y_gan)
 
 
 
@@ -199,35 +242,36 @@ print(y_gan)
 # yyy.to_excel('/Users/jhy/workspace/test_y_pred.xlsx', index=False)
 # xxx.to_excel('/Users/jhy/workspace/test_x.xlsx', index=False)
 
-print("=====================")
-print(df_all.shape)
-# 컬럼명 변환
-y_gan = pd.DataFrame(y_gan)
-y_gan.columns = df_all.columns
-print(y_gan.shape)
-print("=====================")
+# print("=====================")
+# print(df_all.shape)
+# # 컬럼명 변환
+# y_gan = pd.DataFrame(y_gan)
+# y_gan.columns = df_all.columns
+# print(y_gan.shape)
+# print("=====================")
 
-# Denormalized
-print("''''''''''''''''''''''''''''''''''''")
-train_mean = df_all.mean()
-train_std = df_all.std()
-print(train_mean)
-print(train_std)
-print("''''''''''''''''''''''''''''''''''''")
+# # Denormalized
+# print("''''''''''''''''''''''''''''''''''''")
+# train_mean = df_all.mean()
+# train_std = df_all.std()
+# print(train_mean)
+# print(train_std)
+# print("''''''''''''''''''''''''''''''''''''")
 
-result = y_gan * train_std + train_mean
-result.pop("Day sin")
-result.pop("Day cos")
-result.pop("Year sin")
-result.pop("Year cos")
+# result = y_gan * train_std + train_mean
+# result.pop("Day sin")
+# result.pop("Day cos")
+# result.pop("Year sin")
+# result.pop("Year cos")
 
-df_date = pd.DataFrame(df_full[0]['측정날짜'][:len(result.index)])
-# df_location = pd.DataFrame(df_full[0]['측정소명'][:len(result.index)])
-result2 = pd.concat([df_date,result],axis=1)
+# df_date = pd.DataFrame(df_full[0]['측정날짜'][:len(result.index)])
+# # df_location = pd.DataFrame(df_full[0]['측정소명'][:len(result.index)])
+# result2 = pd.concat([df_date,result],axis=1)
 
-result2.to_excel('/Users/jhy/workspace/result2.xlsx', index=False)
-result.to_excel('/Users/jhy/workspace/result.xlsx', index=False)
-y_gan.to_excel('/Users/jhy/workspace/noralize_result.xlsx', index=False)
+# result2.to_excel('/Users/jhy/workspace/'+file_names[0][0]+'_'+str(MAX_EPOCHS)+'_result.xlsx', index=False)
+# result.to_excel('/Users/jhy/workspace/result.xlsx', index=False)
+# y_gan.to_excel('/Users/jhy/workspace/noralize_result.xlsx', index=False)
+
 
 ''' result plt '''
 # n = 8

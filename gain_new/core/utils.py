@@ -120,7 +120,7 @@ def createDataFrame(folder, file_names):
             path = os.path.join(folder, file_names[loc][y])
             df_loc.append(pd.read_excel(path))
         df_full.append(pd.concat(df_loc))
-        df.append(df_full[loc].iloc[:, 2:11])
+        df.append(df_full[loc].iloc[:, 2:])
         date_time = pd.to_datetime(df_full[loc].iloc[:, 0], format='%Y.%m.%d %H:%M', utc=True)
         timestamp_s = date_time.map(datetime.datetime.timestamp)
         df[loc]['Day sin'] = np.sin(timestamp_s * (2 * np.pi / day))
