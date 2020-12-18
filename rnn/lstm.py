@@ -7,7 +7,6 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 import tensorflow as tf
-from core.gain_data_generator import GainDataGenerator
 
 # font for korean
 import matplotlib.font_manager as fm
@@ -18,12 +17,12 @@ plt.rcParams["font.family"] = 'NanumGothicCoding-Bold'
 
 target_col = '총유기탄소'
 
-# input_step = 24*7
-# OUT_STEPS = 24
-input_step = 2
-OUT_STEPS = 1
+input_step = 24*7
+OUT_STEPS = 24*3
+# input_step = 2
+# OUT_STEPS = 1
 
-MAX_EPOCHS = 1
+MAX_EPOCHS = 100
 
 # mpl.rcParams['figure.figsize'] = (8, 6)
 # mpl.rcParams['axes.grid'] = False
@@ -36,27 +35,27 @@ df = pd.read_excel("./data/9/2.xlsx")
 # df = pd.read_excel("./data/8/1.xlsx")
 
 
-dgen = GainDataGenerator(df1)
+# dgen = GainDataGenerator(df1)
 
 
-print(dgen)
+# print(dgen)
 
-
-def comfareDf(df1, df2, fill_cnt):
-        if fill_cnt != 0:
-            mask = df1.copy()
-            for i in df1.columns:
-                dfx = pd.DataFrame( df1[i] )
-                dfx['new'] = ((dfx.notnull() != dfx.shift().notnull()).cumsum())
-                dfx['ones'] = 1
-                mask[i] = (dfx.groupby('new')['ones'].transform('count') < fill_cnt + 1) | df1[i].notnull()
-            df = df2.bfill()[mask]
-        return df
-
-# print(df1)
-# print(df2)
-df3 = comfareDf(df1, df, 2)
-print(df3)
+#
+# def comfareDf(df1, df2, fill_cnt):
+#         if fill_cnt != 0:
+#             mask = df1.copy()
+#             for i in df1.columns:
+#                 dfx = pd.DataFrame( df1[i] )
+#                 dfx['new'] = ((dfx.notnull() != dfx.shift().notnull()).cumsum())
+#                 dfx['ones'] = 1
+#                 mask[i] = (dfx.groupby('new')['ones'].transform('count') < fill_cnt + 1) | df1[i].notnull()
+#             df = df2.bfill()[mask]
+#         return df
+#
+# # print(df1)
+# # print(df2)
+# df3 = comfareDf(df1, df, 2)
+# print(df3)
 
 # slice [start:stop:step], starting from index 5 take every 6th record.
 #df1 = df1[5::6]
@@ -219,10 +218,10 @@ WindowGenerator.split_window = split_window
 
 
 # Stack three slices, the length of the total window:
-example_window = tf.stack([np.array(train_df[:w1.total_window_size]),
-                           np.array(train_df[100:100+w1.total_window_size]),
-                           np.array(train_df[200:200+w1.total_window_size])])
-
+# example_window = tf.stack([np.array(train_df[:w1.total_window_size]),
+#                            np.array(train_df[100:100+w1.total_window_size]),
+#                            np.array(train_df[200:200+w1.total_window_size])])
+#
 
 # example_inputs, example_labels = w1.split_window(example_window)
 
@@ -276,7 +275,7 @@ WindowGenerator.plot = plot
 
 
 def make_dataset(self, data):
-  data = np.array(data, dtype=np.float32).dropna()
+  data = np.array(data, dtype=np.float32)
   ds = tf.keras.preprocessing.timeseries_dataset_from_array(
       data=data,
       targets=None,
@@ -353,7 +352,11 @@ multi_performance = {}
 #OUT_STEPS = 24
 multi_window = WindowGenerator(input_width=input_step,
                                label_width=OUT_STEPS,
-                               shift=OUT_STEPS)
+                               shift=OUT_STEPS,
+                               label_columns=[target_col])
+# multi_window = WindowGenerator(input_width=input_step,
+#                               label_width=OUT_STEPS,
+#                               shift=OUT_STEPS)
 
 # multi_window.plot()
 
@@ -362,13 +365,13 @@ multi_window = WindowGenerator(input_width=input_step,
 # test_input, test_label = multi_window.example
 
 
-print('********************************')
-print(multi_window.train_df)
-print('********************************')
-print(multi_window.val_df)
-print('********************************')
-print(multi_window.test_df)
-print('********************************')
+# print('********************************')
+# print(multi_window.train_df)
+# print('********************************')
+# print(multi_window.val_df)
+# print('********************************')
+# print(multi_window.test_df)
+# print('********************************')
 
 
 
@@ -383,9 +386,13 @@ def compile_and_fit(model, window, patience=3):
 
   adam = tf.keras.optimizers.Adam(learning_rate=0.1)
 
+  # model.compile(loss=tf.losses.MeanSquaredError(),
+  #               optimizer=tf.optimizers.Adam(),
+  #               metrics=[tf.metrics.MeanAbsoluteError()])
+
   model.compile(loss=tf.losses.MeanSquaredError(),
-                optimizer=tf.optimizers.Adam(),
-                metrics=[tf.metrics.MeanAbsoluteError()])
+               optimizer=tf.optimizers.Adam(),
+               metrics=[tf.metrics.MeanSquaredError()])
 
   #model.compile(loss=tf.losses.MeanSquaredError(),
   #              optimizer=adam,
@@ -430,8 +437,10 @@ multi_lstm_model = tf.keras.Sequential([
     tf.keras.layers.Reshape([OUT_STEPS, num_features])
 ])
 
-'''
+
 history = compile_and_fit(multi_lstm_model, multi_window, 10)
+
+multi_window.plot(multi_lstm_model)
 
 # print(history.history['loss'])
 # print(history.history['val_loss'])
@@ -446,40 +455,40 @@ history = compile_and_fit(multi_lstm_model, multi_window, 10)
 # multi_window.plot(multi_lstm_model)
 
 
-test_input, test_label = multi_window.example
-
-pred = multi_lstm_model.predict(test_input)
-
-col_num = multi_window.column_indices.get(target_col, None)
-
-
-print('***************1111')
-print(test_label[0,:,col_num])
-print('***************22222')
-print(test_label[:,col_num]*train_std[target_col] + train_mean[target_col])
-
-# # print(pred[0])
-# print(pred[0,:,4])
+# test_input, test_label = multi_window.example
+#
+# pred = multi_lstm_model.predict(test_input)
+#
+# col_num = multi_window.column_indices.get(target_col, None)
 #
 #
+# print('***************1111')
+# print(test_label[0,:,col_num])
 # print('***************22222')
-
-# print(WindowGenerator.label_columns_indices.get(target_col, None))
-# predictions[n, :, label_col_index]
-
-# print('***************')
-# tt = pd.DataFrame(pred[0])
+# print(test_label[:,col_num]*train_std[target_col] + train_mean[target_col])
+#
+# # # print(pred[0])
+# # print(pred[0,:,4])
+# #
+# #
+# # print('***************22222')
+#
+# # print(WindowGenerator.label_columns_indices.get(target_col, None))
+# # predictions[n, :, label_col_index]
+#
+# # print('***************')
+# # tt = pd.DataFrame(pred[0])
+# # print(tt)
+#
+# tt = pd.DataFrame(pred[0,:,col_num])
 # print(tt)
-
-tt = pd.DataFrame(pred[0,:,col_num])
-print(tt)
-
-
-print('***************33333')
-ttt = tt *train_std[target_col] + train_mean[target_col]
-
-print(ttt)
-'''
+#
+#
+# print('***************33333')
+# ttt = tt *train_std[target_col] + train_mean[target_col]
+#
+# print(ttt)
+#
 # tt = pred * train_std + train_mean
 # print(tt)
 # plt.figure()
