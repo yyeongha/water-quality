@@ -3,3 +3,7 @@
   border-radius: 5px;
   background: white !important;
 }
+
+.debug {
+  border: solid 1px #aa97ff;
+}
