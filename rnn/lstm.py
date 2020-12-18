@@ -7,6 +7,7 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 import tensorflow as tf
+from core.gain_data_generator import GainDataGenerator
 
 # font for korean
 import matplotlib.font_manager as fm
@@ -33,6 +34,12 @@ MAX_EPOCHS = 1
 df1 = pd.read_excel("./data/9/1.xlsx")
 df = pd.read_excel("./data/9/2.xlsx")
 # df = pd.read_excel("./data/8/1.xlsx")
+
+
+dgen = GainDataGenerator(df1)
+
+
+print(dgen)
 
 
 def comfareDf(df1, df2, fill_cnt):
