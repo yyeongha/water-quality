@@ -13,13 +13,15 @@ import matplotlib.font_manager as fm
 class WindowGenerator():
     def __init__(self, input_width, label_width, shift,
                 # train_df=train_df, val_df=val_df, test_df=test_df,
-                train_df=None, val_df=None, test_df=None, df=None,
+                train_df=None, val_df=None, test_df=None, df=None, batch_size=32, fill_no=2,
                 label_columns=None):
         # Store the raw data.
         self.train_df = train_df
         self.val_df = val_df
         self.test_df = test_df
         self.df = df
+        self.batch_size = batch_size
+        self.fill_no = fill_no
 
         # Work out the label column indices.
         self.label_columns = label_columns
@@ -73,7 +75,7 @@ class WindowGenerator():
         max_n = min(max_subplots, len(inputs))
         for n in range(max_n):
             plt.subplot(3, 1, n+1)
-            plt.ylabel(f'{plot_col} [normed]', fontproperties=fprop)
+            plt.ylabel(f'{plot_col} [normed]')
             plt.plot(self.input_indices, inputs[n, :, plot_col_index],
                     label='Inputs', marker='.', zorder=-10)
 
@@ -132,10 +134,10 @@ class WindowGenerator():
             self.df,
             input_width = self.input_width,
             label_width = self.label_width,
-            batch_size = 128,
+            batch_size = self.batch_size,
             normalize = False,
-            fill_no = 2,
-            shift=24,
+            fill_no = self.fill_no,
+            shift=self.shift,
             target_col_idx = self.label_columns
         )
         self.dg = dg

@@ -85,6 +85,46 @@ class DataGenerator(keras.utils.Sequence):
 
     def __getitem__(self, index):
         'Generate one batch of data'
+        # print('self.input_width')
+        # print(self.input_width)
+        # print('self.label_width')
+        # print(self.label_width)
+        # print('self.data.shape[1]')
+        # print(self.data.shape[1])
+        #
+        # print('self.batch_size')
+        # print(self.batch_size)
+        #
+        #
+        # x = np.empty((0, self.input_width, self.data.shape[1]))
+        # y = np.empty((0, self.label_width, 1))
+        # for cnt in range(0, self.batch_size):
+        #     i = self.batch_idx[self.batch_id]
+        #     self.batch_id += 1
+        #     self.batch_id %= self.no
+        #     if (self.batch_id == 0):
+        #         self.batch_idx = sample_batch_index(self.no, self.no)
+        #     idx1 = self.data_idx[i]
+        #     idx2 = self.data_idx[i]+self.input_width
+        #     x_d = self.data[idx1:idx2]
+        #     y_d = self.data[idx1:idx2, 3:4]
+        #     x = np.append(x, [x_d], axis=0)
+        #     y = np.append(y, [y_d], axis=0)
+        #
+        #
+        # # x = x_d.reshape(-1, x_d.shape[0],x_d.shape[1]).astype(float)
+        # # y = y_d.reshape(-1, y_d.shape[0],y_d.shape[1]).astype(float)
+        #
+        #
+        # print(np.shape(x))
+        # print(np.shape(y))
+        #
+        #
+        # print('endendendendendendend')
+
+
+
+
 
         x = np.empty((0, self.input_width, self.data.shape[1]))
         y = np.empty((0, self.label_width, self.data.shape[1]))
@@ -98,8 +138,9 @@ class DataGenerator(keras.utils.Sequence):
             idx2 = self.data_idx[i]+self.input_width
 
             X_mb = self.data[idx1:idx2]
-            # Y_mb = self.data[idx2+1:self.total_window_size, self.target_col_idx:self.target_col_idx+1]
-            Y_mb = self.data[idx2+1:self.total_window_size]
+            Y_mb = self.data[idx1:idx2]
+            # Y_mb = self.data[idx2:self.total_window_size, self.target_col_idx:self.target_col_idx]
+            # Y_mb = self.data[idx2:self.total_window_size]
 
             x = np.append(x, [X_mb], axis=0)
             y = np.append(y, [Y_mb], axis=0)
@@ -127,10 +168,10 @@ class DataGenerator(keras.utils.Sequence):
         #     x = np.append(x, [X_mb], axis=0)
         #     y = np.append(y, [Y_mb], axis=0)
 
-        print('xxxxxxxxxxxxxxxxxxxxxxxxxxx')
-        print(x)
-        print('yyyyyyyyyyyyyyyyyyyyyyyyyyy')
-        print(y)
+        # print('xxxxxxxxxxxxxxxxxxxxxxxxxxx')
+        # print(x)
+        # print('yyyyyyyyyyyyyyyyyyyyyyyyyyy')
+        # print(y)
 
         return x, y
 
