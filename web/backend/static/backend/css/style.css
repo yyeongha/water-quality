@@ -5,5 +5,22 @@
 }
 
 .debug {
-  border: solid 1px #aa97ff;
+  border: solid 0px #aa97ff;
+}
+
+.pd-20 {
+  padding: 20px;
+}
+
+.pt-25 {
+  padding-top: 25px;
+}
+
+.fw-bold {
+  font-weight: bold;
+}
+
+.title {
+  font-weight: bold;
+  margin-bottom: 10px;
 }
