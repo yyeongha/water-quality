@@ -81,17 +81,17 @@
 
     <div class="pd-20 debug">
       <div class="title">예측 그래프</div>
-      <canvas id="myChart" width="400" height="100"></canvas>
+      <canvas id="predictGraph" width="400" height="100"></canvas>
     </div>
 
     <div class="pd-20 debug">
       <div class="title">예측 강우량 및 기온</div>
-      <canvas id="myChart2" width="400" height="100"></canvas>
+      <canvas id="predictData" width="400" height="100"></canvas>
     </div>
 
     <div class="pd-20 debug">
       <div class="title">예측 수질</div>
-      <canvas id="myChart3" width="400" height="100"></canvas>
+      <canvas id="predictWater" width="400" height="100"></canvas>
     </div>
   </div>
 {% endblock %}
@@ -299,116 +299,75 @@ for (var i = 0; i < positions.length; i ++) {
 }
 </script>
 <script>
-var ctx = document.getElementById('myChart');
-var myChart = new Chart(ctx, {
-    type: 'bar',
+var predictGraph = document.getElementById('predictGraph');
+var _predictGraph = new Chart(predictGraph, {
+    type: 'line',
     data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-        datasets: [{
-            label: '# of Votes',
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true
-                }
-            }]
-        }
+        labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+        datasets: [
+          {
+            label: '테스트',
+            data: [0, 0, 2, 0, 1.8, 0, 2, 0, 2, 0, 0, 0, 2.3, 2.4, 2.7, 0],
+            borderColor: 'rgba(255, 99, 132, 0.2)',
+            fill: false,
+            lineTension: 0,
+          },
+          {
+            label: '예측',
+            data: [1, -1, 1, 0, 1.5, 0, 1.8, 0, 1.7, 0.3, 0.2, 0.3, 2.1, 2.2, 2.3, 0.1],
+            borderColor: 'rgba(54, 162, 235, 0.2)',
+            fill: false,
+            lineTension: 0,
+          },
+        ]
     }
 });
 
-var ctx = document.getElementById('myChart2');
-var myChart = new Chart(ctx, {
+var predictData = document.getElementById('predictData');
+var _predictData = new Chart(predictData, {
     type: 'bar',
     data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-        datasets: [{
-            label: '# of Votes',
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true
-                }
-            }]
-        }
+        labels: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+        datasets: [
+          {
+            label: '강우량',
+            data: [50, 50, 55, 60, 100, 140, 260, 300, 220, 120, 100, 50],
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            type: 'bar',
+          },
+          {
+            label: '기온',
+            data: [150, 155, 180, 250, 280, 300, 340, 350, 320, 280, 210, 160],
+            type: 'line',
+            borderColor: 'rgba(255, 99, 132, 0.2)',
+            fill: false,
+          },
+        ]
     }
 });
 
-var ctx = document.getElementById('myChart3');
-var myChart = new Chart(ctx, {
+var predictWater = document.getElementById('predictWater');
+var _predictWater = new Chart(predictWater, {
     type: 'bar',
     data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-        datasets: [{
-            label: '# of Votes',
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 1
-        }]
+        labels: ['1일', '2일', '3일', '4일', '5일'],
+        datasets: [
+          {
+            label: '좋음 (4.0 이하)',
+            data: [3, 2, 3, 0, 0],
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+          },
+          {
+            label: '나쁨 (5.0 이상)',
+            data: [0, 0, 0, 8, 9],
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+          }
+        ]
     },
     options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true
-                }
-            }]
+        title: {
+            display: true,
+            text: '수질 기준 (BOD mg/l)'
         }
     }
 });
