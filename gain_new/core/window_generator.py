@@ -168,3 +168,27 @@ class WindowGenerator():
             )
         )
         return ds
+
+    def make_dataset_gain(self, data):
+        dg = GainDataGenerator(
+            df,
+            input_width=self.input_width,
+            label_width=self.label_width,
+            batch_size=128,
+            normalize=False,
+            miss_pattern=True,
+            miss_rate=0.15,
+            fill_no=3,
+        )
+        self.dg = dg
+        ds = tf.data.Dataset.from_generator(
+            lambda: dg,
+            output_types=(tf.float32, tf.float32),
+            output_shapes=(
+                dg.shape,
+                dg.shape
+                # [batch_size, train_generator.dim],
+                # [batch_size, train_generator.dim],
+            )
+        )
+        return ds

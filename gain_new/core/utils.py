@@ -23,14 +23,14 @@ def binary_sampler(p, shape):
     '''Sample binary random variables.
 
     Args:
-    - p: probability of 1
-    - shape: matrix shape
+      - p: probability of 1
+      - shape: matrix shape
 
     Returns:
-    - binary_random_matrix: generated binary random matrix.
+      - binary_random_matrix: generated binary random matrix.
     '''
-    unif_random_matrix = np.random.uniform(0., 1., size = shape)
-    binary_random_matrix = 1*(unif_random_matrix < p)
+    unif_random_matrix = np.random.uniform(0., 1., size=shape)
+    binary_random_matrix = 1 * (unif_random_matrix < p)
     return binary_random_matrix
 
 
@@ -49,16 +49,17 @@ def uniform_sampler(low, high, shape):
     return np.random.uniform(low, high, size = shape)
 
 
-def normalization (data, parameters=None):
+def normalization(data, parameters=None):
     '''Normalize data in [0, 1] range.
 
     Args:
-    - data: original data
+      - data: original data
 
     Returns:
-    - norm_data: normalized data
-    - norm_parameters: min_val, max_val for each feature for renormalization
+      - norm_data: normalized data
+      - norm_parameters: min_val, max_val for each feature for renormalization
     '''
+
     # Parameters
     _, dim = data.shape
     norm_data = data.copy()
@@ -71,22 +72,22 @@ def normalization (data, parameters=None):
 
         # For each dimension
         for i in range(dim):
-            min_val[i] = np.nanmin(norm_data[:,i])
-            norm_data[:,i] = norm_data[:,i] - np.nanmin(norm_data[:,i])
-            max_val[i] = np.nanmax(norm_data[:,i])
-            norm_data[:,i] = norm_data[:,i] / (np.nanmax(norm_data[:,i]) + 1e-6)
+            min_val[i] = np.nanmin(norm_data[:, i])
+            norm_data[:, i] = norm_data[:, i] - np.nanmin(norm_data[:, i])
+            max_val[i] = np.nanmax(norm_data[:, i])
+            norm_data[:, i] = norm_data[:, i] / (np.nanmax(norm_data[:, i]) + 1e-6)
 
         # Return norm_parameters for renormalization
         norm_parameters = {'min_val': min_val,
-                            'max_val': max_val}
+                           'max_val': max_val}
     else:
         min_val = parameters['min_val']
         max_val = parameters['max_val']
 
         # For each dimension
         for i in range(dim):
-            norm_data[:,i] = norm_data[:,i] - min_val[i]
-            norm_data[:,i] = norm_data[:,i] / (max_val[i] + 1e-6)
+            norm_data[:, i] = norm_data[:, i] - min_val[i]
+            norm_data[:, i] = norm_data[:, i] / (max_val[i] + 1e-6)
 
         norm_parameters = parameters
 
@@ -94,7 +95,14 @@ def normalization (data, parameters=None):
 
 
 def interpolate(np_data, max_gap=3):
+    # n = np_data.shape[1]
     data = pd.DataFrame(np_data)
+    # data[0][0] = np.nan
+    # data[0][1] = np.nan
+    # data[0][2] = np.nan
+    # data[data.columns[0]][0] = np.nan
+    # data[data.columns[0]][1] = np.nan
+    # data[data.columns[0]][2] = np.nan
 
     # create mask
     mask = data.copy()
@@ -103,7 +111,13 @@ def interpolate(np_data, max_gap=3):
     for i in data.columns:
         mask[i] = (grp.groupby(i)['ones'].transform('count') < max_gap) | data[i].notnull()
     data = data.interpolate(method='polynomial', order=5, limit=max_gap, axis=0).bfill()[mask]
-    return data
+    return data.to_numpy()
+    # return data
+
+
+# filled_data = interpolate(norm_data, max_gap=3)
+# np.arange(0, 5, dtype=int)
+# ['%d'%val for val in range(0,5)]
 
 
 def createDataFrame(folder, file_names):
@@ -120,7 +134,7 @@ def createDataFrame(folder, file_names):
             path = os.path.join(folder, file_names[loc][y])
             df_loc.append(pd.read_excel(path))
         df_full.append(pd.concat(df_loc))
-        df.append(df_full[loc].iloc[:, 2:])
+        df.append(df_full[loc].iloc[:, 2:11])
         date_time = pd.to_datetime(df_full[loc].iloc[:, 0], format='%Y.%m.%d %H:%M', utc=True)
         timestamp_s = date_time.map(datetime.datetime.timestamp)
         df[loc]['Day sin'] = np.sin(timestamp_s * (2 * np.pi / day))
@@ -130,7 +144,6 @@ def createDataFrame(folder, file_names):
         df[loc] = df[loc].reset_index(drop=True)
 
     df_all = pd.concat(df)
-
     return df, df_full, df_all
 
 
