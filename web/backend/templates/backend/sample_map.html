@@ -47,6 +47,14 @@ var positions = [
     {
         title: '화천',
         latlng: new kakao.maps.LatLng(38.098, 127.709)
+    },
+    {
+        title: '해평',
+        latlng: new kakao.maps.LatLng(36.19357, 128.3628)
+    },
+    {
+        title: '도개',
+        latlng: new kakao.maps.LatLng(36.27315, 128.3458)
     }
 ];
 
@@ -88,12 +96,23 @@ for (var i = 0; i < positions.length; i ++) {
     iwPosition = positions[i].latlng; //인포윈도우 표시 위치입니다
 
     // 인포윈도우를 생성합니다
+    /*
     var infowindow = new kakao.maps.InfoWindow({
         position : iwPosition, 
         content : iwContent 
     });
 
     infowindow.open(map, marker); 
+    */
+
+    // 커스텀 오버레이를 생성합니다
+    var customOverlay = new kakao.maps.CustomOverlay({
+        position: iwPosition,
+        content: iwContent   
+    });
+
+    // 커스텀 오버레이를 지도에 표시합니다
+    customOverlay.setMap(map);
 }
 
 
