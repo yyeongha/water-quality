@@ -1,0 +1,20 @@
+{% load static %}
+
+<html>
+<head>
+  <title>수질예측 | Water Quality Prediction</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="{% static 'backend/img/favicon.png' %}">
+  {% include "backend/layout/css.html" %}
+</head>
+<body>
+
+  {% block content %}
+  {% endblock %}
+  
+  {% include "backend/layout/js.html" %}
+
+  {% block javascript %}
+  {% endblock %}
+</body>
+</html>

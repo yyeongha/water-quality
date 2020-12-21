@@ -1,0 +1,42 @@
+.dropzone {
+  border: 2px dashed #0087F7;
+  border-radius: 5px;
+  background: white !important;
+}
+
+.debug {
+  border: solid 0px #aa97ff;
+}
+
+.pd-20 {
+  padding: 20px;
+}
+
+.pt-25 {
+  padding-top: 25px;
+}
+
+.mr-5 {
+  margin-right: 5px;
+}
+
+.mr-8 {
+  margin-right: 8px;
+}
+
+.fw-bold {
+  font-weight: bold;
+}
+
+.title {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.main-title {
+  font-size: 25px;
+  font-weight: bold;
+}
+.main-title-sub {
+  color: #b9b9b9;
+}
