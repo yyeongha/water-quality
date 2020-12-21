@@ -13,3 +13,9 @@ def index(request):
 def sample_map(request):
     context = {}
     return render(request, 'backend/sample_map.html', context)
+
+
+def sample_datepicker(request):
+    context = {}
+    return render(request, 'backend/sample_datepicker.html', context)
+    

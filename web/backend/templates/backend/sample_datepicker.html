@@ -1,0 +1,47 @@
+{% extends "backend/layout/base.html" %}
+
+{% block content %}
+  <div class="container pt-25 debug">
+    <div class="pd-20 debug">
+      <div class="title">기본</div>
+      <div class="row">
+        <div class="col">
+          <label for="start-train" class="form-label">학습기간</label>
+          <div class="row">
+            <div class="col-5">
+              <input type="text" class="form-control" id="start-train" placeholder="학습 시작일">
+            </div>
+            <div class="col-2 text-center">
+            -
+            </div>
+            <div class="col-5">
+              <input type="text" class="form-control" id="end-train" placeholder="학습 종료일">
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <label for="start-train" class="form-label">예측기간</label>
+          <div class="row">
+            <div class="col-5">
+              <input type="text" class="form-control" id="start-train" placeholder="예측 시작일">
+            </div>
+            <div class="col-2 text-center">
+            -
+            </div>
+            <div class="col-5">
+              <input type="text" class="form-control" id="end-train" placeholder="예측 종료일">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block javascript %}
+<script>
+$(function() {
+  $("#start-train").datepicker();
+});
+</script>
+{% endblock %}
