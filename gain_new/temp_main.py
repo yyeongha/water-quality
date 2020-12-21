@@ -14,8 +14,8 @@ from core.window_generator import WindowGenerator
 from core.utils import *
 
 folder = 'data'
-file_names = [['의암호_2016.xlsx'],['의암호_2017.xlsx'],['의암호_2018.xlsx'],['의암호_2019.xlsx'],
-            ['서상_2016.xlsx'],['서상_2017.xlsx'],['서상_2018.xlsx'],['서상_2019.xlsx']]
+file_names = [['의암호_2016.xlsx'], ['의암호_2017.xlsx'], ['의암호_2018.xlsx'], ['의암호_2019.xlsx'],
+              ['서상_2016.xlsx'], ['서상_2017.xlsx'], ['서상_2018.xlsx'], ['서상_2019.xlsx']]
 # file_names = [['의암호_2016.xlsx'],['의암호_2017.xlsx'],['의암호_2018.xlsx'],['의암호_2019.xlsx'],
 #             ['화천_2016.xlsx'],['화천_2017.xlsx'],['화천_2018.xlsx'],['화천_2019.xlsx']]
 # file_names = [['의암호_2016.xlsx'],['의암호_2017.xlsx'],['의암호_2018.xlsx'],['의암호_2019.xlsx'],
@@ -48,8 +48,8 @@ wide_window = WindowGenerator(
     train_df=df_all,
     val_df=df_all,
     test_df=df_all,
-    input_width=24*5,
-    label_width=24*5,
+    input_width=24 * 5,
+    label_width=24 * 5,
     shift=0
 )
 wide_window.plot(plot_col='총질소')  # create dg issue
@@ -111,12 +111,13 @@ gain.evaluate(wide_window.test.repeat(), steps=100)
 wide_window.plot(gain, plot_col='클로로필-a')
 cnt = 0
 for i in df:
-    # print('iiiiiiiii',i)
-    norm_df = i
-    print('-----------------4', norm_df.shape)
-    data = norm_df.to_numpy()
-    print('data', data.shape[0])
-    total_n = wide_window.dg.data.shape[0]
+    data = []
+    print('i.to_numpy()',i.to_numpy())
+    data = i.to_numpy()
+    print('data--------------', data.shape)
+    # total_n = wide_window.dg.data.shape[0]
+    total_n = len(data)
+    print(type(total_n))
     print('total_n', total_n)
     unit_shape = wide_window.dg.shape[1:]
     print('unit_shape', unit_shape)
@@ -127,7 +128,7 @@ for i in df:
 
     x = data[0:n].copy()
     y_true = data[0:n].copy()
-    x_reshape = x.reshape((-1,)+unit_shape)
+    x_reshape = x.reshape((-1,) + unit_shape)
     isnan = np.isnan(x_reshape)
     isnan = np.isnan(y_true)
 
@@ -145,29 +146,30 @@ for i in df:
     y_remain_pred = y_remain_pred.reshape(x_remain.shape)
 
     y_pred = np.append(y_pred, y_remain_pred[-(total_n - n):], axis=0)
-    print('-----------------1', y_pred.shape)
-    print('-----------------2', x)
-    print('-----------------3', )
-    print('-----------------4', )
-    print('-----------------5', )
+    # print('-----------------1', y_pred.shape)
+    # print('-----------------2', x)
+    # print('-----------------3', )
+    # print('-----------------4', )
+    # print('-----------------5', )
 
     pd.DataFrame(y_pred).to_excel(
         '/Users/jhy/workspace/' + file_names[cnt][0][:8] + '_' + str(MAX_EPOCHS) + '_result.xlsx', index=False)
 
     # Denormalized
-    # train_mean = df_all.mean()
-    # train_std = df_all.std()
+    train_mean = df_all.mean()
+    train_std = df_all.std()
 
-    # result = pd.DataFrame(y_pred) * train_std + train_mean
-    # result.pop("Day sin")
-    # result.pop("Day cos")
-    # result.pop("Year sin")
-    # result.pop("Year cos")
+    result = pd.DataFrame(y_pred) * train_std + train_mean
+    result.pop("Day sin")
+    result.pop("Day cos")
+    result.pop("Year sin")
+    result.pop("Year cos")
 
-    # df_date = pd.DataFrame(df_full[0]['측정날짜'][:len(result.index)])
+    df_date = pd.DataFrame(df_full[0]['측정날짜'][:len(result.index)])
     # df_location = pd.DataFrame(df_full[0]['측정소명'][:len(result.index)])
-    # result = pd.concat([df_date,result],axis=1)
-    # result.to_excel('/Users/jhy/workspace/'+file_names[cnt][0][:5]+'_'+str(MAX_EPOCHS)+'_result.xlsx', index=False)
+    result = pd.concat([df_date,result],axis=1)
+    print('result',result)
+    # result.to_excel('/Users/jhy/workspace/'+file_names[cnt][0][:8]+'_'+str(MAX_EPOCHS)+'_result.xlsx', index=False)
     cnt += 1
 
 # ''' 원본데이터로 테스트 '''

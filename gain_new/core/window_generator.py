@@ -171,7 +171,7 @@ class WindowGenerator():
 
     def make_dataset_gain(self, data):
         dg = GainDataGenerator(
-            df,
+            self.df,
             input_width=self.input_width,
             label_width=self.label_width,
             batch_size=128,

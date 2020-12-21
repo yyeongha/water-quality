@@ -55,7 +55,6 @@ wide_window = WindowGenerator(
     label_width=24*5,
     shift=0
 )
-print(wide_window)
 example_inputs, example_labels = wide_window.example
 wide_window.plot(plot_col='총질소') # create dg issue
 
@@ -114,9 +113,10 @@ gain.evaluate(wide_window.test.repeat(), steps=100)
 wide_window.plot(gain, plot_col='클로로필-a')
 
 ''' 원본 데이터 테스트 '''
+print('type(df)',type(df))
 norm_df = pd.concat(df,axis=0)
 data = norm_df.to_numpy()
-print('data', data.shape[0])
+print('data--------------', data.shape)
 total_n = wide_window.dg.data.shape[0]
 print('total_n', total_n)
 unit_shape = wide_window.dg.shape[1:]
