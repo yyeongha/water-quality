@@ -16,6 +16,14 @@
   padding-top: 25px;
 }
 
+.mr-5 {
+  margin-right: 5px;
+}
+
+.mr-8 {
+  margin-right: 8px;
+}
+
 .fw-bold {
   font-weight: bold;
 }
