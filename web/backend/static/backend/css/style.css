@@ -24,3 +24,11 @@
   font-weight: bold;
   margin-bottom: 10px;
 }
+
+.main-title {
+  font-size: 25px;
+  font-weight: bold;
+}
+.main-title-sub {
+  color: #b9b9b9;
+}
