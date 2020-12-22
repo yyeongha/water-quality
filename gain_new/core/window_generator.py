@@ -17,15 +17,6 @@ for font in font_list:
     if font.find('Nanum') != -1:
         avail_font.append(font)
 
-# font list
-# font_location = '/usr/share/fonts/truetype/nanum/NanumGothicCoding.ttf'
-# font_location = '/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc'
-# font_location = 'C:/Windows/Fonts/NanumGothic.ttf' # For Windows
-# font_location = 'C:/Users/hackx/AppData/Local/Microsoft/Windows/Fonts/NanumGothic.ttf' # For Windows
-fm.get_fontconfig_fonts()
-font_location = avail_font[0] # 나눔 폰트 index 0 사용 (리스트 확인 후 변경가능)
-fprop = fm.FontProperties(fname=font_location)
-
 
 class WindowGenerator():
     def __init__(self, input_width, label_width, shift,
@@ -92,7 +83,7 @@ class WindowGenerator():
         max_n = min(max_subplots, len(inputs))
         for n in range(max_n):
             plt.subplot(3, 1, n+1)
-            plt.ylabel(f'{plot_col} [normed]', fontproperties=fprop)
+            plt.ylabel(f'{plot_col} [normed]')
             plt.plot(self.input_indices, inputs[n, :, plot_col_index],
                         label='Inputs', marker='.', zorder=-10)
 

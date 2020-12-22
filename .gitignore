@@ -3,4 +3,7 @@
 webdb.sqlite3
 .idea
 venv
-./gain_new/data
+gain_new/data
+rnn/data
+rnn/*.xlsx
+rnn/__pycache__

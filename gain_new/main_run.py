@@ -15,25 +15,7 @@ from core.utils import *
 
 folder = 'data'
 
-# file_names = [['의암호_2016.xlsx'], ['의암호_2017.xlsx'], ['의암호_2018.xlsx'], ['의암호_2019.xlsx'],
-#               ['서상_2016.xlsx'], ['서상_2017.xlsx'], ['서상_2018.xlsx'], ['서상_2019.xlsx']]
-
-# file_names = [['의암호_2016.xlsx'],['의암호_2017.xlsx'],['의암호_2018.xlsx'],['의암호_2019.xlsx'],
-#             ['화천_2016.xlsx'],['화천_2017.xlsx'],['화천_2018.xlsx'],['화천_2019.xlsx']]
-
-# file_names = [['의암호_2016.xlsx'],['의암호_2017.xlsx'],['의암호_2018.xlsx'],['의암호_2019.xlsx'],
-#             ['가평_2016.xlsx'],['가평_2017.xlsx'],['가평_2018.xlsx'],['가평_2019.xlsx']]
-
-# file_names = [ ['의암호_2017.xlsx'], ['의암호_2018.xlsx'], ['의암호_2019.xlsx'],['의암호_2016.xlsx'],
-#               ['가평_2016.xlsx'], ['가평_2017.xlsx'], ['가평_2018.xlsx'], ['가평_2019.xlsx'],
-#               ['서상_2016.xlsx'], ['서상_2017.xlsx'], ['서상_2018.xlsx'], ['서상_2019.xlsx']]
-
 file_names = [['가평_2019.xlsx']]
-
-# file_names = [['가평_2016.xlsx','가평_2017.xlsx','가평_2018.xlsx','가평_2019.xlsx'],
-# ['화천_2016.xlsx','화천_2017.xlsx','화천_2018.xlsx','화천_2019.xlsx'],
-# ['의암호_2016.xlsx','의암호_2017.xlsx','의암호_2018.xlsx','의암호_2019.xlsx'],
-# ['서상_2016.xlsx','서상_2017.xlsx','서상_2018.xlsx','서상_2019.xlsx']]
 
 df, df_full, df_all = createDataFrame(folder, file_names)
 
@@ -56,22 +38,11 @@ wide_window = WindowGenerator(
 )
 wide_window.plot(plot_col='총질소')  # create dg issue
 
-''' miss data plt '''
-# plt.figure(figsize=(9,10))
-# n = wide_window.dg.data_m.shape[0]
-# train = n//8
-# for i in range(8):
-#     plt.subplot(181+i)
-#     plt.imshow(wide_window.dg.data_m[i*train:(i+1)*train, 0:7], aspect='auto')
-#     plt.yticks([])
-# plt.show()
-
 val_performance = {}
 performance = {}
 
 gain = GAIN(shape=wide_window.dg.shape[1:], gen_sigmoid=False)
 gain.compile(loss=GAIN.RMSE_loss)
-# if load_yn !=True:
 MAX_EPOCHS = 1
 
 
@@ -93,21 +64,6 @@ history = compile_and_fit(gain, wide_window, patience=MAX_EPOCHS // 5)
 val_performance['Gain'] = gain.evaluate(wide_window.val)
 performance['Gain'] = gain.evaluate(wide_window.test, verbose=0)
 gain.save(save_dir='save')
-
-''' 학습 loss history 출력'''
-# fig = plt.figure()
-# ax = fig.add_subplot(111)
-# ax2 = ax.twinx()
-# ax.plot(history.history['gen_loss'], label='gen_loss')
-# ax.plot(history.history['disc_loss'], label='disc_loss')
-# ax2.plot(history.history['rmse'], label='rmse', color='green')
-# ax2.plot(history.history['val_loss'], label='val_loss', color='red')
-# ax.legend(loc='upper center')
-# ax2.legend(loc='upper right')
-# ax.set_xlabel("epochs")
-# ax.set_ylabel("loss")
-# ax2.set_ylabel("rmse")
-# plt.show()
 
 gain.evaluate(wide_window.test.repeat(), steps=100)
 wide_window.plot(gain, plot_col='클로로필-a')
