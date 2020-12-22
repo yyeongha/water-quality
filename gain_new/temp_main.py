@@ -14,16 +14,17 @@ from core.window_generator import WindowGenerator
 from core.utils import *
 
 folder = 'data'
-file_names = [['의암호_2016.xlsx'], ['의암호_2017.xlsx'], ['의암호_2018.xlsx'], ['의암호_2019.xlsx'],
-              ['서상_2016.xlsx'], ['서상_2017.xlsx'], ['서상_2018.xlsx'], ['서상_2019.xlsx']]
+# file_names = [['의암호_2016.xlsx'], ['의암호_2017.xlsx'], ['의암호_2018.xlsx'], ['의암호_2019.xlsx'],
+#               ['서상_2016.xlsx'], ['서상_2017.xlsx'], ['서상_2018.xlsx'], ['서상_2019.xlsx']]
 # file_names = [['의암호_2016.xlsx'],['의암호_2017.xlsx'],['의암호_2018.xlsx'],['의암호_2019.xlsx'],
 #             ['화천_2016.xlsx'],['화천_2017.xlsx'],['화천_2018.xlsx'],['화천_2019.xlsx']]
 # file_names = [['의암호_2016.xlsx'],['의암호_2017.xlsx'],['의암호_2018.xlsx'],['의암호_2019.xlsx'],
 #             ['가평_2016.xlsx'],['가평_2017.xlsx'],['가평_2018.xlsx'],['가평_2019.xlsx']]
-# file_names = [['의암호_2017.xlsx'], ['의암호_2018.xlsx'], ['의암호_2019.xlsx'],
-#               ['가평_2017.xlsx'], ['가평_2018.xlsx'], ['가평_2019.xlsx']]
+file_names = [ ['의암호_2017.xlsx'], ['의암호_2018.xlsx'], ['의암호_2019.xlsx'],['의암호_2016.xlsx'],
+              ['가평_2016.xlsx'], ['가평_2017.xlsx'], ['가평_2018.xlsx'], ['가평_2019.xlsx'],
+              ['서상_2016.xlsx'], ['서상_2017.xlsx'], ['서상_2018.xlsx'], ['서상_2019.xlsx']]
 # file_names = [['가평_2016.xlsx','가평_2017.xlsx','가평_2018.xlsx', '가평_2019.xlsx'], ['의암호_2016.xlsx','의암호_2017.xlsx','의암호_2018.xlsx', '의암호_2019.xlsx']]
-# file_names = [['의암호_2018.xlsx']]
+# file_names = [['서상_2019.xlsx']]
 
 
 # file_names = [['의암호_2017.xlsx'],['의암호_2016.xlsx']]
@@ -111,8 +112,6 @@ gain.evaluate(wide_window.test.repeat(), steps=100)
 wide_window.plot(gain, plot_col='클로로필-a')
 cnt = 0
 for i in df:
-    data = []
-    print('i.to_numpy()',i.to_numpy())
     data = i.to_numpy()
     print('data--------------', data.shape)
     # total_n = wide_window.dg.data.shape[0]
@@ -143,23 +142,32 @@ for i in df:
     y_remain_pred = gain.predict(x_remain_reshape)
 
     y_pred = y_pred.reshape(y_true.shape)
+    # if y_pred.shape[0] != 8760:
+    #     y_remain_pred = y_remain_pred.reshape(x_remain.shape)
+    #     y_pred = np.append(y_pred, y_remain_pred[-(total_n - n):], axis=0)
     y_remain_pred = y_remain_pred.reshape(x_remain.shape)
-
     y_pred = np.append(y_pred, y_remain_pred[-(total_n - n):], axis=0)
-    # print('-----------------1', y_pred.shape)
-    # print('-----------------2', x)
+
+    print('-----------------1', y_pred.shape)
+    print('-----------------2', x)
     # print('-----------------3', )
     # print('-----------------4', )
     # print('-----------------5', )
 
-    pd.DataFrame(y_pred).to_excel(
-        '/Users/jhy/workspace/' + file_names[cnt][0][:8] + '_' + str(MAX_EPOCHS) + '_result.xlsx', index=False)
+    # pd.DataFrame(y_pred).to_excel(
+    #     '/Users/jhy/workspace/' + file_names[cnt][0][:8] + '_' + str(MAX_EPOCHS) + '_result.xlsx', index=False)
 
     # Denormalized
     train_mean = df_all.mean()
+    # print('train_mean',train_mean)
     train_std = df_all.std()
+    # print('train_std',train_std)
+    # print(pd.DataFrame(y_pred))
 
-    result = pd.DataFrame(y_pred) * train_std + train_mean
+    y_pred = pd.DataFrame(y_pred)
+    y_pred.columns = df_all.columns
+    result = y_pred * train_std + train_mean
+
     result.pop("Day sin")
     result.pop("Day cos")
     result.pop("Year sin")
@@ -167,9 +175,9 @@ for i in df:
 
     df_date = pd.DataFrame(df_full[0]['측정날짜'][:len(result.index)])
     # df_location = pd.DataFrame(df_full[0]['측정소명'][:len(result.index)])
-    result = pd.concat([df_date,result],axis=1)
-    print('result',result)
-    # result.to_excel('/Users/jhy/workspace/'+file_names[cnt][0][:8]+'_'+str(MAX_EPOCHS)+'_result.xlsx', index=False)
+    result = pd.concat([df_date, result], axis=1)
+    result.to_excel('/Users/jhy/workspace/' + file_names[cnt][0][:8] + '_' + str(MAX_EPOCHS) + '_result.xlsx',
+                    index=False)
     cnt += 1
 
 # ''' 원본데이터로 테스트 '''
