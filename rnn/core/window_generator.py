@@ -23,13 +23,15 @@ class WindowGenerator():
         self.batch_size = batch_size
         self.fill_no = fill_no
 
-        # Work out the label column indices.
         self.label_columns = label_columns
+        # Work out the label column indices.
         if label_columns is not None:
             self.label_columns_indices = {name: i for i, name in
                                         enumerate(label_columns)}
         self.column_indices = {name: i for i, name in
                             enumerate(train_df.columns)}
+
+        self.label_columns_idx = self.column_indices[label_columns]
 
         # Work out the window parameters.
         self.input_width = input_width
@@ -129,6 +131,40 @@ class WindowGenerator():
             self._example = result
         return result
 
+
+    # def __len__(self):
+    #     'Denotes the number of batches per epoch'
+    #     return 1
+    #
+    # def __getitem__(self, index):
+    #     'Generate one batch of data'
+    #     x = np.empty((0, self.input_width, self.data.shape[1]))
+    #     y = np.empty((0, self.label_width, 1))
+    #     for cnt in range(0, self.batch_size):
+    #         i = self.batch_idx[self.batch_id]
+    #         self.batch_id += 1
+    #         self.batch_id %= self.no
+    #         if (self.batch_id == 0):
+    #             self.batch_idx = sample_batch_index(self.no, self.no)
+    #
+    #         idx1 = self.data_idx[i]
+    #         idx2 = self.data_idx[i]+self.input_width
+    #         idx3 = idx2 + 1
+    #         idx4 = idx3 + self.label_width
+    #
+    #         X_mb = self.data[idx1:idx2]
+    #         # Y_mb = self.data[idx1:idx2]
+    #         Y_mb = self.data[idx2:self.idx4, 0:1]
+    #         # Y_mb = self.data[idx3:idx4]
+    #     x = np.append(x, [X_mb], axis=0)
+    #     y = np.append(y, [Y_mb], axis=0)
+    #
+    #     return x, y
+    #
+    # def on_epoch_end(self):
+    #     'Updates indexes after each epoch'
+    #     return
+
     def make_dataset(self, data):
         dg = DataGenerator(
             self.df,
@@ -138,17 +174,21 @@ class WindowGenerator():
             normalize = False,
             fill_no = self.fill_no,
             shift=self.shift,
-            target_col_idx = self.label_columns
+            target_col_idx = self.label_columns_idx
         )
         self.dg = dg
+        # print(dg.shape)
         ds = tf.data.Dataset.from_generator(
             lambda: dg,
             output_types=(tf.float32, tf.float32),
-            output_shapes=(
-                dg.shape,
-                dg.shape
+            output_shapes=( dg.shape, [dg.shape[0], self.label_width , 1 ] )
+                # dg.shape,
+                # dg[dg.shape[0],self.label_width,self.label_columns:self.label_columns+1]
+
+                # [idx2:self.total_window_size, self.target_col_idx:self.target_col_idx]
+                # dg.shape
                 #[batch_size, train_generator.dim],
                 #[batch_size, train_generator.dim],
-            )
+            # )
         )
         return ds

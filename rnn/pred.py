@@ -21,7 +21,7 @@ plt.rcParams["font.family"] = 'NanumGothicCoding-Bold'
 target_col = '총유기탄소'
 
 input_step = 24*7
-OUT_STEPS = 24*7
+OUT_STEPS = 24*3
 fill_no = 3
 # input_step = 2
 # OUT_STEPS = 1
@@ -51,7 +51,6 @@ target_col_idx = label_columns_indices[target_col]
 
 
 dgen = DataGenerator(df, origin_data= origin_df, fill_no=fill_no, input_width=input_step, label_width=OUT_STEPS, target_col_idx=target_col_idx)
-
 n = len(df)
 # print(n)
 train_df = df[0:int(n*0.7)]

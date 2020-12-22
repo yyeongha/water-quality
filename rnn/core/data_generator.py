@@ -22,6 +22,9 @@ class DataGenerator(keras.utils.Sequence):
         window_size = input_width
         self.total_window_size = input_width + shift
 
+        print('target_col_idxtarget_col_idxtarget_col_idxtarget_col_idxtarget_col_idxtarget_col_idx')
+        print(target_col_idx)
+
         self.target_col_idx = target_col_idx
 
         # self.data_idx = data_idx
@@ -127,7 +130,9 @@ class DataGenerator(keras.utils.Sequence):
 
 
         x = np.empty((0, self.input_width, self.data.shape[1]))
-        y = np.empty((0, self.label_width, self.data.shape[1]))
+        y = np.empty((0, self.label_width, 1))
+
+
         for cnt in range(0, self.batch_size):
             i = self.batch_idx[self.batch_id]
             self.batch_id += 1
@@ -136,11 +141,27 @@ class DataGenerator(keras.utils.Sequence):
                 self.batch_idx = sample_batch_index(self.no, self.no)
             idx1 = self.data_idx[i]
             idx2 = self.data_idx[i]+self.input_width
+            idx3 = idx2 + 1
+            idx4 = idx3 + self.label_width
+
+
+            # print('idx1idx1idx1idx1idx1idx1idx1idx1')
+            # print(idx1)
+            # print('input_widthinput_widthinput_widthinput_widthinput_width')
+            # print(self.input_width)
+            # print('idx2idx2idx2idx2idx2idx2idx2idx2idx2')
+            # print(idx2)
+            # print('label_widthlabel_widthlabel_widthlabel_widthlabel_widthlabel_width')
+            # print(self.label_width)
+            # print('total_window_size')
+            # print(self.total_window_size) 
+            # print('i11111111111')
+
 
             X_mb = self.data[idx1:idx2]
-            Y_mb = self.data[idx1:idx2]
-            # Y_mb = self.data[idx2:self.total_window_size, self.target_col_idx:self.target_col_idx]
-            # Y_mb = self.data[idx2:self.total_window_size]
+            # Y_mb = self.data[idx1:idx2]
+            Y_mb = self.data[idx3:idx4, self.target_col_idx:self.target_col_idx + 1]
+            # Y_mb = self.data[idx3:idx4]
 
             x = np.append(x, [X_mb], axis=0)
             y = np.append(y, [Y_mb], axis=0)
