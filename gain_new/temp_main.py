@@ -20,11 +20,11 @@ folder = 'data'
 #             ['화천_2016.xlsx'],['화천_2017.xlsx'],['화천_2018.xlsx'],['화천_2019.xlsx']]
 # file_names = [['의암호_2016.xlsx'],['의암호_2017.xlsx'],['의암호_2018.xlsx'],['의암호_2019.xlsx'],
 #             ['가평_2016.xlsx'],['가평_2017.xlsx'],['가평_2018.xlsx'],['가평_2019.xlsx']]
-file_names = [ ['의암호_2017.xlsx'], ['의암호_2018.xlsx'], ['의암호_2019.xlsx'],['의암호_2016.xlsx'],
-              ['가평_2016.xlsx'], ['가평_2017.xlsx'], ['가평_2018.xlsx'], ['가평_2019.xlsx'],
-              ['서상_2016.xlsx'], ['서상_2017.xlsx'], ['서상_2018.xlsx'], ['서상_2019.xlsx']]
+# file_names = [ ['의암호_2017.xlsx'], ['의암호_2018.xlsx'], ['의암호_2019.xlsx'],['의암호_2016.xlsx'],
+#               ['가평_2016.xlsx'], ['가평_2017.xlsx'], ['가평_2018.xlsx'], ['가평_2019.xlsx'],
+#               ['서상_2016.xlsx'], ['서상_2017.xlsx'], ['서상_2018.xlsx'], ['서상_2019.xlsx']]
 # file_names = [['가평_2016.xlsx','가평_2017.xlsx','가평_2018.xlsx', '가평_2019.xlsx'], ['의암호_2016.xlsx','의암호_2017.xlsx','의암호_2018.xlsx', '의암호_2019.xlsx']]
-# file_names = [['서상_2019.xlsx']]
+file_names = [['가평_2019.xlsx']]
 
 
 # file_names = [['의암호_2017.xlsx'],['의암호_2016.xlsx']]
@@ -142,11 +142,11 @@ for i in df:
     y_remain_pred = gain.predict(x_remain_reshape)
 
     y_pred = y_pred.reshape(y_true.shape)
-    # if y_pred.shape[0] != 8760:
-    #     y_remain_pred = y_remain_pred.reshape(x_remain.shape)
-    #     y_pred = np.append(y_pred, y_remain_pred[-(total_n - n):], axis=0)
-    y_remain_pred = y_remain_pred.reshape(x_remain.shape)
-    y_pred = np.append(y_pred, y_remain_pred[-(total_n - n):], axis=0)
+    if y_pred.shape[0] != 8760:
+        y_remain_pred = y_remain_pred.reshape(x_remain.shape)
+        y_pred = np.append(y_pred, y_remain_pred[-(total_n - n):], axis=0)
+    # y_remain_pred = y_remain_pred.reshape(x_remain.shape)
+    # y_pred = np.append(y_pred, y_remain_pred[-(total_n - n):], axis=0)
 
     print('-----------------1', y_pred.shape)
     print('-----------------2', x)
@@ -176,7 +176,7 @@ for i in df:
     df_date = pd.DataFrame(df_full[0]['측정날짜'][:len(result.index)])
     # df_location = pd.DataFrame(df_full[0]['측정소명'][:len(result.index)])
     result = pd.concat([df_date, result], axis=1)
-    result.to_excel('/Users/jhy/workspace/' + file_names[cnt][0][:8] + '_' + str(MAX_EPOCHS) + '_result.xlsx',
+    result.to_excel('./data/' + file_names[cnt][0][:8] + '_' + str(MAX_EPOCHS) + '_result.xlsx',
                     index=False)
     cnt += 1
 

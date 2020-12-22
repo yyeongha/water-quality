@@ -3,3 +3,4 @@
 webdb.sqlite3
 .idea
 venv
+./gain_new/data
