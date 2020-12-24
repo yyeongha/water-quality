@@ -17,18 +17,18 @@ from core.utils import *
 folder = 'data'
 file_names = [['가평_2019.xlsx']]
 
-df, df_full, df_all = createDataFrame(folder, file_names)
+df_list, df_full, df_all = createDataFrame(folder, file_names)
 
-standardNormalization(df, df_all)
+standardNormalization(df_list, df_all)
 
-dgen = GainDataGenerator(df)
+dgen = GainDataGenerator(df_list)
 
-train_df = df[0]
-val_df = df[0]
-test_df = df[0]
+train_df = df_list[0]
+val_df = df_list[0]
+test_df = df_list[0]
 
 wide_window = WindowGenerator(
-    df=df,
+    df=df_list,
     train_df=df_all,
     val_df=df_all,
     test_df=df_all,
@@ -68,27 +68,19 @@ gain.save(save_dir='save')
 gain.evaluate(wide_window.test.repeat(), steps=100)
 wide_window.plot(gain, plot_col='클로로필-a')
 
+# custom logic
 cnt = 0
-for i in df:
-    data = i.to_numpy()
-    print('data--------------', data.shape)
-    # total_n = wide_window.dg.data.shape[0]
+for df in df_list:
+    data = df.to_numpy()
     total_n = len(data)
-    print(type(total_n))
-    print('total_n', total_n)
     unit_shape = wide_window.dg.shape[1:]
-    print('unit_shape', unit_shape)
     dim = wide_window.dg.shape[1]
-    print('dim', dim)
     n = (total_n // dim) * dim
-    print('n', n)
-
     x = data[0:n].copy()
     y_true = data[0:n].copy()
     x_reshape = x.reshape((-1,) + unit_shape)
     isnan = np.isnan(x_reshape)
     isnan = np.isnan(y_true)
-
     x_remain = data[-wide_window.dg.shape[1]:].copy()
     x_remain_reshape = x_remain.reshape((-1,) + unit_shape)
     x_remain_reshape.shape
@@ -98,28 +90,24 @@ for i in df:
 
     y_pred = gain.predict(x_reshape)
     y_remain_pred = gain.predict(x_remain_reshape)
-
     y_pred = y_pred.reshape(y_true.shape)
+
     if y_pred.shape[0] != 8760:
         y_remain_pred = y_remain_pred.reshape(x_remain.shape)
         y_pred = np.append(y_pred, y_remain_pred[-(total_n - n):], axis=0)
 
-    # Denormalized
+    # denormalized
     train_mean = df_all.mean()
     train_std = df_all.std()
-
     y_pred = pd.DataFrame(y_pred)
     y_pred.columns = df_all.columns
     result = y_pred * train_std + train_mean
 
-    result.pop("Day sin")
-    result.pop("Day cos")
-    result.pop("Year sin")
-    result.pop("Year cos")
+    remove_col = ["Day sin", "Day cos", "Year sin", "Year cos"]
+    for col in remove_col:
+        result.pop(col)
 
     df_date = pd.DataFrame(df_full[0]['측정날짜'][:len(result.index)])
-    # df_location = pd.DataFrame(df_full[0]['측정소명'][:len(result.index)])
     result = pd.concat([df_date, result], axis=1)
-    result.to_excel('./data/' + file_names[cnt][0][:8] + '_' + str(MAX_EPOCHS) + '_result.xlsx',
-                    index=False)
+    result.to_excel('./data/' + file_names[cnt][0][:8] + '_' + str(MAX_EPOCHS) + '_result.xlsx', index=False)
     cnt += 1

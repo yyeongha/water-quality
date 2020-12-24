@@ -5,12 +5,11 @@ from core.gain_data_generator import GainDataGenerator
 from core.utils import *
 import matplotlib.pyplot as plt
 
-
 ''' font '''
 import matplotlib
 import matplotlib.font_manager as fm
 
-# 나눔 폰트 리스트업
+# listup Nanum font
 avail_font = []
 font_list = fm.findSystemFonts(fontpaths=None, fontext='ttf')
 for font in font_list:
@@ -20,7 +19,6 @@ for font in font_list:
 
 class WindowGenerator():
     def __init__(self, input_width, label_width, shift,
-                # train_df=train_df, val_df=val_df, test_df=test_df,
                 train_df=None, val_df=None, test_df=None, df=None,
                 label_columns=None):
         # Store the raw data.
@@ -73,9 +71,6 @@ class WindowGenerator():
 
         return inputs, labels
 
-
-
-
     def plot(self, model=None, plot_col='T (degC)', max_subplots=3):
         inputs, labels = self.example
         plt.figure(figsize=(10, 8))
@@ -108,21 +103,16 @@ class WindowGenerator():
 
         plt.xlabel('Time [h]')
 
-    # WindowGenerator.plot = plot
-
     @property
     def train(self):
-        print('@@@ train')
         return self.make_dataset(self.train_df)
 
     @property
     def val(self):
-        print('@@@ val')
         return self.make_dataset(self.val_df)
 
     @property
     def test(self):
-        print('@@@ test')
         return self.make_dataset(self.test_df)
 
     @property
@@ -154,8 +144,6 @@ class WindowGenerator():
             output_shapes=(
                 dg.shape,
                 dg.shape
-                #[batch_size, train_generator.dim],
-                #[batch_size, train_generator.dim],
             )
         )
         return ds
@@ -178,8 +166,6 @@ class WindowGenerator():
             output_shapes=(
                 dg.shape,
                 dg.shape
-                # [batch_size, train_generator.dim],
-                # [batch_size, train_generator.dim],
             )
         )
         return ds

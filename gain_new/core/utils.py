@@ -95,14 +95,7 @@ def normalization(data, parameters=None):
 
 
 def interpolate(np_data, max_gap=3):
-    # n = np_data.shape[1]
     data = pd.DataFrame(np_data)
-    # data[0][0] = np.nan
-    # data[0][1] = np.nan
-    # data[0][2] = np.nan
-    # data[data.columns[0]][0] = np.nan
-    # data[data.columns[0]][1] = np.nan
-    # data[data.columns[0]][2] = np.nan
 
     # create mask
     mask = data.copy()
@@ -112,12 +105,6 @@ def interpolate(np_data, max_gap=3):
         mask[i] = (grp.groupby(i)['ones'].transform('count') < max_gap) | data[i].notnull()
     data = data.interpolate(method='polynomial', order=5, limit=max_gap, axis=0).bfill()[mask]
     return data.to_numpy()
-    # return data
-
-
-# filled_data = interpolate(norm_data, max_gap=3)
-# np.arange(0, 5, dtype=int)
-# ['%d'%val for val in range(0,5)]
 
 
 def createDataFrame(folder, file_names):
@@ -128,7 +115,6 @@ def createDataFrame(folder, file_names):
     df = []
 
     for loc in range(len(file_names)):
-    
         df_loc = []
         for y in range(len(file_names[loc])):
             path = os.path.join(folder, file_names[loc][y])

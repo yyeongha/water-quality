@@ -19,7 +19,7 @@ venv\Scripts\activate
 
 pip install -r requirements.txt
 
-python main_run.py
+python main.py
 ```
 
 ### 디렉토리 설명
@@ -46,7 +46,7 @@ save
 
 ### 파일 설명
 
-main_run.py
+main.py
 ```
 실행 스크립트 파일
 ```

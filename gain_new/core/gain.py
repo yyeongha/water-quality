@@ -31,8 +31,6 @@ class GAIN(keras.Model):
         xavier_initializer = tf.keras.initializers.GlorotNormal()
 
         shape = self.shape
-        # x = Input(shape=(self.dim,), name='generator_input_x')
-        # m = Input(shape=(self.dim,), name='generator_input_m')
         x = Input(shape=shape, name='generator_input_x')
         m = Input(shape=shape, name='generator_input_m')
 
@@ -42,9 +40,7 @@ class GAIN(keras.Model):
         a = Concatenate()([x_f, m_f])
 
         a = Dense(self.h_dim, activation='relu', kernel_initializer=xavier_initializer)(a)
-        # a = keras.layers.BatchNormalization()(a)
         a = Dense(self.h_dim, activation='relu', kernel_initializer=xavier_initializer)(a)
-        # a = keras.layers.BatchNormalization()(a)
         a = Dense(self.dim, activation=last_activation, kernel_initializer=xavier_initializer)(a)
         G_prob = keras.layers.Reshape(shape)(a)
         self.generator = keras.models.Model([x, m], G_prob, name='generator')
@@ -53,8 +49,6 @@ class GAIN(keras.Model):
         xavier_initializer = tf.keras.initializers.GlorotNormal()
         shape = self.shape
 
-        # x = Input(shape=(self.dim,), name='discriminator_input_x')
-        # h = Input(shape=(self.dim,), name='discriminator_input_h')
         x = Input(shape=shape, name='discriminator_input_x')
         h = Input(shape=shape, name='discriminator_input_h')
 
@@ -75,30 +69,13 @@ class GAIN(keras.Model):
         shape = inputs.shape
         dims = np.prod(shape[1:])
         input_width = shape[1]
-        # print('inputs.shape=',inputs.shape)
         x = inputs
-        # x = x.reshape((n, -1))
-        # print('dims=',dims)
-        # x = keras.layers.Reshape((dims,))(x)
-        # x = keras.layers.Reshape(tf.TensorShape((self.dim,)))(x)
-        # print('x =', x)
-        # print('x.shape = ', x.shape)
-        # x = keras.layers.Reshape(tf.TensorShape([57]))(x)
-
         isnan = tf.math.is_nan(x)
-        # m = 1.- keras.backend.cast(isnan, dtype=tf.float32)
         m = tf.where(isnan, 0., 1.)
         z = keras.backend.random_uniform(shape=tf.shape(x), minval=0.0, maxval=0.01)
         x = tf.where(isnan, z, x)
-        # z = uniform_sampler(0, 0.01, shape=x.shape)
-        # z = tf.keras.backend.random_uniform(shape=x.shape, minval=0.0, maxval=0.01)
         imputed_data = self.generator([x, m], training=False)
-        # imputed_data = m*x + (1-m)*imputed_data
-        # imputed_data = tf.where(isnan, imputed_data, np.nan)
         imputed_data = tf.where(isnan, imputed_data, x)
-        # imputed_data = keras.layers.Reshape(shape[1:])(imputed_data)
-        # print('imputed_data.shape = ', imputed_data.shape)
-
         return imputed_data
 
     def D_loss(M, D_prob):
@@ -109,8 +86,6 @@ class GAIN(keras.Model):
     def G_loss(self, M, D_prob, X, G_sample):
         G_loss_temp = -tf.reduce_mean((1 - M) * tf.keras.backend.log(D_prob + 1e-8))
         MSE_loss = tf.reduce_mean((M * X - M * G_sample) ** 2) / (tf.reduce_mean(M) + 1e-8)
-        # G_loss_temp = GAIN.G_loss_bincross(M, D_prob)
-        # MSE_loss = GAIN.MSE_loss(M, X, G_sample)
         G_loss = G_loss_temp + self.alpha * MSE_loss
         return G_loss
 
@@ -120,40 +95,25 @@ class GAIN(keras.Model):
         return tf.sqrt(tf.reduce_sum(tf.where(isnan, 0., y_pred - y_true) ** 2) / tf.reduce_sum(1 - M))
 
     def train_step(self, data):
-        # [x, m, h], y = data
         x, y = data
-        # X = keras.layers.Reshape((self.dim,), input_shape=self.shape)(x)
-        # Y = keras.layers.Reshape((self.dim,), input_shape=self.shape)(y)
-        # X = keras.layers.Flatten()(x)
-        # Y = keras.layers.Flatten()(y)
         X = x
         Y = y
-        # X = tf.reshape(x, shape=(x.shape[0], -1))
-        # Y = tf.reshape(y, shape=(x.shape[0], -1))
         isnan = tf.math.is_nan(X)
-        # M = 1 - keras.backend.cast(isnan, dtype=tf.float32)
         M = tf.where(isnan, 0., 1.)
         Z = keras.backend.random_uniform(shape=tf.shape(X), minval=0.0, maxval=0.01)
-        # H_temp = binary_sampler(self.hint_rate, shape=X.shape)
         H_rand = keras.backend.random_uniform(shape=tf.shape(X), minval=0.0, maxval=1.)
-        # H_temp = 1*keras.backend.cast((H_rand < self.hint_rate), dtype=tf.float32)
         H_temp = tf.where(H_rand < self.hint_rate, 1., 0.)
-
         H = M * H_temp
-        # X = M * X + (1-M) * Z
         X = tf.where(isnan, Z, X)
         with tf.GradientTape() as gen_tape, tf.GradientTape() as disc_tape:
             G_sample = self.generator([X, M], training=True)
 
             # Combine with observed data
-            # Hat_X = tf.where(isnan, G_sample, X)
             Hat_X = X * M + G_sample * (1 - M)
             D_prob = self.discriminator([Hat_X, H], training=True)
             gen_loss = self.G_loss(M, D_prob, X, G_sample)
             disc_loss = tf.keras.backend.mean(tf.keras.losses.binary_crossentropy(M, D_prob))
-            # disc_loss = GAIN.D_loss(M, D_prob)
-            # disc_loss = GAIN.D_loss(M, D_prob)
-
+            
         gradients_of_generator = gen_tape.gradient(gen_loss, self.generator.trainable_variables)
         gradients_of_discriminator = disc_tape.gradient(disc_loss, self.discriminator.trainable_variables)
 
