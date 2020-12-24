@@ -1,5 +1,6 @@
+# 수질예측 (gain)
 
-# 수질예측 (dev-gain)
+## this project not use now
 
 ### 개발환경
 ```
@@ -16,6 +17,7 @@ Python 3.7.9
 
 - 디버깅을 위한 소스정리 (2020-12-10)
 => dev-gain-backup3 브랜치 프리징
+
 ```
 
 ### 프로젝트 실행
