@@ -1,20 +1,20 @@
 import pandas as pd
 import numpy as np
-from glob import glob
 import matplotlib.pyplot as plt
+import tensorflow as tf
 
+from glob import glob
 from tensorflow.keras.layers import Input, Concatenate, Dot, Add, ReLU, Activation
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.optimizers import Adam
-import tensorflow as tf
 
 from core.gain import GAIN
 from core.gain_data_generator import GainDataGenerator
 from core.window_generator import WindowGenerator
 from core.utils import *
 
-folder = 'data'
 
+folder = 'data'
 file_names = [['가평_2019.xlsx']]
 
 df, df_full, df_all = createDataFrame(folder, file_names)
@@ -67,6 +67,7 @@ gain.save(save_dir='save')
 
 gain.evaluate(wide_window.test.repeat(), steps=100)
 wide_window.plot(gain, plot_col='클로로필-a')
+
 cnt = 0
 for i in df:
     data = i.to_numpy()

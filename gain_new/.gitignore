@@ -1,6 +1,40 @@
+# gain_new gitignore
+# 각 프로젝트 .gitignore 사용 권장합니다
+
 venv
 __pycache__
 *.pyc
-../.idea/
-../venv/
-data
+
+# data directory
+data/*
+save/*
+output/*
+
+# freeze directory
+!data/가평_2015.xlsx
+!data/가평_2016.xlsx
+!data/가평_2017.xlsx
+!data/가평_2018.xlsx
+!data/가평_2019.xlsx
+
+!data/서상_2015.xlsx
+!data/서상_2016.xlsx
+!data/서상_2017.xlsx
+!data/서상_2018.xlsx
+!data/서상_2019.xlsx
+
+!data/의암호_2015.xlsx
+!data/의암호_2016.xlsx
+!data/의암호_2017.xlsx
+!data/의암호_2018.xlsx
+!data/의암호_2019.xlsx
+
+!data/화천_2015.xlsx
+!data/화천_2016.xlsx
+!data/화천_2017.xlsx
+!data/화천_2018.xlsx
+!data/화천_2019.xlsx
+
+!output/dummy
+
+!save/dummy

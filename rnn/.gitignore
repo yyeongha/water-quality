@@ -1,0 +1,4 @@
+# rnn gitignore
+# 각 프로젝트 .gitignore 사용 권장합니다
+
+__pycache__
