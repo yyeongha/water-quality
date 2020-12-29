@@ -18,7 +18,7 @@ class GainDataGenerator(keras.utils.Sequence):
                  miss_rate=0.2,
                  hint_rate=0.9,
                  normalize=True,
-                 miss_pattern=None,
+                 miss_pattern=5,
                  alpha=100.):
         'Initialization'
         window_size = input_width

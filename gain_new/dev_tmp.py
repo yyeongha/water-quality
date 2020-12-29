@@ -343,11 +343,11 @@ for i in df:
 
 
 # ''' result plt '''
-# n = 8
-# plt.figure(figsize=(9,20))
-# for i in range(n):
-#     #plt.subplot('%d1%d'%(n,i))
-#     plt.subplot(811+i)
-#     plt.plot(x[:, i])
-#     plt.plot(y_pred[:, i])
-# plt.show()
+n = 8
+plt.figure(figsize=(9,20))
+for i in range(n):
+    #plt.subplot('%d1%d'%(n,i))
+    plt.subplot(811+i)
+    plt.plot(x[:, i])
+    plt.plot(y_pred[:, i])
+plt.show()

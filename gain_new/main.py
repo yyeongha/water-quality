@@ -13,12 +13,11 @@ from core.gain_data_generator import GainDataGenerator
 from core.window_generator import WindowGenerator
 from core.utils import *
 
-
 folder = 'data'
-file_names = [['가평_2019.xlsx']]
+file_names = [['의암호_2017.xlsx'], ['의암호_2018.xlsx'], ['의암호_2019.xlsx']]
 
 df_list, df_full, df_all = createDataFrame(folder, file_names)
-
+ddd = df_list.copy()
 standardNormalization(df_list, df_all)
 
 dgen = GainDataGenerator(df_list)
@@ -43,7 +42,7 @@ performance = {}
 
 gain = GAIN(shape=wide_window.dg.shape[1:], gen_sigmoid=False)
 gain.compile(loss=GAIN.RMSE_loss)
-MAX_EPOCHS = 1
+MAX_EPOCHS = 1500
 
 
 def compile_and_fit(model, window, patience=10):
@@ -103,11 +102,39 @@ for df in df_list:
     y_pred.columns = df_all.columns
     result = y_pred * train_std + train_mean
 
-    remove_col = ["Day sin", "Day cos", "Year sin", "Year cos"]
-    for col in remove_col:
-        result.pop(col)
+    # remove_col = ["Day sin", "Day cos", "Year sin", "Year cos"]
+    # for col in remove_col:
+    #     result.pop(col)
+    result.pop("Day sin")
+    result.pop("Day cos")
+    result.pop("Year sin")
+    result.pop("Year cos")
 
     df_date = pd.DataFrame(df_full[0]['측정날짜'][:len(result.index)])
     result = pd.concat([df_date, result], axis=1)
     result.to_excel('./data/' + file_names[cnt][0][:8] + '_' + str(MAX_EPOCHS) + '_result.xlsx', index=False)
     cnt += 1
+
+# ''' result plt '''
+# y_pred.pop("Day sin")
+# y_pred.pop("Day cos")
+# y_pred.pop("Year sin")
+# y_pred.pop("Year cos")
+# y_pred = y_pred.values
+#
+# plot_data = pd.DataFrame(data)
+# plot_data.pop(12)
+# plot_data.pop(11)
+# plot_data.pop(10)
+# plot_data.pop(9)
+#
+# plot_data = plot_data.values
+# y_pred[~np.isnan(plot_data)] = np.nan
+# n = 8
+# plt.figure(figsize=(9,20))
+# for i in range(n):
+#     #plt.subplot('%d1%d'%(n,i))
+#     plt.subplot(811+i)
+#     plt.plot(x[:, i])
+#     plt.plot(y_pred[:, i])
+# plt.show()
