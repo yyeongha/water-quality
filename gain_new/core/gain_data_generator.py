@@ -19,7 +19,8 @@ class GainDataGenerator(keras.utils.Sequence):
                  hint_rate=0.9,
                  normalize=True,
                  miss_pattern=5,
-                 alpha=100.):
+                 alpha=100.,
+                 max_tseq=12):
         'Initialization'
         window_size = input_width
 
@@ -28,14 +29,13 @@ class GainDataGenerator(keras.utils.Sequence):
         for data in data_list:
             data = interpolate(data, max_gap=fill_no)
             filled_data.append(data)
-
         data_list = filled_data
 
         # whole data
         self.data = np.concatenate(data_list)
 
         # TO-DO
-        # pre calculation for  sequence data
+        # pre calculation for sequence data
         last_cum = 0
         cums = []
         for data in data_list:
@@ -49,7 +49,7 @@ class GainDataGenerator(keras.utils.Sequence):
             last_cum = np.max(cum)
             cum[isany] = 0
             cums.append(cum)
-
+       
         # normlize for spam
         if normalize:
             self.data, norm_param = normalization(self.data)
@@ -58,15 +58,27 @@ class GainDataGenerator(keras.utils.Sequence):
         if miss_pattern is None:
             self.data_m = binary_sampler(1 - miss_rate, self.data.shape)
         else:
+            # issue: idx.npy, miss.npy not generate fix
+            MissData(load_dir=None).save(data=self.data, max_tseq=max_tseq)
+
+            # use idx.npy, miss.npy
             self.miss = MissData(load_dir='save')
             self.miss_rate = miss_rate
-            miss_data = self.miss.make_missdata(self.data, self.miss_rate)
+            miss_data = self.miss.make_missdata(data_x=self.data, missrate=self.miss_rate)
+            
             self.data_m = 1. - np.isnan(miss_data).astype(float)
-
             self.data_m_rand = binary_sampler(1 - (miss_rate / 10.), self.data.shape)
             self.data_m[self.data_m_rand == 0.] = 0.
         self.miss_pattern = miss_pattern
 
+        print('---------------------------------')
+        print(self.data)
+        print('---------------------------------')
+        print(self.data_m)
+        print('---------------------------------')
+        print(self.miss_pattern)
+        print('---------------------------------')
+        
         # sequence data
         self.ids = np.concatenate(cums)
         data_idx = np.empty((0), dtype=int)
@@ -91,10 +103,12 @@ class GainDataGenerator(keras.utils.Sequence):
 
     def __len__(self):
         'Denotes the number of batches per epoch'
+        print('dgen __len__ call ###')
         return 1
 
     def __getitem__(self, index):
         'Generate one batch of data'
+        print('dgen __getitem__ call ###')
         x = np.empty((0, self.input_width, self.data.shape[1]))
         y = np.empty((0, self.input_width, self.data.shape[1]))
         for cnt in range(0, self.batch_size):

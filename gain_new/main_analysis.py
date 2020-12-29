@@ -15,13 +15,25 @@ from core.utils import *
 
 
 folder = 'data'
-file_names = [['의암호_2017.xlsx'], ['의암호_2018.xlsx'], ['의암호_2019.xlsx']]
+file_names = [['의암호_2018.xlsx'], ['의암호_2019.xlsx']]
+# file_names = [['의암호_2018.xlsx']]
 
+
+# df_list 는 Day sin, Day cos, Year sin, Year cos 컬럼을 추가한 각각의 dataframe을 포함하고 있음 (2~10 컬럼 하드코딩)
+# df_full 은 입력으로 받은 원본 그대로를 각각의 dataframe을 포함하고 있음
+# df_all 은 df_list 를 행 기준으로 concat 한 하나의 dataframe
 df_list, df_full, df_all = createDataFrame(folder, file_names)
-ddd = df_list.copy()
+
+# df_all 의 평균, 표준편차를 사용함
+# df_list 를 대상으로 df_all 의 평균, 표준편차로 정규화 진행
+# 리스트 아이템의 주소를 참조하기 때문에 return 없이 값이 변경됨
 standardNormalization(df_list, df_all)
 
-dgen = GainDataGenerator(df_list)
+# df_list로 dgen 객체를 생성함
+# 이 때 내부적으로 아래의 과정을 순차적으로 진행함
+# data_list의 각각의 dataframe에 대해 interpolate 처리 함 (default: fill_no=4)
+# interpolate 된 dataframe은 self.data 에 저장됨
+dgen = GainDataGenerator(data_list=df_list, normalize=False, max_tseq=12)
 
 train_df = df_list[0]
 val_df = df_list[0]
@@ -38,20 +50,20 @@ wide_window = WindowGenerator(
 )
 wide_window.plot(plot_col='총질소')  # create dg issue
 
+exit(0)
+
 val_performance = {}
 performance = {}
 
 gain = GAIN(shape=wide_window.dg.shape[1:], gen_sigmoid=False)
 gain.compile(loss=GAIN.RMSE_loss)
-MAX_EPOCHS = 1500
-
+MAX_EPOCHS = 1
 
 def compile_and_fit(model, window, patience=10):
     early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=patience, mode='min')
     model.compile(loss=GAIN.RMSE_loss)
     history = model.fit(window.train, epochs=MAX_EPOCHS, validation_data=window.val, callbacks=[early_stopping])
     return history
-
 
 history = compile_and_fit(gain, wide_window, patience=MAX_EPOCHS // 5)
 
@@ -61,6 +73,8 @@ gain.save(save_dir='save')
 
 gain.evaluate(wide_window.test.repeat(), steps=100)
 wide_window.plot(gain, plot_col='클로로필-a')
+
+exit(0)
 
 # custom logic
 cnt = 0

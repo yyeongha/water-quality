@@ -112,7 +112,7 @@ def createDataFrame(folder, file_names):
     year = (365.2425) * day
 
     df_full = []
-    df = []
+    df_list = []
 
     for loc in range(len(file_names)):
         df_loc = []
@@ -120,21 +120,21 @@ def createDataFrame(folder, file_names):
             path = os.path.join(folder, file_names[loc][y])
             df_loc.append(pd.read_excel(path))
         df_full.append(pd.concat(df_loc))
-        df.append(df_full[loc].iloc[:, 2:11])
+        df_list.append(df_full[loc].iloc[:, 2:11])
         date_time = pd.to_datetime(df_full[loc].iloc[:, 0], format='%Y.%m.%d %H:%M', utc=True)
         timestamp_s = date_time.map(datetime.datetime.timestamp)
-        df[loc]['Day sin'] = np.sin(timestamp_s * (2 * np.pi / day))
-        df[loc]['Day cos'] = np.cos(timestamp_s * (2 * np.pi / day))
-        df[loc]['Year sin'] = np.sin(timestamp_s * (2 * np.pi / year))
-        df[loc]['Year cos'] = np.cos(timestamp_s * (2 * np.pi / year))
-        df[loc] = df[loc].reset_index(drop=True)
+        df_list[loc]['Day sin'] = np.sin(timestamp_s * (2 * np.pi / day))
+        df_list[loc]['Day cos'] = np.cos(timestamp_s * (2 * np.pi / day))
+        df_list[loc]['Year sin'] = np.sin(timestamp_s * (2 * np.pi / year))
+        df_list[loc]['Year cos'] = np.cos(timestamp_s * (2 * np.pi / year))
+        df_list[loc] = df_list[loc].reset_index(drop=True)
 
-    df_all = pd.concat(df)
-    return df, df_full, df_all
+    df_all = pd.concat(df_list)
+    return df_list, df_full, df_all
 
 
-def standardNormalization(df, df_all):
+def standardNormalization(df_list, df_all):
     train_mean = df_all.mean()
     train_std = df_all.std()
-    for i in range(len(df)):
-        df[i] = (df[i]-train_mean)/train_std
+    for i in range(len(df_list)):
+        df_list[i] = (df_list[i]-train_mean)/train_std

@@ -35,7 +35,7 @@ class MissData(object):
             data[loc:loc+nanlen] = data_copy
         return data
     
-    def save(data, max_tseq, save_dir='save'):
+    def save(self, data, max_tseq, save_dir='save'):
         no, dim = data.shape
         isnan = np.isnan(data).astype(int)
         isany = np.any(isnan, axis=1).astype(int)
