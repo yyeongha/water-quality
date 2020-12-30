@@ -70,14 +70,6 @@ class GainDataGenerator(keras.utils.Sequence):
             self.data_m_rand = binary_sampler(1 - (miss_rate / 10.), self.data.shape)
             self.data_m[self.data_m_rand == 0.] = 0.
         self.miss_pattern = miss_pattern
-
-        print('---------------------------------')
-        print(self.data)
-        print('---------------------------------')
-        print(self.data_m)
-        print('---------------------------------')
-        print(self.miss_pattern)
-        print('---------------------------------')
         
         # sequence data
         self.ids = np.concatenate(cums)
@@ -103,12 +95,10 @@ class GainDataGenerator(keras.utils.Sequence):
 
     def __len__(self):
         'Denotes the number of batches per epoch'
-        print('dgen __len__ call ###')
         return 1
 
     def __getitem__(self, index):
         'Generate one batch of data'
-        print('dgen __getitem__ call ###')
         x = np.empty((0, self.input_width, self.data.shape[1]))
         y = np.empty((0, self.input_width, self.data.shape[1]))
         for cnt in range(0, self.batch_size):

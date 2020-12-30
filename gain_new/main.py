@@ -21,8 +21,6 @@ df_list, df_full, df_all = createDataFrame(folder, file_names)
 ddd = df_list.copy()
 standardNormalization(df_list, df_all)
 
-dgen = GainDataGenerator(df_list)
-
 train_df = df_list[0]
 val_df = df_list[0]
 test_df = df_list[0]

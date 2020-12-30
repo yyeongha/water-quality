@@ -2,6 +2,7 @@ import os
 import datetime
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 def sample_batch_index(total, batch_size):
@@ -107,7 +108,7 @@ def interpolate(np_data, max_gap=3):
     return data.to_numpy()
 
 
-def createDataFrame(folder, file_names):
+def create_dataframe(folder, file_names):
     day = 24 * 60 * 60
     year = (365.2425) * day
 
@@ -133,8 +134,58 @@ def createDataFrame(folder, file_names):
     return df_list, df_full, df_all
 
 
-def standardNormalization(df_list, df_all):
+def standard_normalization(df_list, df_all):
     train_mean = df_all.mean()
     train_std = df_all.std()
     for i in range(len(df_list)):
         df_list[i] = (df_list[i]-train_mean)/train_std
+
+
+def figure_loss(history):
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    ax2 = ax.twinx()
+    ax.plot(history.history['gen_loss'], label='gen_loss')
+    ax.plot(history.history['disc_loss'], label='disc_loss')
+    ax2.plot(history.history['rmse'], label='rmse', color='green')
+    ax2.plot(history.history['val_loss'], label='val_loss', color='red')
+    ax.legend(loc='upper center')
+    ax2.legend(loc='upper right')
+    ax.set_xlabel("epochs")
+    ax.set_ylabel("loss")
+    ax2.set_ylabel("rmse")
+    # plt.show()
+    plt.savefig('./debug/loss.png')
+
+
+def figure_gain(df_list, wide_window, gain):
+    norm_df = pd.concat(df_list, axis=0)
+    data = norm_df.to_numpy()
+    total_n = wide_window.dg.data.shape[0]
+    unit_shape = wide_window.dg.shape[1:]
+    dim = wide_window.dg.shape[1]
+    n = (total_n//dim)*dim
+    x = data[0:n].copy()
+    y_true = data[0:n].copy()
+    x_reshape = x.reshape((-1,)+unit_shape)
+    isnan = np.isnan(x_reshape)
+    isnan = np.isnan(y_true)
+    x_remain = data[-wide_window.dg.shape[1]:].copy()
+    x_remain_reshape = x_remain.reshape((-1,)+unit_shape)
+    x_remain_reshape.shape
+    gain.evaluate(x_reshape, y_true.reshape((-1,)+unit_shape))
+    y_pred = gain.predict(x_reshape)
+    y_remain_pred = gain.predict(x_remain_reshape)
+    y_pred = y_pred.reshape(y_true.shape)
+    y_remain_pred = y_remain_pred.reshape(x_remain.shape)
+    y_pred = np.append(y_pred, y_remain_pred[-(total_n-n):], axis=0)
+    y_pred = y_pred[:data.shape[0]] # issue fix
+    y_pred[~np.isnan(data)] = np.nan # issue (not match row)
+    n = 8
+    plt.figure(figsize=(9,20))
+    for i in range(n):
+        plt.subplot(811+i)
+        plt.plot(x[:, i])
+        plt.plot(y_pred[:, i])
+    # plt.show()
+    plt.savefig('./debug/gain.png')
