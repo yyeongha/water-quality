@@ -45,6 +45,7 @@ wide_window = WindowGenerator(
 # example -> train -> make_dataset -> GainDataGenerator 순서로 호출됨
 _ = wide_window.example
 
+# 모델 평가를 저장할 변수 초기화
 val_performance = {}
 performance = {}
 
