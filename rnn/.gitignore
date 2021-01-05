@@ -1,6 +1,5 @@
 ../.DS_Store
 .DS_Store
-data/
 *.csv
 *.xlsx
 __pycache__
