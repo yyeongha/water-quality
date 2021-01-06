@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 import matplotlib
 import matplotlib.font_manager as fm
 
+
 # listup Nanum font
 avail_font = []
 font_list = fm.findSystemFonts(fontpaths=None, fontext='ttf')
@@ -18,9 +19,26 @@ for font in font_list:
 
 
 class WindowGenerator():
-    def __init__(self, input_width, label_width, shift,
-                train_df=None, val_df=None, test_df=None, df=None,
-                label_columns=None):
+    def __init__(self, 
+                input_width, 
+                label_width, 
+                shift,
+                train_df=None, 
+                val_df=None, 
+                test_df=None, 
+                df=None, # new input parameter
+                label_columns=None,
+                batch_size=120,
+                miss_pattern=True,
+                miss_rate=0.15,
+                fill_no=3):
+
+        # new parameters
+        self.batch_size = batch_size
+        self.miss_pattern = miss_pattern
+        self.miss_rate = miss_rate
+        self.fill_no = fill_no
+
         # Store the raw data.
         self.train_df = train_df
         self.val_df = val_df
@@ -30,10 +48,8 @@ class WindowGenerator():
         # Work out the label column indices.
         self.label_columns = label_columns
         if label_columns is not None:
-            self.label_columns_indices = {name: i for i, name in
-                                        enumerate(label_columns)}
-        self.column_indices = {name: i for i, name in
-                            enumerate(train_df.columns)}
+            self.label_columns_indices = {name: i for i, name in enumerate(label_columns)}
+        self.column_indices = {name: i for i, name in enumerate(train_df.columns)}
 
         # Work out the window parameters.
         self.input_width = input_width
@@ -105,15 +121,15 @@ class WindowGenerator():
 
     @property
     def train(self):
-        return self.make_dataset(self.train_df)
+        return self.make_dataset_gain(self.train_df)
 
     @property
     def val(self):
-        return self.make_dataset(self.val_df)
+        return self.make_dataset_gain(self.val_df)
 
     @property
     def test(self):
-        return self.make_dataset(self.test_df)
+        return self.make_dataset_gain(self.test_df)
 
     @property
     def example(self):
@@ -126,6 +142,7 @@ class WindowGenerator():
             self._example = result
         return result
 
+    # not use
     def make_dataset(self, data):
         dg = GainDataGenerator(
             self.df,
@@ -153,11 +170,11 @@ class WindowGenerator():
             self.df,
             input_width=self.input_width,
             label_width=self.label_width,
-            batch_size=128,
+            batch_size=self.batch_size,
             normalize=False,
-            miss_pattern=True,
-            miss_rate=0.15,
-            fill_no=3,
+            miss_pattern=self.miss_pattern,
+            miss_rate=self.miss_rate,
+            fill_no=self.fill_no
         )
         self.dg = dg
         ds = tf.data.Dataset.from_generator(

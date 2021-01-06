@@ -12,7 +12,13 @@ from tensorflow.keras.layers import Conv1D
 
 
 class GAIN(keras.Model):
-    def __init__(self, shape, alpha=100., load=False, hint_rate=0.9, gen_sigmoid=True, **kwargs):
+    def __init__(self, 
+                shape, 
+                alpha=100., 
+                load=False, 
+                hint_rate=0.9, 
+                gen_sigmoid=True, 
+                **kwargs):
         super(GAIN, self).__init__(**kwargs)
         self.shape = shape
         self.dim = np.prod(shape).astype(int)
@@ -29,8 +35,8 @@ class GAIN(keras.Model):
     def build_generator(self):
         last_activation = 'sigmoid' if self.gen_sigmoid else None
         xavier_initializer = tf.keras.initializers.GlorotNormal()
-
         shape = self.shape
+
         x = Input(shape=shape, name='generator_input_x')
         m = Input(shape=shape, name='generator_input_m')
 
@@ -38,7 +44,6 @@ class GAIN(keras.Model):
         m_f = Flatten()(m)
 
         a = Concatenate()([x_f, m_f])
-
         a = Dense(self.h_dim, activation='relu', kernel_initializer=xavier_initializer)(a)
         a = Dense(self.h_dim, activation='relu', kernel_initializer=xavier_initializer)(a)
         a = Dense(self.dim, activation=last_activation, kernel_initializer=xavier_initializer)(a)
@@ -56,7 +61,6 @@ class GAIN(keras.Model):
         h_f = Flatten()(h)
 
         a = Concatenate()([x_f, h_f])
-
         a = Dense(self.h_dim, activation='relu', kernel_initializer=xavier_initializer)(a)
         a = Dense(self.h_dim, activation='relu', kernel_initializer=xavier_initializer)(a)
         a = Dense(self.dim, activation='sigmoid', kernel_initializer=xavier_initializer)(a)
@@ -118,8 +122,7 @@ class GAIN(keras.Model):
         gradients_of_discriminator = disc_tape.gradient(disc_loss, self.discriminator.trainable_variables)
 
         self.generator_optimizer.apply_gradients(zip(gradients_of_generator, self.generator.trainable_variables))
-        self.discriminator_optimizer.apply_gradients(
-            zip(gradients_of_discriminator, self.discriminator.trainable_variables))
+        self.discriminator_optimizer.apply_gradients(zip(gradients_of_discriminator, self.discriminator.trainable_variables))
 
         rmse = tf.sqrt(tf.reduce_sum(tf.where(isnan, G_sample - Y, 0.) ** 2) / tf.reduce_sum(1 - M))
         return {
@@ -145,8 +148,6 @@ class GAIN(keras.Model):
             print('model weights loaded')
         except:
             print('model loadinng error')
-
-
 
 
 class GAIN_cnn(keras.Model):

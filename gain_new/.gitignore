@@ -9,6 +9,7 @@ __pycache__
 data/*
 save/*
 output/*
+debug/*
 
 # freeze directory
 !data/가평_2015.xlsx
@@ -36,5 +37,5 @@ output/*
 !data/화천_2019.xlsx
 
 !output/dummy
-
 !save/dummy
+!debug/dummy
