@@ -1,389 +1,307 @@
 {% extends "backend/layout/base.html" %}
-
+{% load static %}
 {% block content %}
-  <div class="container pt-25 debug">
-  
-    <div class="text-center debug">
-      <div>
-        <span class="main-title">TOC 예측시스템</span> 
-      </div>
-      <div>
-        <span class="main-title-sub">total organic carbon predict system</span>
-      </div>
-    </div>
+    <div class="container pt-25 debug">
 
-    <div class="pd-20 debug">
-      <div class="title">입력 파라미터</div>
-      <button type="button" class="btn btn-light">
-        <i class="fas fa-download mr-8"></i>Json 불러오기
-      </button>
-    </div>
-
-
-    <div class="pd-20 debug">
-      <div class="title">입력 미리보기</div>
-      <pre><code class="hljs json">{ "hello": "world" }</code></pre>
-    </div>
-
-    <div class="pd-20 debug">
-      <div class="title">자동측정망</div>
-      <div id="map" style="width:100%%; height:800px;"></div>
-    </div>
-
-    <div class="pd-20 debug">
-      <div class="title">기간 선택</div>
-      <div class="row">
-        <div class="col">
-          
-          <div class="row">
-            <div class="col-6">
-              <label for="start-train" class="form-label">학습 시작일</label>
-              <input type="text" class="form-control" id="start-train" placeholder="yyyy-mm-dd">
+        <div class="text-center debug">
+            <div>
+                <span class="main-title">TOC 예측시스템</span>
             </div>
-            <div class="col-6">
-              <label for="end-train" class="form-label">학습 종료일</label>
-              <input type="text" class="form-control" id="end-train" placeholder="yyyy-mm-dd">
+            <div>
+                <span class="main-title-sub">total organic carbon predict system</span>
             </div>
-          </div>
         </div>
-        <div class="col">
-          <div class="row">
-            <div class="col-6">
-              <label for="start-predict" class="form-label">예측 시작일</label>
-              <input type="text" class="form-control" id="start-predict" placeholder="yyyy-mm-dd" disabled>
+
+
+        <div class="pd-20 debug" style="display: flex">
+            <div style="margin-right: 30%;">
+                <div class="title">입력 파라미터</div>
+                <button type="button" class="btn btn-light">
+                    <i class="fas fa-download mr-8"></i>Json 불러오기
+                </button>
             </div>
-            <div class="col-6">
-              <label for="end-predict" class="form-label">예측 종료일</label>
-              <input type="text" class="form-control" id="end-predict" placeholder="yyyy-mm-dd">
+            <div style="margin-right: 0%;">
+                <div class="title">Xsls Upload</div>
+                <form method="post" enctype="multipart/form-data" id="fileUploadForms">
+                    {% csrf_token %}
+                    <input type="file" name="myfiles" multiple>
+                    <button type="submit" class="btn btn-light" id="btnSubmits">
+                        <i class="fas fa-download mr-8"></i>Upload
+                    </button>
+                </form>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <div class="pd-20 debug">
-      <div class="title">현재 사용중인 모델</div>
-      <div>predict.h5</div>
-      <!--<div>현재 모델이 존재하지 않습니다</div>-->
-    </div>
-
-    <div class="pd-20 debug">
-      <div class="title">기능</div>
-      <div class="row">
-        <div class="col text-center">
-          <button type="button" class="btn btn-light">
-            <i class="fas fa-theater-masks mr-8"></i>학습하기
-          </button>
         </div>
-        <div class="col text-center">
-          <button type="button" class="btn btn-light">
-            <i class="fas fa-upload mr-8"></i>모델 저장
-          </button>
-        </div>
-        <div class="col text-center">
-          <button type="button" class="btn btn-light">
-            <i class="fas fa-download mr-8"></i>모델 불러오기
-          </button>
-        </div>
-        <div class="col text-center">
-          <button type="button" class="btn btn-light">
-            <i class="fas fa-chart-line mr-8"></i>예측하기
-          </button>
-        </div>
-      </div>      
-    </div>
 
-    <div class="pd-20 debug">
-      <div class="title">예측 그래프</div>
-      <canvas id="predictGraph" width="400" height="100"></canvas>
-    </div>
+        <div style="display: flex;">
+            <div class="pd-20 debug" style="width: 45%;">
+                <div class="title">입력 하기</div>
+                <textarea id="json_area" class="autosize"
+                          style="width: 100%;border: 0 none white; overflow:visible; outline: none; background-color: #D0D0D0;"></textarea>
+            </div>
 
-    <div class="pd-20 debug">
-      <div class="title">예측 강우량 및 기온</div>
-      <canvas id="predictData" width="400" height="100"></canvas>
-    </div>
+            <div class="pd-20 debug" style="width: 10%;">
+                <button class="btn btn-light" onclick="json_convert()"
+                        style="margin-top: 100%; border: solid 2px black; background-color: #d3e4ec;">Convert
+                </button>
+            </div>
 
-    <div class="pd-20 debug">
-      <div class="title">예측 수질</div>
-      <canvas id="predictWater" width="400" height="100"></canvas>
+            <div class="pd-20 debug" style="width: 45%;">
+                <div class="title" id="hljs_json">입력 미리보기</div>
+                <pre id="json_pre"><code class="hljs json" id="json_value">{
+  "gain": {
+    "data_dir": "data_after",
+    "data_file": [
+      [
+        "가평_2016.xlsx",
+        "가평_2017.xlsx",
+        "가평_2018.xlsx",
+        "가평_2019.xlsx"
+      ],
+      [
+        "의암호_2016.xlsx",
+        "의암호_2017.xlsx",
+        "의암호_2018.xlsx",
+        "의암호_2019.xlsx"
+      ]
+    ],
+    "max_epochs": 100,
+    "input_width": 120,
+    "label_width": 120,
+    "shift": 0,
+    "use_train": true,
+    "batch_size": 120,
+    "miss_pattern": true,
+    "miss_rate": 0.15,
+    "fill_no": 3,
+    "debug": true
+  },
+  "rnn": {
+    "max_epochs": 100,
+    "target_col": "not use",
+    "use_train": true,
+    "batch_size": 0,
+    "fill_no": 0
+  }
+}
+                </code></pre>
+            </div>
+        </div>
+        {% include "backend/sample_map.html" %}
+
+        {% include "backend/sample_datepicker.html" %}
+
+        <div class="pd-20 debug">
+            <div class="title">현재 사용중인 모델</div>
+            {% if file_list_zip %}
+                <div class="modelname">{{ file_list_zip }}</div>
+            {% else %}
+                <div class="modelname">현재 모델이 존재하지 않습니다</div>
+            {% endif %}
+        </div>
+
+        <div class="pd-20 debug">
+            <div class="title">기능</div>
+            <div class="row">
+                <div class="col text-center">
+                    <button type="button" class="btn btn-light">
+                        <i class="fas fa-theater-masks mr-8"></i>학습하기
+                    </button>
+                </div>
+                <div class="col text-center">
+                    <!-- ################################ -->
+                    {% csrf_token %}
+                    <button type="button" onclick="file_download()" class="btn btn-light">
+                        <i class="fas fa-upload mr-8"></i>모델 저장
+                    </button>
+                    <!-- ################################ -->
+                </div>
+
+                <div class="col text-center">
+                    <form method="post" enctype="multipart/form-data" id="fileUploadForm">
+                        {% csrf_token %}
+                        <input type="file" name="myfile">
+                        <button type="submit" class="btn btn-light" id="btnSubmit">
+                            <i class="fas fa-download mr-8"></i>모델 불러오기
+                        </button>
+                    </form>
+                </div>
+
+                <div class="col text-center">
+
+                </div>
+                <div class="col text-center">
+                    <button type="button" class="btn btn-light">
+                        <i class="fas fa-chart-line mr-8"></i>예측하기
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="pd-20 debug">
+            <div class="title">예측 그래프</div>
+            <canvas id="predictGraph" width="400" height="100"></canvas>
+        </div>
+
+        <div class="pd-20 debug">
+            <div class="title">예측 강우량 및 기온</div>
+            <canvas id="predictData" width="400" height="100"></canvas>
+        </div>
+
+        <div class="pd-20 debug">
+            <div class="title">예측 수질</div>
+            <canvas id="predictWater" width="400" height="100"></canvas>
+        </div>
     </div>
-  </div>
 {% endblock %}
 
+
 {% block javascript %}
-<script>
-// date to string
-function formatDate(date) {
-    var d = new Date(date),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
-        year = d.getFullYear();
-    if (month.length < 2) 
-        month = '0' + month;
-    if (day.length < 2) 
-        day = '0' + day;
-    return [year, month, day].join('-');
-}
+    <script>
+        $("textarea.autosize").on('keydown keyup', function () {
+            $(this).height(1).height($(this).prop('scrollHeight') + 12);
+        });
 
-$(function() {
-  var datepicker_param = {
-    dateFormat: 'yy-mm-dd',
-    prevText: '이전 달',
-    nextText: '다음 달',
-    monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-    monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-    dayNames: ['일', '월', '화', '수', '목', '금', '토'],
-    dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
-    dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
-    showMonthAfterYear: true,
-    yearSuffix: '년'
-  }
-
-  $("#start-train").datepicker(datepicker_param);
-  $("#end-train").datepicker(datepicker_param);
-  $("#start-predict").datepicker(datepicker_param);
-  $("#end-predict").datepicker(datepicker_param);
-
-  $('#start-train').change(function() {
-    // 학습 종료일 초기화
-    $('#end-train').val('');
-  })
-
-  $('#end-train').change(function() {
-    var endTrain = $("#end-train").val();
-    var startTrain = $("#start-train").val();
-
-    // 학습 종료일 유효성 (1)
-    if (startTrain == '') {
-      alert('학습 시작일을 먼저 선택하십시오.');
-      $("#end-train").val('');
-      return false;
-    }
-
-    // 학습 종료일 유효성 (2)
-    var _startTrain = new Date(startTrain);
-    var _endTrain = new Date(endTrain);
-
-    if (_startTrain > _endTrain) {
-      alert('학습 종료일이 학습 시작일보다 클 수 없습니다.');
-      $("#end-train").val('');
-      $("#start-predict").val('');
-      $("#end-predict").val('');
-      return false;
-    }
-    
-    // 예측 시작일 자동 주입
-    var date = new Date(endTrain);
-    date.setDate(date.getDate() + 1);
-    var setValue = formatDate(date)
-    $('#start-predict').datepicker("setDate", setValue);
-
-    // 예측 종료일 초기화
-    $('#end-predict').val('');
-  })
-
-  $('#end-predict').change(function() {
-    var startPredict = $('#start-predict').val();
-    var endPredict = $('#end-predict').val();
-
-    // 예측 종료일 유효성 (1)
-    if (startPredict == '') {
-      alert('예측 시작일을 먼저 선택하십시오.');
-      $("#end-predict").val('');
-      return false;
-    }
-
-    // 예측 종료일 유효성 (2)
-    var _startPredict = new Date(startPredict);
-    var _endPredict = new Date(endPredict);
-
-    if (_startPredict > _endPredict) {
-      alert('예측 종료일이 예측 시작일보다 클 수 없습니다.');
-      $("#end-predict").val('');
-      return false;
-    }
-
-    // 예측 종료일 유효성 (3)
-    var _startPredict = new Date(startPredict);
-    var _endPredict = new Date(endPredict);
-
-    _startPredict.setDate(_startPredict.getDate() + 5);
-
-    if (_startPredict < _endPredict) {
-      alert('예측 종료일은 예측 시작일로부터 5일 이내의 값만 가능합니다.');
-      $('#end-predict').val('');
-      return false;
-    }
-  })
-});
-</script>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=411014b49760133574f1c56e4c7f9bd1&libraries=services,clusterer,drawing"></script>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=411014b49760133574f1c56e4c7f9bd1"></script>
-<script>
-var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
-var options = { //지도를 생성할 때 필요한 기본 옵션
-	center: new kakao.maps.LatLng(36.5, 127.5), //지도의 중심좌표.
-	level: 12 //지도의 레벨(확대, 축소 정도)
-};
-
-var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
-map.addOverlayMapTypeId(kakao.maps.MapTypeId.TERRAIN);    
-
-// 마커를 표시할 위치와 title 객체 배열입니다 
-var positions = [
-    {
-        title: '가평', 
-        latlng: new kakao.maps.LatLng(37.658, 127.379)
-    },
-    {
-        title: '경안천', 
-        latlng: new kakao.maps.LatLng(37.442, 127.31)
-    },
-    {
-        title: '양평', 
-        latlng: new kakao.maps.LatLng(37.507, 127.451)
-    },
-    {
-        title: '의암호',
-        latlng: new kakao.maps.LatLng(37.877, 127.678)
-    },
-    {
-        title: '서상',
-        latlng: new kakao.maps.LatLng(37.955, 127.685)
-    },
-    {
-        title: '화천',
-        latlng: new kakao.maps.LatLng(38.098, 127.709)
-    },
-    {
-        title: '해평',
-        latlng: new kakao.maps.LatLng(36.19357, 128.3628)
-    },
-    {
-        title: '도개',
-        latlng: new kakao.maps.LatLng(36.27315, 128.3458)
-    }
-];
-
-// 마커 이미지의 이미지 주소입니다
-var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
-    
-for (var i = 0; i < positions.length; i ++) {
-    
-    // 마커 이미지의 이미지 크기 입니다
-    var imageSize = new kakao.maps.Size(24, 35); 
-    
-    // 마커 이미지를 생성합니다    
-    var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
-    
-    // 마커를 생성합니다
-    var marker = new kakao.maps.Marker({
-        map: map, // 마커를 표시할 지도
-        position: positions[i].latlng, // 마커를 표시할 위치
-        title : positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-        image : markerImage // 마커 이미지 
-    });
-
-    // 지도에 표시할 원을 생성합니다
-    var circle = new kakao.maps.Circle({
-        center : positions[i].latlng,  // 원의 중심좌표 입니다 
-        radius: 3000, // 미터 단위의 원의 반지름입니다 
-        strokeWeight: 5, // 선의 두께입니다 
-        strokeColor: '#75B8FA', // 선의 색깔입니다
-        strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-        strokeStyle: 'solid', // 선의 스타일 입니다
-        fillColor: '#CFE7FF', // 채우기 색깔입니다
-        fillOpacity: 0.7  // 채우기 불투명도 입니다   
-    }); 
-
-    // 지도에 원을 표시합니다 
-    circle.setMap(map); 
-
-    var iwContent = '<div>'+ positions[i].title +'</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-    iwPosition = positions[i].latlng; //인포윈도우 표시 위치입니다
-
-    // 커스텀 오버레이를 생성합니다
-    var customOverlay = new kakao.maps.CustomOverlay({
-        position: iwPosition,
-        content: iwContent   
-    });
-
-    // 커스텀 오버레이를 지도에 표시합니다
-    customOverlay.setMap(map);
-}
-</script>
-<script>
-var predictGraph = document.getElementById('predictGraph');
-var _predictGraph = new Chart(predictGraph, {
-    type: 'line',
-    data: {
-        labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
-        datasets: [
-          {
-            label: '테스트',
-            data: [0, 0, 2, 0, 1.8, 0, 2, 0, 2, 0, 0, 0, 2.3, 2.4, 2.7, 0],
-            borderColor: 'rgba(255, 99, 132, 0.2)',
-            fill: false,
-            lineTension: 0,
-          },
-          {
-            label: '예측',
-            data: [1, -1, 1, 0, 1.5, 0, 1.8, 0, 1.7, 0.3, 0.2, 0.3, 2.1, 2.2, 2.3, 0.1],
-            borderColor: 'rgba(54, 162, 235, 0.2)',
-            fill: false,
-            lineTension: 0,
-          },
-        ]
-    }
-});
-
-var predictData = document.getElementById('predictData');
-var _predictData = new Chart(predictData, {
-    type: 'bar',
-    data: {
-        labels: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-        datasets: [
-          {
-            label: '강우량',
-            data: [50, 50, 55, 60, 100, 140, 260, 300, 220, 120, 100, 50],
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            type: 'bar',
-          },
-          {
-            label: '기온',
-            data: [150, 155, 180, 250, 280, 300, 340, 350, 320, 280, 210, 160],
-            type: 'line',
-            borderColor: 'rgba(255, 99, 132, 0.2)',
-            fill: false,
-          },
-        ]
-    }
-});
-
-var predictWater = document.getElementById('predictWater');
-var _predictWater = new Chart(predictWater, {
-    type: 'bar',
-    data: {
-        labels: ['1일', '2일', '3일', '4일', '5일'],
-        datasets: [
-          {
-            label: '좋음 (4.0 이하)',
-            data: [3, 2, 3, 0, 0],
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-          },
-          {
-            label: '나쁨 (5.0 이상)',
-            data: [0, 0, 0, 8, 9],
-            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-          }
-        ]
-    },
-    options: {
-        title: {
-            display: true,
-            text: '수질 기준 (BOD mg/l)'
+        function json_convert() {
+            $('#json_pre').remove();
+            let json_area = $('#json_area').val();
+            $('#hljs_json').append("<pre id=\"json_pre\"><code class=\"hljs json\" id=\"json_value\">" + json_area + "</code></pre>")
+            hljs.initHighlighting.called = false;
+            hljs.initHighlighting();
         }
-    }
-});
-</script>
+
+        $("#btnSubmit").click(function (event) {
+            event.preventDefault();
+            var form = $('#fileUploadForm')[0];
+            var data = new FormData(form);
+            $.ajax({
+                type: "POST",
+                enctype: 'multipart/form-data',
+                url: "{% url "file_upload" %}",
+                data: data,
+                processData: false,
+                contentType: false,
+                cache: false,
+                timeout: 600000,
+                success: function (data) {
+                    alert("complete");
+                },
+                error: function (e) {
+                    console.log("ERROR : ", e);
+                    alert("fail");
+                }
+            });
+
+        });
+        $("#btnSubmits").click(function (event) {
+            event.preventDefault();
+            var form = $('#fileUploadForms')[0];
+            var data = new FormData(form);
+
+            alert('data', data);
+            $.ajax({
+                type: "POST",
+                enctype: 'multipart/form-data',
+                url: "{% url "multi_file_upload" %}",
+                data: data,
+                processData: false,
+                contentType: false,
+                cache: false,
+                timeout: 600000,
+                success: function (data) {
+                    alert("complete");
+                },
+                error: function (e) {
+                    console.log("ERROR : ", e);
+                    alert("fail");
+                }
+            });
+
+        });
+
+
+        function file_download() {
+            $.ajax({
+                url: "{% url "file_download" %}", // 클라이언트가 요청을 보낼 서버의 URL 주소
+                data: {"csrfmiddlewaretoken": $("input[name='csrfmiddlewaretoken']").val()},                // HTTP 요청과 함께 서버로 보낼 데이터
+                type: "POST",                             // HTTP 요청 방식(GET, POST)
+                dataType: "json"                         // 서버에서 보내줄 데이터의 타입
+            }).done(function () {
+                alert(333);
+            })
+        }
+
+        var predictGraph = document.getElementById('predictGraph');
+        var _predictGraph = new Chart(predictGraph, {
+            type: 'line',
+            data: {
+                labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+                datasets: [
+                    {
+                        label: '테스트',
+                        data: [0, 0, 2, 0, 1.8, 0, 2, 0, 2, 0, 0, 0, 2.3, 2.4, 2.7, 0],
+                        borderColor: 'rgba(255, 99, 132, 0.2)',
+                        fill: false,
+                        lineTension: 0,
+                    },
+                    {
+                        label: '예측',
+                        data: [1, -1, 1, 0, 1.5, 0, 1.8, 0, 1.7, 0.3, 0.2, 0.3, 2.1, 2.2, 2.3, 0.1],
+                        borderColor: 'rgba(54, 162, 235, 0.2)',
+                        fill: false,
+                        lineTension: 0,
+                    },
+                ]
+            }
+        });
+
+        var predictData = document.getElementById('predictData');
+        var _predictData = new Chart(predictData, {
+            type: 'bar',
+            data: {
+                labels: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+                datasets: [
+                    {
+                        label: '강우량',
+                        data: [50, 50, 55, 60, 100, 140, 260, 300, 220, 120, 100, 50],
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        type: 'bar',
+                    },
+                    {
+                        label: '기온',
+                        data: [150, 155, 180, 250, 280, 300, 340, 350, 320, 280, 210, 160],
+                        type: 'line',
+                        borderColor: 'rgba(255, 99, 132, 0.2)',
+                        fill: false,
+                    },
+                ]
+            }
+        });
+
+        var predictWater = document.getElementById('predictWater');
+        var _predictWater = new Chart(predictWater, {
+            type: 'bar',
+            data: {
+                labels: ['1일', '2일', '3일', '4일', '5일'],
+                datasets: [
+                    {
+                        label: '좋음 (4.0 이하)',
+                        data: [3, 2, 3, 0, 0],
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    },
+                    {
+                        label: '나쁨 (5.0 이상)',
+                        data: [0, 0, 0, 8, 9],
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    }
+                ]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: '수질 기준 (BOD mg/l)'
+                }
+            }
+        });
+    </script>
 {% endblock %}
