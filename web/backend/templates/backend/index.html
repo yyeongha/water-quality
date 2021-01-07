@@ -11,85 +11,59 @@
                 <span class="main-title-sub">total organic carbon predict system</span>
             </div>
         </div>
-
-
-        <div class="pd-20 debug" style="display: flex">
-            <div style="margin-right: 30%;">
-                <div class="title">입력 파라미터</div>
-                <button type="button" class="btn btn-light">
-                    <i class="fas fa-download mr-8"></i>Json 불러오기
-                </button>
-            </div>
-            <div style="margin-right: 0%;">
-                <div class="title">Xsls Upload</div>
-                <form method="post" enctype="multipart/form-data" id="fileUploadForms">
-                    {% csrf_token %}
-                    <input type="file" name="myfiles" multiple>
-                    <button type="submit" class="btn btn-light" id="btnSubmits">
-                        <i class="fas fa-download mr-8"></i>Upload
+        <!-- ##### MODEL #####-->
+        <div class="pd-20 debug">
+            <div>
+                <div class="title">Model Select</div>
+                <div style="display: flex; flex-direction: row; justify-content: space-around; ">
+                    <button class="btn btn-light" onclick="select_model('A')">
+                        <i class="fas fa-download mr-8"></i>AAAAA
                     </button>
-                </form>
-            </div>
-
-        </div>
-
-        <div style="display: flex;">
-            <div class="pd-20 debug" style="width: 45%;">
-                <div class="title">입력 하기</div>
-                <textarea id="json_area" class="autosize"
-                          style="width: 100%;border: 0 none white; overflow:visible; outline: none; background-color: #D0D0D0;"></textarea>
-            </div>
-
-            <div class="pd-20 debug" style="width: 10%;">
-                <button class="btn btn-light" onclick="json_convert()"
-                        style="margin-top: 100%; border: solid 2px black; background-color: #d3e4ec;">Convert
-                </button>
-            </div>
-
-            <div class="pd-20 debug" style="width: 45%;">
-                <div class="title" id="hljs_json">입력 미리보기</div>
-                <pre id="json_pre"><code class="hljs json" id="json_value">{
-  "gain": {
-    "data_dir": "data_after",
-    "data_file": [
-      [
-        "가평_2016.xlsx",
-        "가평_2017.xlsx",
-        "가평_2018.xlsx",
-        "가평_2019.xlsx"
-      ],
-      [
-        "의암호_2016.xlsx",
-        "의암호_2017.xlsx",
-        "의암호_2018.xlsx",
-        "의암호_2019.xlsx"
-      ]
-    ],
-    "max_epochs": 100,
-    "input_width": 120,
-    "label_width": 120,
-    "shift": 0,
-    "use_train": true,
-    "batch_size": 120,
-    "miss_pattern": true,
-    "miss_rate": 0.15,
-    "fill_no": 3,
-    "debug": true
-  },
-  "rnn": {
-    "max_epochs": 100,
-    "target_col": "not use",
-    "use_train": true,
-    "batch_size": 0,
-    "fill_no": 0
-  }
-}
-                </code></pre>
+                    <button class="btn btn-light" onclick="select_model('B')">
+                        <i class="fas fa-download mr-8"></i>BBBBB
+                    </button>
+                    <button class="btn btn-light" onclick="select_model('C')">
+                        <i class="fas fa-download mr-8"></i>CCCCC
+                    </button>
+                    <button class="btn btn-light" onclick="select_model('C')">
+                        <i class="fas fa-download mr-8"></i>DDDDD
+                    </button>
+                </div>
             </div>
         </div>
+
+        <div class="pd-20 debug">
+            <div style="display: flex; flex-direction: row; justify-content: space-between;">
+
+                <div>
+                    <div class="title">측정데이터 선택</div>
+                    <select name="job">
+                        <option value="">Column 선택</option>
+                        <option value="학생">학생</option>
+                        <option value="회사원">회사원</option>
+                        <option value="기타">기타</option>
+                    </select>
+                </div>
+
+                <div>
+                    <div class="title">Xsls Upload</div>
+                    <form method="post" enctype="multipart/form-data" id="fileUploadForms">
+                        {% csrf_token %}
+                        <input type="file" name="myfiles" multiple>
+                        <button type="submit" class="btn btn-light" id="btnSubmits">
+                            <i class="fas fa-download mr-8"></i>Upload
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+
         {% include "backend/sample_map.html" %}
 
         {% include "backend/sample_datepicker.html" %}
+        {{test_html}}
 
         <div class="pd-20 debug">
             <div class="title">현재 사용중인 모델</div>
@@ -158,16 +132,8 @@
 
 {% block javascript %}
     <script>
-        $("textarea.autosize").on('keydown keyup', function () {
-            $(this).height(1).height($(this).prop('scrollHeight') + 12);
-        });
+        function select_model(param) {
 
-        function json_convert() {
-            $('#json_pre').remove();
-            let json_area = $('#json_area').val();
-            $('#hljs_json').append("<pre id=\"json_pre\"><code class=\"hljs json\" id=\"json_value\">" + json_area + "</code></pre>")
-            hljs.initHighlighting.called = false;
-            hljs.initHighlighting();
         }
 
         $("#btnSubmit").click(function (event) {

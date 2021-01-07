@@ -1,6 +1,6 @@
 import os
 import zipfile
-
+import pandas as pd
 from django.conf import settings
 from django.http import HttpResponse, JsonResponse, Http404
 from django.shortcuts import render
@@ -17,6 +17,7 @@ def index(request):
     except:
         pass
 
+    context['test_html'] = load_df(request)
     return render(request, 'backend/index.html', context)
 
 
@@ -78,3 +79,17 @@ def multi_file_upload(request):
         return JsonResponse({"rusult": 'success'})
     else:
         return JsonResponse({"rusult": 'fail'})
+
+
+def load_df(requset):
+    # 데이터프레임 샘플
+    df_sample = pd.DataFrame(
+        {'name': ['Kim', 'LEE', 'Park', 'Choi'],
+         'math': [88, 74, 72, 85],
+         'english': [80, 90, 78, 80]
+         })
+
+    # HTML로 변환하기
+    test_html = df_sample.to_html(index=False, justify='center')
+    print('test_html;',test_html)
+    return test_html
