@@ -1,0 +1,29 @@
+{% extends "backend/layout/base.html" %}
+
+{% block content %}
+    <button onclick="test_table()">table show</button>
+    <div id="show_table">
+
+    </div>
+    {{ test_html }}
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        function test_table() {
+            $.ajax({
+                url: '{% url 'load_df' %}',
+                type: 'POST',
+                dataType: "json",
+                data: {
+                    csrfmiddlewaretoken: $("#csrf_token").val(),
+                }
+            }).done(function (data) {
+                $('#show_table').html(data.data);
+
+            });
+
+        }
+
+    </script>
+{% endblock %}

@@ -102,12 +102,15 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# MEDIA_URL = '/media/'
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# MEDIA_URL = '../../gain_new/save/'
 #
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '../../gain_new/save/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, '../gain_new/output')
 
-MEDIA_ROOT = os.path.join(BASE_DIR, '../gain_new/output')
+UPLOAD_URL = '../../gain_new/save/'
+UPLOAD_ROOT = os.path.join(BASE_DIR, '../gain_new/output')
 
-DOWNLOAD_URL = '../../gain_new/save/'
-DOWNLOAD_ROOT = os.path.join(BASE_DIR, '../gain_new/output')
+PREDICT_URL = '../../gain_new/'
+PREDICT_ROOT = os.path.join(BASE_DIR, '../gain_new/')

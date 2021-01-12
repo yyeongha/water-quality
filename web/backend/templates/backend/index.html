@@ -1,14 +1,15 @@
 {% extends "backend/layout/base.html" %}
 {% load static %}
 {% block content %}
+    <input id='csrf_token' value='{{ csrf_token }}' hidden>
     <div class="container pt-25 debug">
-
+        https://github.com/kotechnia/water-quality/blob/dev-gain/gain_new/input/input.json
         <div class="text-center debug">
             <div>
-                <span class="main-title">TOC 예측시스템</span>
+                <span class="main-title">수질 예측시스템</span>
             </div>
             <div>
-                <span class="main-title-sub">total organic carbon predict system</span>
+                <span class="main-title-sub">Water quality prediction system</span>
             </div>
         </div>
         <!-- ##### MODEL #####-->
@@ -17,16 +18,16 @@
                 <div class="title">Model Select</div>
                 <div style="display: flex; flex-direction: row; justify-content: space-around; ">
                     <button class="btn btn-light" onclick="select_model('A')">
-                        <i class="fas fa-download mr-8"></i>AAAAA
+                        <i class="fas fa-download mr-8"></i>한강(MODEL1)
                     </button>
                     <button class="btn btn-light" onclick="select_model('B')">
-                        <i class="fas fa-download mr-8"></i>BBBBB
+                        <i class="fas fa-download mr-8"></i>금강(MODEL2)
                     </button>
                     <button class="btn btn-light" onclick="select_model('C')">
-                        <i class="fas fa-download mr-8"></i>CCCCC
+                        <i class="fas fa-download mr-8"></i>영산강(MODEL3)
                     </button>
                     <button class="btn btn-light" onclick="select_model('C')">
-                        <i class="fas fa-download mr-8"></i>DDDDD
+                        <i class="fas fa-download mr-8"></i>낙동강(MODEL4)
                     </button>
                 </div>
             </div>
@@ -48,7 +49,6 @@
                 <div>
                     <div class="title">Xsls Upload</div>
                     <form method="post" enctype="multipart/form-data" id="fileUploadForms">
-                        {% csrf_token %}
                         <input type="file" name="myfiles" multiple>
                         <button type="submit" class="btn btn-light" id="btnSubmits">
                             <i class="fas fa-download mr-8"></i>Upload
@@ -60,20 +60,43 @@
         </div>
 
 
-        {% include "backend/sample_map.html" %}
+        {#        {% include "backend/sample_map.html" %}#}
+        {#        {% include "backend/new_map.html" %}#}
+        {% include "backend/new_map2.html" %}
 
-        {% include "backend/sample_datepicker.html" %}
-        {{test_html}}
+        {#        {% include "backend/sample_datepicker.html" %}#}
+        {% include "backend/sample_table.html" %}
+        {% include "backend/new_datepicker.html" %}
+        <div class="pd-20 debug">
+            <div style="display: flex; flex-direction: row; justify-content: space-around; ">
+                <form method="post" enctype="multipart/form-data" id="fileUploadForm">
+                    <label>측정 DATA 등록</label>
+                    <input type="file" name="myfile">
+                    <button type="submit" class="btn btn-light" id="btnSubmit">
+                        <i class="fas fa-download mr-8"></i>모델 불러오기
+                    </button>
+                </form>
+                <button type="button" class="btn btn-light" onclick="file_download()">
+                    <i class="fas fa-chart-line mr-8"></i>샘플 다운로드
+                </button>
+                <button type="button" class="btn btn-light" onclick="pridict()">
+                    <i class="fas fa-chart-line mr-8"></i>예측하기
+                </button>
+            </div>
 
+
+        </div>
+        <!--
         <div class="pd-20 debug">
             <div class="title">현재 사용중인 모델</div>
-            {% if file_list_zip %}
+            {% if file_list_zip %}재
                 <div class="modelname">{{ file_list_zip }}</div>
             {% else %}
                 <div class="modelname">현재 모델이 존재하지 않습니다</div>
             {% endif %}
         </div>
-
+        -->
+        <!--
         <div class="pd-20 debug">
             <div class="title">기능</div>
             <div class="row">
@@ -83,17 +106,14 @@
                     </button>
                 </div>
                 <div class="col text-center">
-                    <!-- ################################ -->
-                    {% csrf_token %}
                     <button type="button" onclick="file_download()" class="btn btn-light">
                         <i class="fas fa-upload mr-8"></i>모델 저장
                     </button>
-                    <!-- ################################ -->
                 </div>
 
                 <div class="col text-center">
                     <form method="post" enctype="multipart/form-data" id="fileUploadForm">
-                        {% csrf_token %}
+
                         <input type="file" name="myfile">
                         <button type="submit" class="btn btn-light" id="btnSubmit">
                             <i class="fas fa-download mr-8"></i>모델 불러오기
@@ -111,6 +131,11 @@
                 </div>
             </div>
         </div>
+    -->
+        <div class="pd-20 debug">
+            <div class="title">예측 수질</div>
+            <canvas id="predictWater" width="400" height="100"></canvas>
+        </div>
 
         <div class="pd-20 debug">
             <div class="title">예측 그래프</div>
@@ -122,19 +147,37 @@
             <canvas id="predictData" width="400" height="100"></canvas>
         </div>
 
-        <div class="pd-20 debug">
-            <div class="title">예측 수질</div>
-            <canvas id="predictWater" width="400" height="100"></canvas>
-        </div>
+
     </div>
 {% endblock %}
 
 
 {% block javascript %}
     <script>
-        function select_model(param) {
+        function pridict() {
+            $.ajax({
+                url: "{% url "predict" %}",
+                csrfmiddlewaretoken: $("#csrf_token").val(),
+                type: "POST",
+                dataType: "json"
+            }).done(function () {
 
-        }
+            })
+        };
+
+        function select_model(param) {
+            $.ajax({
+                url: "{% url "call_model" %}",
+                data: {
+                    csrfmiddlewaretoken: $("#csrf_token").val(),
+                    "param": param
+                },
+                type: "POST",
+                dataType: "json"
+            }).done(function () {
+
+            })
+        };
 
         $("#btnSubmit").click(function (event) {
             event.preventDefault();
@@ -189,9 +232,8 @@
         function file_download() {
             $.ajax({
                 url: "{% url "file_download" %}", // 클라이언트가 요청을 보낼 서버의 URL 주소
-                data: {"csrfmiddlewaretoken": $("input[name='csrfmiddlewaretoken']").val()},                // HTTP 요청과 함께 서버로 보낼 데이터
-                type: "POST",                             // HTTP 요청 방식(GET, POST)
-                dataType: "json"                         // 서버에서 보내줄 데이터의 타입
+                data: {csrfmiddlewaretoken: $("#csrf_token").val()},
+                type: "GET"
             }).done(function () {
                 alert(333);
             })
