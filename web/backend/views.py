@@ -166,11 +166,51 @@ def multi_file_upload(request):
 
 def load_df(request):
     if request.is_ajax():
+        target = request.POST.get('target')
+        key = request.POST.get('model')
+        for i in ['A', 'B', 'C', 'D']:
+            if key == i:
+                parameters_dir = './model_dir/model_' + i
+        parameters_file = 'json_info.json'
+        parameters_path = '{dir}/{file}'.format(dir=parameters_dir, file=parameters_file)
+
+        with open(parameters_path, encoding='utf8') as json_file:
+            parameters = json.load(json_file)
+        target_list = []
+        addr_list = []
+        location_list = []
+        x_list = []
+        y_list = []
+        print('target', target)
+        if target == 'all':
+            for i in parameters['web_info']['map_info']:
+                for k in i:
+                    target_list.append(k[0]['target'])
+                    addr_list.append(k[0]['addr'])
+                    location_list.append(k[0]['location'])
+                    x_list.append(k[0]['x'])
+                    y_list.append(k[0]['y'])
+        else:
+            for i in parameters['web_info']['map_info']:
+                for k in i:
+                    #  임시로 a 삽입
+                    map_list = [d for d in k if d['target'] == 'a']
+                    try:
+                        target_list.append(map_list[0]['target'])
+                        addr_list.append(map_list[0]['addr'])
+                        location_list.append(map_list[0]['location'])
+                        x_list.append(map_list[0]['x'])
+                        y_list.append(map_list[0]['y'])
+                    except:
+                        pass
+
         # 데이터프레임 샘플
         df_sample = pd.DataFrame(
-            {'name': ['Kim', 'LEE', 'Park', 'Choi'],
-             'math': [88, 74, 72, 85],
-             'english': [80, 90, 78, 80]
+            {'target': target_list,
+             'addr': addr_list,
+             'location': location_list,
+             'x': x_list,
+             'y': y_list,
              })
         # HTML로 변환하기
         test_html = df_sample.to_html(index=False, justify='center', table_id="excel_table")
@@ -189,7 +229,6 @@ def predict(request):
 def call_model(request):
     if request.is_ajax():
         key = request.POST.get('param')
-
         # input parameter
         for i in ['A', 'B', 'C', 'D']:
             if key == i:
@@ -201,11 +240,7 @@ def call_model(request):
 
         with open(parameters_path, encoding='utf8') as json_file:
             parameters = json.load(json_file)
-            print(parameters['web_info']['target_point'])
-            print(parameters['web_info']['column'])
 
-        # return JsonResponse({'target_point': parameters['web_info']['target_point']},
-        #                     {'column': parameters['web_info']['column']})
         return JsonResponse({'web_info': parameters['web_info']})
 ##============backup==================
 # {'river_id':'R01'},{'key':'의암호'},{'key':'127.678647'},{'key':'37.877653'},

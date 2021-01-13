@@ -155,6 +155,7 @@
 
 {% block javascript %}
     <script>
+        var model_activate=''
         function pridict() {
             $.ajax({
                 url: "{% url "predict" %}",
@@ -167,6 +168,7 @@
         };
 
         function select_model(param) {
+
             $.ajax({
                 url: "{% url "call_model" %}",
                 data: {
@@ -176,18 +178,17 @@
                 type: "POST",
                 dataType: "json"
             }).done(function (data) {
+                model_activate =param
+                let map_info=data.web_info.map_info
                 $('#column_list').empty();
-                for (let i=0; i<(data.web_info.column).length; i++){
-                    let col_dict=data.web_info.column
-                    for (let key in col_dict[i]){
-                        $('#column_list').append("<option value="+key+">"+col_dict[i][key]+"</option>")
+                for (let i = 0; i < (data.web_info.column).length; i++) {
+                    let col_dict = data.web_info.column
+                    for (let key in col_dict[i]) {
+                        $('#column_list').append("<option value=" + key + ">" + col_dict[i][key] + "</option>")
                     }
                 }
                 $('#target_point').text(data.web_info.target_point);
-
-
-                //$('#column_list').append("<option value=\"\">Column 선택</option>")
-
+                load_map_data(map_info);
             })
         };
 
@@ -323,5 +324,7 @@
                 }
             }
         });
+
+
     </script>
 {% endblock %}
