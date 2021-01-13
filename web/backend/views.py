@@ -185,19 +185,28 @@ def predict(request):
     # GAIN()
     return JsonResponse({"1": "2"})
 
+
 def call_model(request):
     if request.is_ajax():
-        key=request.POST.get('param')
-        print('key',key)
+        key = request.POST.get('param')
+
         # input parameter
-        parameters_dir = './model_dir/model_A'
-        parameters_file = 'a_json.json'
+        for i in ['A', 'B', 'C', 'D']:
+            if key == i:
+                parameters_dir = './model_dir/model_' + i
+
+        # parameters_dir = './model_dir/model_A'
+        parameters_file = 'json_info.json'
         parameters_path = '{dir}/{file}'.format(dir=parameters_dir, file=parameters_file)
 
         with open(parameters_path, encoding='utf8') as json_file:
             parameters = json.load(json_file)
-            print(parameters)
-        return JsonResponse({"1": "2"})
+            print(parameters['web_info']['target_point'])
+            print(parameters['web_info']['column'])
+
+        # return JsonResponse({'target_point': parameters['web_info']['target_point']},
+        #                     {'column': parameters['web_info']['column']})
+        return JsonResponse({'web_info': parameters['web_info']})
 ##============backup==================
 # {'river_id':'R01'},{'key':'의암호'},{'key':'127.678647'},{'key':'37.877653'},
 #     {'river_id':'R01'},{'key':'한탄강'},{'key':'127.077585'},{'key':'38.032802'},

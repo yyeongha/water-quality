@@ -26,7 +26,7 @@
                     <button class="btn btn-light" onclick="select_model('C')">
                         <i class="fas fa-download mr-8"></i>영산강(MODEL3)
                     </button>
-                    <button class="btn btn-light" onclick="select_model('C')">
+                    <button class="btn btn-light" onclick="select_model('D')">
                         <i class="fas fa-download mr-8"></i>낙동강(MODEL4)
                     </button>
                 </div>
@@ -34,19 +34,20 @@
         </div>
 
         <div class="pd-20 debug">
-            <div style="display: flex; flex-direction: row; justify-content: space-between;">
+            <div style="display: flex; flex-direction: row;">
 
-                <div>
+                <div class="col-5">
                     <div class="title">측정데이터 선택</div>
-                    <select name="job">
-                        <option value="">Column 선택</option>
-                        <option value="학생">학생</option>
-                        <option value="회사원">회사원</option>
-                        <option value="기타">기타</option>
+                    <select id="column_list">
+                        <option value="">모델을 먼저 선택해야합니다.</option>
                     </select>
                 </div>
-
                 <div>
+                    <div class="title">대상 지점</div>
+                    <H2 id="target_point"> ads</H2>
+                </div>
+
+                <div hidden>
                     <div class="title">Xsls Upload</div>
                     <form method="post" enctype="multipart/form-data" id="fileUploadForms">
                         <input type="file" name="myfiles" multiple>
@@ -174,7 +175,18 @@
                 },
                 type: "POST",
                 dataType: "json"
-            }).done(function () {
+            }).done(function (data) {
+                $('#column_list').empty();
+                for (let i=0; i<(data.web_info.column).length; i++){
+                    let col_dict=data.web_info.column
+                    for (let key in col_dict[i]){
+                        $('#column_list').append("<option value="+key+">"+col_dict[i][key]+"</option>")
+                    }
+                }
+                $('#target_point').text(data.web_info.target_point);
+
+
+                //$('#column_list').append("<option value=\"\">Column 선택</option>")
 
             })
         };
