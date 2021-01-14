@@ -181,36 +181,85 @@ def load_df(request):
         location_list = []
         x_list = []
         y_list = []
-        print('target', target)
+        cat_id_list = []
+        cat_did_list = []
+        rch_id_list = []
+        rch_did_list = []
+        node_id_list = []
+        node_did_list = []
+
         if target == 'all':
             for i in parameters['web_info']['map_info']:
-                for k in i:
-                    target_list.append(k[0]['target'])
-                    addr_list.append(k[0]['addr'])
-                    location_list.append(k[0]['location'])
-                    x_list.append(k[0]['x'])
-                    y_list.append(k[0]['y'])
+                if i[0]['target'] == 'target_a':
+                    target_name = '자동측정망'
+                elif i[0]['target'] == 'target_b':
+                    target_name = '수질측정망'
+                elif i[0]['target'] == 'target_c':
+                    target_name = '총량측정망'
+                elif i[0]['target'] == 'target_d':
+                    target_name = '수리수문'
+                elif i[0]['target'] == 'target_e':
+                    target_name = '기상 AWS'
+                elif i[0]['target'] == 'target_f':
+                    target_name = '오염원'
+                elif i[0]['target'] == 'target_g':
+                    target_name = '인구'
+                target_list.append(target_name)
+                addr_list.append(i[0]['addr'])
+                location_list.append(i[0]['location'])
+                x_list.append(i[0]['x'])
+                y_list.append(i[0]['y'])
+                cat_id_list.append(i[0]['cat_id'])
+                cat_did_list.append(i[0]['cat_did'])
+                rch_id_list.append(i[0]['rch_id'])
+                rch_did_list.append(i[0]['rch_did'])
+                node_id_list.append(i[0]['node_id'])
+                node_did_list.append(i[0]['node_did'])
         else:
             for i in parameters['web_info']['map_info']:
-                for k in i:
-                    #  임시로 a 삽입
-                    map_list = [d for d in k if d['target'] == 'a']
-                    try:
-                        target_list.append(map_list[0]['target'])
-                        addr_list.append(map_list[0]['addr'])
-                        location_list.append(map_list[0]['location'])
-                        x_list.append(map_list[0]['x'])
-                        y_list.append(map_list[0]['y'])
-                    except:
-                        pass
+                #  임시로 a 삽입
+                map_list = [d for d in i if d['target'] == target]
+                print(target)
+                try:
+                    if map_list[0]['target'] == 'target_a':
+                        target_name = '자동측정망'
+                    elif map_list[0]['target'] == 'target_b':
+                        target_name = '수질측정망'
+                    elif map_list[0]['target'] == 'target_c':
+                        target_name = '총량측정망'
+                    elif map_list[0]['target'] == 'target_d':
+                        target_name = '수리수문'
+                    elif map_list[0]['target'] == 'target_e':
+                        target_name = '기상 AWS'
+                    elif map_list[0]['target'] == 'target_f':
+                        target_name = '오염원'
+                    elif map_list[0]['target'] == 'target_g':
+                        target_name = '인구'
+                    target_list.append(target_name)
+                    location_list.append(map_list[0]['location'])
+                    x_list.append(map_list[0]['x'])
+                    y_list.append(map_list[0]['y'])
+                    cat_id_list.append(map_list[0]['cat_id'])
+                    cat_did_list.append(map_list[0]['cat_did'])
+                    rch_id_list.append(map_list[0]['rch_id'])
+                    rch_did_list.append(map_list[0]['rch_did'])
+                    node_id_list.append(map_list[0]['node_id'])
+                    node_did_list.append(map_list[0]['node_did'])
+                except:
+                    pass
 
         # 데이터프레임 샘플
         df_sample = pd.DataFrame(
             {'target': target_list,
-             'addr': addr_list,
              'location': location_list,
-             'x': x_list,
-             'y': y_list,
+             '위도': y_list,
+             '경도': x_list,
+             'cat_id': cat_id_list,
+             'cat_did': cat_did_list,
+             'rch_id': rch_id_list,
+             'rch_did': rch_did_list,
+             'node_id': node_id_list,
+             'node_did': node_did_list
              })
         # HTML로 변환하기
         test_html = df_sample.to_html(index=False, justify='center', table_id="excel_table")

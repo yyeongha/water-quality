@@ -5,30 +5,14 @@
         <div class="pd-20 debug">
             <div class="title">new_map</div>
             <button id="allMenu" onclick="changeMarker('all')">ALL</button>
-            <button id="coffeeMenu" onclick="changeMarker('coffee')">AAAA</button>
-            <button id="storeMenu" onclick="changeMarker('store')">BBBB</button>
-            <button id="carparkMenu" onclick="changeMarker('carpark')">CCCC</button>
-            <!--
-            <div class="category">
-                <ul>
-                    <li id="coffeeMenu" onclick="changeMarker('coffee')">
-                        <span class="ico_comm black"></span>
-                        ALL
-                    </li>
-                    <li id="coffeeMenu" onclick="changeMarker('coffee')">
-                        <span class="ico_comm ico_coffee"></span>
-                        커피숍
-                    </li>
-                    <li  onclick="changeMarker('store')">
-                        <span class="ico_comm ico_store"></span>
-                        편의점
-                    </li>
-                    <li id="carparkMenu" onclick="changeMarker('carpark')">
-                        <span class="ico_comm ico_carpark"></span>
-                        주차장
-                    </li>
-                </ul>
-                -->
+            <button id="a_Menu" onclick="changeMarker('target_a')">자동측정망</button>
+            <button id="b_Menu" onclick="changeMarker('target_b')">수질측정망</button>
+            <button id="c_Menu" onclick="changeMarker('target_c')">총량측정망</button>
+            <button id="d_Menu" onclick="changeMarker('target_d')">수리수문</button>
+            <button id="e_Menu" onclick="changeMarker('target_e')">기상 AWS</button>
+            <button id="f_Menu" onclick="changeMarker('target_f')">오염원</button>
+            <button id="g_Menu" onclick="changeMarker('target_g')">인구</button>
+
         </div>
         <div id="map" style="width:100%;height:500px;"></div>
         <!-- 지도 위에 표시될 마커 카테고리 -->
@@ -41,13 +25,14 @@
     <script type="text/javascript"
             src="//dapi.kakao.com/v2/maps/sdk.js?appkey=411014b49760133574f1c56e4c7f9bd1"></script>
     <script>
-        var coffeePositions = '';
-
-        // 편의점 마커가 표시될 좌표 배열입니다
-        var storePositions = '';
-
-        // 주차장 마커가 표시될 좌표 배열입니다
-        var carparkPositions = '';
+        //마커가 표시될 좌표 배열
+        var target_a_Positions = '';
+        var target_b_Positions = '';
+        var target_c_Positions = '';
+        var target_d_Positions = '';
+        var target_e_Positions = '';
+        var target_f_Positions = '';
+        var target_g_Positions = '';
 
 
         var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
@@ -62,7 +47,7 @@
         /*
         // 커피숍 마커가 표시될 좌표 배열입니다
 
-            coffeePositions = [{
+            target_a_Positions = [{
                 content: '<div>의암호</div>',
                 latlng: new kakao.maps.LatLng(37.877653, 127.678647)
             }, {
@@ -78,7 +63,7 @@
             ]
 
         // 편의점 마커가 표시될 좌표 배열입니다
-        var storePositions = [
+        var target_b_Positions = [
             {
                 content: '<div>상동</div>',
                 latlng: new kakao.maps.LatLng(35.363586, 128.904788)
@@ -95,7 +80,7 @@
         ];
 
         // 주차장 마커가 표시될 좌표 배열입니다
-        var carparkPositions = [
+        var target_c_Positions = [
             {
                 content: '<div>봉황천</div>',
                 latlng: new kakao.maps.LatLng(36.108051, 127.545148)
@@ -115,14 +100,20 @@
         */
 
         var markerImageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/category.png';  // 마커이미지의 주소입니다. 스프라이트 이미지 입니다
-        coffeeMarkers = [], // 커피숍 마커 객체를 가지고 있을 배열입니다
-            storeMarkers = [], // 편의점 마커 객체를 가지고 있을 배열입니다
-            carparkMarkers = []; // 주차장 마커 객체를 가지고 있을 배열입니다
+        target_a_Markers = []; // 커피숍 마커 객체를 가지고 있을 배열입니다
+        target_b_Markers = []; // 편의점 마커 객체를 가지고 있을 배열입니다
+        target_c_Markers = []; // 주차장 마커 객체를 가지고 있을 배열입니다
+        target_d_Markers = []; // 주차장 마커 객체를 가지고 있을 배열입니다
+        target_e_Markers = []; // 주차장 마커 객체를 가지고 있을 배열입니다
+        target_f_Markers = []; // 주차장 마커 객체를 가지고 있을 배열입니다
+        target_g_Markers = []; // 주차장 마커 객체를 가지고 있을 배열입니다
+        target_h_Markers = []; // 주차장 마커 객체를 가지고 있을 배열입니다
 
         createCoffeeMarkers(); // 커피숍 마커를 생성하고 커피숍 마커 배열에 추가합니다
         createStoreMarkers(); // 편의점 마커를 생성하고 편의점 마커 배열에 추가합니다
         createCarparkMarkers(); // 주차장 마커를 생성하고 주차장 마커 배열에 추가합니다
 
+        //create_all_Markers();
         changeMarker('all'); // 지도에 커피숍 마커가 보이도록 설정합니다
 
 
@@ -151,7 +142,7 @@
         // 커피숍 마커를 생성하고 커피숍 마커 배열에 추가하는 함수입니다
         function createCoffeeMarkers() {
 
-            for (var i = 0; i < coffeePositions.length; i++) {
+            for (var i = 0; i < target_a_Positions.length; i++) {
 
                 var imageSize = new kakao.maps.Size(22, 26),
                     imageOptions = {
@@ -161,23 +152,78 @@
 
                 // 마커이미지와 마커를 생성합니다
                 var markerImage = createMarkerImage(markerImageSrc, imageSize, imageOptions),
-                    marker = createMarker(coffeePositions[i], markerImage);
+                    marker = createMarker(target_a_Positions[i], markerImage);
 
                 // 생성된 마커를 커피숍 마커 배열에 추가합니다
-                coffeeMarkers.push(marker);
+                target_a_Markers.push(marker);
             }
         }
 
-        // 커피숍 마커들의 지도 표시 여부를 설정하는 함수입니다
-        function setCoffeeMarkers(map) {
-            for (var i = 0; i < coffeeMarkers.length; i++) {
-                coffeeMarkers[i].setMap(map);
+        //마커들의 지도 표시 여부를 설정하는 함수
+        function setMarkers(map, type) {
+            let marker_list = []
+            let all_Markers = []
+            all_Markers = all_Markers.concat(target_a_Markers, target_b_Markers, target_c_Markers,
+                target_d_Markers, target_e_Markers, target_f_Markers, target_g_Markers);
+            for (var i = 0; i < all_Markers.length; i++) {
+                all_Markers[i].setMap(null);
+            }
+            if (type == 'target_a') {
+                marker_list = target_a_Markers
+            } else if (type == 'target_b') {
+                marker_list = target_b_Markers
+            } else if (type == 'target_c') {
+                marker_list = target_c_Markers
+            } else if (type == 'target_d') {
+                marker_list = target_d_Markers
+            } else if (type == 'target_e') {
+                marker_list = target_e_Markers
+            } else if (type == 'target_f') {
+                marker_list = target_f_Markers
+            } else if (type == 'target_g') {
+                marker_list = target_g_Markers
+            } else if (type == 'all') {
+                marker_list = all_Markers
+            }
+            for (var i = 0; i < marker_list.length; i++) {
+                marker_list[i].setMap(map);
             }
         }
+
+        function create_all_Markers() {
+            let arr = [{'position': target_a_Positions, "markers": target_a_Markers},
+                {'position': target_b_Positions, "markers": target_b_Markers},
+                {'position': target_c_Positions, "markers": target_c_Markers},
+                {'position': target_d_Positions, "markers": target_d_Markers},
+                {'position': target_e_Positions, "markers": target_e_Markers},
+                {'position': target_f_Positions, "markers": target_f_Markers},
+                {'position': target_g_Positions, "markers": target_g_Markers}];
+
+            arr.forEach(function (el, index) {
+                for (var i = 0; i < el.position.length; i++) {
+
+                    var imageSize = new kakao.maps.Size(22, 26),
+                        imageOptions = {
+                            spriteOrigin: new kakao.maps.Point(10, 36),
+                            spriteSize: new kakao.maps.Size(36, 98)
+                        };
+
+                    // 마커이미지와 마커를 생성합니다
+                    var markerImage = createMarkerImage(markerImageSrc, imageSize, imageOptions),
+                        marker = createMarker(el.position[i], markerImage);
+
+                    // 생성된 마커를 편의점 마커 배열에 추가합니다
+                    el.markers.push(marker);
+                }
+
+            })
+
+        }
+
 
         // 편의점 마커를 생성하고 편의점 마커 배열에 추가하는 함수입니다
         function createStoreMarkers() {
-            for (var i = 0; i < storePositions.length; i++) {
+            for (var i = 0; i < target_b_Positions.length; i++) {
 
                 var imageSize = new kakao.maps.Size(22, 26),
                     imageOptions = {
@@ -187,23 +233,17 @@
 
                 // 마커이미지와 마커를 생성합니다
                 var markerImage = createMarkerImage(markerImageSrc, imageSize, imageOptions),
-                    marker = createMarker(storePositions[i], markerImage);
+                    marker = createMarker(target_b_Positions[i], markerImage);
 
                 // 생성된 마커를 편의점 마커 배열에 추가합니다
-                storeMarkers.push(marker);
+                target_b_Markers.push(marker);
             }
         }
 
-        // 편의점 마커들의 지도 표시 여부를 설정하는 함수입니다
-        function setStoreMarkers(map) {
-            for (var i = 0; i < storeMarkers.length; i++) {
-                storeMarkers[i].setMap(map);
-            }
-        }
 
         // 주차장 마커를 생성하고 주차장 마커 배열에 추가하는 함수입니다
         function createCarparkMarkers() {
-            for (var i = 0; i < carparkPositions.length; i++) {
+            for (var i = 0; i < target_c_Positions.length; i++) {
 
                 var imageSize = new kakao.maps.Size(22, 26),
                     imageOptions = {
@@ -213,82 +253,129 @@
 
                 // 마커이미지와 마커를 생성합니다
                 var markerImage = createMarkerImage(markerImageSrc, imageSize, imageOptions),
-                    marker = createMarker(carparkPositions[i], markerImage);
+                    marker = createMarker(target_c_Positions[i], markerImage);
 
                 // 생성된 마커를 주차장 마커 배열에 추가합니다
-                carparkMarkers.push(marker);
+                target_c_Markers.push(marker);
             }
         }
 
-        // 주차장 마커들의 지도 표시 여부를 설정하는 함수입니다
-        function setCarparkMarkers(map) {
-            for (var i = 0; i < carparkMarkers.length; i++) {
-                carparkMarkers[i].setMap(map);
-            }
-        }
 
         // 카테고리를 클릭했을 때 type에 따라 카테고리의 스타일과 지도에 표시되는 마커를 변경합니다
         function changeMarker(type) {
 
-            var coffeeMenu = document.getElementById('coffeeMenu');
-            var storeMenu = document.getElementById('storeMenu');
-            var carparkMenu = document.getElementById('carparkMenu');
+            var a_Menu = document.getElementById('a_Menu');
+            var b_Menu = document.getElementById('b_Menu');
+            var c_Menu = document.getElementById('c_Menu');
+
             if (type === 'all') {
+                a_Menu.className = 'menu_selected';
+                b_Menu.className = 'menu_selected';
+                c_Menu.className = 'menu_selected';
 
-                // 커피숍 카테고리를 선택된 스타일로 변경하고
-                coffeeMenu.className = 'menu_selected';
-
-                // 편의점과 주차장 카테고리는 선택되지 않은 스타일로 바꿉니다
-                storeMenu.className = 'menu_selected';
-                carparkMenu.className = 'menu_selected';
-
-                // 커피숍 마커들만 지도에 표시하도록 설정합니다
+                // 선택된 마커들만 지도에 표시하도록 설정
+                /*
                 setCoffeeMarkers(map);
                 setStoreMarkers(map);
                 setCarparkMarkers(map);
-                load_table(model_activate,type);
+                */
+                setMarkers(map, type);
+                load_table(model_activate, type);
             }
             // 커피숍 카테고리가 클릭됐을 때
-            else if (type === 'coffee') {
+            else if (type === 'target_a') {
 
                 // 커피숍 카테고리를 선택된 스타일로 변경하고
-                coffeeMenu.className = 'menu_selected';
+                a_Menu.className = 'menu_selected';
 
                 // 편의점과 주차장 카테고리는 선택되지 않은 스타일로 바꿉니다
-                storeMenu.className = '';
-                carparkMenu.className = '';
+                b_Menu.className = '';
+                c_Menu.className = '';
 
                 // 커피숍 마커들만 지도에 표시하도록 설정합니다
-                setCoffeeMarkers(map);
-                setStoreMarkers(null);
-                setCarparkMarkers(null);
-                load_table(model_activate,type);
 
-            } else if (type === 'store') { // 편의점 카테고리가 클릭됐을 때
+                setMarkers(map, type);
+                load_table(model_activate, type);
+
+            } else if (type === 'target_b') { // 편의점 카테고리가 클릭됐을 때
 
                 // 편의점 카테고리를 선택된 스타일로 변경하고
-                coffeeMenu.className = '';
-                storeMenu.className = 'menu_selected';
-                carparkMenu.className = '';
+                a_Menu.className = '';
+                b_Menu.className = 'menu_selected';
+                c_Menu.className = '';
 
                 // 편의점 마커들만 지도에 표시하도록 설정합니다
-                setCoffeeMarkers(null);
-                setStoreMarkers(map);
-                setCarparkMarkers(null);
-                load_table(model_activate,type);
+                //setCoffeeMarkers(null);
+                //setStoreMarkers(map);
+                //setCarparkMarkers(null);
+                setMarkers(map, type);
+                load_table(model_activate, type);
 
-            } else if (type === 'carpark') { // 주차장 카테고리가 클릭됐을 때
+            } else if (type === 'target_c') { // 주차장 카테고리가 클릭됐을 때
 
                 // 주차장 카테고리를 선택된 스타일로 변경하고
-                coffeeMenu.className = '';
-                storeMenu.className = '';
-                carparkMenu.className = 'menu_selected';
+                a_Menu.className = '';
+                b_Menu.className = '';
+                c_Menu.className = 'menu_selected';
 
                 // 주차장 마커들만 지도에 표시하도록 설정합니다
-                setCoffeeMarkers(null);
-                setStoreMarkers(null);
-                setCarparkMarkers(map);
-                load_table(model_activate,type);
+                //setCoffeeMarkers(null);
+                //setStoreMarkers(null);
+                //setCarparkMarkers(map);
+                setMarkers(map, type);
+                load_table(model_activate, type);
+            } else if (type === 'target_d') { // 주차장 카테고리가 클릭됐을 때
+
+                // 주차장 카테고리를 선택된 스타일로 변경하고
+                a_Menu.className = '';
+                b_Menu.className = '';
+                c_Menu.className = 'menu_selected';
+
+                // 주차장 마커들만 지도에 표시하도록 설정합니다
+                //setCoffeeMarkers(null);
+                //setStoreMarkers(null);
+                //setCarparkMarkers(map);
+                setMarkers(map, type);
+                load_table(model_activate, type);
+            } else if (type === 'target_e') { // 주차장 카테고리가 클릭됐을 때
+
+                // 주차장 카테고리를 선택된 스타일로 변경하고
+                a_Menu.className = '';
+                b_Menu.className = '';
+                c_Menu.className = 'menu_selected';
+
+                // 주차장 마커들만 지도에 표시하도록 설정합니다
+                //setCoffeeMarkers(null);
+                //setStoreMarkers(null);
+                //setCarparkMarkers(map);
+                setMarkers(map, type);
+                load_table(model_activate, type);
+            } else if (type === 'target_f') { // 주차장 카테고리가 클릭됐을 때
+
+                // 주차장 카테고리를 선택된 스타일로 변경하고
+                a_Menu.className = '';
+                b_Menu.className = '';
+                c_Menu.className = 'menu_selected';
+
+                // 주차장 마커들만 지도에 표시하도록 설정합니다
+                //setCoffeeMarkers(null);
+                //setStoreMarkers(null);
+                //setCarparkMarkers(map);
+                setMarkers(map, type);
+                load_table(model_activate, type);
+            } else if (type === 'target_g') { // 주차장 카테고리가 클릭됐을 때
+
+                // 주차장 카테고리를 선택된 스타일로 변경하고
+                a_Menu.className = '';
+                b_Menu.className = '';
+                c_Menu.className = 'menu_selected';
+
+                // 주차장 마커들만 지도에 표시하도록 설정합니다
+                //setCoffeeMarkers(null);
+                //setStoreMarkers(null);
+                //setCarparkMarkers(map);
+                setMarkers(map, type);
+                load_table(model_activate, type);
             }
         }
 
@@ -306,50 +393,59 @@
         }
 
         function load_map_data(data) {
-            coffeePositions = [];
-            storePositions = [];
-            carparkPositions = [];
+            target_a_Positions = [];
+            target_b_Positions = [];
+            target_c_Positions = [];
+            target_d_Positions = [];
+            target_e_Positions = [];
+            target_f_Positions = [];
+            target_g_Positions = [];
             for (let i = 0; i < data.length; i++) {
-                for (let k = 0; k < data[i].length; k++) {
-                    if (data[i][k][0]['target'] == 'a') {
-                        coffeePositions.push({
-                            content: '<div>' + data[i][k][0]['location'] + '</div>',
-                            latlng: new kakao.maps.LatLng(data[i][k][0]['y'], data[i][k][0]['x'])
-                        })
-                    }
-                    else if (data[i][k][0]['target'] == 'b') {
-                        storePositions.push({
-                            content: '<div>' + data[i][k][0]['location'] + '</div>',
-                            latlng: new kakao.maps.LatLng(data[i][k][0]['y'], data[i][k][0]['x'])
-                        })
-                    }
-                    else if (data[i][k][0]['target'] == 'c') {
-                        carparkPositions.push({
-                            content: '<div>' + data[i][k][0]['location'] + '</div>',
-                            latlng: new kakao.maps.LatLng(data[i][k][0]['y'], data[i][k][0]['x'])
-                        })
-                    }/*
-                    else if (data[i][k][0]['target'] == 'd') {
-                        pass
-                        coffeePositions.push({
-                            content: '<div>' + data[i][k][0]['location'] + '</div>',
-                            latlng: new kakao.maps.LatLng(data[i][k][0]['y'], data[i][k][0]['x'])
-                        })
-                    }
-                    else if (data[i][k][0]['target'] == 'e') {
-                        coffeePositions.push({
-                            content: '<div>' + data[i][k][0]['location'] + '</div>',
-                            latlng: new kakao.maps.LatLng(data[i][k][0]['y'], data[i][k][0]['x'])
-                        })
-                    }
-                    */
+                if (data[i][0]['target'] == 'target_a') {
+                    target_a_Positions.push({
+                        content: '<div>' + data[i][0]['location'] + '</div>',
+                        latlng: new kakao.maps.LatLng(data[i][0]['y'], data[i][0]['x'])
+                    })
+                } else if (data[i][0]['target'] == 'target_b') {
+                    target_b_Positions.push({
+                        content: '<div>' + data[i][0]['location'] + '</div>',
+                        latlng: new kakao.maps.LatLng(data[i][0]['y'], data[i][0]['x'])
+                    })
+                } else if (data[i][0]['target'] == 'target_c') {
+                    target_c_Positions.push({
+                        content: '<div>' + data[i][0]['location'] + '</div>',
+                        latlng: new kakao.maps.LatLng(data[i][0]['y'], data[i][0]['x'])
+                    })
+                } else if (data[i][0]['target'] == 'target_d') {
+                    target_d_Positions.push({
+                        content: '<div>' + data[i][0]['location'] + '</div>',
+                        latlng: new kakao.maps.LatLng(data[i][0]['y'], data[i][0]['x'])
+                    })
+                } else if (data[i][0]['target'] == 'target_e') {
+                    target_e_Positions.push({
+                        content: '<div>' + data[i][0]['location'] + '</div>',
+                        latlng: new kakao.maps.LatLng(data[i][0]['y'], data[i][0]['x'])
+                    })
+                } else if (data[i][0]['target'] == 'target_f') {
+                    target_f_Positions.push({
+                        content: '<div>' + data[i][0]['location'] + '</div>',
+                        latlng: new kakao.maps.LatLng(data[i][0]['y'], data[i][0]['x'])
+                    })
+                } else if (data[i][0]['target'] == 'target_g') {
+                    target_g_Positions.push({
+                        content: '<div>' + data[i][0]['location'] + '</div>',
+                        latlng: new kakao.maps.LatLng(data[i][0]['y'], data[i][0]['x'])
+                    })
                 }
+
             }
+            /*
+                        createCoffeeMarkers(); // 커피숍 마커를 생성하고 커피숍 마커 배열에 추가합니다
+                        createStoreMarkers(); // 편의점 마커를 생성하고 편의점 마커 배열에 추가합니다
+                        createCarparkMarkers(); // 주차장 마커를 생성하고 주차장 마커 배열에 추가합니다
 
-
-            createCoffeeMarkers(); // 커피숍 마커를 생성하고 커피숍 마커 배열에 추가합니다
-            createStoreMarkers(); // 편의점 마커를 생성하고 편의점 마커 배열에 추가합니다
-            createCarparkMarkers(); // 주차장 마커를 생성하고 주차장 마커 배열에 추가합니다
+             */
+            create_all_Markers()
             changeMarker('all'); // 지도에 커피숍 마커가 보이도록 설정합니다
         }
     </script>

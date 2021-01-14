@@ -53,34 +53,72 @@
       }
     ],
     "map_info": [
-      [
-        [{"target": "a","addr":"충북 충주시 주덕읍 당우리 1504","location": "인제","x": "128.200322","y": "38.159879"}],
-        [{"target": "a","addr":"충북 청주시 흥덕구 향정동 LG전자청주공장","location": "강천","x": "127.746077","y": "37.242509"}],
-        [{"target": "a","addr":"강원 영월군 영월읍 덕포리 992번지","location": "여주","x": "127.680034","y": "37.255051"}],
-        [{"target": "a","addr":"충북청원군현도면중삼리산34번지","location": "가평","x": "127.38222","y": "37.673854"}]
-      ],[
-        [{"target":"b","addr":"경기도 동두천시 생연동","location": "복하천","x": "127.541519","y": "37.363618"}],
-        [{"target":"b","addr":"충북 청주시 흥덕구 향정동 LG전자청주공장","location": "화천","x": "127.709603","y": "38.09903"}],
-        [{"target":"b","addr":"충북청원군현도면중삼리산34번지","location": "흥천","x": "127.538081","y": "37.379891"}],
-        [{"target":"b","addr":"강원 영월군 영월읍 덕포리 992번지","location": "미산","x": "126.982892","y": "38.02491"}]
-      ],[
-        [{"target":"c","addr":"충북 청주시 흥덕구 향정동 ","location": "서상","x": "127.685785","y": "37.955208"}],
-        [{"target":"c","addr":"경기도 남양주시 화도읍 금남리","location": "신천","x": "127.07899","y": "38.004491"}],
-        [{"target":"c","addr":"충북청원군현도면중삼리산34번지","location": "구리","x": "127.116663","y": "37.563112"}],
-        [{"target":"c","addr":"충청남도 공주시 사곡면","location": "원주","x": "127.951525","y": "37.423617"}],
-        [{"target":"c","addr":"충북 청주시 흥덕구 향정동 LG전자청주공장","location": "달천","x": "127.928599","y": "36.928513"}],
-        [{"target":"c","addr":"충북청원군현도면중삼리산34번지","location": "단양","x": "128.484395","y": "37.085671"}]
-      ],[
-        [{"target":"d","addr":"충북청원군현도면중삼리산34번지","location": "단양","location": "평창강","x": "128.330895","y": "37.215474"}],
-        [{"target":"d","addr":"충북청원군현도면중삼리산34번지","location": "원주","location": "청미천","x": "127.71901","y": "37.203522"}],
-        [{"target":"d","addr":"충북청원군현도면중삼리산34번지","location": "단원주양","location": "포천","x": "127.236411","y": "38.006968"}],
-        [{"target":"d","addr":"충북청원군현도면중삼리산34번지","location": "단양","location": "충주","x": "127.952738","y": "37.02413"}]
-      ],[
-        [{"target":"e","addr":"충북청원군현도면중삼리산34번지","location": "원주","location": "의암호","x": "127.678647","y": "37.877653"}],
-        [{"target":"e","addr":"충북청원군현도면중삼리산34번지","location": "단양","location": "한탄강","x": "127.077585","y": "38.032802"}],
-        [{"target":"e","addr":"충북청원군현도면중삼리산34번지","location": "원주","location": "경안천","x": "127.310526","y": "37.442547"}],
-        [{"target":"e","addr":"충북청원군현도면중삼리산34번지","location": "원주","location": "능서","x": "127.613025","y": "37.320053"}]
-      ]
+        [{"target":"target_a","addr":"충북 충주시 주덕읍 당우리 1504","location": "인제","x": "128.200322","y": "38.159879",
+          "cat_id": "abc","cat_did": "ds","rch_id": "dwa","rch_did": "zzz","node_id": "sdfg","node_did": "qweq"}],
+        [{"target":"target_a","addr":"충북 청주시 흥덕구 향정동 LG전자청주공장","location": "강천","x": "127.746077","y": "37.242509",
+          "cat_id": "abc","cat_did": "ds","rch_id": "dwa","rch_did": "zzz","node_id": "sdfg","node_did": "qweq"}],
+        [{"target":"target_a","addr":"강원 영월군 영월읍 덕포리 992번지","location": "여주","x": "127.680034","y": "37.255051",
+          "cat_id": "abc","cat_did": "ds","rch_id": "dwa","rch_did": "zzz","node_id": "sdfg","node_did": "qweq"}],
+        [{"target":"target_a","addr":"충북청원군현도면중삼리산34번지","location": "가평","x": "127.38222","y": "37.673854",
+          "cat_id": "abc","cat_did": "ds","rch_id": "dwa","rch_did": "zzz","node_id": "sdfg","node_did": "qweq"}],
+
+      [{"target":"target_b","addr":"경기도 동두천시 생연동","location": "복하천","x": "127.541519","y": "37.363618",
+          "cat_id": "abc","cat_did": "ds","rch_id": "dwa","rch_did": "zzz","node_id": "sdfg","node_did": "qweq"}],
+        [{"target":"target_b","addr":"충북 청주시 흥덕구 향정동 LG전자청주공장","location": "화천","x": "127.709603","y": "38.09903",
+          "cat_id": "abc","cat_did": "ds","rch_id": "dwa","rch_did": "zzz","node_id": "sdfg","node_did": "qweq"}],
+        [{"target":"target_b","addr":"충북청원군현도면중삼리산34번지","location": "흥천","x": "127.538081","y": "37.379891",
+          "cat_id": "abc","cat_did": "ds","rch_id": "dwa","rch_did": "zzz","node_id": "sdfg","node_did": "qweq"}],
+        [{"target":"target_b","addr":"강원 영월군 영월읍 덕포리 992번지","location": "미산","x": "126.982892","y": "38.02491",
+          "cat_id": "abc","cat_did": "ds","rch_id": "dwa","rch_did": "zzz","node_id": "sdfg","node_did": "qweq"}],
+
+      [{"target":"target_c","addr":"충북 청주시 흥덕구 향정동 ","location": "서상","x": "127.685785","y": "37.955208",
+        "cat_id": "abc","cat_did": "ds","rch_id": "dwa","rch_did": "zzz","node_id": "sdfg","node_did": "qweq"}],
+        [{"target":"target_c","addr":"경기도 남양주시 화도읍 금남리","location": "신천","x": "127.07899","y": "38.004491",
+          "cat_id": "abc","cat_did": "ds","rch_id": "dwa","rch_did": "zzz","node_id": "sdfg","node_did": "qweq"}],
+        [{"target":"target_c","addr":"충북청원군현도면중삼리산34번지","location": "구리","x": "127.116663","y": "37.563112",
+          "cat_id": "abc","cat_did": "ds","rch_id": "dwa","rch_did": "zzz","node_id": "sdfg","node_did": "qweq"}],
+        [{"target":"target_c","addr":"충청남도 공주시 사곡면","location": "원주","x": "127.951525","y": "37.423617",
+          "cat_id": "abc","cat_did": "ds","rch_id": "dwa","rch_did": "zzz","node_id": "sdfg","node_did": "qweq"}],
+        [{"target":"target_c","addr":"충북 청주시 흥덕구 향정동 LG전자청주공장","location": "달천","x": "127.928599","y": "36.928513",
+          "cat_id": "abc","cat_did": "ds","rch_id": "dwa","rch_did": "zzz","node_id": "sdfg","node_did": "qweq"}],
+        [{"target":"target_c","addr":"충북청원군현도면중삼리산34번지","location": "단양","x": "128.484395","y": "37.085671",
+          "cat_id": "abc","cat_did": "ds","rch_id": "dwa","rch_did": "zzz","node_id": "sdfg","node_did": "qweq"}],
+
+      [{"target":"target_d","addr":"충북청원군현도면중삼리산34번지","location": "단양","location": "평창강","x": "128.330895","y": "37.215474",
+        "cat_id": "abc","cat_did": "ds","rch_id": "dwa","rch_did": "zzz","node_id": "sdfg","node_did": "qweq"}],
+        [{"target":"target_d","addr":"충북청원군현도면중삼리산34번지","location": "원주","location": "청미천","x": "127.71901","y": "37.203522",
+          "cat_id": "abc","cat_did": "ds","rch_id": "dwa","rch_did": "zzz","node_id": "sdfg","node_did": "qweq"}],
+        [{"target":"target_d","addr":"충북청원군현도면중삼리산34번지","location": "단원주양","location": "포천","x": "127.236411","y": "38.006968",
+          "cat_id": "abc","cat_did": "ds","rch_id": "dwa","rch_did": "zzz","node_id": "sdfg","node_did": "qweq"}],
+        [{"target":"target_d","addr":"충북청원군현도면중삼리산34번지","location": "단양","location": "충주","x": "127.952738","y": "37.02413",
+          "cat_id": "abc","cat_did": "ds","rch_id": "dwa","rch_did": "zzz","node_id": "sdfg","node_did": "qweq"}],
+
+      [{"target":"target_e","addr":"충북청원군현도면중삼리산34번지","location": "원주","location": "의암호","x": "126.982892","y": "38.02491",
+        "cat_id": "abc","cat_did": "ds","rch_id": "dwa","rch_did": "zzz","node_id": "sdfg","node_did": "qweq"}],
+        [{"target":"target_e","addr":"충북청원군현도면중삼리산34번지","location": "단양","location": "한탄강","x": "127.077585","y": "38.032802",
+          "cat_id": "abc","cat_did": "ds","rch_id": "dwa","rch_did": "zzz","node_id": "sdfg","node_did": "qweq"}],
+        [{"target":"target_e","addr":"충북청원군현도면중삼리산34번지","location": "원주","location": "경안천","x": "127.310526","y": "37.442547",
+          "cat_id": "abc","cat_did": "ds","rch_id": "dwa","rch_did": "zzz","node_id": "sdfg","node_did": "qweq"}],
+        [{"target":"target_e","addr":"충북청원군현도면중삼리산34번지","location": "원주","location": "능서","x": "127.613025","y": "37.320053",
+          "cat_id": "abc","cat_did": "ds","rch_id": "dwa","rch_did": "zzz","node_id": "sdfg","node_did": "qweq"}],
+      
+      [{"target":"target_f","addr":"충북청원군현도면중삼리산34번지","location": "원주","location": "의암호","x": "127.678647","y": "37.877653",
+        "cat_id": "abc","cat_did": "ds","rch_id": "dwa","rch_did": "zzz","node_id": "sdfg","node_did": "qweq"}],
+        [{"target":"target_f","addr":"충북청원군현도면중삼리산34번지","location": "단양","location": "한탄강","x": "127.077585","y": "38.032802",
+          "cat_id": "abc","cat_did": "ds","rch_id": "dwa","rch_did": "zzz","node_id": "sdfg","node_did": "qweq"}],
+        [{"target":"target_f","addr":"충북청원군현도면중삼리산34번지","location": "원주","location": "경안천","x": "127.236411","y": "38.006968",
+          "cat_id": "abc","cat_did": "ds","rch_id": "dwa","rch_did": "zzz","node_id": "sdfg","node_did": "qweq"}],
+        [{"target":"target_f","addr":"충북청원군현도면중삼리산34번지","location": "원주","location": "능서","x": "127.613025","y": "37.320053",
+          "cat_id": "abc","cat_did": "ds","rch_id": "dwa","rch_did": "zzz","node_id": "sdfg","node_did": "qweq"}],
+
+      [{"target":"target_g","addr":"충북청원군현도면중삼리산34번지","location": "원주","location": "의암호","x": "127.678647","y": "37.877653",
+        "cat_id": "abc","cat_did": "ds","rch_id": "dwa","rch_did": "zzz","node_id": "sdfg","node_did": "qweq"}],
+        [{"target":"target_g","addr":"충북청원군현도면중삼리산34번지","location": "단양","location": "한탄강","x": "127.077585","y": "38.032802",
+          "cat_id": "abc","cat_did": "ds","rch_id": "dwa","rch_did": "zzz","node_id": "sdfg","node_did": "qweq"}],
+        [{"target":"target_g","addr":"충북청원군현도면중삼리산34번지","location": "원주","location": "경안천","x": "127.310526","y": "37.442547",
+          "cat_id": "abc","cat_did": "ds","rch_id": "dwa","rch_did": "zzz","node_id": "sdfg","node_did": "qweq"}],
+        [{"target":"target_g","addr":"충북청원군현도면중삼리산34번지","location": "원주","location": "능서","x": "128.484395","y": "37.085671",
+          "cat_id": "abc","cat_did": "ds","rch_id": "dwa","rch_did": "zzz","node_id": "sdfg","node_did": "qweq"}]
     ]
   }
 }

@@ -33,6 +33,13 @@
             </div>
         </div>
 
+
+        {#        {% include "backend/sample_map.html" %}#}
+        {#        {% include "backend/new_map.html" %}#}
+        {% include "backend/new_map2.html" %}
+
+        {#        {% include "backend/sample_datepicker.html" %}#}
+        {% include "backend/sample_table.html" %}
         <div class="pd-20 debug">
             <div style="display: flex; flex-direction: row;">
 
@@ -59,14 +66,6 @@
 
             </div>
         </div>
-
-
-        {#        {% include "backend/sample_map.html" %}#}
-        {#        {% include "backend/new_map.html" %}#}
-        {% include "backend/new_map2.html" %}
-
-        {#        {% include "backend/sample_datepicker.html" %}#}
-        {% include "backend/sample_table.html" %}
         {% include "backend/new_datepicker.html" %}
         <div class="pd-20 debug">
             <div style="display: flex; flex-direction: row; justify-content: space-around; ">
@@ -155,7 +154,8 @@
 
 {% block javascript %}
     <script>
-        var model_activate=''
+        var model_activate = ''
+
         function pridict() {
             $.ajax({
                 url: "{% url "predict" %}",
@@ -178,8 +178,8 @@
                 type: "POST",
                 dataType: "json"
             }).done(function (data) {
-                model_activate =param
-                let map_info=data.web_info.map_info
+                model_activate = param
+                let map_info = data.web_info.map_info
                 $('#column_list').empty();
                 for (let i = 0; i < (data.web_info.column).length; i++) {
                     let col_dict = data.web_info.column
