@@ -15,6 +15,6 @@ urlpatterns = [
     path('predict', IndexViews.predict, name='predict'),
     path('call_model', IndexViews.call_model, name='call_model'),
 ]
-# if settings.DEBUG:
-#     # urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-#     urlpatterns += static(settings.DOWNLOAD_URL, document_root=settings.DOWNLOAD_ROOT)
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    # urlpatterns += static(settings.DOWNLOAD_URL, document_root=settings.DOWNLOAD_ROOT)

@@ -1,0 +1,124 @@
+{% extends "backend/layout/base.html" %}
+
+{% block content %}
+    <div class="pd-20 debug">
+        <div class="title">예측 수질</div>
+        <canvas id="predictWater" width="400" height="100"></canvas>
+    </div>
+
+    <div class="pd-20 debug">
+        <div class="title">예측 그래프</div>
+        <canvas id="predictGraph" width="400" height="100"></canvas>
+    </div>
+
+    <div class="pd-20 debug">
+        <div class="title">예측 강우량 및 기온</div>
+        <canvas id="predictData" width="400" height="100"></canvas>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        var predictWater = document.getElementById('predictWater');
+        var _predictWater = new Chart(predictWater, {
+            type: 'bar',
+            data: {
+                labels: ['first', 'second', 'third'],
+                datasets: [
+                    {
+                        label: '예측 수질',
+                        data: [3, 2, 3],
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    }
+                ]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: '수질 기준 (BOD mg/l)'
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+
+        var predictGraph = document.getElementById('predictGraph');
+        var _predictGraph = new Chart(predictGraph, {
+            type: 'line',
+            data: {
+                labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                datasets: [
+                    {
+                        label: '기준값',
+                        data: [0, 0, 2, 0, 1.8, 0, 2, 0, 2, 0],
+                        borderColor: 'rgba(255, 99, 132, 0.2)',
+                        fill: false,
+                        lineTension: 0,
+                    },
+                    {
+                        label: '실측값',
+                        data: [1, -1, 1, 0, 1.5, 0, 1.8, 0, 1.7, 0.3],
+                        borderColor: 'rgba(99,235,181,0.56)',
+                        fill: false,
+                        lineTension: 0,
+                    },
+                    {
+                        label: '예측값',
+                        data: [1, -1, 1, 0, 1.5, 0, 1.8, 0, 1.7, 0.3,],
+                        borderColor: 'rgba(31,43,235,0.44)',
+                        fill: false,
+                        lineTension: 0,
+                    },
+                ]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                        }
+                    }]
+                }
+            }
+        });
+
+        var predictData = document.getElementById('predictData');
+        var _predictData = new Chart(predictData, {
+            type: 'bar',
+            data: {
+                labels: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+                datasets: [
+                    {
+                        label: '강우량',
+                        data: [50, 50, 55, 60, 100, 140, 260, 300, 220, 120, 100, 50],
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        type: 'bar',
+                    },
+                    {
+                        label: '기온',
+                        data: [150, 155, 180, 250, 280, 300, 340, 350, 320, 280, 210, 160],
+                        type: 'line',
+                        borderColor: 'rgba(255, 99, 132, 0.2)',
+                        fill: false,
+                    },
+                ]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                        }
+                    }]
+                }
+            }
+        });
+
+
+    </script>
+{% endblock %}

@@ -121,7 +121,7 @@ def file_download(request):
                 response = HttpResponse(fh.read(), content_type="text/csv")
                 print('os.path.basename(file_path)', os.path.basename(file_path))
                 response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
-                return response
+                return HttpResponse
         raise Http404
 
 
@@ -267,12 +267,24 @@ def load_df(request):
 
 
 def predict(request):
-    path = os.path.join(settings.PREDICT_ROOT, 'main.py')
-    print('predict_run')
-    os.system(path)
-    # print('tes',tes)
-    # GAIN()
-    return JsonResponse({"1": "2"})
+    # path = os.path.join(settings.PREDICT_ROOT, 'main.py')
+    # print('predict_run')
+    # os.system(path)
+    key = request.POST.get('key')
+    '''
+    toc = 총유기 탄소량
+    chl = 클로로필 -a
+    do = 용존 산소량
+    tn = 총질소
+    tp = 총인
+    '''
+    predict_cahrt = {"origin": [3, 4, 6, 2, 3, 4, 2, 5, 2, 3],
+                     "predict": [None, None, None, None, None, None, 3, 4, 3, 8],
+                     "origin_2": [None, None, None, None, None, None, 3, 6, 5, 7]}
+    predict_water = [2, 5, 7]
+    if key == 'toc':
+        value = {"1": "2"}
+    return JsonResponse({"predict_cahrt": predict_cahrt, "predict_water": predict_water})
 
 
 def call_model(request):

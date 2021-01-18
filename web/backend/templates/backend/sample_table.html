@@ -20,7 +20,6 @@
         }
 
         function load_table(model, target) {
-            console.log('target');
             $.ajax({
                 url: '{% url 'load_df' %}',
                 data: {
