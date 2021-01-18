@@ -112,5 +112,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 UPLOAD_URL = '../../gain_new/save/'
 UPLOAD_ROOT = os.path.join(BASE_DIR, '../gain_new/output')
 
-PREDICT_URL = '../../gain_new/'
-PREDICT_ROOT = os.path.join(BASE_DIR, '../gain_new/')
+PREDICT_URL = '/gain_new/'
+PREDICT_ROOT = os.path.join(BASE_DIR, 'gain_new')

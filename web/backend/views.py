@@ -9,6 +9,7 @@ from django.shortcuts import render
 from django.core.files.storage import FileSystemStorage
 
 
+
 def index(request):
     context = {}
     # try:
@@ -267,9 +268,12 @@ def load_df(request):
 
 
 def predict(request):
-    # path = os.path.join(settings.PREDICT_ROOT, 'main.py')
-    # print('predict_run')
-    # os.system(path)
+    # gain파일 실행
+    try:
+        from gain_new.main import gain
+    except Exception as e:
+        print(e)
+
     key = request.POST.get('key')
     '''
     toc = 총유기 탄소량
