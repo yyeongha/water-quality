@@ -10,11 +10,11 @@
                     <div class="row">
                         <div class="col-6">
                             <label for="start-train" class="form-label">학습 시작일</label>
-                            <input type="text" class="form-control" id="start-train" placeholder="yyyy-mm-dd">
+                            <input type="text" class="form-control" id="start-train" placeholder="yyyy.mm.dd">
                         </div>
                         <div class="col-6">
                             <label for="end-train" class="form-label">학습 종료일</label>
-                            <input type="text" class="form-control" id="end-train" placeholder="yyyy-mm-dd" disabled>
+                            <input type="text" class="form-control" id="end-train" placeholder="yyyy.mm.dd" disabled>
                         </div>
                     </div>
                 </div>
@@ -22,12 +22,12 @@
                     <div class="row">
                         <div class="col-6">
                             <label for="start-predict" class="form-label">예측 시작일</label>
-                            <input type="text" class="form-control" id="start-predict" placeholder="yyyy-mm-dd"
+                            <input type="text" class="form-control" id="start-predict" placeholder="yyyy.mm.dd"
                                    disabled>
                         </div>
                         <div class="col-6">
                             <label for="end-predict" class="form-label">예측 종료일</label>
-                            <input type="text" class="form-control" id="end-predict" placeholder="yyyy-mm-dd" disabled>
+                            <input type="text" class="form-control" id="end-predict" placeholder="yyyy.mm.dd" disabled>
                         </div>
                     </div>
                 </div>
@@ -48,12 +48,12 @@
                 month = '0' + month;
             if (day.length < 2)
                 day = '0' + day;
-            return [year, month, day].join('-');
+            return [year, month, day].join('.');
         }
 
         $(function () {
             var datepicker_param = {
-                dateFormat: 'yy-mm-dd',
+                dateFormat: 'yy.mm.dd',
                 prevText: '이전 달',
                 nextText: '다음 달',
                 monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
@@ -71,27 +71,23 @@
             $("#end-predict").datepicker(datepicker_param);
 
 
-
             $('#start-train').change(function () {
-
                 var _startTrain = new Date($("#start-train").val());
-                var _endTrain = new Date($("#end-train").val());
-                var _startPredict = new Date($('#start-predict').val());
-                var _endPredict = new Date($('#end-predict').val());
+                var _endTrain = new Date();
+                var _startPredict = new Date();
+                var _endPredict = new Date();
 
                 _endTrain.setDate(_startTrain.getDate() + 6);
                 _startPredict.setDate(_startTrain.getDate() + 6);
                 _endPredict.setDate(_startTrain.getDate() + 8);
 
-                console.log("1", _startTrain);
-                console.log("2", _endTrain);
-                let AA = formatDate(_endTrain)
+                let AA = formatDate(_endTrain);
                 $('#end-train').datepicker("setDate", AA);
 
-                let BB = formatDate(_startPredict)
+                let BB = formatDate(_startPredict);
                 $('#start-predict').datepicker("setDate", BB);
 
-                let CC = formatDate(_endPredict)
+                let CC = formatDate(_endPredict);
                 $('#end-predict').datepicker("setDate", CC);
 
             })

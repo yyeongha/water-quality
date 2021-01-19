@@ -135,6 +135,7 @@ def file_upload(request):
         fs = FileSystemStorage(location=settings.UPLOAD_ROOT, base_url=settings.UPLOAD_URL)
         fs.save(myfile.name, myfile)
 
+        read_xlsx(settings.UPLOAD_ROOT)
         # upload file unzip save
         if myfile.name[-4:] == '.zip':
             with zipfile.ZipFile(myfile, 'r') as existing_zip:
@@ -307,6 +308,40 @@ def call_model(request):
             parameters = json.load(json_file)
 
         return JsonResponse({'web_info': parameters['web_info']})
+
+def read_xlsx(files_Path):
+    files_Path = files_Path+"/"
+    file_name_and_time_lst = []
+    # 해당 경로에 있는 파일들의 생성시간을 함께 리스트로 넣어줌
+    for f_name in os.listdir(f"{files_Path}"):
+        written_time = os.path.getctime(f"{files_Path}{f_name}")
+        file_name_and_time_lst.append((f_name, written_time))
+    # 생성시간 역순
+    sorted_file_lst = sorted(file_name_and_time_lst, key=lambda x: x[1], reverse=True)
+
+    # sort
+    recent_file = sorted_file_lst[0]
+    recent_file_name = recent_file[0]
+
+    # df_loc = []
+    path = os.path.join(files_Path, recent_file_name)
+    # df_loc.append(pd.read_excel(path))
+    df_loc = pd.DataFrame(pd.read_excel(path))
+    # print(df_loc)
+    # set date
+    start_date = '2019.01.20'
+    end_date = '2019.03.10'
+
+    after_start_date = df_loc["측정날짜"] >= start_date
+    before_end_date = df_loc["측정날짜"] <= end_date
+    between_two_dates = after_start_date & before_end_date
+
+    filtered_dates = df_loc.loc[between_two_dates]
+    print(filtered_dates)
+
+
+    return
+
 ##============backup==================
 # {'river_id':'R01'},{'key':'의암호'},{'key':'127.678647'},{'key':'37.877653'},
 #     {'river_id':'R01'},{'key':'한탄강'},{'key':'127.077585'},{'key':'38.032802'},
