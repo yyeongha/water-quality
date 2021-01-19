@@ -276,6 +276,10 @@ def predict(request):
         print(e)
 
     key = request.POST.get('key')
+    start_date = request.POST.get('start_date')
+    end_date = request.POST.get('end_date')
+    predict_start_date = request.POST.get('predict_start_date')
+    predict_end_date = request.POST.get('predict_end_date')
     '''
     toc = 총유기 탄소량
     chl = 클로로필 -a

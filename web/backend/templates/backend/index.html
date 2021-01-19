@@ -149,28 +149,31 @@
         var model_activate = ''
 
         function pridict() {
-            if($('#column_list').children().length == 1){
+            if ($('#column_list').children().length == 1) {
                 alert("Model 선택은 필수사항입니다");
-            }
-            else {
+            } else {
                 $.ajax({
-                url: "{% url "predict" %}",
-                data: {
-                    csrfmiddlewaretoken: $("#csrf_token").val(),
-                    "key": $('#column_list').val()
-                },
-                type: "POST",
-                dataType: "json"
-            }).done(function (data) {
-                _predictWater.data.datasets[0].data = data.predict_water;
-                //_predictWater.data.datasets[1].data = [9, 2, 0, 0, 0];
-                _predictWater.update();
-                _predictGraph.data.datasets[0].data = data.predict_cahrt.origin;
-                _predictGraph.data.datasets[1].data = data.predict_cahrt.predict;
-                _predictGraph.data.datasets[2].data = data.predict_cahrt.origin_2;
-                _predictGraph.update();
+                    url: "{% url "predict" %}",
+                    data: {
+                        csrfmiddlewaretoken: $("#csrf_token").val(),
+                        "key": $('#column_list').val(),
+                        "start_date": formatDate(_startTrain),
+                        "end_date": formatDate(_endTrain),
+                        "predict_start_date": formatDate(_startPredict),
+                        "predict_end_date": formatDate(_endPredict)
+                    },
+                    type: "POST",
+                    dataType: "json"
+                }).done(function (data) {
+                    _predictWater.data.datasets[0].data = data.predict_water;
+                    //_predictWater.data.datasets[1].data = [9, 2, 0, 0, 0];
+                    _predictWater.update();
+                    _predictGraph.data.datasets[0].data = data.predict_cahrt.origin;
+                    _predictGraph.data.datasets[1].data = data.predict_cahrt.predict;
+                    _predictGraph.data.datasets[2].data = data.predict_cahrt.origin_2;
+                    _predictGraph.update();
 
-            })
+                })
             }
 
         };
@@ -254,6 +257,7 @@
             /*
             $.ajax({
                 url: "
+
 
 
             {% url "file_download" %}", // 클라이언트가 요청을 보낼 서버의 URL 주소

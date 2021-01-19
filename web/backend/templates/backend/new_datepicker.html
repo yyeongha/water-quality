@@ -50,7 +50,10 @@
                 day = '0' + day;
             return [year, month, day].join('.');
         }
-
+        var _startTrain = new Date($("#start-train").val());
+        var _endTrain = new Date();
+        var _startPredict = new Date();
+        var _endPredict = new Date();
         $(function () {
             var datepicker_param = {
                 dateFormat: 'yy.mm.dd',
@@ -72,10 +75,10 @@
 
 
             $('#start-train').change(function () {
-                var _startTrain = new Date($("#start-train").val());
-                var _endTrain = new Date();
-                var _startPredict = new Date();
-                var _endPredict = new Date();
+                _startTrain = new Date($("#start-train").val());
+                _endTrain = new Date();
+                _startPredict = new Date();
+                _endPredict = new Date();
 
                 _endTrain.setDate(_startTrain.getDate() + 6);
                 _startPredict.setDate(_startTrain.getDate() + 6);
