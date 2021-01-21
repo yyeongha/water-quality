@@ -1,0 +1,26 @@
+[I 10:28:24.509 NotebookApp] Serving notebooks from local directory: /home/cjinw/work/water-quality
+[I 10:28:24.509 NotebookApp] Jupyter Notebook 6.1.6 is running at:
+[I 10:28:24.509 NotebookApp] http://kotech:9001/?token=5fad5ef0276002421de622b547a02ae99caf3b7728cb2c08
+[I 10:28:24.509 NotebookApp]  or http://127.0.0.1:9001/?token=5fad5ef0276002421de622b547a02ae99caf3b7728cb2c08
+[I 10:28:24.509 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 10:28:24.511 NotebookApp] 
+    
+    To access the notebook, open this file in a browser:
+        file:///home/cjinw/.local/share/jupyter/runtime/nbserver-12306-open.html
+    Or copy and paste one of these URLs:
+        http://kotech:9001/?token=5fad5ef0276002421de622b547a02ae99caf3b7728cb2c08
+     or http://127.0.0.1:9001/?token=5fad5ef0276002421de622b547a02ae99caf3b7728cb2c08
+[I 10:31:37.316 NotebookApp] 302 GET / (125.129.87.117) 0.470000ms
+[I 10:31:37.326 NotebookApp] 302 GET /tree? (125.129.87.117) 1.120000ms
+[W 10:32:00.425 NotebookApp] 401 POST /login?next=%2Ftree%3F (125.129.87.117) 2.660000ms referer=http://sw112.iptime.org:9001/login?next=%2Ftree%3F
+[W 10:32:14.166 NotebookApp] 401 POST /login?next=%2Ftree%3F (125.129.87.117) 2.500000ms referer=http://sw112.iptime.org:9001/login?next=%2Ftree%3F
+[W 10:32:17.273 NotebookApp] 401 POST /login?next=%2Ftree%3F (125.129.87.117) 2.200000ms referer=http://sw112.iptime.org:9001/login?next=%2Ftree%3F
+[W 10:32:41.548 NotebookApp] 401 POST /login?next=%2Ftree%3F (125.129.87.117) 2.340000ms referer=http://sw112.iptime.org:9001/login?next=%2Ftree%3F
+[W 10:32:44.285 NotebookApp] 401 POST /login?next=%2Ftree%3F (125.129.87.117) 2.460000ms referer=http://sw112.iptime.org:9001/login?next=%2Ftree%3F
+[W 10:32:48.725 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 10:32:48.726 NotebookApp] 403 POST / (139.162.6.55) 1.430000ms referer=None
+[W 10:32:49.001 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 10:32:49.002 NotebookApp] 403 POST / (139.162.6.55) 1.150000ms referer=None
+[W 10:33:14.221 NotebookApp] 401 POST /login?next=%2Ftree%3F (125.129.87.117) 2.640000ms referer=http://sw112.iptime.org:9001/login?next=%2Ftree%3F
+[I 10:33:27.281 NotebookApp] 302 GET / (125.129.87.117) 0.740000ms
+[I 10:33:27.292 NotebookApp] 302 GET /tree? (125.129.87.117) 0.560000ms
