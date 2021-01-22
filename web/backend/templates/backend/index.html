@@ -2,8 +2,11 @@
 {% load static %}
 {% block content %}
     <input id='csrf_token' value='{{ csrf_token }}' hidden>
+
     <div class="container pt-25 debug">
-        https://github.com/kotechnia/water-quality/blob/dev-gain/gain_new/input/input.json
+        <div id="loading">
+            <img id="loading-image" src='../../../media/loading.svg' alt="Loading..."/>
+        </div>
         <div class="text-center debug">
             <div>
                 <span class="main-title">수질 예측시스템</span>
@@ -13,7 +16,9 @@
             </div>
         </div>
         <!-- ##### MODEL #####-->
+
         <div class="pd-20 debug">
+
             <div>
                 <div class="title">Model Select</div>
                 <div style="display: flex; flex-direction: row; justify-content: space-around; ">
@@ -37,6 +42,7 @@
         {#        {% include "backend/sample_map.html" %}#}
         {#        {% include "backend/new_map.html" %}#}
         {% include "backend/new_map3.html" %}
+
 
         {#        {% include "backend/sample_datepicker.html" %}#}
         {% include "backend/sample_table.html" %}
@@ -146,12 +152,14 @@
 
 {% block javascript %}
     <script>
+    $('#loading').hide();
         var model_activate = ''
 
         function pridict() {
             if ($('#column_list').children().length == 1) {
                 alert("Model 선택은 필수사항입니다");
             } else {
+                $('#loading').show();
                 $.ajax({
                     url: "{% url "predict" %}",
                     data: {
@@ -165,6 +173,7 @@
                     type: "POST",
                     dataType: "json"
                 }).done(function (data) {
+                    $('#loading').hide();
                     _predictWater.data.datasets[0].data = data.predict_water;
                     //_predictWater.data.datasets[1].data = [9, 2, 0, 0, 0];
                     _predictWater.update();
@@ -257,6 +266,7 @@
             /*
             $.ajax({
                 url: "
+
 
 
 
