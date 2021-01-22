@@ -9,7 +9,6 @@ from django.shortcuts import render
 from django.core.files.storage import FileSystemStorage
 
 
-
 def index(request):
     context = {}
     # try:
@@ -259,7 +258,6 @@ def load_df(request):
                     except:
                         pass
 
-
         # 데이터프레임 샘플
         df_sample = pd.DataFrame(
             {'target': target_list,
@@ -314,6 +312,18 @@ def call_model(request):
             if key == i:
                 parameters_dir = './model_dir/model_' + i
 
+        if key == 'A':
+            x = 37.868107908588094
+            y = 127.68186772257765
+        elif key == 'B':
+            x = 34.763777479336866
+            y = 127.65906215819086
+        elif key == 'C':
+            x = 35.15942797012162
+            y = 126.84165533876025
+        elif key == 'D':
+            x = 33.39005208514738
+            y = 126.49920630257895
         # parameters_dir = './model_dir/model_A'
         parameters_file = 'json_info.json'
         parameters_path = '{dir}/{file}'.format(dir=parameters_dir, file=parameters_file)
@@ -321,10 +331,11 @@ def call_model(request):
         with open(parameters_path, encoding='utf8') as json_file:
             parameters = json.load(json_file)
 
-        return JsonResponse({'web_info': parameters['web_info']})
+        return JsonResponse({'web_info': parameters['web_info'], "x": x, "y": y})
+
 
 def read_xlsx(files_Path):
-    files_Path = files_Path+"/"
+    files_Path = files_Path + "/"
     file_name_and_time_lst = []
     # 해당 경로에 있는 파일들의 생성시간을 함께 리스트로 넣어줌
     for f_name in os.listdir(f"{files_Path}"):
@@ -352,7 +363,6 @@ def read_xlsx(files_Path):
 
     filtered_dates = df_loc.loc[between_two_dates]
     print(filtered_dates)
-
 
     return
 

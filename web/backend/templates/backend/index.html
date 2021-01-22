@@ -152,7 +152,14 @@
 
 {% block javascript %}
     <script>
-    $('#loading').hide();
+        $('#loading').hide();
+        <!-- model 별 위치를 위한 map setting-->
+        var options = { //지도를 생성할 때 필요한 기본 옵션
+            center: new kakao.maps.LatLng(36.5, 127.5), //지도의 중심좌표.
+            level: 10//지도의 레벨(확대, 축소 정도)
+        };
+        var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+
         var model_activate = ''
 
         function pridict() {
@@ -208,6 +215,12 @@
                     }
                 }
                 $('#target_point').text(data.web_info.target_point);
+                options = { //지도를 생성할 때 필요한 기본 옵션
+                    center: new kakao.maps.LatLng(data.x,data.y), //지도의 중심좌표.
+                    level: 10//지도의 레벨(확대, 축소 정도)
+                };
+                // 모델별 지도 중심위치 지정
+                map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
                 load_map_data(map_info);
             })
         };
@@ -266,6 +279,9 @@
             /*
             $.ajax({
                 url: "
+
+
+
 
 
 
