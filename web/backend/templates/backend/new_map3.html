@@ -11,8 +11,10 @@
             <button id="c_Menu" onclick="changeMarker('target_c')">총량측정망</button>
             <button id="d_Menu" onclick="changeMarker('target_d')">수리수문</button>
             <button id="e_Menu" onclick="changeMarker('target_e')">기상 AWS</button>
-            <button id="f_Menu" onclick="changeMarker('target_f')">오염원</button>
-            <button id="g_Menu" onclick="changeMarker('target_g')">인구</button>
+            <button id="f_Menu" onclick="changeMarker('target_f')">수질TMS</button>
+            <button id="g_Menu" onclick="changeMarker('target_g')">녹조조류</button>
+            <button id="g_Menu" onclick="changeMarker('target_h')">퇴적물</button>
+            <button id="g_Menu" onclick="changeMarker('target_i')">방사성</button>
         </div>
 
         <div id="map" style="width:100%;height:500px;"></div>
@@ -34,6 +36,8 @@
         var target_e_Positions = '';
         var target_f_Positions = '';
         var target_g_Positions = '';
+        var target_h_Positions = '';
+        var target_i_Positions = '';
 
 
         var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
@@ -46,7 +50,7 @@
         map.addOverlayMapTypeId(kakao.maps.MapTypeId.TERRAIN);
 
         var markerImageSrc1 = '../../../media/test_img.png';
-        var markerImageSrc2 = '../../../media/marker_red.png';
+        var markerImageSrc2 = '../../../media/chrome_test.png';
         //var markerImageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png';  // 마커이미지의 주소입니다. 스프라이트 이미지 입니다
         // 마커 객체를 가지고 있을 배열
         target_a_Markers = [];
@@ -57,6 +61,7 @@
         target_f_Markers = [];
         target_g_Markers = [];
         target_h_Markers = [];
+        target_i_Markers = [];
 
         //create_all_Markers();
         changeMarker('all'); // 지도에 커피숍 마커가 보이도록 설정합니다
@@ -89,7 +94,7 @@
             let marker_list = []
             let all_Markers = []
             all_Markers = all_Markers.concat(target_a_Markers, target_b_Markers, target_c_Markers,
-                target_d_Markers, target_e_Markers, target_f_Markers, target_g_Markers);
+                target_d_Markers, target_e_Markers, target_f_Markers, target_g_Markers, target_h_Markers, target_i_Markers);
             for (var i = 0; i < all_Markers.length; i++) {
                 all_Markers[i].setMap(null);
             }
@@ -107,6 +112,10 @@
                 marker_list = target_f_Markers
             } else if (type == 'target_g') {
                 marker_list = target_g_Markers
+            } else if (type == 'target_h') {
+                marker_list = target_h_Markers
+            } else if (type == 'target_i') {
+                marker_list = target_i_Markers
             } else if (type == 'all') {
                 marker_list = all_Markers
             }
@@ -117,13 +126,15 @@
 
         function create_all_Markers() {
             let arr = [
-                {'position': target_a_Positions, "markers": target_a_Markers,"img":"../../../media/test_img.png"},
-                {'position': target_b_Positions, "markers": target_b_Markers,"img":"../../../media/marker_red.png"},
-                {'position': target_c_Positions, "markers": target_c_Markers,"img":"../../../media/test_img.png"},
-                {'position': target_d_Positions, "markers": target_d_Markers,"img":"../../../media/marker_red.png"},
-                {'position': target_e_Positions, "markers": target_e_Markers,"img":"../../../media/test_img.png"},
-                {'position': target_f_Positions, "markers": target_f_Markers,"img":"../../../media/marker_red.png"},
-                {'position': target_g_Positions, "markers": target_g_Markers,"img":"../../../media/test_img.png"}];
+                {'position': target_a_Positions, "markers": target_a_Markers, "img": "../../../media/test_img.png"},
+                {'position': target_b_Positions, "markers": target_b_Markers, "img": "../../../media/marker_red.png"},
+                {'position': target_c_Positions, "markers": target_c_Markers, "img": "../../../media/test_img.png"},
+                {'position': target_d_Positions, "markers": target_d_Markers, "img": "../../../media/marker_red.png"},
+                {'position': target_e_Positions, "markers": target_e_Markers, "img": "../../../media/test_img.png"},
+                {'position': target_f_Positions, "markers": target_f_Markers, "img": "../../../media/marker_red.png"},
+                {'position': target_g_Positions, "markers": target_g_Markers, "img": "../../../media/marker_red.png"},
+                {'position': target_h_Positions, "markers": target_h_Markers, "img": "../../../media/marker_red.png"},
+                {'position': target_i_Positions, "markers": target_i_Markers, "img": "../../../media/test_img.png"}];
 
             arr.forEach(function (el, index) {
                 for (var i = 0; i < el.position.length; i++) {
@@ -153,8 +164,7 @@
             if (type === 'all') {
                 setMarkers(map, type);
                 load_table(model_activate, type);
-            }
-            else if (type === 'target_a') {
+            } else if (type === 'target_a') {
 
                 setMarkers(map, type);
                 load_table(model_activate, type);
@@ -183,6 +193,16 @@
                 // 마커를 지도에 표시하도록 설정
                 setMarkers(map, type);
                 load_table(model_activate, type);
+            } else if (type === 'target_h') {
+
+                // 마커를 지도에 표시하도록 설정
+                setMarkers(map, type);
+                load_table(model_activate, type);
+            } else if (type === 'target_i') {
+
+                // 마커를 지도에 표시하도록 설정
+                setMarkers(map, type);
+                load_table(model_activate, type);
             }
         }
 
@@ -207,41 +227,53 @@
             target_e_Positions = [];
             target_f_Positions = [];
             target_g_Positions = [];
+            target_h_Positions = [];
+            target_i_Positions = [];
             for (let i = 0; i < data.length; i++) {
-                if (data[i][0]['target'] == 'target_a') {
+                if (data[i]['target'] == 'target_a') {
                     target_a_Positions.push({
-                        content: '<div>' + data[i][0]['location'] + '</div>',
-                        latlng: new kakao.maps.LatLng(data[i][0]['y'], data[i][0]['x'])
+                        content: '<div>' + data[i]['location'] + '</div>',
+                        latlng: new kakao.maps.LatLng(data[i]['y'], data[i]['x'])
                     })
-                } else if (data[i][0]['target'] == 'target_b') {
+                } else if (data[i]['target'] == 'target_b') {
                     target_b_Positions.push({
-                        content: '<div>' + data[i][0]['location'] + '</div>',
-                        latlng: new kakao.maps.LatLng(data[i][0]['y'], data[i][0]['x'])
+                        content: '<div>' + data[i]['location'] + '</div>',
+                        latlng: new kakao.maps.LatLng(data[i]['y'], data[i]['x'])
                     })
-                } else if (data[i][0]['target'] == 'target_c') {
+                } else if (data[i]['target'] == 'target_c') {
                     target_c_Positions.push({
-                        content: '<div>' + data[i][0]['location'] + '</div>',
-                        latlng: new kakao.maps.LatLng(data[i][0]['y'], data[i][0]['x'])
+                        content: '<div>' + data[i]['location'] + '</div>',
+                        latlng: new kakao.maps.LatLng(data[i]['y'], data[i]['x'])
                     })
-                } else if (data[i][0]['target'] == 'target_d') {
+                } else if (data[i]['target'] == 'target_d') {
                     target_d_Positions.push({
-                        content: '<div>' + data[i][0]['location'] + '</div>',
-                        latlng: new kakao.maps.LatLng(data[i][0]['y'], data[i][0]['x'])
+                        content: '<div>' + data[i]['location'] + '</div>',
+                        latlng: new kakao.maps.LatLng(data[i]['y'], data[i]['x'])
                     })
-                } else if (data[i][0]['target'] == 'target_e') {
+                } else if (data[i]['target'] == 'target_e') {
                     target_e_Positions.push({
-                        content: '<div>' + data[i][0]['location'] + '</div>',
-                        latlng: new kakao.maps.LatLng(data[i][0]['y'], data[i][0]['x'])
+                        content: '<div>' + data[i]['location'] + '</div>',
+                        latlng: new kakao.maps.LatLng(data[i]['y'], data[i]['x'])
                     })
-                } else if (data[i][0]['target'] == 'target_f') {
+                } else if (data[i]['target'] == 'target_f') {
                     target_f_Positions.push({
-                        content: '<div>' + data[i][0]['location'] + '</div>',
-                        latlng: new kakao.maps.LatLng(data[i][0]['y'], data[i][0]['x'])
+                        content: '<div>' + data[i]['location'] + '</div>',
+                        latlng: new kakao.maps.LatLng(data[i]['y'], data[i]['x'])
                     })
-                } else if (data[i][0]['target'] == 'target_g') {
+                } else if (data[i]['target'] == 'target_g') {
                     target_g_Positions.push({
-                        content: '<div>' + data[i][0]['location'] + '</div>',
-                        latlng: new kakao.maps.LatLng(data[i][0]['y'], data[i][0]['x'])
+                        content: '<div>' + data[i]['location'] + '</div>',
+                        latlng: new kakao.maps.LatLng(data[i]['y'], data[i]['x'])
+                    })
+                } else if (data[i]['target'] == 'target_h') {
+                    target_h_Positions.push({
+                        content: '<div>' + data[i]['location'] + '</div>',
+                        latlng: new kakao.maps.LatLng(data[i]['y'], data[i]['x'])
+                    })
+                } else if (data[i]['target'] == 'target_i') {
+                    target_i_Positions.push({
+                        content: '<div>' + data[i]['location'] + '</div>',
+                        latlng: new kakao.maps.LatLng(data[i]['y'], data[i]['x'])
                     })
                 }
 

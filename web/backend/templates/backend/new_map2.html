@@ -10,8 +10,10 @@
             <button id="c_Menu" onclick="changeMarker('target_c')">총량측정망</button>
             <button id="d_Menu" onclick="changeMarker('target_d')">수리수문</button>
             <button id="e_Menu" onclick="changeMarker('target_e')">기상 AWS</button>
-            <button id="f_Menu" onclick="changeMarker('target_f')">오염원</button>
-            <button id="g_Menu" onclick="changeMarker('target_g')">인구</button>
+            <button id="f_Menu" onclick="changeMarker('target_f')">수질TMS</button>
+            <button id="g_Menu" onclick="changeMarker('target_g')">녹조조류</button>
+            <button id="g_Menu" onclick="changeMarker('target_h')">퇴적물</button>
+            <button id="g_Menu" onclick="changeMarker('target_i')">방사성</button>
 
         </div>
         <div id="map" style="width:100%;height:500px;"></div>
@@ -108,6 +110,7 @@
         target_f_Markers = []; // 주차장 마커 객체를 가지고 있을 배열입니다
         target_g_Markers = []; // 주차장 마커 객체를 가지고 있을 배열입니다
         target_h_Markers = []; // 주차장 마커 객체를 가지고 있을 배열입니다
+        target_i_Markers = []; // 주차장 마커 객체를 가지고 있을 배열입니다
 
         createCoffeeMarkers(); // 커피숍 마커를 생성하고 커피숍 마커 배열에 추가합니다
         createStoreMarkers(); // 편의점 마커를 생성하고 편의점 마커 배열에 추가합니다
@@ -197,7 +200,9 @@
                 {'position': target_d_Positions, "markers": target_d_Markers},
                 {'position': target_e_Positions, "markers": target_e_Markers},
                 {'position': target_f_Positions, "markers": target_f_Markers},
-                {'position': target_g_Positions, "markers": target_g_Markers}];
+                {'position': target_g_Positions, "markers": target_g_Markers},
+                {'position': target_h_Positions, "markers": target_h_Markers},
+                {'position': target_i_Positions, "markers": target_i_Markers}];
 
             arr.forEach(function (el, index) {
                 for (var i = 0; i < el.position.length; i++) {
@@ -377,6 +382,34 @@
                 setMarkers(map, type);
                 load_table(model_activate, type);
             }
+            } else if (type === 'target_h') { // 주차장 카테고리가 클릭됐을 때
+
+                // 주차장 카테고리를 선택된 스타일로 변경하고
+                a_Menu.className = '';
+                b_Menu.className = '';
+                c_Menu.className = 'menu_selected';
+
+                // 주차장 마커들만 지도에 표시하도록 설정합니다
+                //setCoffeeMarkers(null);
+                //setStoreMarkers(null);
+                //setCarparkMarkers(map);
+                setMarkers(map, type);
+                load_table(model_activate, type);
+            }
+            } else if (type === 'target_i') { // 주차장 카테고리가 클릭됐을 때
+
+                // 주차장 카테고리를 선택된 스타일로 변경하고
+                a_Menu.className = '';
+                b_Menu.className = '';
+                c_Menu.className = 'menu_selected';
+
+                // 주차장 마커들만 지도에 표시하도록 설정합니다
+                //setCoffeeMarkers(null);
+                //setStoreMarkers(null);
+                //setCarparkMarkers(map);
+                setMarkers(map, type);
+                load_table(model_activate, type);
+            }
         }
 
         function makeOverListener(map, marker, infowindow) {
@@ -400,6 +433,8 @@
             target_e_Positions = [];
             target_f_Positions = [];
             target_g_Positions = [];
+            target_h_Positions = [];
+            target_i_Positions = [];
             for (let i = 0; i < data.length; i++) {
                 if (data[i][0]['target'] == 'target_a') {
                     target_a_Positions.push({
@@ -436,7 +471,18 @@
                         content: '<div>' + data[i][0]['location'] + '</div>',
                         latlng: new kakao.maps.LatLng(data[i][0]['y'], data[i][0]['x'])
                     })
+                }else if (data[i][0]['target'] == 'target_h') {
+                    target_h_Positions.push({
+                        content: '<div>' + data[i][0]['location'] + '</div>',
+                        latlng: new kakao.maps.LatLng(data[i][0]['y'], data[i][0]['x'])
+                    })
+                }else if (data[i][0]['target'] == 'target_i') {
+                    target_i_Positions.push({
+                        content: '<div>' + data[i][0]['location'] + '</div>',
+                        latlng: new kakao.maps.LatLng(data[i][0]['y'], data[i][0]['x'])
+                    })
                 }
+
 
             }
             /*

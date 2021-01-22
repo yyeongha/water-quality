@@ -179,7 +179,7 @@ def load_df(request):
         with open(parameters_path, encoding='utf8') as json_file:
             parameters = json.load(json_file)
         target_list = []
-        addr_list = []
+        # addr_list = []
         location_list = []
         x_list = []
         y_list = []
@@ -192,63 +192,73 @@ def load_df(request):
 
         if target == 'all':
             for i in parameters['web_info']['map_info']:
-                if i[0]['target'] == 'target_a':
+                if i['target'] == 'target_a':
                     target_name = '자동측정망'
-                elif i[0]['target'] == 'target_b':
+                elif i['target'] == 'target_b':
                     target_name = '수질측정망'
-                elif i[0]['target'] == 'target_c':
+                elif i['target'] == 'target_c':
                     target_name = '총량측정망'
-                elif i[0]['target'] == 'target_d':
+                elif i['target'] == 'target_d':
                     target_name = '수리수문'
-                elif i[0]['target'] == 'target_e':
+                elif i['target'] == 'target_e':
                     target_name = '기상 AWS'
-                elif i[0]['target'] == 'target_f':
-                    target_name = '오염원'
-                elif i[0]['target'] == 'target_g':
-                    target_name = '인구'
+                elif i['target'] == 'target_f':
+                    target_name = '수질 TMS'
+                elif i['target'] == 'target_g':
+                    target_name = '녹조조류'
+                elif i['target'] == 'target_h':
+                    target_name = '퇴적물'
+                elif i['target'] == 'target_i':
+                    target_name = '방사성'
                 target_list.append(target_name)
-                addr_list.append(i[0]['addr'])
-                location_list.append(i[0]['location'])
-                x_list.append(i[0]['x'])
-                y_list.append(i[0]['y'])
-                cat_id_list.append(i[0]['cat_id'])
-                cat_did_list.append(i[0]['cat_did'])
-                rch_id_list.append(i[0]['rch_id'])
-                rch_did_list.append(i[0]['rch_did'])
-                node_id_list.append(i[0]['node_id'])
-                node_did_list.append(i[0]['node_did'])
+                # addr_list.append(i['addr'])
+                location_list.append(i['location'])
+                x_list.append(i['x'])
+                y_list.append(i['y'])
+                cat_id_list.append(i['cat_id'])
+                cat_did_list.append(i['cat_did'])
+                rch_id_list.append(i['rch_id'])
+                rch_did_list.append(i['rch_did'])
+                node_id_list.append(i['node_id'])
+                node_did_list.append(i['node_did'])
         else:
             for i in parameters['web_info']['map_info']:
                 #  임시로 a 삽입
-                map_list = [d for d in i if d['target'] == target]
-                print(target)
-                try:
-                    if map_list[0]['target'] == 'target_a':
-                        target_name = '자동측정망'
-                    elif map_list[0]['target'] == 'target_b':
-                        target_name = '수질측정망'
-                    elif map_list[0]['target'] == 'target_c':
-                        target_name = '총량측정망'
-                    elif map_list[0]['target'] == 'target_d':
-                        target_name = '수리수문'
-                    elif map_list[0]['target'] == 'target_e':
-                        target_name = '기상 AWS'
-                    elif map_list[0]['target'] == 'target_f':
-                        target_name = '오염원'
-                    elif map_list[0]['target'] == 'target_g':
-                        target_name = '인구'
-                    target_list.append(target_name)
-                    location_list.append(map_list[0]['location'])
-                    x_list.append(map_list[0]['x'])
-                    y_list.append(map_list[0]['y'])
-                    cat_id_list.append(map_list[0]['cat_id'])
-                    cat_did_list.append(map_list[0]['cat_did'])
-                    rch_id_list.append(map_list[0]['rch_id'])
-                    rch_did_list.append(map_list[0]['rch_did'])
-                    node_id_list.append(map_list[0]['node_id'])
-                    node_did_list.append(map_list[0]['node_did'])
-                except:
-                    pass
+                # map_list = [d for d in i if i['target'] == target]
+
+                if i['target'] == target:
+                    try:
+                        if i['target'] == 'target_a':
+                            target_name = '자동측정망'
+                        elif i['target'] == 'target_b':
+                            target_name = '수질측정망'
+                        elif i['target'] == 'target_c':
+                            target_name = '총량측정망'
+                        elif i['target'] == 'target_d':
+                            target_name = '수리수문'
+                        elif i['target'] == 'target_e':
+                            target_name = '기상 AWS'
+                        elif i['target'] == 'target_f':
+                            target_name = '수질 TMS'
+                        elif i['target'] == 'target_g':
+                            target_name = '녹조조류'
+                        elif i['target'] == 'target_h':
+                            target_name = '퇴적물'
+                        elif i['target'] == 'target_i':
+                            target_name = '방사성'
+                        target_list.append(target_name)
+                        location_list.append(i['location'])
+                        x_list.append(i['x'])
+                        y_list.append(i['y'])
+                        cat_id_list.append(i['cat_id'])
+                        cat_did_list.append(i['cat_did'])
+                        rch_id_list.append(i['rch_id'])
+                        rch_did_list.append(i['rch_did'])
+                        node_id_list.append(i['node_id'])
+                        node_did_list.append(i['node_did'])
+                    except:
+                        pass
+
 
         # 데이터프레임 샘플
         df_sample = pd.DataFrame(
