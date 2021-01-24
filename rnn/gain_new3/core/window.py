@@ -230,27 +230,6 @@ class MissData(object):
 
 
 
-def interpolate(np_data, max_gap=3):
-    # n = np_data.shape[1]
-    data = pd.DataFrame(np_data)
-    # data[0][0] = np.nan
-    # data[0][1] = np.nan
-    # data[0][2] = np.nan
-    # data[data.columns[0]][0] = np.nan
-    # data[data.columns[0]][1] = np.nan
-    # data[data.columns[0]][2] = np.nan
-
-    # create mask
-    mask = data.copy()
-    grp = ((mask.notnull() != mask.shift().notnull()).cumsum())
-    grp['ones'] = 1
-    for i in data.columns:
-        mask[i] = (grp.groupby(i)['ones'].transform('count') < max_gap) | data[i].notnull()
-    data = data.interpolate(method='polynomial', order=5, limit=max_gap, axis=0).bfill()[mask]
-    return data.to_numpy()
-    # return data
-
-
 
 class GainDataGenerator(tf.keras.utils.Sequence):
     'Generates data for GAIN'
@@ -398,37 +377,8 @@ class GainDataGenerator(tf.keras.utils.Sequence):
         return
 
 
-def make_dataset_gain(self, data):
-    dg = GainDataGenerator(
-        self.df,
-        input_width = self.input_width,
-        label_width = self.label_width,
-        batch_size = 128,
-        normalize = False,
-        miss_pattern = True,
-        miss_rate = 0.15,
-        fill_no = 3,
-    )
-    self.dg = dg
-
-    ds = tf.data.Dataset.from_generator(
-        lambda: dg,
-        output_types=(tf.float32, tf.float32),
-        output_shapes=(
-            dg.shape,
-            dg.shape
-            #[batch_size, train_generator.dim],
-            #[batch_size, train_generator.dim],
-        )
-    )
-    return ds
-
-#WindowGenerator.make_dataset = make_dataset_gain
 
 
-
-
-##------------------- water data gn
 class WaterDataGenerator(tf.keras.utils.Sequence):
     'Generates data for water'
 
@@ -532,60 +482,66 @@ class WaterDataGenerator(tf.keras.utils.Sequence):
         return
 
 
-def make_dataset_water(self, data):
-#   print("make_dataset_water")
-#   print(out_features)
-
-    #print("make_dataset_water")
-    #print(data)
-
-    #print("make_datset_water : ", self.out_num_features)
-
-    dg = WaterDataGenerator(
-        data,
-        #self.train_df,
-        batch_size = 128,
-        input_width = self.input_width,
-        label_width = self.label_width,
-        shift = self.label_width,
-        #out_features = out_features,
-        out_features = self.out_features,
-        #out_num_features = out_num_features,
-        #out_num_features = g_out_num_features,
-        out_num_features = self.out_num_features,
-    )
-
-    #print('input_shape', 'label_shape')
-    #print(dg.input_shape, dg.label_shape)
-
-
-  #self.dg = dg
-    ds = tf.data.Dataset.from_generator(
-        lambda: dg,
-        output_types=(tf.float32, tf.float32),
-        output_shapes=(
-            dg.input_shape,
-            dg.label_shape
-            #[batch_size, train_generator.dim],
-            #[batch_size, train_generator.dim],
-        )
-    )
-
-    return ds
-
-#WindowGenerator.make_dataset = make_dataset_water
 
 
 class GainWindowGenerator(WindowGenerator):
     def make_dataset(self, data):
-        return make_dataset_gain(self, data)
+        dg = GainDataGenerator(
+            self.df,
+            input_width=self.input_width,
+            label_width=self.label_width,
+            batch_size=128,
+            normalize=False,
+            miss_pattern=True,
+            miss_rate=0.15,
+            fill_no=3,
+        )
+        self.dg = dg
+
+        ds = tf.data.Dataset.from_generator(
+            lambda: dg,
+            output_types=(tf.float32, tf.float32),
+            output_shapes=(
+                dg.shape,
+                dg.shape
+                # [batch_size, train_generator.dim],
+                # [batch_size, train_generator.dim],
+            )
+        )
+        return ds
 
 class WaterWindowGenerator(WindowGenerator):
     def make_dataset(self, data):
-        return make_dataset_water(self, data)
+        dg = WaterDataGenerator(
+            data,
+            # self.train_df,
+            batch_size=128,
+            input_width=self.input_width,
+            label_width=self.label_width,
+            shift=self.label_width,
+            # out_features = out_features,
+            out_features=self.out_features,
+            # out_num_features = out_num_features,
+            # out_num_features = g_out_num_features,
+            out_num_features=self.out_num_features,
+        )
+
+        # print('input_shape', 'label_shape')
+        # print(dg.input_shape, dg.label_shape)
+
+        # self.dg = dg
+        ds = tf.data.Dataset.from_generator(
+            lambda: dg,
+            output_types=(tf.float32, tf.float32),
+            output_shapes=(
+                dg.input_shape,
+                dg.label_shape
+                # [batch_size, train_generator.dim],
+                # [batch_size, train_generator.dim],
+            )
+        )
+
+        return ds
 
 
 
-
-
-#--------------------------------

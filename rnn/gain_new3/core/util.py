@@ -61,3 +61,25 @@ def uniform_sampler(low, high, shape):
       - uniform_random_matrix: generated uniform random matrix.
     '''
     return np.random.uniform(low, high, size=shape)
+
+
+
+def interpolate(np_data, max_gap=3):
+    # n = np_data.shape[1]
+    data = pd.DataFrame(np_data)
+    # data[0][0] = np.nan
+    # data[0][1] = np.nan
+    # data[0][2] = np.nan
+    # data[data.columns[0]][0] = np.nan
+    # data[data.columns[0]][1] = np.nan
+    # data[data.columns[0]][2] = np.nan
+
+    # create mask
+    mask = data.copy()
+    grp = ((mask.notnull() != mask.shift().notnull()).cumsum())
+    grp['ones'] = 1
+    for i in data.columns:
+        mask[i] = (grp.groupby(i)['ones'].transform('count') < max_gap) | data[i].notnull()
+    data = data.interpolate(method='polynomial', order=5, limit=max_gap, axis=0).bfill()[mask]
+    return data.to_numpy()
+    # return data
