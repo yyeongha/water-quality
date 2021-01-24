@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import tensorflow as tf
 
 import os
-
+from core.util import *
 
 class WindowGenerator():
     def __init__(self, input_width, label_width, shift,
@@ -44,6 +44,9 @@ class WindowGenerator():
         self.label_start = self.total_window_size - self.label_width
         self.labels_slice = slice(self.label_start, None)
         self.label_indices = np.arange(self.total_window_size)[self.labels_slice]
+
+
+        self.example[0] # create self.dg
 
     def __repr__(self):
         return '\n'.join([
@@ -126,57 +129,6 @@ class WindowGenerator():
             # And cache it for next time
             self._example = result
         return result
-
-#WindowGenerator.train = train
-#WindowGenerator.val = val
-#WindowGenerator.test = test
-#WindowGenerator.example = example
-
-
-def sample_batch_index(total, batch_size):
-    '''Sample index of the mini-batch.
-
-    Args:
-        - total: total number of samples
-        - batch_size: batch size
-
-    Returns:
-        - batch_idx: batch index
-    '''
-    total_idx = np.random.permutation(total)
-    batch_idx = total_idx[:batch_size]
-    return batch_idx
-
-
-def binary_sampler(p, shape):
-    '''Sample binary random variables.
-
-    Args:
-      - p: probability of 1
-      - shape: matrix shape
-
-    Returns:
-      - binary_random_matrix: generated binary random matrix.
-    '''
-    unif_random_matrix = np.random.uniform(0., 1., size=shape)
-    binary_random_matrix = 1 * (unif_random_matrix < p)
-    return binary_random_matrix
-
-
-def uniform_sampler(low, high, shape):
-    '''Sample uniform random variables.
-
-    Args:
-      - low: low limit
-      - high: high limit
-      - rows: the number of rows
-      - cols: the number of columns
-
-    Returns:
-      - uniform_random_matrix: generated uniform random matrix.
-    '''
-    return np.random.uniform(low, high, size=shape)
-
 
 
 
@@ -471,7 +423,7 @@ def make_dataset_gain(self, data):
     )
     return ds
 
-WindowGenerator.make_dataset = make_dataset_gain
+#WindowGenerator.make_dataset = make_dataset_gain
 
 
 
@@ -622,6 +574,17 @@ def make_dataset_water(self, data):
     return ds
 
 #WindowGenerator.make_dataset = make_dataset_water
+
+
+class GainWindowGenerator(WindowGenerator):
+    def make_dataset(self, data):
+        return make_dataset_gain(self, data)
+
+class WaterWindowGenerator(WindowGenerator):
+    def make_dataset(self, data):
+        return make_dataset_water(self, data)
+
+
 
 
 

@@ -52,10 +52,14 @@ def plot_history(history):
 
 
 class MultiStepLastBaseline(tf.keras.Model):
+    def __init__(self, out_features, OUT_STEPS):
+        self.out_features = out_features
+        self.OUT_STEPS = OUT_STEPS
+
     def call(self, inputs):
         #print(inputs[:, -1:, 0:1])
         #return tf.tile(inputs[:, -1:, :out_num_features], [1, OUT_STEPS, 1])
-        return tf.tile(inputs[:, -1:, (out_features[0]):(out_features[0]+1)], [1, OUT_STEPS, 1])
+        return tf.tile(inputs[:, -1:, (self.out_features[0]):(self.out_features[0]+1)], [1, self.OUT_STEPS, 1])
         #return tf.tile(inputs[:, -1:, out_features[0]:(out_features[1]+1)], [1, OUT_STEPS, 1])
 
 #def LastBaseLine(OUT_STEPS, out_features):

@@ -13,7 +13,8 @@ from core.gain import *
 from core.predic import *
 from core.models import *
 from core.util import *
-from core.window import WindowGenerator, MissData, make_dataset_water, WaterDataGenerator
+#from core.window import WindowGenerator, MissData, make_dataset_water, WaterDataGenerator
+from core.window import *
 from file_open import make_dataframe
 
 
@@ -78,10 +79,8 @@ if __GAIN_SKIP__ == False:
     #target_col =
     #wide_window = WindowGenerator(input_width=24*5, label_width=24*5, shift=0, train_df=train_df, val_df=val_df, test_df=test_df, df=df)
 
-    wide_window = WindowGenerator(input_width=24 * 5, label_width=24 * 5, shift=0,
-                                  train_df=df_all, val_df=df_all, test_df=df_all, df=df)
+    wide_window = GainWindowGenerator(input_width=24 * 5, label_width=24 * 5, shift=0, train_df = df_all, val_df = df_all, test_df = df_all, df = df)
 
-    wide_window.example[0] # create self.dg
     gain = model_GAIN(shape=wide_window.dg.shape[1:], gen_sigmoid=False, training_flag=__GAIN_TRAINING__, window=wide_window)
 
     #val_performance = {} #performance = {}
@@ -90,6 +89,7 @@ if __GAIN_SKIP__ == False:
 
     ori, gan = create_dataset_with_gain(gain=gain, window=wide_window, df=df)
 
+    # save files
     #pd.DataFrame(ori).to_excel(origin_path, index = False)
     #pd.DataFrame(gan).to_excel(gain_path, index=False)
     #pd.DataFrame(columns=df_all.columns).to_excel(columns_path, index=False)
@@ -135,16 +135,16 @@ OUT_STEPS = 24*3
 MAX_EPOCHS = 400
 #MAX_EPOCHS = 15
 
-WindowGenerator.make_dataset = make_dataset_water
-
-multi_window = WindowGenerator(
+multi_window = WaterWindowGenerator(
     input_width=24*7,label_width=OUT_STEPS, shift=OUT_STEPS,
     train_df=train_df, val_df=val_df, test_df=test_df,
     out_features=out_features, out_num_features=out_num_features
 )
 
+multi_val_performance = {}
+multi_performance = {}
 
-#last_baseline = MultiStepLastBaseline()
+#last_baseline = MultiStepLastBaseline(OUT_STEPS=OUT_STEPS, out_features=out_features)
 #last_baseline.compile(loss=tf.losses.MeanSquaredError(), metrics=[tf.metrics.MeanAbsoluteError()])
 #multi_val_performance['BaseLine'] = last_baseline.evaluate(multi_window.val.repeat(-1), steps=100)
 #multi_performance['BaseLine'] = last_baseline.evaluate(multi_window.test.repeat(-1), verbose=0, steps=100)
@@ -170,8 +170,7 @@ multi_conv_model = model_multi_conv(
     window=multi_window, OUT_STEPS=OUT_STEPS, out_num_features=out_num_features, epochs=MAX_EPOCHS,
     training_flag=__RNN_TRAINING__, checkpoint_path="save/models/multi_conv.ckpt")
 
-multi_val_performance = {}
-multi_performance = {}
+
 
 multi_val_performance['Linear'] = multi_linear_model.evaluate(multi_window.val.repeat(-1), steps=100)
 multi_performance['Linear'] = multi_linear_model.evaluate(multi_window.test.repeat(-1), verbose=0, steps=100)
