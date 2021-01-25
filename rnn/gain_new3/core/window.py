@@ -6,10 +6,21 @@ import tensorflow as tf
 import os
 from core.util import *
 
+
+# for Korean in plot
+import matplotlib
+import matplotlib.font_manager as fm
+fm.get_fontconfig_fonts()
+font_location = '/usr/share/fonts/truetype/nanum/NanumGothicCoding.ttf'
+#font_location = '/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc'
+# font_location = 'C:/Windows/Fonts/NanumGothic.ttf' # For Windows
+fprop = fm.FontProperties(fname=font_location)
+
+
 class WindowGenerator():
     def __init__(self, input_width, label_width, shift,
                #train_df=train_df, val_df=val_df, test_df=test_df,
-            train_df=None, val_df=None, test_df=None, df=None, out_num_features=0,out_features=0,
+            train_df=None, val_df=None, test_df=None, df=None, out_num_features=0,out_features=0, #model_save_path=None,
 #                out_features = None,
                label_columns=None):
     # Store the raw data.
@@ -20,10 +31,14 @@ class WindowGenerator():
 
         self.df = df
 
+        #print('model_save_path : ', model_save_path)
+        #self.model_save_path = model_save_path
     #
         self.out_num_features = out_num_features
         self.out_features = out_features
 
+        self.train_std = None
+        self.train_mean = None
 
     # Work out the label column indices.
         self.label_columns = label_columns
@@ -134,6 +149,7 @@ class WindowGenerator():
 
 class MissData(object):
     def __init__(self, load_dir=None):
+        #print('MissData : ', load_dir)
         if load_dir:
             self.missarr = np.load(os.path.join(load_dir, 'miss.npy'))
             self.idxarr = np.load(os.path.join(load_dir, 'idx.npy'))
@@ -166,6 +182,7 @@ class MissData(object):
             # print(loc_count, idx)
             # print(idxarr[idx])
             # data_copy = data[loc:loc+nanlen].copy()
+            # print(data.shape)
             data_copy = data[loc:loc + nanlen]
             # print('startnan=', startnan)
             # isnan = missarr[startnan:startnan+nanlen].copy()
@@ -180,6 +197,7 @@ class MissData(object):
         return data
 
     def save(data, max_tseq, save_dir='save'):
+        #save_dir = self.save_directory
         no, dim = data.shape
         # print((no, dim))
         isnan = np.isnan(data).astype(int)
@@ -195,6 +213,9 @@ class MissData(object):
         group = group * isany
         #         print(group)
         n = np.max(group)
+
+#        print('n:',n)
+
         #         print(n)
         missarr = None
         cum_no = 0
@@ -245,11 +266,10 @@ class GainDataGenerator(tf.keras.utils.Sequence):
                  hint_rate=0.9,
                  normalize=True,
                  miss_pattern=None,
-                 miss_data_load_dir='save',
+                 model_save_path='save',
                  alpha=100.):
         'Initialization'
         window_size = input_width
-
         # interpollation
         filled_data = []
         for data in data_list:
@@ -260,6 +280,8 @@ class GainDataGenerator(tf.keras.utils.Sequence):
 
         # whole data
         self.data = np.concatenate(data_list)
+
+        #print('self.data : ', self.data.shape)
 
         # TO-DO
 
@@ -282,18 +304,19 @@ class GainDataGenerator(tf.keras.utils.Sequence):
 
         # Define mask matrix
         if miss_pattern is None:
-            print("pattern none")
+            #print("pattern none")
             self.data_m = binary_sampler(1 - miss_rate, self.data.shape)
         else:
             # MissData.save(self.data, max_tseq = 12)
-            print("load save")
-            self.miss = MissData(load_dir=miss_data_load_dir)
+            #print("load save")
+            self.miss = MissData(load_dir=model_save_path)
             self.miss_rate = miss_rate
             miss_data = self.miss.make_missdata(self.data, self.miss_rate)
             self.data_m = 1. - np.isnan(miss_data).astype(float)
 
             self.data_m_rand = binary_sampler(1 - (miss_rate / 10.), self.data.shape)
             self.data_m[self.data_m_rand == 0.] = 0.
+
         self.miss_pattern = miss_pattern
 
         # sequence data
@@ -495,8 +518,10 @@ class GainWindowGenerator(WindowGenerator):
             miss_pattern=True,
             miss_rate=0.15,
             fill_no=3,
+            #model_save_path = path
         )
         self.dg = dg
+        #print('asdfasdfasdfasfd')
 
         ds = tf.data.Dataset.from_generator(
             lambda: dg,
@@ -543,5 +568,227 @@ class WaterWindowGenerator(WindowGenerator):
 
         return ds
 
+    def plot2(self, model=None, plot_col=0, max_subplots=3, plot_out_col=0):
+        inputs, labels = self.example
+        plt.figure(figsize=(10, 8))
+        #plot_col_index = self.column_indices[plot_col]
+        #plot_out_col_index = self.column_indices[plot_out_col]
+        plot_col_index = 0
+        plot_out_col_index = 0
+        max_n = min(max_subplots, len(inputs))
+        for n in range(max_n):
+            plt.subplot(3, 1, n + 1)
+            #plt.ylabel(f'{plot_col} [normed]', fontproperties=fprop)
+            #plt.ylabel(f'{plot_col} [normed]')
+            plt.plot(self.input_indices, inputs[n, :, plot_col_index],
+                     label='Inputs', marker='.', zorder=-10)
+
+            if self.label_columns:
+                label_col_index = self.label_columns_indices.get(plot_col, None)
+                label_out_col_index = self.label_columns_indices.get(plot_out_col, None)
+            else:
+                label_col_index = plot_col_index
+                label_out_col_index = plot_out_col_index
+
+            if label_col_index is None:
+                continue
+
+            plt.scatter(self.label_indices, labels[n, :, label_out_col_index],
+                        label='Labels', c='#2ca02c')
+            if model is not None:
+                predictions = model(inputs)
+                plt.scatter(self.label_indices, predictions[n, :, label_out_col_index],
+                            marker=None, label='Predictions',
+                            c='#ff7f0e')
+
+            if n == 0:
+                plt.legend()
+
+        plt.xlabel('Time [h]')
+        plt.show()
 
 
+    def hour_to_day_mean(array):
+        time = 24
+        #print('hour_to_day_mean')
+        #print(array)
+        result = tf.reduce_mean(tf.reshape(array, [array.shape[0] // time, time]), 1)
+        #print(result)
+        return result
+
+    def SetStandMean(self, std, mean):
+        self.train_std = std
+        self.train_mean = mean
+
+    def plot24(self, model=None, plot_col=0, max_subplots=3, plot_out_col=0):
+        inputs, labels = self.example
+        plt.figure(figsize=(10, 8))
+        #plot_col_index = self.column_indices[plot_col]
+        #plot_out_col_index = self.column_indices[plot_out_col]
+        plot_col_index = 0
+        plot_out_col_index = 0
+        max_n = min(max_subplots, len(inputs))
+
+        if self.label_columns:
+            label_col_index = self.label_columns_indices.get(plot_col, None)
+            label_out_col_index = self.label_columns_indices.get(plot_out_col, None)
+        else:
+            label_col_index = plot_col_index
+            label_out_col_index = plot_out_col_index
+
+        for n in range(max_n):
+            plt.subplot(3, 1, n + 1)
+            #plt.ylabel(f'{self.df_all.columns[plot_col]} [normed]', fontproperties=fprop)
+#            plt.ylabel(f'{self.df_all.columns[plot_col]} [normed]')
+
+            input_temp = self.hour_to_day_mean(inputs[n, :, plot_col_index])
+            input_temp = input_temp * self.train_std[plot_col] + self.train_mean[plot_col]
+
+            plt.plot(
+                self.hour_to_day_mean(self.input_indices),
+                input_temp,
+                label='Inputs', marker='.', zorder=-10)
+
+            if label_col_index is None:
+                continue
+
+            label_temp = self.hour_to_day_mean(labels[n, :, label_out_col_index])
+            label_temp = label_temp * self.train_std[plot_col] + self.train_mean[plot_col]
+
+            plt.plot(
+                self.hour_to_day_mean(self.label_indices),
+                label_temp,
+                label='Labels', marker='.', zorder=-10, c='#2ca02c')
+
+            if model is not None:
+                predictions = model(inputs)
+
+                # predictions = predictions * train_std[plot_col] * train_mean[plot_col]
+                predict_temp = self.hour_to_day_mean(predictions[n, :, label_out_col_index])
+                predict_temp = predict_temp * self.train_std[plot_col] + self.train_mean[plot_col]
+
+                plt.plot(
+                    self.hour_to_day_mean(self.label_indices),
+                    predict_temp,
+                    label='Predictions', marker='.', zorder=-10, c='#ff7f0e')
+
+            if n == 0:
+                plt.legend()
+
+        plt.xlabel('Time [day]')
+        plt.show()
+
+    def compa3(self, model=None, plot_col=0, max_subplots=3, plot_out_col=0, example=None):
+        if example is not None:
+            inputs, labels = example
+        else:
+            inputs, labels = self.example
+
+
+        if model is None:
+            return
+
+        mae = 0
+        mse = 0
+
+        len1 = len(inputs)
+
+        pred_arr = []
+        label_arr = []
+
+        predictions = model(inputs)
+
+        #print(predictions)
+        print(self.train_std)
+
+        predictions = predictions * self.train_std[plot_col] + self.train_mean[plot_col]
+        labels = labels * self.train_std[plot_col] + self.train_mean[plot_col]
+
+        predictions = predictions.numpy()
+        labels = labels.numpy()
+
+        predictions = (predictions - predictions.min()) / (predictions.max() - predictions.min())
+        labels = (labels - labels.min()) / (labels.max() - labels.min())
+
+        print(predictions.shape)
+
+        for n in range(len1):
+            pred_temp = self.hour_to_day_mean(predictions[n, :, 0])
+            label_temp = self.hour_to_day_mean(labels[n, :, 0])
+
+            pred_arr.append(pred_temp[2])
+            label_arr.append(label_temp[2])
+
+            error = label_temp - pred_temp
+
+            mae = mae + np.absolute(error)
+            mse = mse + error ** 2
+
+        # print(len(pred_arr))
+
+        mae = np.average(mae, axis=0)
+        mse = np.average(mse, axis=0)
+
+        mae = mae / (len1)
+        mse = mse / (len1)
+
+        rmse = np.sqrt(mse)
+
+        print("mae:")
+        print(mae)
+
+        print("rmse")
+        print(rmse)
+
+        return 1
+
+
+
+def missdata_save(data, max_tseq, save_dir='save'):
+    #save_dir = self.save_directory
+    no, dim = data.shape
+    # print((no, dim))
+    isnan = np.isnan(data).astype(int)
+    isany = np.any(isnan, axis=1).astype(int)
+    shifted = np.roll(isany, 1)
+    shifted[0] = 1
+    # print(isnan)
+    # print(isany.astype(int))
+    # print(shifted)
+    startnan = ((isany == 1) & (shifted == 0)).astype(int)
+    # print(startnan)
+    group = startnan.cumsum()
+    group = group * isany
+    #         print(group)
+    n = np.max(group)
+    #         print(n)
+    missarr = None
+    cum_no = 0
+    rowidx = 0
+    for i in range(1, n + 1):
+        g = (group == i).astype(int)
+        i = np.argmax(g)
+        rows = g.sum()
+        # print(len)
+        # print(i)
+        # print(type(missarr))
+        if rows <= max_tseq:
+            nanseq = isnan[i:i + rows, :]
+            no = np.sum(nanseq)
+            # print(no)
+            if missarr is None:
+                missarr = nanseq
+                idxarr = np.array([[rowidx, no, rows, cum_no]])
+            else:
+                missarr = np.concatenate((missarr, nanseq))
+                idxarr = np.concatenate((idxarr, [[rowidx, no, rows, cum_no]]), axis=0)
+            cum_no += no
+            rowidx += rows
+
+        #print(idxarr)
+    miss_npy_file = os.path.join(save_dir, 'miss.npy')
+    idx_npy_file = os.path.join(save_dir, 'idx.npy')
+    if not os.path.exists(save_dir):
+        os.makedirs(save_dir)
+    np.save(miss_npy_file, missarr)
+    np.save(idx_npy_file, idxarr)

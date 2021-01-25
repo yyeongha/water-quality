@@ -184,7 +184,7 @@ class GAIN(tf.keras.Model):
         try:
             self.discriminator.load_weights(disc_savefile)
             self.generator.load_weights(gen_savefile)
-            print('model weights loaded')
+           # print('model weights loaded')
         except:
             print('model loadinng error')
 
@@ -205,8 +205,8 @@ def dataset_slice(df, ratio):
     total_no = df.shape[0]
     train_no = int(total_no * ratio)
 
-    train_slice = slice(0, train_no)
-    val_slice = slice(train_no, None)
+    train_slice = slice(0, train_no)    #0.8
+    val_slice = slice(train_no, None)   #0.1
     test_slice = slice(0, None)
 
     train = pd.DataFrame(df[train_slice])
@@ -219,6 +219,10 @@ def dataset_slice(df, ratio):
 
 def create_dataset_with_gain(gain, df, window):
     #unit_shape = (24 * 5, df_all.columns.size)
+
+   # print('create_dataset_with_gain')
+  #  print(df[0])
+
     unit_shape = window.dg.shape[1:]
     time_seq = unit_shape[0]
     # ----------
@@ -240,6 +244,12 @@ def create_dataset_with_gain(gain, df, window):
         gans.append(y_gan)
         oris.append(x)
 
+  #  print('create_dataset_with_gain org')
+    #print(oris[0])
+
+   # print('create_dataset_with_gain gan')
+    #print(gans[0])
+
     ori = np.concatenate(oris, axis=1)
     gan = np.concatenate(gans, axis=1)
 
@@ -249,7 +259,33 @@ def create_dataset_with_gain(gain, df, window):
     #print(y_gan.shape)
 
 
-def model_GAIN(shape, gen_sigmoid, window, training_flag):
+
+def create_dataset_interpol(df, window):
+    #unit_shape = (24 * 5, df_all.columns.size)
+    unit_shape = window.dg.shape[1:]
+    time_seq = unit_shape[0]
+    # ----------
+    gans = []
+    oris = []
+    for i in range(len(df)):
+        x = df[i].to_numpy()
+        total_n = x.shape[0]
+        n = (total_n // time_seq) * time_seq
+        x = x[0:n]
+#        x_block = x.reshape((-1,) + unit_shape)
+
+        # cut off sin, cos data
+        if (i > 0):
+            x = x[:, :-4]
+        oris.append(x)
+
+    ori = np.concatenate(oris, axis=1)
+
+    return ori
+
+
+
+def model_GAIN(shape, gen_sigmoid, window, training_flag, model_save_path='../save'):
     gain = GAIN(shape=shape, gen_sigmoid=gen_sigmoid)
 
     if training_flag == True:
@@ -258,10 +294,10 @@ def model_GAIN(shape, gen_sigmoid, window, training_flag):
 
         # gain.compile(loss=GAIN.RMSE_loss)
         history = gain.compile_and_fit(window, patience=MAX_EPOCHS // 5)
-        gain.save(save_dir='../save')
+        gain.save(save_dir=model_save_path)
     else:
-        print('gain load')
-        gain.load(save_dir='../save')
+        #print('gain load')
+        gain.load(save_dir=model_save_path)
         gain.compile(loss=GAIN.RMSE_loss)
 
     return gain

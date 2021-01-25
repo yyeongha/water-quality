@@ -13,7 +13,7 @@ def normalize(df):
     for i in range(len(df)):
         df[i] = (df[i] - train_mean) / train_std
 
-    return df_all, train_mean, train_std
+    return df_all, train_mean, train_std, df
 
 
 
