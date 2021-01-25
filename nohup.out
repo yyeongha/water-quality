@@ -24,3 +24,741 @@
 [W 10:33:14.221 NotebookApp] 401 POST /login?next=%2Ftree%3F (125.129.87.117) 2.640000ms referer=http://sw112.iptime.org:9001/login?next=%2Ftree%3F
 [I 10:33:27.281 NotebookApp] 302 GET / (125.129.87.117) 0.740000ms
 [I 10:33:27.292 NotebookApp] 302 GET /tree? (125.129.87.117) 0.560000ms
+[I 16:55:41.136 NotebookApp] Serving notebooks from local directory: /home/cjinw/work/water-quality
+[I 16:55:41.137 NotebookApp] Jupyter Notebook 6.1.6 is running at:
+[I 16:55:41.137 NotebookApp] http://kotech:9001/
+[I 16:55:41.137 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[W 16:55:46.035 NotebookApp] 404 GET /tree/work (125.129.87.117) 32.760000ms referer=None
+[W 16:56:11.707 NotebookApp] 404 GET /api/contents/work/water-quality/rnn/organize-gain-pred.ipynb?content=0&_=1611032395355 (125.129.87.117): No such file or directory: work/water-quality/rnn/organize-gain-pred.ipynb
+[W 16:56:11.708 NotebookApp] No such file or directory: work/water-quality/rnn/organize-gain-pred.ipynb
+[W 16:56:11.708 NotebookApp] 404 GET /api/contents/work/water-quality/rnn/organize-gain-pred.ipynb?content=0&_=1611032395355 (125.129.87.117) 2.360000ms referer=http://sw112.iptime.org:9001/notebooks/work/water-quality/rnn/organize-gain-pred.ipynb
+[I 16:56:11.834 NotebookApp] Uploading file to /work/water-quality/rnn/organize-gain-pred.ipynb
+[E 16:56:11.858 NotebookApp] Error while saving file: work/water-quality/rnn/organize-gain-pred.ipynb [Errno 2] No such file or directory: '/home/cjinw/work/water-quality/work/water-quality/rnn/organize-gain-pred.ipynb'
+    Traceback (most recent call last):
+      File "/home/cjinw/work/tf-2/lib/python3.7/site-packages/notebook/services/contents/filemanager.py", line 476, in save
+        self._save_notebook(os_path, nb)
+      File "/home/cjinw/work/tf-2/lib/python3.7/site-packages/notebook/services/contents/fileio.py", line 290, in _save_notebook
+        with self.atomic_writing(os_path, encoding='utf-8') as f:
+      File "/home/cjinw/.pyenv/versions/3.7.8/lib/python3.7/contextlib.py", line 112, in __enter__
+        return next(self.gen)
+      File "/home/cjinw/work/tf-2/lib/python3.7/site-packages/notebook/services/contents/fileio.py", line 210, in atomic_writing
+        with atomic_writing(os_path, *args, log=self.log, **kwargs) as f:
+      File "/home/cjinw/.pyenv/versions/3.7.8/lib/python3.7/contextlib.py", line 112, in __enter__
+        return next(self.gen)
+      File "/home/cjinw/work/tf-2/lib/python3.7/site-packages/notebook/services/contents/fileio.py", line 105, in atomic_writing
+        fileobj = io.open(path, 'w', encoding=encoding, **kwargs)
+    FileNotFoundError: [Errno 2] No such file or directory: '/home/cjinw/work/water-quality/work/water-quality/rnn/organize-gain-pred.ipynb'
+[W 16:56:11.859 NotebookApp] 500 PUT /api/contents/work/water-quality/rnn/organize-gain-pred.ipynb (125.129.87.117): Unexpected error while saving file: work/water-quality/rnn/organize-gain-pred.ipynb [Errno 2] No such file or directory: '/home/cjinw/work/water-quality/work/water-quality/rnn/organize-gain-pred.ipynb'
+[W 16:56:11.859 NotebookApp] Unexpected error while saving file: work/water-quality/rnn/organize-gain-pred.ipynb [Errno 2] No such file or directory: '/home/cjinw/work/water-quality/work/water-quality/rnn/organize-gain-pred.ipynb'
+[E 16:56:11.860 NotebookApp] {
+      "Host": "sw112.iptime.org:9001",
+      "Connection": "keep-alive",
+      "Content-Length": "397090",
+      "Accept": "application/json, text/javascript, */*; q=0.01",
+      "X-Requested-With": "XMLHttpRequest",
+      "X-Xsrftoken": "2|f8f21e56|2ebf92a55fe3e284e1cef4d112b9e647|1610093007",
+      "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36",
+      "Content-Type": "application/json",
+      "Origin": "http://sw112.iptime.org:9001",
+      "Referer": "http://sw112.iptime.org:9001/notebooks/work/water-quality/rnn/organize-gain-pred.ipynb",
+      "Accept-Encoding": "gzip, deflate",
+      "Accept-Language": "ko,en-US;q=0.9,en;q=0.8,ko-KR;q=0.7",
+      "Cookie": "username-sw112-iptime-org-9000=\"2|1:0|10:1609718860|30:username-sw112-iptime-org-9000|44:MjQ1ZTA0NmNmODNlNDczYmE3NGY4ZGMzYjhiM2Y1MDA=|a11ada9375fa677efa4a81f4ac959020d7795d272f3e23613f250abbc1b1f3df\"; username-sw112-iptime-org-9001=\"2|1:0|10:1609900003|30:username-sw112-iptime-org-9001|44:ZTQzYjIzOTM4ZWQ3NDQ3YTk5NGQwZDZjMzBlMWRmZjA=|5f8f4f875b1e4d771fdb765e505050de29e831fa31f68bd0a6d8292c81b7f24c\"; _xsrf=2|f8f21e56|2ebf92a55fe3e284e1cef4d112b9e647|1610093007; username-sw112-iptime-org-9100=\"2|1:0|10:1610352016|30:username-sw112-iptime-org-9100|44:YzAzNmY0ZDhjYWQ2NDczZDg4YjY3YjkyYTgwOTc0ZDk=|4def06fe6e6949ab876eebffc9079e9dfed66f74ad10f3131abd439f0a7a240f\"; username-sw112-iptime-org-9002=\"2|1:0|10:1611014975|30:username-sw112-iptime-org-9002|44:ZDExMmIyNjRlNzQ1NDVlODlhNTBkMmI2N2YxZGRiZjY=|220f3a0563bd04d25bc6c518cd23baa1de5e69529f6491bfdef075efa55d4fac\"; username-sw112-iptime-org-9004=\"2|1:0|10:1611019972|30:username-sw112-iptime-org-9004|44:NjMwMjU3OGI3ZjRmNDU1YjgxOGU0ZThlYjdmNGFiNzY=|44c9674a91f1cec0c028e35a1386e0994503e3260478316bf1ff8da3e052a93c\""
+    }
+[E 16:56:11.860 NotebookApp] 500 PUT /api/contents/work/water-quality/rnn/organize-gain-pred.ipynb (125.129.87.117) 113.630000ms referer=http://sw112.iptime.org:9001/notebooks/work/water-quality/rnn/organize-gain-pred.ipynb
+[W 16:56:21.257 NotebookApp] 404 GET /notebooks/work/water-quality/rnn/gain-predict.ipynb (125.129.87.117): No such file or directory: work/water-quality/rnn/gain-predict.ipynb
+[W 16:56:21.258 NotebookApp] 404 GET /notebooks/work/water-quality/rnn/gain-predict.ipynb (125.129.87.117) 2.850000ms referer=None
+[W 16:56:30.887 NotebookApp] Notebook rnn/gain-predict.ipynb is not trusted
+[I 16:56:48.415 NotebookApp] Kernel started: 855294e1-68d2-4c93-905c-f2e8d1dc1957, name: python3
+[I 16:57:16.360 NotebookApp] Starting buffering for 855294e1-68d2-4c93-905c-f2e8d1dc1957:b0754b60413145968cc11d32262c4474
+[W 16:57:37.818 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 16:57:37.818 NotebookApp] 403 POST / (139.162.6.55) 1.490000ms referer=None
+[W 16:57:38.102 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 16:57:38.103 NotebookApp] 403 POST / (139.162.6.55) 1.120000ms referer=None
+[W 17:02:36.293 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 17:02:36.294 NotebookApp] 403 POST / (139.162.6.55) 0.910000ms referer=None
+[W 17:02:36.599 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 17:02:36.599 NotebookApp] 403 POST / (139.162.6.55) 1.170000ms referer=None
+[W 17:06:04.033 NotebookApp] 403 POST / (104.236.140.165): '_xsrf' argument missing from POST
+[W 17:06:04.034 NotebookApp] 403 POST / (104.236.140.165) 1.280000ms referer=None
+[W 17:16:50.407 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 17:16:50.408 NotebookApp] 403 POST / (139.162.6.55) 1.420000ms referer=None
+[W 17:16:50.677 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 17:16:50.678 NotebookApp] 403 POST / (139.162.6.55) 1.140000ms referer=None
+[W 17:21:08.949 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 17:21:08.950 NotebookApp] 403 POST / (139.162.6.55) 1.760000ms referer=None
+[W 17:21:09.205 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 17:21:09.206 NotebookApp] 403 POST / (139.162.6.55) 1.470000ms referer=None
+[W 17:38:18.222 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 17:38:18.223 NotebookApp] 403 POST / (139.162.6.55) 1.320000ms referer=None
+[W 17:38:18.554 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 17:38:18.554 NotebookApp] 403 POST / (139.162.6.55) 1.190000ms referer=None
+[W 17:41:57.451 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 17:41:57.452 NotebookApp] 403 POST / (139.162.6.55) 1.250000ms referer=None
+[W 17:41:57.744 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 17:41:57.744 NotebookApp] 403 POST / (139.162.6.55) 0.660000ms referer=None
+[W 17:48:02.989 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 17:48:02.990 NotebookApp] 403 POST / (139.162.6.55) 1.790000ms referer=None
+[W 17:48:03.303 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 17:48:03.304 NotebookApp] 403 POST / (139.162.6.55) 1.210000ms referer=None
+[W 18:02:16.923 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 18:02:16.924 NotebookApp] 403 POST / (139.162.6.55) 1.450000ms referer=None
+[W 18:02:17.202 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 18:02:17.203 NotebookApp] 403 POST / (139.162.6.55) 1.280000ms referer=None
+[I 18:05:04.508 NotebookApp] 302 GET / (125.129.87.117) 0.940000ms
+[W 18:05:12.195 NotebookApp] Notebook rnn/organize-gain-pred.ipynb is not trusted
+[I 18:05:19.249 NotebookApp] Kernel started: edbb4468-c6c5-4a9e-b188-697d727e2c5a, name: python3
+[I 18:06:03.089 NotebookApp] Starting buffering for edbb4468-c6c5-4a9e-b188-697d727e2c5a:e82c008c08ea4874830e8600a692a047
+[W 18:07:58.668 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 18:07:58.669 NotebookApp] 403 POST / (139.162.6.55) 1.450000ms referer=None
+[W 18:07:58.971 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 18:07:58.971 NotebookApp] 403 POST / (139.162.6.55) 1.140000ms referer=None
+[W 18:13:11.964 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 18:13:11.965 NotebookApp] 403 POST / (139.162.6.55) 1.430000ms referer=None
+[W 18:13:12.273 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 18:13:12.274 NotebookApp] 403 POST / (139.162.6.55) 1.540000ms referer=None
+[W 18:23:33.680 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 18:23:33.680 NotebookApp] 403 POST / (139.162.6.55) 1.390000ms referer=None
+[W 18:23:33.976 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 18:23:33.977 NotebookApp] 403 POST / (139.162.6.55) 1.160000ms referer=None
+[W 18:29:13.065 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 18:29:13.066 NotebookApp] 403 POST / (139.162.6.55) 1.420000ms referer=None
+[W 18:29:13.381 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 18:29:13.382 NotebookApp] 403 POST / (139.162.6.55) 1.180000ms referer=None
+[W 18:43:43.041 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 18:43:43.042 NotebookApp] 403 POST / (139.162.6.55) 1.740000ms referer=None
+[W 18:43:43.334 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 18:43:43.335 NotebookApp] 403 POST / (139.162.6.55) 1.170000ms referer=None
+[W 18:47:58.587 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 18:47:58.588 NotebookApp] 403 POST / (139.162.6.55) 1.430000ms referer=None
+[W 18:47:58.902 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 18:47:58.902 NotebookApp] 403 POST / (139.162.6.55) 1.550000ms referer=None
+[W 18:59:01.871 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 18:59:01.872 NotebookApp] 403 POST / (139.162.6.55) 1.420000ms referer=None
+[W 18:59:02.134 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 18:59:02.135 NotebookApp] 403 POST / (139.162.6.55) 1.550000ms referer=None
+[W 19:08:21.198 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 19:08:21.199 NotebookApp] 403 POST / (139.162.6.55) 1.400000ms referer=None
+[W 19:08:21.487 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 19:08:21.487 NotebookApp] 403 POST / (139.162.6.55) 1.140000ms referer=None
+[W 19:16:25.062 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 19:16:25.063 NotebookApp] 403 POST / (139.162.6.55) 1.400000ms referer=None
+[W 19:16:25.385 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 19:16:25.386 NotebookApp] 403 POST / (139.162.6.55) 1.230000ms referer=None
+[W 19:23:26.021 NotebookApp] 405 CONNECT ip.ws.126.net:443 (222.186.136.150) 3.290000ms referer=None
+[W 19:24:48.431 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 19:24:48.431 NotebookApp] 403 POST / (139.162.6.55) 1.460000ms referer=None
+[W 19:24:48.756 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 19:24:48.757 NotebookApp] 403 POST / (139.162.6.55) 1.210000ms referer=None
+[W 19:31:44.456 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 19:31:44.457 NotebookApp] 403 POST / (139.162.6.55) 1.470000ms referer=None
+[W 19:31:44.758 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 19:31:44.759 NotebookApp] 403 POST / (139.162.6.55) 1.230000ms referer=None
+[W 19:43:53.582 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 19:43:53.583 NotebookApp] 403 POST / (139.162.6.55) 1.640000ms referer=None
+[W 19:43:53.896 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 19:43:53.897 NotebookApp] 403 POST / (139.162.6.55) 1.180000ms referer=None
+[W 19:49:13.110 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 19:49:13.111 NotebookApp] 403 POST / (139.162.6.55) 1.470000ms referer=None
+[W 19:49:13.415 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 19:49:13.416 NotebookApp] 403 POST / (139.162.6.55) 1.150000ms referer=None
+[W 20:00:50.669 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 20:00:50.670 NotebookApp] 403 POST / (139.162.6.55) 1.390000ms referer=None
+[W 20:00:50.995 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 20:00:50.996 NotebookApp] 403 POST / (139.162.6.55) 1.140000ms referer=None
+[W 20:09:20.265 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 20:09:20.266 NotebookApp] 403 POST / (139.162.6.55) 1.390000ms referer=None
+[W 20:09:20.592 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 20:09:20.592 NotebookApp] 403 POST / (139.162.6.55) 1.120000ms referer=None
+[W 20:18:26.183 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 20:18:26.183 NotebookApp] 403 POST / (139.162.6.55) 1.440000ms referer=None
+[W 20:18:26.442 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 20:18:26.443 NotebookApp] 403 POST / (139.162.6.55) 1.310000ms referer=None
+[W 20:21:37.844 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 20:21:37.845 NotebookApp] 403 POST / (139.162.6.55) 1.370000ms referer=None
+[W 20:21:38.160 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 20:21:38.161 NotebookApp] 403 POST / (139.162.6.55) 1.140000ms referer=None
+[W 20:26:43.794 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 20:26:43.795 NotebookApp] 403 POST / (139.162.6.55) 1.350000ms referer=None
+[W 20:26:44.110 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 20:26:44.111 NotebookApp] 403 POST / (139.162.6.55) 1.110000ms referer=None
+[W 20:37:36.034 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 20:37:36.035 NotebookApp] 403 POST / (139.162.6.55) 1.800000ms referer=None
+[W 20:37:36.323 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 20:37:36.323 NotebookApp] 403 POST / (139.162.6.55) 1.170000ms referer=None
+[W 20:46:42.601 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 20:46:42.602 NotebookApp] 403 POST / (139.162.6.55) 1.780000ms referer=None
+[W 20:46:42.871 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 20:46:42.872 NotebookApp] 403 POST / (139.162.6.55) 1.170000ms referer=None
+[W 20:58:49.613 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 20:58:49.614 NotebookApp] 403 POST / (139.162.6.55) 1.710000ms referer=None
+[W 20:58:49.941 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 20:58:49.942 NotebookApp] 403 POST / (139.162.6.55) 1.490000ms referer=None
+[W 21:06:12.423 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 21:06:12.423 NotebookApp] 403 POST / (139.162.6.55) 1.360000ms referer=None
+[W 21:06:12.754 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 21:06:12.754 NotebookApp] 403 POST / (139.162.6.55) 1.180000ms referer=None
+[W 21:13:44.320 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 21:13:44.321 NotebookApp] 403 POST / (139.162.6.55) 1.440000ms referer=None
+[W 21:13:44.561 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 21:13:44.562 NotebookApp] 403 POST / (139.162.6.55) 1.140000ms referer=None
+[W 21:17:08.888 NotebookApp] 403 POST / (206.189.3.174): '_xsrf' argument missing from POST
+[W 21:17:08.889 NotebookApp] 403 POST / (206.189.3.174) 306.030000ms referer=None
+[W 21:18:51.550 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 21:18:51.551 NotebookApp] 403 POST / (139.162.6.55) 1.340000ms referer=None
+[W 21:18:51.807 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 21:18:51.807 NotebookApp] 403 POST / (139.162.6.55) 1.140000ms referer=None
+[W 21:32:24.806 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 21:32:24.807 NotebookApp] 403 POST / (139.162.6.55) 1.730000ms referer=None
+[W 21:32:25.106 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 21:32:25.107 NotebookApp] 403 POST / (139.162.6.55) 1.320000ms referer=None
+[W 21:39:59.427 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 21:39:59.427 NotebookApp] 403 POST / (139.162.6.55) 1.430000ms referer=None
+[W 21:39:59.733 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 21:39:59.734 NotebookApp] 403 POST / (139.162.6.55) 1.190000ms referer=None
+[W 21:50:54.258 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 21:50:54.258 NotebookApp] 403 POST / (139.162.6.55) 1.330000ms referer=None
+[W 21:50:54.573 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 21:50:54.574 NotebookApp] 403 POST / (139.162.6.55) 1.170000ms referer=None
+[W 21:55:53.516 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 21:55:53.517 NotebookApp] 403 POST / (139.162.6.55) 1.350000ms referer=None
+[W 21:55:53.838 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 21:55:53.838 NotebookApp] 403 POST / (139.162.6.55) 1.130000ms referer=None
+[W 22:01:06.903 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 22:01:06.904 NotebookApp] 403 POST / (139.162.6.55) 1.440000ms referer=None
+[W 22:01:07.224 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 22:01:07.224 NotebookApp] 403 POST / (139.162.6.55) 1.350000ms referer=None
+[W 22:09:45.394 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 22:09:45.395 NotebookApp] 403 POST / (139.162.6.55) 1.440000ms referer=None
+[W 22:09:45.662 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 22:09:45.663 NotebookApp] 403 POST / (139.162.6.55) 1.160000ms referer=None
+[W 22:21:47.137 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 22:21:47.138 NotebookApp] 403 POST / (139.162.6.55) 1.760000ms referer=None
+[W 22:21:47.443 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 22:21:47.444 NotebookApp] 403 POST / (139.162.6.55) 1.200000ms referer=None
+[W 22:25:46.995 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 22:25:46.996 NotebookApp] 403 POST / (139.162.6.55) 1.440000ms referer=None
+[W 22:25:47.326 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 22:25:47.327 NotebookApp] 403 POST / (139.162.6.55) 1.540000ms referer=None
+[W 22:42:14.070 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 22:42:14.071 NotebookApp] 403 POST / (139.162.6.55) 1.460000ms referer=None
+[W 22:42:14.640 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 22:42:14.640 NotebookApp] 403 POST / (139.162.6.55) 1.250000ms referer=None
+[W 22:45:16.093 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 22:45:16.094 NotebookApp] 403 POST / (139.162.6.55) 1.640000ms referer=None
+[W 22:45:16.344 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 22:45:16.345 NotebookApp] 403 POST / (139.162.6.55) 1.150000ms referer=None
+[W 22:55:05.003 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 22:55:05.004 NotebookApp] 403 POST / (139.162.6.55) 1.400000ms referer=None
+[W 22:55:05.319 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 22:55:05.319 NotebookApp] 403 POST / (139.162.6.55) 1.190000ms referer=None
+[W 22:58:31.223 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 22:58:31.224 NotebookApp] 403 POST / (139.162.6.55) 1.380000ms referer=None
+[W 22:58:31.552 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 22:58:31.552 NotebookApp] 403 POST / (139.162.6.55) 1.200000ms referer=None
+[W 23:04:57.425 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 23:04:57.426 NotebookApp] 403 POST / (139.162.6.55) 1.780000ms referer=None
+[W 23:04:57.661 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 23:04:57.662 NotebookApp] 403 POST / (139.162.6.55) 1.190000ms referer=None
+[W 23:13:55.698 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 23:13:55.699 NotebookApp] 403 POST / (139.162.6.55) 1.450000ms referer=None
+[W 23:13:56.313 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 23:13:56.314 NotebookApp] 403 POST / (139.162.6.55) 1.310000ms referer=None
+[W 23:23:52.477 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 23:23:52.478 NotebookApp] 403 POST / (139.162.6.55) 1.710000ms referer=None
+[W 23:23:53.064 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 23:23:53.064 NotebookApp] 403 POST / (139.162.6.55) 1.120000ms referer=None
+[W 23:30:01.652 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 23:30:01.653 NotebookApp] 403 POST / (139.162.6.55) 1.360000ms referer=None
+[W 23:30:01.974 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 23:30:01.974 NotebookApp] 403 POST / (139.162.6.55) 1.130000ms referer=None
+[W 23:34:54.903 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 23:34:54.903 NotebookApp] 403 POST / (139.162.6.55) 1.440000ms referer=None
+[W 23:34:55.207 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 23:34:55.208 NotebookApp] 403 POST / (139.162.6.55) 1.190000ms referer=None
+[W 23:43:44.588 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 23:43:44.589 NotebookApp] 403 POST / (139.162.6.55) 1.410000ms referer=None
+[W 23:43:44.920 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 23:43:44.920 NotebookApp] 403 POST / (139.162.6.55) 1.140000ms referer=None
+[W 23:52:33.083 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 23:52:33.084 NotebookApp] 403 POST / (139.162.6.55) 1.440000ms referer=None
+[W 23:52:33.325 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 23:52:33.325 NotebookApp] 403 POST / (139.162.6.55) 1.150000ms referer=None
+[I 23:56:41.131 NotebookApp] 302 GET / (45.155.205.108) 1.250000ms
+[I 23:56:41.601 NotebookApp] 302 GET /tree? (45.155.205.108) 1.130000ms
+[W 23:57:09.108 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 23:57:09.109 NotebookApp] 403 POST / (139.162.6.55) 1.370000ms referer=None
+[W 23:57:09.413 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 23:57:09.413 NotebookApp] 403 POST / (139.162.6.55) 1.130000ms referer=None
+[W 00:01:27.873 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 00:01:27.874 NotebookApp] 403 POST / (139.162.6.55) 1.390000ms referer=None
+[W 00:01:28.131 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 00:01:28.131 NotebookApp] 403 POST / (139.162.6.55) 1.100000ms referer=None
+[W 00:13:22.390 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 00:13:22.391 NotebookApp] 403 POST / (139.162.6.55) 1.360000ms referer=None
+[W 00:13:22.704 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 00:13:22.704 NotebookApp] 403 POST / (139.162.6.55) 1.110000ms referer=None
+[W 00:19:40.902 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 00:19:40.903 NotebookApp] 403 POST / (139.162.6.55) 1.360000ms referer=None
+[W 00:19:41.145 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 00:19:41.146 NotebookApp] 403 POST / (139.162.6.55) 1.140000ms referer=None
+[W 00:27:31.503 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 00:27:31.504 NotebookApp] 403 POST / (139.162.6.55) 1.350000ms referer=None
+[W 00:27:31.839 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 00:27:31.840 NotebookApp] 403 POST / (139.162.6.55) 1.140000ms referer=None
+[W 00:39:13.779 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 00:39:13.780 NotebookApp] 403 POST / (139.162.6.55) 1.350000ms referer=None
+[W 00:39:14.098 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 00:39:14.099 NotebookApp] 403 POST / (139.162.6.55) 1.110000ms referer=None
+[W 00:41:31.652 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 00:41:31.653 NotebookApp] 403 POST / (139.162.6.55) 1.440000ms referer=None
+[W 00:41:31.960 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 00:41:31.961 NotebookApp] 403 POST / (139.162.6.55) 1.170000ms referer=None
+[W 00:48:33.356 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 00:48:33.356 NotebookApp] 403 POST / (139.162.6.55) 1.350000ms referer=None
+[W 00:48:33.640 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 00:48:33.640 NotebookApp] 403 POST / (139.162.6.55) 1.130000ms referer=None
+[W 00:58:08.487 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 00:58:08.488 NotebookApp] 403 POST / (139.162.6.55) 1.420000ms referer=None
+[W 00:58:08.768 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 00:58:08.769 NotebookApp] 403 POST / (139.162.6.55) 1.180000ms referer=None
+[W 01:02:21.650 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 01:02:21.651 NotebookApp] 403 POST / (139.162.6.55) 1.510000ms referer=None
+[W 01:02:21.976 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 01:02:21.976 NotebookApp] 403 POST / (139.162.6.55) 1.170000ms referer=None
+[W 01:03:43.272 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 01:03:43.273 NotebookApp] 403 POST / (139.162.6.55) 1.390000ms referer=None
+[W 01:03:43.546 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 01:03:43.547 NotebookApp] 403 POST / (139.162.6.55) 1.140000ms referer=None
+[W 01:13:06.871 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 01:13:06.871 NotebookApp] 403 POST / (139.162.6.55) 1.340000ms referer=None
+[W 01:13:07.198 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 01:13:07.199 NotebookApp] 403 POST / (139.162.6.55) 1.180000ms referer=None
+[W 01:17:10.714 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 01:17:10.715 NotebookApp] 403 POST / (139.162.6.55) 1.750000ms referer=None
+[W 01:17:11.015 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 01:17:11.016 NotebookApp] 403 POST / (139.162.6.55) 1.140000ms referer=None
+[W 01:22:38.524 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 01:22:38.525 NotebookApp] 403 POST / (139.162.6.55) 1.430000ms referer=None
+[W 01:22:38.814 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 01:22:38.815 NotebookApp] 403 POST / (139.162.6.55) 1.190000ms referer=None
+[W 01:34:49.961 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 01:34:49.961 NotebookApp] 403 POST / (139.162.6.55) 1.380000ms referer=None
+[W 01:34:50.218 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 01:34:50.218 NotebookApp] 403 POST / (139.162.6.55) 1.230000ms referer=None
+[W 01:41:36.218 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 01:41:36.219 NotebookApp] 403 POST / (139.162.6.55) 1.360000ms referer=None
+[W 01:41:36.454 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 01:41:36.455 NotebookApp] 403 POST / (139.162.6.55) 1.110000ms referer=None
+[W 01:51:44.117 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 01:51:44.118 NotebookApp] 403 POST / (139.162.6.55) 1.750000ms referer=None
+[W 01:51:44.437 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 01:51:44.438 NotebookApp] 403 POST / (139.162.6.55) 1.420000ms referer=None
+[W 01:53:56.111 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 01:53:56.112 NotebookApp] 403 POST / (139.162.6.55) 1.350000ms referer=None
+[W 01:53:56.426 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 01:53:56.426 NotebookApp] 403 POST / (139.162.6.55) 1.150000ms referer=None
+[W 02:01:14.030 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 02:01:14.031 NotebookApp] 403 POST / (139.162.6.55) 1.700000ms referer=None
+[W 02:01:14.342 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 02:01:14.343 NotebookApp] 403 POST / (139.162.6.55) 1.190000ms referer=None
+[W 02:13:14.421 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 02:13:14.422 NotebookApp] 403 POST / (139.162.6.55) 1.730000ms referer=None
+[W 02:13:14.724 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 02:13:14.724 NotebookApp] 403 POST / (139.162.6.55) 1.130000ms referer=None
+[W 02:19:22.778 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 02:19:22.779 NotebookApp] 403 POST / (139.162.6.55) 1.720000ms referer=None
+[W 02:19:23.108 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 02:19:23.108 NotebookApp] 403 POST / (139.162.6.55) 1.210000ms referer=None
+[W 02:20:53.015 NotebookApp] 403 POST / (104.236.140.165): '_xsrf' argument missing from POST
+[W 02:20:53.016 NotebookApp] 403 POST / (104.236.140.165) 1.430000ms referer=None
+[W 02:30:39.534 NotebookApp] 403 POST / (206.189.3.174): '_xsrf' argument missing from POST
+[W 02:30:39.534 NotebookApp] 403 POST / (206.189.3.174) 257.810000ms referer=None
+[W 02:31:10.545 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 02:31:10.546 NotebookApp] 403 POST / (139.162.6.55) 1.670000ms referer=None
+[W 02:31:10.861 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 02:31:10.862 NotebookApp] 403 POST / (139.162.6.55) 1.170000ms referer=None
+[W 02:37:46.038 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 02:37:46.039 NotebookApp] 403 POST / (139.162.6.55) 1.330000ms referer=None
+[W 02:37:46.339 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 02:37:46.340 NotebookApp] 403 POST / (139.162.6.55) 1.140000ms referer=None
+[W 02:44:21.922 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 02:44:21.923 NotebookApp] 403 POST / (139.162.6.55) 1.390000ms referer=None
+[W 02:44:22.175 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 02:44:22.175 NotebookApp] 403 POST / (139.162.6.55) 1.110000ms referer=None
+[W 02:52:47.253 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 02:52:47.254 NotebookApp] 403 POST / (139.162.6.55) 1.770000ms referer=None
+[W 02:52:47.564 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 02:52:47.564 NotebookApp] 403 POST / (139.162.6.55) 1.170000ms referer=None
+[W 03:01:42.241 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 03:01:42.242 NotebookApp] 403 POST / (139.162.6.55) 1.770000ms referer=None
+[W 03:01:42.528 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 03:01:42.528 NotebookApp] 403 POST / (139.162.6.55) 1.190000ms referer=None
+[W 03:03:59.290 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 03:03:59.291 NotebookApp] 403 POST / (139.162.6.55) 1.400000ms referer=None
+[W 03:03:59.576 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 03:03:59.576 NotebookApp] 403 POST / (139.162.6.55) 1.170000ms referer=None
+[W 03:14:40.594 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 03:14:40.595 NotebookApp] 403 POST / (139.162.6.55) 1.450000ms referer=None
+[W 03:14:40.849 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 03:14:40.850 NotebookApp] 403 POST / (139.162.6.55) 1.180000ms referer=None
+[W 03:22:49.013 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 03:22:49.013 NotebookApp] 403 POST / (139.162.6.55) 1.380000ms referer=None
+[W 03:22:49.278 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 03:22:49.278 NotebookApp] 403 POST / (139.162.6.55) 1.150000ms referer=None
+[W 03:35:47.812 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 03:35:47.812 NotebookApp] 403 POST / (139.162.6.55) 1.360000ms referer=None
+[W 03:35:48.106 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 03:35:48.107 NotebookApp] 403 POST / (139.162.6.55) 1.160000ms referer=None
+[W 03:42:04.471 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 03:42:04.472 NotebookApp] 403 POST / (139.162.6.55) 1.380000ms referer=None
+[W 03:42:04.793 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 03:42:04.793 NotebookApp] 403 POST / (139.162.6.55) 1.150000ms referer=None
+[W 03:47:10.266 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 03:47:10.267 NotebookApp] 403 POST / (139.162.6.55) 1.370000ms referer=None
+[W 03:47:10.592 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 03:47:10.593 NotebookApp] 403 POST / (139.162.6.55) 1.140000ms referer=None
+[W 03:56:16.471 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 03:56:16.471 NotebookApp] 403 POST / (139.162.6.55) 1.410000ms referer=None
+[W 03:56:16.781 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 03:56:16.781 NotebookApp] 403 POST / (139.162.6.55) 1.140000ms referer=None
+[W 04:04:22.729 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 04:04:22.730 NotebookApp] 403 POST / (139.162.6.55) 1.410000ms referer=None
+[W 04:04:23.050 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 04:04:23.051 NotebookApp] 403 POST / (139.162.6.55) 1.110000ms referer=None
+[W 04:08:03.693 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 04:08:03.693 NotebookApp] 403 POST / (139.162.6.55) 1.390000ms referer=None
+[W 04:08:04.009 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 04:08:04.010 NotebookApp] 403 POST / (139.162.6.55) 1.220000ms referer=None
+[W 04:17:39.996 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 04:17:39.996 NotebookApp] 403 POST / (139.162.6.55) 1.380000ms referer=None
+[W 04:17:40.298 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 04:17:40.299 NotebookApp] 403 POST / (139.162.6.55) 1.150000ms referer=None
+[W 04:21:26.118 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 04:21:26.119 NotebookApp] 403 POST / (139.162.6.55) 1.420000ms referer=None
+[W 04:21:26.404 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 04:21:26.405 NotebookApp] 403 POST / (139.162.6.55) 1.160000ms referer=None
+[I 04:21:38.399 NotebookApp] 302 GET / (198.20.69.98) 0.750000ms
+[W 04:34:29.518 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 04:34:29.519 NotebookApp] 403 POST / (139.162.6.55) 1.740000ms referer=None
+[W 04:34:29.820 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 04:34:29.821 NotebookApp] 403 POST / (139.162.6.55) 1.170000ms referer=None
+[W 04:37:32.930 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 04:37:32.931 NotebookApp] 403 POST / (139.162.6.55) 1.410000ms referer=None
+[W 04:37:33.250 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 04:37:33.250 NotebookApp] 403 POST / (139.162.6.55) 1.180000ms referer=None
+[W 04:50:39.859 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 04:50:39.860 NotebookApp] 403 POST / (139.162.6.55) 1.360000ms referer=None
+[W 04:50:40.123 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 04:50:40.123 NotebookApp] 403 POST / (139.162.6.55) 1.140000ms referer=None
+[W 04:55:13.453 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 04:55:13.454 NotebookApp] 403 POST / (139.162.6.55) 1.700000ms referer=None
+[W 04:55:13.699 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 04:55:13.700 NotebookApp] 403 POST / (139.162.6.55) 1.160000ms referer=None
+[W 05:03:19.978 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 05:03:19.979 NotebookApp] 403 POST / (139.162.6.55) 1.380000ms referer=None
+[W 05:03:20.242 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 05:03:20.243 NotebookApp] 403 POST / (139.162.6.55) 1.140000ms referer=None
+[W 05:06:36.574 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 05:06:36.575 NotebookApp] 403 POST / (139.162.6.55) 1.350000ms referer=None
+[W 05:06:36.812 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 05:06:36.813 NotebookApp] 403 POST / (139.162.6.55) 1.120000ms referer=None
+[W 05:18:44.150 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 05:18:44.151 NotebookApp] 403 POST / (139.162.6.55) 1.480000ms referer=None
+[W 05:18:44.403 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 05:18:44.403 NotebookApp] 403 POST / (139.162.6.55) 1.160000ms referer=None
+[W 05:25:08.334 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 05:25:08.335 NotebookApp] 403 POST / (139.162.6.55) 1.600000ms referer=None
+[W 05:25:08.591 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 05:25:08.592 NotebookApp] 403 POST / (139.162.6.55) 1.200000ms referer=None
+[W 05:33:31.379 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 05:33:31.380 NotebookApp] 403 POST / (139.162.6.55) 1.420000ms referer=None
+[W 05:33:31.618 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 05:33:31.619 NotebookApp] 403 POST / (139.162.6.55) 1.180000ms referer=None
+[W 05:41:37.321 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 05:41:37.322 NotebookApp] 403 POST / (139.162.6.55) 1.650000ms referer=None
+[W 05:41:37.628 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 05:41:37.628 NotebookApp] 403 POST / (139.162.6.55) 1.130000ms referer=None
+[W 05:44:44.824 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 05:44:44.824 NotebookApp] 403 POST / (139.162.6.55) 1.420000ms referer=None
+[W 05:44:45.133 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 05:44:45.134 NotebookApp] 403 POST / (139.162.6.55) 1.460000ms referer=None
+[I 05:51:40.015 NotebookApp] 302 GET / (192.241.224.206) 0.820000ms
+[W 05:52:49.271 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 05:52:49.272 NotebookApp] 403 POST / (139.162.6.55) 1.420000ms referer=None
+[W 05:52:49.543 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 05:52:49.543 NotebookApp] 403 POST / (139.162.6.55) 1.190000ms referer=None
+[W 06:01:54.808 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 06:01:54.809 NotebookApp] 403 POST / (139.162.6.55) 1.390000ms referer=None
+[W 06:01:55.109 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 06:01:55.109 NotebookApp] 403 POST / (139.162.6.55) 1.170000ms referer=None
+[W 06:09:31.031 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 06:09:31.032 NotebookApp] 403 POST / (139.162.6.55) 1.440000ms referer=None
+[W 06:09:31.356 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 06:09:31.356 NotebookApp] 403 POST / (139.162.6.55) 1.190000ms referer=None
+[W 06:18:24.718 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 06:18:24.719 NotebookApp] 403 POST / (139.162.6.55) 1.750000ms referer=None
+[W 06:18:25.021 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 06:18:25.021 NotebookApp] 403 POST / (139.162.6.55) 1.170000ms referer=None
+[W 06:21:32.026 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 06:21:32.027 NotebookApp] 403 POST / (139.162.6.55) 1.780000ms referer=None
+[W 06:21:32.264 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 06:21:32.264 NotebookApp] 403 POST / (139.162.6.55) 1.180000ms referer=None
+[W 06:32:29.239 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 06:32:29.239 NotebookApp] 403 POST / (139.162.6.55) 1.420000ms referer=None
+[W 06:32:29.527 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 06:32:29.528 NotebookApp] 403 POST / (139.162.6.55) 1.110000ms referer=None
+[W 06:39:43.185 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 06:39:43.186 NotebookApp] 403 POST / (139.162.6.55) 1.430000ms referer=None
+[W 06:39:43.514 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 06:39:43.514 NotebookApp] 403 POST / (139.162.6.55) 1.150000ms referer=None
+[W 06:45:32.330 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 06:45:32.330 NotebookApp] 403 POST / (139.162.6.55) 1.780000ms referer=None
+[W 06:45:32.616 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 06:45:32.616 NotebookApp] 403 POST / (139.162.6.55) 1.180000ms referer=None
+[W 06:57:11.883 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 06:57:11.884 NotebookApp] 403 POST / (139.162.6.55) 1.420000ms referer=None
+[W 06:57:12.137 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 06:57:12.138 NotebookApp] 403 POST / (139.162.6.55) 1.500000ms referer=None
+[W 07:04:54.570 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 07:04:54.570 NotebookApp] 403 POST / (139.162.6.55) 1.770000ms referer=None
+[W 07:04:54.883 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 07:04:54.883 NotebookApp] 403 POST / (139.162.6.55) 1.170000ms referer=None
+[W 07:08:41.668 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 07:08:41.669 NotebookApp] 403 POST / (139.162.6.55) 1.360000ms referer=None
+[W 07:08:41.997 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 07:08:41.997 NotebookApp] 403 POST / (139.162.6.55) 1.190000ms referer=None
+[W 07:14:33.571 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 07:14:33.572 NotebookApp] 403 POST / (139.162.6.55) 1.370000ms referer=None
+[W 07:14:33.841 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 07:14:33.842 NotebookApp] 403 POST / (139.162.6.55) 1.170000ms referer=None
+[W 07:16:26.336 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 07:16:26.337 NotebookApp] 403 POST / (139.162.6.55) 1.390000ms referer=None
+[W 07:16:26.613 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 07:16:26.614 NotebookApp] 403 POST / (139.162.6.55) 1.190000ms referer=None
+[W 07:20:37.579 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 07:20:37.579 NotebookApp] 403 POST / (139.162.6.55) 1.350000ms referer=None
+[W 07:20:37.847 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 07:20:37.848 NotebookApp] 403 POST / (139.162.6.55) 1.140000ms referer=None
+[W 07:21:34.458 NotebookApp] 403 POST / (206.189.3.174): '_xsrf' argument missing from POST
+[W 07:21:34.459 NotebookApp] 403 POST / (206.189.3.174) 262.270000ms referer=None
+[W 07:23:36.902 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 07:23:36.903 NotebookApp] 403 POST / (139.162.6.55) 1.410000ms referer=None
+[W 07:23:37.197 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 07:23:37.198 NotebookApp] 403 POST / (139.162.6.55) 1.220000ms referer=None
+[W 07:27:06.413 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 07:27:06.414 NotebookApp] 403 POST / (139.162.6.55) 1.440000ms referer=None
+[W 07:27:06.673 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 07:27:06.673 NotebookApp] 403 POST / (139.162.6.55) 1.190000ms referer=None
+[W 07:33:11.464 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 07:33:11.465 NotebookApp] 403 POST / (139.162.6.55) 1.450000ms referer=None
+[W 07:33:11.708 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 07:33:11.709 NotebookApp] 403 POST / (139.162.6.55) 1.180000ms referer=None
+[W 07:38:13.368 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 07:38:13.369 NotebookApp] 403 POST / (139.162.6.55) 1.440000ms referer=None
+[W 07:38:13.645 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 07:38:13.646 NotebookApp] 403 POST / (139.162.6.55) 1.490000ms referer=None
+[W 07:51:15.550 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 07:51:15.551 NotebookApp] 403 POST / (139.162.6.55) 1.350000ms referer=None
+[W 07:51:15.840 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 07:51:15.840 NotebookApp] 403 POST / (139.162.6.55) 1.120000ms referer=None
+[W 07:51:42.354 NotebookApp] 403 POST / (206.189.3.174): '_xsrf' argument missing from POST
+[W 07:51:42.355 NotebookApp] 403 POST / (206.189.3.174) 1.160000ms referer=None
+[W 07:51:48.224 NotebookApp] 403 POST / (206.189.3.174): '_xsrf' argument missing from POST
+[W 07:51:48.225 NotebookApp] 403 POST / (206.189.3.174) 260.110000ms referer=None
+[W 07:51:54.028 NotebookApp] 403 POST / (206.189.3.174): '_xsrf' argument missing from POST
+[W 07:51:54.028 NotebookApp] 403 POST / (206.189.3.174) 267.020000ms referer=None
+[W 07:54:33.313 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 07:54:33.314 NotebookApp] 403 POST / (139.162.6.55) 1.420000ms referer=None
+[W 07:54:33.640 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 07:54:33.641 NotebookApp] 403 POST / (139.162.6.55) 1.100000ms referer=None
+[W 08:02:27.986 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 08:02:27.986 NotebookApp] 403 POST / (139.162.6.55) 1.750000ms referer=None
+[W 08:02:28.228 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 08:02:28.229 NotebookApp] 403 POST / (139.162.6.55) 1.180000ms referer=None
+[W 08:06:33.159 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 08:06:33.159 NotebookApp] 403 POST / (139.162.6.55) 1.430000ms referer=None
+[W 08:06:33.419 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 08:06:33.420 NotebookApp] 403 POST / (139.162.6.55) 1.120000ms referer=None
+[W 08:21:32.683 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 08:21:32.684 NotebookApp] 403 POST / (139.162.6.55) 1.360000ms referer=None
+[W 08:21:32.990 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 08:21:32.990 NotebookApp] 403 POST / (139.162.6.55) 1.170000ms referer=None
+[W 08:24:56.989 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 08:24:56.990 NotebookApp] 403 POST / (139.162.6.55) 1.750000ms referer=None
+[W 08:24:57.229 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 08:24:57.230 NotebookApp] 403 POST / (139.162.6.55) 1.200000ms referer=None
+[W 08:32:09.144 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 08:32:09.145 NotebookApp] 403 POST / (139.162.6.55) 1.450000ms referer=None
+[W 08:32:09.433 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 08:32:09.434 NotebookApp] 403 POST / (139.162.6.55) 1.170000ms referer=None
+[W 08:44:42.448 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 08:44:42.448 NotebookApp] 403 POST / (139.162.6.55) 1.440000ms referer=None
+[W 08:44:42.774 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 08:44:42.774 NotebookApp] 403 POST / (139.162.6.55) 1.160000ms referer=None
+[W 08:46:41.048 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 08:46:41.049 NotebookApp] 403 POST / (139.162.6.55) 1.440000ms referer=None
+[W 08:46:41.312 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 08:46:41.312 NotebookApp] 403 POST / (139.162.6.55) 1.180000ms referer=None
+[W 08:57:16.156 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 08:57:16.157 NotebookApp] 403 POST / (139.162.6.55) 1.430000ms referer=None
+[W 08:57:16.433 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 08:57:16.434 NotebookApp] 403 POST / (139.162.6.55) 1.210000ms referer=None
+[W 09:02:04.112 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 09:02:04.112 NotebookApp] 403 POST / (139.162.6.55) 1.380000ms referer=None
+[W 09:02:04.373 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 09:02:04.374 NotebookApp] 403 POST / (139.162.6.55) 1.200000ms referer=None
+[W 09:08:20.641 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 09:08:20.642 NotebookApp] 403 POST / (139.162.6.55) 1.770000ms referer=None
+[W 09:08:20.920 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 09:08:20.921 NotebookApp] 403 POST / (139.162.6.55) 1.110000ms referer=None
+[W 09:18:32.780 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 09:18:32.781 NotebookApp] 403 POST / (139.162.6.55) 1.380000ms referer=None
+[W 09:18:33.038 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 09:18:33.038 NotebookApp] 403 POST / (139.162.6.55) 1.150000ms referer=None
+[I 09:23:03.864 NotebookApp] 302 GET / (125.129.87.117) 1.130000ms
+[W 09:23:14.082 NotebookApp] Notebook rnn/organize-gain-pred.ipynb is not trusted
+[I 09:25:21.849 NotebookApp] Saving file at /rnn/organize-gain-pred.ipynb
+[W 09:25:21.852 NotebookApp] Notebook rnn/organize-gain-pred.ipynb is not trusted
+[W 09:26:33.477 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 09:26:33.478 NotebookApp] 403 POST / (139.162.6.55) 1.400000ms referer=None
+[W 09:26:33.735 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 09:26:33.735 NotebookApp] 403 POST / (139.162.6.55) 1.120000ms referer=None
+[I 09:27:21.825 NotebookApp] Saving file at /rnn/organize-gain-pred.ipynb
+[W 09:27:21.829 NotebookApp] Notebook rnn/organize-gain-pred.ipynb is not trusted
+[W 09:28:08.758 NotebookApp] 403 POST / (104.236.140.165): '_xsrf' argument missing from POST
+[W 09:28:08.759 NotebookApp] 403 POST / (104.236.140.165) 1.800000ms referer=None
+[W 09:32:13.219 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 09:32:13.220 NotebookApp] 403 POST / (139.162.6.55) 1.410000ms referer=None
+[W 09:32:13.513 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 09:32:13.514 NotebookApp] 403 POST / (139.162.6.55) 1.240000ms referer=None
+[W 09:44:31.809 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 09:44:31.810 NotebookApp] 403 POST / (139.162.6.55) 1.780000ms referer=None
+[W 09:44:32.142 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 09:44:32.142 NotebookApp] 403 POST / (139.162.6.55) 1.150000ms referer=None
+[I 09:46:40.431 NotebookApp] Starting buffering for edbb4468-c6c5-4a9e-b188-697d727e2c5a:8b3bb299007e466f9c83e78622375b5b
+[W 09:46:41.272 NotebookApp] Notebook rnn/organize-gain-pred.ipynb is not trusted
+[I 09:48:30.064 NotebookApp] Starting buffering for edbb4468-c6c5-4a9e-b188-697d727e2c5a:6a879540eda041858d13379ec2f9e5bc
+[I 09:48:45.513 NotebookApp] 302 GET / (125.129.87.117) 0.780000ms
+[W 09:51:41.235 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 09:51:41.236 NotebookApp] 403 POST / (139.162.6.55) 1.380000ms referer=None
+[W 09:51:41.511 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 09:51:41.511 NotebookApp] 403 POST / (139.162.6.55) 1.160000ms referer=None
+[W 09:53:27.275 NotebookApp] Notebook rnn/gain-predict.ipynb is not trusted
+[I 09:53:48.237 NotebookApp] Starting buffering for 855294e1-68d2-4c93-905c-f2e8d1dc1957:7fd38ce2285640c186072a769a4d7def
+[I 09:53:48.450 NotebookApp] Kernel restarted: 855294e1-68d2-4c93-905c-f2e8d1dc1957
+[I 09:53:48.536 NotebookApp] Restoring connection for 855294e1-68d2-4c93-905c-f2e8d1dc1957:7fd38ce2285640c186072a769a4d7def
+[I 09:53:49.043 NotebookApp] Replaying 3 buffered messages
+2021-01-22 09:53:54.361093: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2021-01-22 09:54:53.614359: I tensorflow/compiler/jit/xla_cpu_device.cc:41] Not creating XLA devices, tf_xla_enable_xla_devices not set
+2021-01-22 09:54:53.614973: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcuda.so.1
+2021-01-22 09:54:53.675527: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1720] Found device 0 with properties: 
+pciBusID: 0000:b5:00.0 name: GeForce RTX 3090 computeCapability: 8.6
+coreClock: 1.695GHz coreCount: 82 deviceMemorySize: 23.70GiB deviceMemoryBandwidth: 871.81GiB/s
+2021-01-22 09:54:53.675585: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2021-01-22 09:54:53.678227: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublas.so.11
+2021-01-22 09:54:53.678322: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublasLt.so.11
+2021-01-22 09:54:53.679256: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcufft.so.10
+2021-01-22 09:54:53.679559: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcurand.so.10
+2021-01-22 09:54:53.680897: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusolver.so.10
+2021-01-22 09:54:53.681411: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusparse.so.11
+2021-01-22 09:54:53.681579: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudnn.so.8
+2021-01-22 09:54:53.684112: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1862] Adding visible gpu devices: 0
+2021-01-22 09:54:53.684447: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX512F
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2021-01-22 09:54:53.685130: I tensorflow/compiler/jit/xla_gpu_device.cc:99] Not creating XLA devices, tf_xla_enable_xla_devices not set
+2021-01-22 09:54:53.686437: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1720] Found device 0 with properties: 
+pciBusID: 0000:b5:00.0 name: GeForce RTX 3090 computeCapability: 8.6
+coreClock: 1.695GHz coreCount: 82 deviceMemorySize: 23.70GiB deviceMemoryBandwidth: 871.81GiB/s
+2021-01-22 09:54:53.686471: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2021-01-22 09:54:53.686488: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublas.so.11
+2021-01-22 09:54:53.686499: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublasLt.so.11
+2021-01-22 09:54:53.686510: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcufft.so.10
+2021-01-22 09:54:53.686521: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcurand.so.10
+2021-01-22 09:54:53.686532: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusolver.so.10
+2021-01-22 09:54:53.686542: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusparse.so.11
+2021-01-22 09:54:53.686553: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudnn.so.8
+2021-01-22 09:54:53.688933: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1862] Adding visible gpu devices: 0
+2021-01-22 09:54:53.688967: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2021-01-22 09:54:54.045339: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1261] Device interconnect StreamExecutor with strength 1 edge matrix:
+2021-01-22 09:54:54.045375: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1267]      0 
+2021-01-22 09:54:54.045380: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1280] 0:   N 
+2021-01-22 09:54:54.047909: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1406] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 21662 MB memory) -> physical GPU (device: 0, name: GeForce RTX 3090, pci bus id: 0000:b5:00.0, compute capability: 8.6)
+2021-01-22 09:54:54.069641: I tensorflow/compiler/mlir/mlir_graph_optimization_pass.cc:116] None of the MLIR optimization passes are enabled (registered 2)
+2021-01-22 09:54:54.070191: I tensorflow/core/platform/profile_utils/cpu_utils.cc:112] CPU Frequency: 3699850000 Hz
+2021-01-22 09:55:07.102851: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublas.so.11
+2021-01-22 09:55:07.554123: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublasLt.so.11
+2021-01-22 09:55:07.557053: I tensorflow/stream_executor/cuda/cuda_blas.cc:1838] TensorFloat-32 will be used for the matrix multiplication. This will only be logged once.
+[I 09:55:34.933 NotebookApp] Saving file at /rnn/gain-predict.ipynb
+[W 09:55:34.935 NotebookApp] Notebook rnn/gain-predict.ipynb is not trusted
+[W 09:57:29.878 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 09:57:29.879 NotebookApp] 403 POST / (139.162.6.55) 1.200000ms referer=None
+[W 09:57:30.173 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 09:57:30.174 NotebookApp] 403 POST / (139.162.6.55) 1.070000ms referer=None
+[I 09:57:34.999 NotebookApp] Saving file at /rnn/gain-predict.ipynb
+[W 09:57:35.002 NotebookApp] Notebook rnn/gain-predict.ipynb is not trusted
+[W 09:58:39.411 NotebookApp] Notebook rnn/gain-predict.ipynb is not trusted
+[I 09:59:35.906 NotebookApp] Saving file at /rnn/gain-predict.ipynb
+[W 09:59:35.908 NotebookApp] Notebook rnn/gain-predict.ipynb is not trusted
+[I 10:00:11.945 NotebookApp] Kernel interrupted: 855294e1-68d2-4c93-905c-f2e8d1dc1957
+[I 10:00:17.087 NotebookApp] Starting buffering for 855294e1-68d2-4c93-905c-f2e8d1dc1957:7fd38ce2285640c186072a769a4d7def
+[I 10:00:20.557 NotebookApp] Kernel shutdown: 855294e1-68d2-4c93-905c-f2e8d1dc1957
+[W 10:00:31.076 NotebookApp] Notebook rnn/organize-gain-pred.ipynb is not trusted
+[W 10:02:20.199 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 10:02:20.200 NotebookApp] 403 POST / (139.162.6.55) 1.400000ms referer=None
+[I 10:02:20.245 NotebookApp] Starting buffering for edbb4468-c6c5-4a9e-b188-697d727e2c5a:4e4d2b26cde44599882abc9c458d4786
+[I 10:02:20.561 NotebookApp] Kernel restarted: edbb4468-c6c5-4a9e-b188-697d727e2c5a
+[W 10:02:20.570 NotebookApp] 403 POST / (139.162.6.55): '_xsrf' argument missing from POST
+[W 10:02:20.571 NotebookApp] 403 POST / (139.162.6.55) 2.830000ms referer=None
+[I 10:02:20.598 NotebookApp] Restoring connection for edbb4468-c6c5-4a9e-b188-697d727e2c5a:4e4d2b26cde44599882abc9c458d4786
+[I 10:02:21.107 NotebookApp] Replaying 3 buffered messages
+[I 10:02:23.273 NotebookApp] Starting buffering for edbb4468-c6c5-4a9e-b188-697d727e2c5a:4e4d2b26cde44599882abc9c458d4786
+[I 10:02:23.587 NotebookApp] Kernel restarted: edbb4468-c6c5-4a9e-b188-697d727e2c5a
+[I 10:02:23.624 NotebookApp] Restoring connection for edbb4468-c6c5-4a9e-b188-697d727e2c5a:4e4d2b26cde44599882abc9c458d4786
+[I 10:02:23.965 NotebookApp] Replaying 3 buffered messages
+2021-01-22 10:02:24.706305: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2021-01-22 10:02:36.510635: I tensorflow/compiler/jit/xla_cpu_device.cc:41] Not creating XLA devices, tf_xla_enable_xla_devices not set
+2021-01-22 10:02:36.511242: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcuda.so.1
+2021-01-22 10:02:36.553445: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1720] Found device 0 with properties: 
+pciBusID: 0000:65:00.0 name: GeForce RTX 3090 computeCapability: 8.6
+coreClock: 1.695GHz coreCount: 82 deviceMemorySize: 23.70GiB deviceMemoryBandwidth: 871.81GiB/s
+2021-01-22 10:02:36.553493: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2021-01-22 10:02:36.555881: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublas.so.11
+2021-01-22 10:02:36.555956: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublasLt.so.11
+2021-01-22 10:02:36.556792: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcufft.so.10
+2021-01-22 10:02:36.557050: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcurand.so.10
+2021-01-22 10:02:36.558609: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusolver.so.10
+2021-01-22 10:02:36.559070: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusparse.so.11
+2021-01-22 10:02:36.559209: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudnn.so.8
+2021-01-22 10:02:36.561466: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1862] Adding visible gpu devices: 0
+2021-01-22 10:02:36.561774: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX512F
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2021-01-22 10:02:36.562435: I tensorflow/compiler/jit/xla_gpu_device.cc:99] Not creating XLA devices, tf_xla_enable_xla_devices not set
+2021-01-22 10:02:36.563624: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1720] Found device 0 with properties: 
+pciBusID: 0000:65:00.0 name: GeForce RTX 3090 computeCapability: 8.6
+coreClock: 1.695GHz coreCount: 82 deviceMemorySize: 23.70GiB deviceMemoryBandwidth: 871.81GiB/s
+2021-01-22 10:02:36.563653: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2021-01-22 10:02:36.563671: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublas.so.11
+2021-01-22 10:02:36.563683: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublasLt.so.11
+2021-01-22 10:02:36.563695: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcufft.so.10
+2021-01-22 10:02:36.563707: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcurand.so.10
+2021-01-22 10:02:36.563719: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusolver.so.10
+2021-01-22 10:02:36.563731: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusparse.so.11
+2021-01-22 10:02:36.563743: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudnn.so.8
+2021-01-22 10:02:36.565928: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1862] Adding visible gpu devices: 0
+2021-01-22 10:02:36.565961: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2021-01-22 10:02:36.917050: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1261] Device interconnect StreamExecutor with strength 1 edge matrix:
+2021-01-22 10:02:36.917087: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1267]      0 
+2021-01-22 10:02:36.917093: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1280] 0:   N 
+2021-01-22 10:02:36.919581: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1406] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 20744 MB memory) -> physical GPU (device: 0, name: GeForce RTX 3090, pci bus id: 0000:65:00.0, compute capability: 8.6)
+2021-01-22 10:02:36.942144: I tensorflow/compiler/mlir/mlir_graph_optimization_pass.cc:116] None of the MLIR optimization passes are enabled (registered 2)
+2021-01-22 10:02:36.942820: I tensorflow/core/platform/profile_utils/cpu_utils.cc:112] CPU Frequency: 3699850000 Hz
+[I 10:02:38.192 NotebookApp] Saving file at /rnn/organize-gain-pred.ipynb
+2021-01-22 10:02:38.904342: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublas.so.11
+2021-01-22 10:02:39.351084: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublasLt.so.11
+2021-01-22 10:02:39.353767: I tensorflow/stream_executor/cuda/cuda_blas.cc:1838] TensorFloat-32 will be used for the matrix multiplication. This will only be logged once.
+[I 10:03:12.638 NotebookApp] Kernel interrupted: edbb4468-c6c5-4a9e-b188-697d727e2c5a
+[I 10:03:16.931 NotebookApp] Starting buffering for edbb4468-c6c5-4a9e-b188-697d727e2c5a:4e4d2b26cde44599882abc9c458d4786
+[I 10:04:12.103 NotebookApp] 302 GET / (125.129.87.117) 0.910000ms
+[I 10:04:35.589 NotebookApp] KernelRestarter: restarting kernel (1/5), keep random ports
+[IPKernelApp] WARNING | Parent appears to have exited, shutting down.
