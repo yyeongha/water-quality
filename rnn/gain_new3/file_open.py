@@ -51,7 +51,7 @@ def make_dataframe(directory_path, file_names, iloc_val, interpolate=None):
     for loc in range(len(file_names)):
 
         df_loc = []
-        print(file_names[loc])
+        #print(file_names[loc])
         for y in range(len(file_names[loc])):
             path = os.path.join(directory_path, file_names[loc][y])
             #print(file_names[loc][y])

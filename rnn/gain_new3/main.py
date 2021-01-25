@@ -83,8 +83,6 @@ for i in range(len(folder)):
     #print(((df_all - train_mean) / train_std).head())
    # print(df[1].head())
 
-
-
     #print("df_all.shape") #print(df_all.shape) #print(df.shape)
 
     if interpolation_option[i] == False:
@@ -111,10 +109,6 @@ for i in range(len(folder)):
 
         ori, gan = create_dataset_with_gain(gain=gain, window=wide_window, df=df)
 
-       # print(pd.DataFrame(gan).head())
-
-        #exit(2)
-
     else:
         gan = create_dataset_interpol(window=wide_window, df=df)
 
@@ -123,7 +117,7 @@ for i in range(len(folder)):
     else:  # Day sin, Day cos, Year sin, Year cos
         real_df_all = pd.concat([real_df_all, pd.DataFrame(gan[:,:-4])], axis=1, ignore_index=True)
 
-    print('real_df_all : ', real_df_all.shape)
+    #print('real_df_all : ', real_df_all.shape)
 
 exit(1000)
 
@@ -133,7 +127,7 @@ train_df, val_df, test_df = dataset_slice(real_df_all, 0.7)
 #print(train_df.shape, val_df.shape, test_df.shape)
 #print(train_df.head())
 
-exit(1)
+#exit(1)
 
 
 label_columns_indices = {name: i for i, name in enumerate(df[0])}

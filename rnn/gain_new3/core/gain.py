@@ -220,8 +220,8 @@ def dataset_slice(df, ratio):
 def create_dataset_with_gain(gain, df, window):
     #unit_shape = (24 * 5, df_all.columns.size)
 
-   # print('create_dataset_with_gain')
-  #  print(df[0])
+  #  print('create_dataset_with_gain')
+ #   print(df[0])
 
     unit_shape = window.dg.shape[1:]
     time_seq = unit_shape[0]
@@ -244,10 +244,10 @@ def create_dataset_with_gain(gain, df, window):
         gans.append(y_gan)
         oris.append(x)
 
-  #  print('create_dataset_with_gain org')
+    #print('create_dataset_with_gain org')
     #print(oris[0])
 
-   # print('create_dataset_with_gain gan')
+    #print('create_dataset_with_gain gan')
     #print(gans[0])
 
     ori = np.concatenate(oris, axis=1)
