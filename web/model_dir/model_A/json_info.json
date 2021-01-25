@@ -52,6 +52,13 @@
         "tp": "총인(T-P)"
       }
     ],
+    "columns": {
+      "toc": "총유기 탄소량(TOC)",
+      "chl": "클로로이 -a(chl -a)",
+      "do": "용존 산소량(DO)",
+      "tn": "총질소(T-N)",
+      "tp": "총인(T-P)"
+    },
     "map_info": [
         {"target": "target_a", "location": "가평", "y": 37.673854, "x": 127.38222, "rch_id": "", "rch_did": "", "node_id": "", "node_did": "", "cat_id": 10150601, "cat_did": 1015060100},
         {"target": "target_a", "location": "의암호", "y": 37.877653, "x": 127.678647, "rch_id": "", "rch_did": "", "node_id": "", "node_did": "", "cat_id": 10130201, "cat_did": 1013020100},

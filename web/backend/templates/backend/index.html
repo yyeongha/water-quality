@@ -165,6 +165,8 @@
         function pridict() {
             if ($('#column_list').children().length == 1) {
                 alert("Model 선택은 필수사항입니다");
+            } else if ($('#start-train').val() == "") {
+                alert("날짜 선택은 필수사항입니다");
             } else {
                 $('#loading').show();
                 $.ajax({
@@ -172,6 +174,7 @@
                     data: {
                         csrfmiddlewaretoken: $("#csrf_token").val(),
                         "key": $('#column_list').val(),
+                        "model":model_activate,
                         "start_date": formatDate(_startTrain),
                         "end_date": formatDate(_endTrain),
                         "predict_start_date": formatDate(_startPredict),
@@ -180,10 +183,32 @@
                     type: "POST",
                     dataType: "json"
                 }).done(function (data) {
+                    let water_arr = Array();
+                    let graph_arr = Array();
+
                     $('#loading').hide();
+                    // chart_data
                     _predictWater.data.datasets[0].data = data.predict_water;
-                    //_predictWater.data.datasets[1].data = [9, 2, 0, 0, 0];
+                    // chart_column
+                    _predictWater.options.title.text = data.column;
+                    // chart_labels
+                    for (let i = 7; i < 10; i++) {
+                        tmp_date = new Date();
+                        tmp_date.setDate(_startTrain.getDate() + i);
+                        let A = formatDate(tmp_date);
+                        water_arr.push(A)
+
+                    }
+                    _predictWater.data.labels = water_arr
                     _predictWater.update();
+                    for (let i = 0; i < 10; i++) {
+                        tmp_date = new Date();
+                        tmp_date.setDate(_startTrain.getDate() + i);
+                        let A = formatDate(tmp_date);
+                        graph_arr.push(A)
+
+                    }
+                    _predictGraph.data.labels = graph_arr
                     _predictGraph.data.datasets[0].data = data.predict_cahrt.origin;
                     _predictGraph.data.datasets[1].data = data.predict_cahrt.predict;
                     _predictGraph.data.datasets[2].data = data.predict_cahrt.origin_2;
@@ -216,7 +241,7 @@
                 }
                 $('#target_point').text(data.web_info.target_point);
                 options = { //지도를 생성할 때 필요한 기본 옵션
-                    center: new kakao.maps.LatLng(data.x,data.y), //지도의 중심좌표.
+                    center: new kakao.maps.LatLng(data.x, data.y), //지도의 중심좌표.
                     level: 10//지도의 레벨(확대, 축소 정도)
                 };
                 // 모델별 지도 중심위치 지정
@@ -279,6 +304,9 @@
             /*
             $.ajax({
                 url: "
+
+
+
 
 
 

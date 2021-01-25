@@ -168,9 +168,9 @@ def multi_file_upload(request):
 def load_df(request):
     if request.is_ajax():
         target = request.POST.get('target')
-        key = request.POST.get('model')
+        model = request.POST.get('model')
         for i in ['A', 'B', 'C', 'D']:
-            if key == i:
+            if model == i:
                 parameters_dir = './model_dir/model_' + i
         parameters_file = 'json_info.json'
         parameters_path = '{dir}/{file}'.format(dir=parameters_dir, file=parameters_file)
@@ -282,6 +282,15 @@ def predict(request):
         from gain_new.main import gain
     except Exception as e:
         print(e)
+    model = request.POST.get('model')
+    for i in ['A', 'B', 'C', 'D']:
+        if model == i:
+            parameters_dir = './model_dir/model_' + i
+    parameters_file = 'json_info.json'
+    parameters_path = '{dir}/{file}'.format(dir=parameters_dir, file=parameters_file)
+
+    with open(parameters_path, encoding='utf8') as json_file:
+        parameters = json.load(json_file)
 
     key = request.POST.get('key')
     start_date = request.POST.get('start_date')
@@ -295,13 +304,16 @@ def predict(request):
     tn = 총질소
     tp = 총인
     '''
-    predict_cahrt = {"origin": [3, 4, 6, 2, 3, 4, 2, 5, 2, 3],
-                     "predict": [None, None, None, None, None, None, 3, 4, 3, 8],
-                     "origin_2": [None, None, None, None, None, None, 3, 6, 5, 7]}
+    parameters
+    predict_cahrt = {"origin": [3, 4, 6, 2, 3, 4, 2],
+                     "predict": [None, None, None, None, None, None, 5, 4, 3, 8],
+                     "origin_2": [None, None, None, None, None, None, 5, 6, 5, 7]}
     predict_water = [2, 5, 7]
     if key == 'toc':
         value = {"1": "2"}
-    return JsonResponse({"predict_cahrt": predict_cahrt, "predict_water": predict_water})
+    print('run')
+    return JsonResponse({"predict_cahrt": predict_cahrt, "predict_water": predict_water,
+                         "column": parameters['web_info']['columns'][key]})
 
 
 def call_model(request):
