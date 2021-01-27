@@ -44,7 +44,13 @@ class WindowGenerator():
         self.label_columns = label_columns
         if label_columns is not None:
             self.label_columns_indices = {name: i for i, name in enumerate(label_columns)}
+
+            #print('-------------------------------------------')
+            #print(self.label_columns_indices)
+
             self.column_indices = {name: i for i, name in enumerate(train_df.columns)}
+
+            #print(self.column_indices)
 
     # Work out the window parameters.
         self.input_width = input_width
@@ -764,6 +770,167 @@ class WaterWindowGenerator(WindowGenerator):
         print(rmse)
 
         return 1
+
+    def example2(self):
+        """Get and cache an example batch of `inputs, labels` for plotting."""
+        result = getattr(self, '_example2', None)
+        if result is None:
+            # No example batch was found, so get one from the `.train` dataset
+            result = next(iter(self.val))
+            # And cache it for next time
+            self._example = result
+        return result
+
+    @property
+    def example3(self):
+        """Get and cache an example batch of `inputs, labels` for plotting."""
+        result = getattr(self, '_example3', None)
+        if result is None:
+            # No example batch was found, so get one from the `.train` dataset
+            result = next(iter(self.test))
+            # And cache it for next time
+            self._example = result
+        return result
+
+    def hour_to_day_mean(array):
+        #     print(array)
+        time = 24
+        array = tf.reduce_mean(tf.reshape(array, [array.shape[0] // time, time]), 1)
+        #     print(array)
+        return array
+
+
+    def compa(self, model=None, plot_col=0, max_subplots=3, plot_out_col=0, windows=None, min_max_normailze=False, target_std=None, target_mean=None):
+
+        if windows is not None:
+            inputs, labels = windows
+        else:
+            inputs, labels = self.example
+
+        #inputs, labels = self.example
+
+        #print(self.column_indices)
+
+        plot_out_col_index = self.column_indices[plot_out_col]
+
+        #print(self.label_columns)
+
+        if self.label_columns is not None:
+            label_out_col_index = self.label_columns_indices.get(plot_out_col, None)
+        else:
+            label_out_col_index = plot_out_col_index
+        #label_out_col_index = plot_out_col_index
+
+        if model is None:
+            return
+
+        #print("column : " + df_all.columns[plot_col])
+
+        mae = 0
+        mse = 0
+        rmse = 0
+        mape = 0
+        pred_arr = []
+        label_arr = []
+        o = 0
+        o1 = 0
+        p = 0
+        nse_sum1 = 0
+        nse_sum2 = 0
+        pbias_sum1 = 0
+        pbias_sum2 = 0
+
+        predictions = model(inputs)
+
+#        print(plot_col)
+
+        predictions = predictions * target_std[plot_col] + target_mean[plot_col]
+        labels = labels * target_std[plot_col] + target_mean[plot_col]
+
+        o1 = np.mean(labels.numpy())
+        #     print(o1)
+        label_out_col_index = 0
+
+        for n in range(len(inputs)):
+            pred_temp = self.hour_to_day_mean(predictions[n, :, label_out_col_index])
+            pred_temp = self.hour_to_day_mean(predictions[n, :, label_out_col_index])
+            #pred_temp = self.hour_to_day_mean(predictions[n, :, :])
+            #label_temp = self.hour_to_day_mean(labels[n, :, label_out_col_index])
+            #label_temp = self.hour_to_day_mean(labels[n, :, label_out_col_index])
+
+            o = label_temp[2].numpy()
+            p = pred_temp[2].numpy()
+
+            #o = label_temp[4].numpy()
+            #p = pred_temp[4].numpy()
+
+            #         print('pred_temp')
+            #         print(pred_temp[4])
+            #         print('+++++++++++++')
+            #         print(label_temp[4])
+
+            #         print('p')
+            #         print(p)
+            #         print('o')
+            #         print(o)
+
+            temp_m = o - p
+            #         print('temp')
+            #         print(temp_m)
+            #         print(o)
+
+            #         print(o-o1)
+            #         print('22222')
+
+            nse_sum1 = nse_sum1 + temp_m ** 2
+            nse_sum2 = nse_sum2 + (o - o1) ** 2
+
+            pbias_sum1 = pbias_sum1 + temp_m
+            pbias_sum2 = pbias_sum2 + o
+
+        #         pred_arr.append(pred_temp[4])
+        #         label_arr.append(label_temp[4])
+
+        #     print(nse_sum1)
+        #     print('111111')
+        #     print(nse_sum2)
+
+        #     print('nse_sum1')
+        #     print(nse_sum1)
+        #     print('nse_sum2')
+        #     print(nse_sum2)
+        #     print('pbias_sum1')
+        #     print(pbias_sum1)
+        #     print('pbias_sum2')
+        #     print(pbias_sum2)
+
+        nse = 1 - (nse_sum1 / nse_sum2)
+        pbias = (pbias_sum1 / pbias_sum2) * 100
+
+        print('NSE')
+        print(nse)
+
+        print('PBIAS')
+        print(pbias)
+
+        return nse, np.abs(pbias)
+
+    #     mae = mean_absolute_error(label_arr, pred_arr)
+    #     mse = mean_squared_error(label_arr, pred_arr)
+    #     rmse = np.sqrt(mse)
+    #     mape = np.mean(np.abs((np.array(label_arr) - np.array(pred_arr))/np.array(label_arr)) )*100
+
+    #     print("mae:")
+    #     print(mae)
+
+    #     print("mse:")
+    #     print(mse)
+
+    #     print("rmse")
+    #     print(rmse)
+
+    #     print("mape")
+    #     print(mape)
 
 
 

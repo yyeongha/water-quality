@@ -6,7 +6,7 @@ import datetime
 
 import matplotlib.pyplot as plt
 
-def make_timeseries(df, interpolate=None, iloc_val= None):
+def make_timeseries(df, interpolate=None, iloc_val= None, directory_path = ''):
 
     #print(df.shape)
     date_col = df.columns[0]
@@ -14,6 +14,16 @@ def make_timeseries(df, interpolate=None, iloc_val= None):
     df = df[df[date_col].notna()]
     #print(df.shape)
 
+    #print('directory_path')
+    directory_path = directory_path.split('/')[1]
+    if directory_path == 'ASOS':
+        df = df.dropna(thresh=3)
+    elif directory_path == 'AWS':
+        df = df.dropna(thresh=3)
+    elif directory_path == '수위':
+        df = df.dropna(thresh=3)
+
+    #print(df.head())
 
     year = pd.DatetimeIndex(df[date_col]).year.astype(np.int64)
 
@@ -129,7 +139,7 @@ def make_dataframe(directory_path, file_names, iloc_val, interpolate=None):
         #if interpolate == True:
 
         df_loc = pd.concat(df_loc)
-        df_loc = make_timeseries(df_loc, interpolate=interpolate, iloc_val = iloc_val)
+        df_loc = make_timeseries(df_loc, interpolate=interpolate, iloc_val = iloc_val, directory_path=directory_path)
 
         #print(df_loc)
         df_full.append(df_loc)

@@ -27,49 +27,75 @@ import time
 
 __GAIN_TRAINING__ = False
 #__GAIN_TRAINING__ = True
-__RNN_TRAINING__ = True
+__RNN_TRAINING__ = False
 
 pd.set_option('display.max_columns', 1000)
 
-interpolation_option = [False, True, False,
+interpolation_option_han = [False, True, False,
                         True, False, False,
                         False, True, True
                         ]
+
+interpolation_option_nak = [False, True, False,
+                        False, False, False,
+                        True, True , False
+                        ]
+
+interpolation_option = interpolation_option_han
 #han = [':,26:31', ':,28:44', ':,26:29', ':,29:31', ':,28:50', ':,27:38']
 han = [':,[26,27,28,29,30]', ':,[28,29,30,31,32,33,34,35,36,37,39,40,41,42,43,44]', ':,[26,27,28]',
        ':,[28,29]', ':,[27,28,30,31,32,33,35]', ':,[26]',
        ':,[26]',':,28:45', ':,[27,28,29,30,31,33]'
        ]
 
+nak = [':,[26,27,28,29,30]', ':,[28,29,30,31,32,33,34,35,36,37,39,40,41,42,43,44]', ':,[27]',
+       ':,[26,27]', ':,[26]', ':,[26]',
+       ':,28:45', ':,[27,28,29,30,31,33]', ':,[27,28,30,31,32,33,35]'
+       ]
+
 #한강 조류 데이터 없음
 
-gang = 'han/'
-folder = [gang+'자동/', gang+'수질/', gang+'AWS/',
+#gang = 'han/'
+gang = 'nak/'
+folder_han = [gang+'자동/', gang+'수질/', gang+'AWS/',
           gang+'방사성/', gang+'TMS/', gang+'유량/',
           gang+'수위/', gang+'총량/', gang+'퇴적물/']
 
-# 현재 [4] 번 TMS 먼가이상해서 확인해야함
-#run_num = [6] # 수위 시간 처리해야함 아직안함
+folder_nak = [gang+'자동/', gang+'수질/', gang+'ASOS/',
+           gang+'보/', gang+'유량/', gang+'수위/',
+              gang+'총량/', gang+'퇴적물/', gang+'TMS/']
 
-del_folder = [
+del_folder_han = [
+        # 현재 [4] 번 TMS 먼가이상해서 확인해야함
+        #run_num = [6] # 수위 시간 처리해야함 아직안함
     gang+'댐/', # 데이터 없음
     gang+'조류/', # 시간도 맞지 않을 뿐더러 데이터 없음  ERROR  시계열값이 엑셀에서 년만 존재하는데 이것이 읽어드리는데 읽지 못하고 1970년을 뱉어냄
-
 ]
 
-iloc_val = han
+del_folder_nak = [
+    gang+'방사성/', #시간 포멧 안맞음
+    gang+'조류/', # 시간도 맞지 않을 뿐더러 데이터 없음  ERROR  시계열값이 엑셀에서 년만 존재하는데 이것이 읽어드리는데 읽지 못하고 1970년을 뱉어냄
+]
 
-# 0:자동, 1:수질, 2:aws, 3:방사성,  del 4:조류, 4:TMS
+folder = folder_nak
+
+
+
+
+
+#iloc_val = han
+iloc_val = nak
+
 #run_num = [3]
 #run_num = [0, 1, 2, 3, 4, 5]
-run_num = [0, 1, 2, 3, 5, 7, 8]
+run_num_han = [0, 1, 2, 3, 5, 7, 8]
+
+run_num_nak = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+#run_num_nak = [0, 6]
+#run_num_nak = [2]
 
 
-#run_num = [0]
-#run_num = [5]
-
-#run_num = [0, 1, 2, 3, 4]
-#run_num = [0, 1, 2, 3, 4, 5]
+run_num = run_num_nak
 
 
 file_names = [
@@ -108,7 +134,38 @@ file_names = [
     [  #  퇴적물 8
         ['의암댐2_2016.xlsx', '의암댐2_2017.xlsx', '의암댐2_2018.xlsx', '의암댐2_2019.xlsx']
     ],
+]
 
+
+
+file_names = [
+    [  # 자동 0
+        ['도개_2016.xlsx', '도개_2017.xlsx', '도개_2018.xlsx', '도개_2019.xlsx'],
+    ],
+    [  # 수질 1
+        ['상주2_2016.xlsx', '상주2_2017.xlsx', '상주2_2018.xlsx', '상주2_2019.xlsx'],
+    ],
+    [  # ASOS 2
+        ['구미_2016.xlsx', '구미_2017.xlsx', '구미_2018.xlsx', '구미_2019.xlsx'],
+    ],
+    [  # 보 3
+        ['구미보_2016.xlsx', '구미보_2017.xlsx', '구미보_2018.xlsx', '구미보_2019.xlsx'],
+    ],
+    [  #  유량 4
+        ['병성_2016.xlsx', '병성_2017.xlsx', '병성_2018.xlsx', '병성_2019.xlsx']
+    ],
+    [  #  수위 5
+        ['상주시(병성교)_2016.xlsx', '상주시(병성교)_2017.xlsx', '상주시(병성교)_2018.xlsx', '상주시(병성교)_2019.xlsx']
+    ],
+    [  #  총량 6
+        ['병성천-1_2016.xlsx', '병성천-1_2017.xlsx', '병성천-1_2018.xlsx', '병성천-1_2019.xlsx']
+    ],
+    [  #  퇴적물 7
+        ['낙단_2016.xlsx', '낙단_2017.xlsx', '낙단_2018.xlsx', '낙단_2019.xlsx']
+    ],
+    [   # TMS
+        ['상주하수_2016.xlsx', '상주하수_2017.xlsx', '상주하수_2018.xlsx', '상주하수_2019.xlsx']
+    ],
 ]
 
 
@@ -117,6 +174,10 @@ real_df_all = pd.DataFrame([])
 #start = time.time()
 
 #df = []
+
+target_std = 0
+target_mean = 0
+target_all = 0
 
 for i in range(len(run_num)):
 
@@ -129,6 +190,7 @@ for i in range(len(run_num)):
 
     #start = time.time()
 
+
     df = make_dataframe(folder[idx], file_names[idx], iloc_val[idx], interpolate=interpolation_option[idx])
     if i == 0:
         dfff = df
@@ -137,6 +199,10 @@ for i in range(len(run_num)):
 
     #start = time.time()
     df_all, train_mean, train_std, df = normalize(df)
+    if i == 0:
+        target_all = df_all
+        target_std = train_std
+        target_mean = train_mean
 
     if interpolation_option[idx] == False:
 
@@ -234,7 +300,7 @@ print('train_df.shape : ', train_df.shape, 'val_df.shape : ', val_df.shape, 'tes
 #exit(1)
 
 
-label_columns_indices = {name: i for i, name in enumerate(dfff[0])}
+label_columns_indices = {name: i for i, name in enumerate(dfff[0] )}
 
 print("label_columns_indices:")
 print(label_columns_indices)
@@ -262,7 +328,8 @@ MAX_EPOCHS = 10
 multi_window = WaterWindowGenerator(
     input_width=24*7,label_width=OUT_STEPS, shift=OUT_STEPS,
     train_df=train_df, val_df=val_df, test_df=test_df,
-    out_features=out_features, out_num_features=out_num_features
+    out_features=out_features, out_num_features=out_num_features,
+    label_columns=dfff[0].columns
 )
 
 multi_linear_model = model_multi_linear(
@@ -285,8 +352,15 @@ multi_conv_model = model_multi_conv(
     window=multi_window, OUT_STEPS=OUT_STEPS, out_num_features=out_num_features, epochs=MAX_EPOCHS,
     training_flag=__RNN_TRAINING__, checkpoint_path="save/models/multi_conv.ckpt")
 
-# multi_val_performance = {}
-# multi_performance = {}
+multi_val_performance = {}
+multi_performance = {}
+
+val_nse = {}
+val_pbias = {}
+val_nse['Linear'], val_pbias['Linear'] = multi_window.compa(
+    multi_linear_model, plot_col=out_features[0], windows=multi_window.example3,
+    min_max_normailze=False, target_std=target_std, target_mean=target_mean)
+
 #
 # multi_val_performance['Linear'] = multi_linear_model.evaluate(multi_window.val.repeat(-1), steps=100)
 # multi_performance['Linear'] = multi_linear_model.evaluate(multi_window.test.repeat(-1), verbose=0, steps=100)
