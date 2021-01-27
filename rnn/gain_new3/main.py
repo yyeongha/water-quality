@@ -11,12 +11,13 @@ from tensorflow.keras.optimizers import Adam
 import shutil
 
 from core.gain import *
-from core.predic import *
+from core.rnn_predic import *
 from core.models import *
 from core.util import *
 #from core.window import WindowGenerator, MissData, make_dataset_water, WaterDataGenerator
-from core.window import *
+from core.window import WindowGenerator, make_dataset_gain, make_dataset_water
 from file_open import make_dataframe
+from core.miss_data import MissData
 
 
 import os
@@ -234,7 +235,8 @@ for i in range(len(run_num)):
 
         if gain_calc_falg == True:
             print('GainWindowGenerator in main')
-            wide_window = GainWindowGenerator(input_width=24 * 5, label_width=24 * 5, shift=0, train_df = df_all, val_df = df_all, test_df = df_all, df = df)
+            WindowGenerator.make_dataset = make_dataset_gain
+            wide_window = WindowGenerator(input_width=24 * 5, label_width=24 * 5, shift=0, train_df = df_all, val_df = df_all, test_df = df_all, df = df)
             print('model_GAIN in main')
             gain = model_GAIN(shape=wide_window.dg.shape[1:], gen_sigmoid=False, training_flag=__GAIN_TRAINING__, window=wide_window, model_save_path='save/')
 
@@ -325,7 +327,9 @@ OUT_STEPS = 24*3
 MAX_EPOCHS = 10
 #MAX_EPOCHS = 15
 
-multi_window = WaterWindowGenerator(
+WindowGenerator.make_dataset = make_dataset_water
+
+multi_window = WindowGenerator(
     input_width=24*7,label_width=OUT_STEPS, shift=OUT_STEPS,
     train_df=train_df, val_df=val_df, test_df=test_df,
     out_features=out_features, out_num_features=out_num_features,
@@ -358,8 +362,8 @@ multi_performance = {}
 val_nse = {}
 val_pbias = {}
 val_nse['Linear'], val_pbias['Linear'] = multi_window.compa(
-    multi_linear_model, plot_col=out_features[0], windows=multi_window.example3,
-    min_max_normailze=False, target_std=target_std, target_mean=target_mean)
+     multi_linear_model, plot_col=out_features[0], windows=multi_window.example3,
+     min_max_normailze=False, target_std=target_std, target_mean=target_mean)
 
 #
 # multi_val_performance['Linear'] = multi_linear_model.evaluate(multi_window.val.repeat(-1), steps=100)
