@@ -189,7 +189,7 @@ class GAIN(tf.keras.Model):
             print('model loadinng error')
 
     #def compile_and_fit(model, window, patience=10, epochs=100):
-    def compile_and_fit(self, window, patience=10, epochs=100):
+    def compile_and_fit(self, window, patience=10, epochs=2000):
 
         early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=patience, mode='min')
 
@@ -301,7 +301,7 @@ def model_GAIN(shape, gen_sigmoid, window, training_flag, model_save_path='../sa
 
     if training_flag == True:
 
-        MAX_EPOCHS = 2000
+        MAX_EPOCHS = 10000
 
         # gain.compile(loss=GAIN.RMSE_loss)
         history = gain.compile_and_fit(window, patience=MAX_EPOCHS // 5)

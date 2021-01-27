@@ -14,6 +14,8 @@ def make_timeseries(df, interpolate=None, iloc_val= None, directory_path = ''):
     df = df[df[date_col].notna()]
     #print(df.shape)
 
+
+
     #print('directory_path')
     directory_path = directory_path.split('/')[1]
     if directory_path == 'ASOS':
@@ -48,6 +50,7 @@ def make_timeseries(df, interpolate=None, iloc_val= None, directory_path = ''):
     time_series = pd.concat([time_series, df], axis=0)
     time_series = time_series.drop_duplicates([date_col], keep="last")
     time_series = time_series.sort_values([date_col], axis=0)
+
 
    # print(time_series.shape)
 

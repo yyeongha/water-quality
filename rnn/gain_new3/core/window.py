@@ -69,7 +69,9 @@ class WindowGenerator():
         self.label_indices = np.arange(self.total_window_size)[self.labels_slice]
 
 
-        self.example[0] # create self.dg
+        #self.example # create self.dg
+
+        print(self.example[0].shape)
 
     def __repr__(self):
         return '\n'.join([
@@ -374,7 +376,8 @@ class WindowGenerator():
 #class GainWindowGenerator(WindowGenerator):
 def make_dataset_gain(self, data):
     dg = GainDataGenerator(
-    self.df,
+        self.df,
+        #data,
         input_width=self.input_width,
         label_width=self.label_width,
         batch_size=128,

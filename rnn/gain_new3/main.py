@@ -1,3 +1,5 @@
+
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -22,24 +24,25 @@ from core.miss_data import MissData
 
 import os
 import datetime
-
+os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"   # see issue #152
+os.environ["CUDA_VISIBLE_DEVICES"]="0,1"
 import time
 
 
-__GAIN_TRAINING__ = False
+__GAIN_TRAINING__ = True
 #__GAIN_TRAINING__ = True
-__RNN_TRAINING__ = False
+__RNN_TRAINING__ = True
 
 pd.set_option('display.max_columns', 1000)
 
 interpolation_option_han = [False, True, False,
-                        True, False, False,
+                        True, True, False,
                         False, True, True
                         ]
 
 interpolation_option_nak = [False, True, False,
                         False, False, False,
-                        True, True , False
+                        True, True , True
                         ]
 
 interpolation_option = interpolation_option_han
@@ -51,55 +54,41 @@ han = [':,[26,27,28,29,30]', ':,[28,29,30,31,32,33,34,35,36,37,39,40,41,42,43,44
 
 nak = [':,[26,27,28,29,30]', ':,[28,29,30,31,32,33,34,35,36,37,39,40,41,42,43,44]', ':,[27]',
        ':,[26,27]', ':,[26]', ':,[26]',
-       ':,28:45', ':,[27,28,29,30,31,33]', ':,[27,28,30,31,32,33,35]'
+       ':,28:45', ':,[27,28,29,30,31,33]', ':,[30]' #':,[27,28,30,31,32,33,35]'
        ]
 
 #한강 조류 데이터 없음
 
 #gang = 'han/'
-gang = 'nak/'
-folder_han = [gang+'자동/', gang+'수질/', gang+'AWS/',
-          gang+'방사성/', gang+'TMS/', gang+'유량/',
-          gang+'수위/', gang+'총량/', gang+'퇴적물/']
+gang_han = 'han/'
+folder_han = [gang_han+'자동/', gang_han+'수질/', gang_han+'AWS/',
+          gang_han+'방사성/', gang_han+'TMS/', gang_han+'유량/',
+          gang_han+'수위/', gang_han+'총량/', gang_han+'퇴적물/']
 
-folder_nak = [gang+'자동/', gang+'수질/', gang+'ASOS/',
-           gang+'보/', gang+'유량/', gang+'수위/',
-              gang+'총량/', gang+'퇴적물/', gang+'TMS/']
+gang_nak = 'nak/'
+folder_nak = [gang_nak+'자동/', gang_nak+'수질/', gang_nak+'ASOS/',
+           gang_nak+'보/', gang_nak+'유량/', gang_nak+'수위/',
+              gang_nak+'총량/', gang_nak+'퇴적물/', gang_nak+'TMS/']
 
-del_folder_han = [
+#del_folder_han = [
         # 현재 [4] 번 TMS 먼가이상해서 확인해야함
         #run_num = [6] # 수위 시간 처리해야함 아직안함
-    gang+'댐/', # 데이터 없음
-    gang+'조류/', # 시간도 맞지 않을 뿐더러 데이터 없음  ERROR  시계열값이 엑셀에서 년만 존재하는데 이것이 읽어드리는데 읽지 못하고 1970년을 뱉어냄
-]
+ #   folder_han+'댐/', # 데이터 없음
+#    folder_han+'조류/', # 시간도 맞지 않을 뿐더러 데이터 없음  ERROR  시계열값이 엑셀에서 년만 존재하는데 이것이 읽어드리는데 읽지 못하고 1970년을 뱉어냄
+#]
 
-del_folder_nak = [
-    gang+'방사성/', #시간 포멧 안맞음
-    gang+'조류/', # 시간도 맞지 않을 뿐더러 데이터 없음  ERROR  시계열값이 엑셀에서 년만 존재하는데 이것이 읽어드리는데 읽지 못하고 1970년을 뱉어냄
-]
+#del_folder_nak = [
+#    folder_nak+'방사성/', #시간 포멧 안맞음
+#    folder_nak+'조류/', # 시간도 맞지 않을 뿐더러 데이터 없음  ERROR  시계열값이 엑셀에서 년만 존재하는데 이것이 읽어드리는데 읽지 못하고 1970년을 뱉어냄
+#]
 
-folder = folder_nak
-
-
-
+run_num_han = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+run_num_nak = [0, 1, 2, 3, 4, 5, 6, 7 , 8]
 
 
-#iloc_val = han
-iloc_val = nak
-
-#run_num = [3]
-#run_num = [0, 1, 2, 3, 4, 5]
-run_num_han = [0, 1, 2, 3, 5, 7, 8]
-
-run_num_nak = [0, 1, 2, 3, 4, 5, 6, 7, 8]
-#run_num_nak = [0, 6]
-#run_num_nak = [2]
 
 
-run_num = run_num_nak
-
-
-file_names = [
+file_names_han = [
     [  # 자동 0
         ['가평_2016.xlsx', '가평_2017.xlsx', '가평_2018.xlsx', '가평_2019.xlsx'],
         #['서상_2016.xlsx', '서상_2017.xlsx', '서상_2018.xlsx', '서상_2019.xlsx'],
@@ -115,10 +104,7 @@ file_names = [
     ],
     [  # 방사성  ############################################## -- 3
         ['의암댐_2016.xlsx', '의암댐_2017.xlsx', '의암댐_2018.xlsx', '의암댐_2019.xlsx'],
-    ],#
-    # [  # 조류
-    #     ['의암호_2016.xlsx', '의암호_2017.xlsx', '의암호_2018.xlsx', '의암호_2019.xlsx'],
-    # ],
+    ],
     [  # TMS 4
         ['가평신천하수_2016.xlsx', '가평신천하수_2017.xlsx', '가평신천하수_2018.xlsx', '가평신천하수_2019.xlsx'],
         ['가평청평하수_2016.xlsx', '가평청평하수_2017.xlsx', '가평청평하수_2018.xlsx', '가평청평하수_2019.xlsx'],
@@ -139,7 +125,7 @@ file_names = [
 
 
 
-file_names = [
+file_names_nak = [
     [  # 자동 0
         ['도개_2016.xlsx', '도개_2017.xlsx', '도개_2018.xlsx', '도개_2019.xlsx'],
     ],
@@ -170,6 +156,32 @@ file_names = [
 ]
 
 
+
+watershed = '한강'
+if watershed == '한강':
+    folder = folder_han
+    interpolation_option = interpolation_option_han
+    iloc_val = han
+    run_num = run_num_han
+    file_names = file_names_han
+if watershed == '낙동강':
+    folder = folder_nak
+    interpolation_option = interpolation_option_nak
+    iloc_val = nak
+    run_num = run_num_nak
+    file_names = file_names_nak
+
+
+#iloc_val = han
+#run_num = [3]
+#run_num = [0, 1, 2, 3, 4, 5]
+#run_num_nak = [0, 6]
+#run_num_nak = [2]
+
+
+
+
+
 real_df_all = pd.DataFrame([])
 
 #start = time.time()
@@ -179,6 +191,7 @@ real_df_all = pd.DataFrame([])
 target_std = 0
 target_mean = 0
 target_all = 0
+
 
 for i in range(len(run_num)):
 
@@ -197,6 +210,8 @@ for i in range(len(run_num)):
         dfff = df
 
     print('-------df[0].shape-------- : ', df[0].shape)
+
+    #df[0].iloc[:,0].to_excel('testset.xlsx')
 
     #start = time.time()
     df_all, train_mean, train_std, df = normalize(df)
@@ -238,6 +253,7 @@ for i in range(len(run_num)):
             WindowGenerator.make_dataset = make_dataset_gain
             wide_window = WindowGenerator(input_width=24 * 5, label_width=24 * 5, shift=0, train_df = df_all, val_df = df_all, test_df = df_all, df = df)
             print('model_GAIN in main')
+            #rint(wide_window.dg.shape[1:], df_all.shape[1])
             gain = model_GAIN(shape=wide_window.dg.shape[1:], gen_sigmoid=False, training_flag=__GAIN_TRAINING__, window=wide_window, model_save_path='save/')
 
             print('file proc in main')
@@ -323,8 +339,8 @@ print("target_col_idx : ", target_col_idx)
 print('out_num_features : ', out_num_features)
 
 OUT_STEPS = 24*3
-#MAX_EPOCHS = 400
-MAX_EPOCHS = 10
+MAX_EPOCHS = 2000
+
 #MAX_EPOCHS = 15
 
 WindowGenerator.make_dataset = make_dataset_water

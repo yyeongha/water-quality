@@ -1,6 +1,6 @@
 import os
 import numpy as np
-
+import pandas as pd
 
 
 class MissData(object):
@@ -57,10 +57,13 @@ class MissData(object):
         #save_dir = self.save_directory
         no, dim = data.shape
         #print((no, dim))
-        print(type(data))
+        #print(type(data))
+
+
+        print(pd.DataFrame(data).head())
 
         isnan = np.isnan(data).astype(int)
-        print(np.any(isnan, axis=1).astype(int))
+        #print(np.any(isnan, axis=1).astype(int))
         isany = np.any(isnan, axis=1).astype(int)
         shifted = np.roll(isany, 1)
         shifted[0] = 1
