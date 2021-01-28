@@ -18,7 +18,7 @@ from core.models import *
 from core.util import *
 #from core.window import WindowGenerator, MissData, make_dataset_water, WaterDataGenerator
 from core.window import WindowGenerator, make_dataset_gain, make_dataset_water
-from file_open import make_dataframe
+from file_open import make_dataframe, make_dataframe_temp_12days
 from core.miss_data import MissData
 
 from datetime import datetime
@@ -30,9 +30,7 @@ os.environ["CUDA_VISIBLE_DEVICES"]="0,1"
 import time
 
 
-__GAIN_TRAINING__ = False
-#__GAIN_TRAINING__ = True
-__RNN_TRAINING__ = False
+
 
 pd.set_option('display.max_columns', 1000)
 
@@ -87,28 +85,26 @@ run_num_han = [0, 1, 2, 3, 4, 5, 6, 7, 8]
 run_num_nak = [0, 1, 2, 3, 4, 5, 6, 7 , 8]
 
 
-
-
 file_names_han = [
     [  # 자동 0
         ['가평_2016.xlsx', '가평_2017.xlsx', '가평_2018.xlsx', '가평_2019.xlsx'],
         #['서상_2016.xlsx', '서상_2017.xlsx', '서상_2018.xlsx', '서상_2019.xlsx'],
-        ['의암호_2016.xlsx', '의암호_2017.xlsx', '의암호_2018.xlsx', '의암호_2019.xlsx'],
+        #['의암호_2016.xlsx', '의암호_2017.xlsx', '의암호_2018.xlsx', '의암호_2019.xlsx'],
     ],
     [  # 수질 1
         ['가평천3_2016.xlsx', '가평천3_2017.xlsx', '가평천3_2018.xlsx', '가평천3_2019.xlsx'],
-        ['남이섬_2016.xlsx', '남이섬_2017.xlsx', '남이섬_2018.xlsx', '남이섬_2019.xlsx'],
+        #['남이섬_2016.xlsx', '남이섬_2017.xlsx', '남이섬_2018.xlsx', '남이섬_2019.xlsx'],
     ],
     [  # AWS 2
         ['남이섬_2016.xlsx', '남이섬_2017.xlsx', '남이섬_2018.xlsx', '남이섬_2019.xlsx'],
-        ['청평_2016.xlsx', '청평_2017.xlsx', '청평_2018.xlsx', '청평_2019.xlsx'],
+        #['청평_2016.xlsx', '청평_2017.xlsx', '청평_2018.xlsx', '청평_2019.xlsx'],
     ],
     [  # 방사성  ############################################## -- 3
         ['의암댐_2016.xlsx', '의암댐_2017.xlsx', '의암댐_2018.xlsx', '의암댐_2019.xlsx'],
     ],
     [  # TMS 4
         ['가평신천하수_2016.xlsx', '가평신천하수_2017.xlsx', '가평신천하수_2018.xlsx', '가평신천하수_2019.xlsx'],
-        ['가평청평하수_2016.xlsx', '가평청평하수_2017.xlsx', '가평청평하수_2018.xlsx', '가평청평하수_2019.xlsx'],
+        #['가평청평하수_2016.xlsx', '가평청평하수_2017.xlsx', '가평청평하수_2018.xlsx', '가평청평하수_2019.xlsx'],
     ],
     [  #  유량 5
         ['가평군(가평교)_2016.xlsx', '가평군(가평교)_2017.xlsx', '가평군(가평교)_2018.xlsx', '가평군(가평교)_2019.xlsx']
@@ -124,6 +120,37 @@ file_names_han = [
     ],
 ]
 
+
+
+file_names_temp = [
+    [  # 자동 0
+        ['[0601-0612]가평_2019.xlsx'],
+    ],
+    [  # 수질 1
+        ['[0601-0612]가평천3_2019.xlsx'],
+    ],
+    [  # AWS 2
+        ['[0601-0612]남이섬_2019.xlsx'],
+    ],
+    [  # 방사성  ############################################## -- 3
+        ['[0601-0612]의암댐_2019.xlsx'],
+    ],
+    [  # TMS 4
+        ['[0601-0612]가평신천하수_2019.xlsx'],
+    ],
+    [  #  유량 5
+        ['[0601-0612]가평군(가평교)_2019.xlsx']
+    ],
+    [  #  수위 6
+        ['[0601-0612]가평군(가평교)_2019.xlsx']
+    ],
+    [  #  총량 7
+        ['[0601-0612]조종천3_2019.xlsx']
+    ],
+    [  #  퇴적물 8
+        ['[0601-0612]의암댐2_2019.xlsx']
+    ],
+]
 
 
 file_names_nak = [
@@ -157,8 +184,19 @@ file_names_nak = [
 ]
 
 
+__GAIN_TRAINING__ = True
+#__GAIN_TRAINING__ = True
+#__RNN_TRAINING__ = True
+__RNN_TRAINING__ = True
 
+target_col = 'do_value'
+gain_epochs = 15
+rnn_out_steps = 24*5
+rnn_epochs = 17
+
+#watershed = '한강_12days_test'
 watershed = '한강'
+
 if watershed == '한강':
     folder = folder_han
     interpolation_option = interpolation_option_han
@@ -171,6 +209,12 @@ if watershed == '낙동강':
     iloc_val = nak
     run_num = run_num_nak
     file_names = file_names_nak
+if watershed == '한강_12days_test':
+    folder = folder_han
+    interpolation_option = interpolation_option_han
+    iloc_val = han
+    run_num = run_num_han
+    file_names = file_names_temp
 
 
 #iloc_val = han
@@ -206,8 +250,12 @@ for i in range(len(run_num)):
 
     #start = time.time()
 
+    if watershed == '한강_12days_test':
+        df, times = make_dataframe_temp_12days(folder[idx], file_names[idx], iloc_val[idx], interpolate=interpolation_option[idx])
+    else:
+        df, times = make_dataframe(folder[idx], file_names[idx], iloc_val[idx], interpolate=interpolation_option[idx])
 
-    df, times = make_dataframe(folder[idx], file_names[idx], iloc_val[idx], interpolate=interpolation_option[idx])
+
     if i == 0:
         dfff = df
         time_array = times
@@ -260,9 +308,9 @@ for i in range(len(run_num)):
             WindowGenerator.make_dataset = make_dataset_gain
             wide_window = WindowGenerator(input_width=24 * 5, label_width=24 * 5, shift=0, train_df = df_all, val_df = df_all, test_df = df_all, df = df)
             print('model_GAIN in main')
-            #rint(wide_window.dg.shape[1:], df_all.shape[1])
-            gain = model_GAIN(shape=wide_window.dg.shape[1:], gen_sigmoid=False, epochs=100,
-                              training_flag=__GAIN_TRAINING__, window=wide_window, model_save_path='save/')
+            #print(wide_window.dg.shape[1:])
+            gain = model_GAIN(shape=wide_window.dg.shape[1:], gen_sigmoid=False, epochs=gain_epochs, training_flag=__GAIN_TRAINING__, window=wide_window, model_save_path='save/')
+            #gain = model_GAIN(shape=(24 * 5, df[0].shape[1]), gen_sigmoid=False, epochs=100, training_flag=__GAIN_TRAINING__, window=wide_window, model_save_path='save/')
 
             print('file proc in main')
             if __GAIN_TRAINING__ == True:
@@ -316,14 +364,17 @@ for i in range(len(run_num)):
 
 
 #2021-01-08 인풋 날자로 하여 정상작동함을 확인
-time_array = pd.Series(range(time_array.shape[0]), index=time_array)
-time_array = time_array['2019-12-01':'2019-12-07']
-real_df_all = real_df_all.iloc[time_array,:]
+#time_array = pd.Series(range(time_array.shape[0]), index=time_array)
+#time_array = time_array['2019-12-01':'2019-12-07']
+#real_df_all = real_df_all.iloc[time_array,:]
 
 print('------------predic real_df_all.shape : ', real_df_all)
 
 
-train_df = val_df = test_df = pd.DataFrame(real_df_all)
+#train_df, val_df, test_df, test_df2 = dataset_slice(real_df_all, 0.8, 0.1, 0.1)
+
+train_df = val_df = test_df = test_df2 = pd.DataFrame(real_df_all)
+#train_df.shape = val_df = test_df = (1, 94)
 
 #train_df, val_df, test_df = dataset_slice(real_df_all, 0, 0, 1)
 #train_df, val_df, test_df = dataset_slice(real_df_all, 0.8, 0.1, 0.1)
@@ -337,7 +388,7 @@ print('-------------------prediction')
 
 print('real_df_all.type : ', type(real_df_all))
 print('train_df.type : ', type(train_df))
-print('train_df.shape : ', train_df.shape, 'val_df.shape : ', val_df.shape, 'test_df.shape : test_df.shape')
+print('train_df.shape : ', train_df.shape, 'val_df.shape : ', val_df.shape, 'test_df.shape:' ,test_df.shape)
 #print(train_df.head())
 
 #exit(1)
@@ -349,7 +400,7 @@ print("label_columns_indices:")
 print(label_columns_indices)
 
 #target_col = 'iem_mesrin_splore_qy'
-target_col = 'do_value'
+
 #target_col = 'chlorophylla'
 
 print('target columns : ', target_col)
@@ -363,69 +414,114 @@ out_num_features = len(out_features)
 print("target_col_idx : ", target_col_idx)
 print('out_num_features : ', out_num_features)
 
-OUT_STEPS = 24*3
-#MAX_EPOCHS = 400
-MAX_EPOCHS = 10
+#OUT_STEPS =
+
 #MAX_EPOCHS = 15
 
-WindowGenerator.make_dataset = make_dataset_water
 
 
-multi_linear_model = model_multi_linear(
-     window=None, OUT_STEPS=OUT_STEPS, out_num_features=out_num_features, epochs=MAX_EPOCHS,
-     training_flag=__RNN_TRAINING__, checkpoint_path="save/models/multi_linear.ckpt")
+#
+# multi_linear_model = model_multi_linear(
+#      window=None, OUT_STEPS=OUT_STEPS, out_num_features=out_num_features, epochs=MAX_EPOCHS,
+#      training_flag=__RNN_TRAINING__, checkpoint_path="save/models/multi_linear.ckpt")
 
 
-test_df = test_df.to_numpy()
-test_df = test_df.reshape(-1,test_df.shape[0],test_df.shape[1])
-yy = multi_linear_model.predict(test_df)
+#test_df = test_df.to_numpy()
+#test_df = test_df.reshape(-1,test_df.shape[0],test_df.shape[1])
+#yy = multi_linear_model.predict(test_df)
 
-print('-----------------------------------')
-print(yy.shape)
-print(yy)
+#print('-----------------------------------')
+#print(yy.shape)
+#print(yy)
 #print(yy.reshape[-1,:])
 
 
-
+WindowGenerator.make_dataset = make_dataset_water
 # multi_window = WindowGenerator(
 #     input_width=24*7,label_width=OUT_STEPS, shift=OUT_STEPS,
 #     train_df=train_df, val_df=val_df, test_df=test_df,
 #     out_features=out_features, out_num_features=out_num_features,
 #     label_columns=dfff[0].columns
 # )
-#
-# multi_linear_model = model_multi_linear(
-#     window=multi_window, OUT_STEPS=OUT_STEPS, out_num_features=out_num_features, epochs=MAX_EPOCHS,
-#     training_flag=__RNN_TRAINING__, checkpoint_path="save/models/multi_linear.ckpt")
-#
-# elman_model = model_elman(
-#     window=multi_window, OUT_STEPS=OUT_STEPS, out_num_features=out_num_features, epochs=MAX_EPOCHS,
-#     training_flag=__RNN_TRAINING__, checkpoint_path="save/models/elman.ckpt")
-#
-# gru_model = model_gru(
-#     window=multi_window, OUT_STEPS=OUT_STEPS, out_num_features=out_num_features, epochs=MAX_EPOCHS,
-#     training_flag=__RNN_TRAINING__, checkpoint_path="save/models/gru.ckpt")
-#
-# multi_lstm_model = model_multi_lstm(
-#     window=multi_window, OUT_STEPS=OUT_STEPS, out_num_features=out_num_features, epochs=MAX_EPOCHS,
-#     training_flag=__RNN_TRAINING__, checkpoint_path="save/models/multi_lstm.ckpt")
-#
-# multi_conv_model = model_multi_conv(
-#     window=multi_window, OUT_STEPS=OUT_STEPS, out_num_features=out_num_features, epochs=MAX_EPOCHS,
-#     training_flag=__RNN_TRAINING__, checkpoint_path="save/models/multi_conv.ckpt")
-#
-# multi_val_performance = {}
-# multi_performance = {}
-#
-#
-# #model_gru.
-# #predictions = model_gru(inputs)
-#
-# val_nse = {}
-# val_pbias = {}
+multi_window = WindowGenerator(
+    input_width=24*7,label_width=rnn_out_steps, shift=rnn_out_steps,
+    train_df=train_df, val_df=val_df, test_df=test_df, test_df2=test_df2,
+    out_features=out_features, out_num_features=out_num_features,
+    label_columns=dfff[0].columns
+)
+
+multi_linear_model = model_multi_linear(
+    window=multi_window, OUT_STEPS=rnn_out_steps, out_num_features=out_num_features, epochs=rnn_epochs,
+    training_flag=__RNN_TRAINING__, checkpoint_path="save/models/multi_linear.ckpt")
+elman_model = model_elman(
+    window=multi_window, OUT_STEPS=rnn_out_steps, out_num_features=out_num_features, epochs=rnn_epochs,
+    training_flag=__RNN_TRAINING__, checkpoint_path="save/models/elman.ckpt")
+gru_model = model_gru(
+    window=multi_window, OUT_STEPS=rnn_out_steps, out_num_features=out_num_features, epochs=rnn_epochs,
+    training_flag=__RNN_TRAINING__, checkpoint_path="save/models/gru.ckpt")
+multi_lstm_model = model_multi_lstm(
+    window=multi_window, OUT_STEPS=rnn_out_steps, out_num_features=out_num_features, epochs=rnn_epochs,
+    training_flag=__RNN_TRAINING__, checkpoint_path="save/models/multi_lstm.ckpt")
+multi_conv_model = model_multi_conv(
+    window=multi_window, OUT_STEPS=rnn_out_steps, out_num_features=out_num_features, epochs=rnn_epochs,
+    training_flag=__RNN_TRAINING__, checkpoint_path="save/models/multi_conv.ckpt")
+
+multi_val_performance = {}
+multi_performance = {}
+
+a, b = multi_window.example3
+
+print('aaaaaaaaa')
+print(a)
+print(a.shape)
+print('bbbbbbbbb')
+print(b)
+print(b.shape)
+
+val_nse = {}
+val_pbias = {}
 # val_nse['Linear'], val_pbias['Linear'] = multi_window.compa(
-#      multi_linear_model, plot_col=out_features[0], windows=multi_window.example3,
+#      multi_linear_model, plot_col=out_features[0], windows=multi_window.example,
 #      min_max_normailze=False, target_std=target_std, target_mean=target_mean)
+# val_nse['ELMAN'], val_pbias['ELMAN'] = multi_window.compa(
+#      elman_model, plot_col=out_features[0], windows=multi_window.example3,
+#      min_max_normailze=False, target_std=target_std, target_mean=target_mean)
+# val_nse['GRU'], val_pbias['GRU'] = multi_window.compa(
+#      gru_model, plot_col=out_features[0], windows=multi_window.example3,
+#      min_max_normailze=False, target_std=target_std, target_mean=target_mean)
+# val_nse['LSTM'], val_pbias['LSTM'] = multi_window.compa(
+#      multi_lstm_model, plot_col=out_features[0], windows=multi_window.example3,
+#      min_max_normailze=False, target_std=target_std, target_mean=target_mean)
+# val_nse['CONV'], val_pbias['CONV'] = multi_window.compa(
+#      multi_conv_model, plot_col=out_features[0], windows=multi_window.example3,
+#      min_max_normailze=False, target_std=target_std, target_mean=target_mean)
+
+val_nse['Linear'], val_pbias['Linear'] = multi_window.compa(
+     multi_linear_model, plot_col=out_features[0], windows=multi_window.example,
+     min_max_normailze=False, target_std=target_std, target_mean=target_mean)
+val_nse['ELMAN'], val_pbias['ELMAN'] = multi_window.compa(
+     elman_model, plot_col=out_features[0], windows=multi_window.example3,
+     min_max_normailze=False, target_std=target_std, target_mean=target_mean)
+val_nse['GRU'], val_pbias['GRU'] = multi_window.compa(
+     gru_model, plot_col=out_features[0], windows=multi_window.example3,
+     min_max_normailze=False, target_std=target_std, target_mean=target_mean)
+val_nse['LSTM'], val_pbias['LSTM'] = multi_window.compa(
+     multi_lstm_model, plot_col=out_features[0], windows=multi_window.example3,
+     min_max_normailze=False, target_std=target_std, target_mean=target_mean)
+val_nse['CONV'], val_pbias['CONV'] = multi_window.compa(
+     multi_conv_model, plot_col=out_features[0], windows=multi_window.example3,
+     min_max_normailze=False, target_std=target_std, target_mean=target_mean)
+
+
+
+x = np.arange(len(val_nse))
+width = 0.35
+plt.figure()
+plt.bar(x, val_pbias.values(), 0.3, label='PBIAS' )
+plt.bar(x + width, val_nse.values(), 0.3, label='NSE')
+plt.xticks(x,val_nse.keys(), rotation=45)
+_ = plt.legend()
+plt.show()
 
 #
 # multi_val_performance['Linear'] = multi_linear_model.evaluate(multi_window.val.repeat(-1), steps=100)
@@ -442,6 +538,8 @@ print(yy)
 #
 # multi_val_performance['Conv'] = multi_conv_model.evaluate(multi_window.val)
 # multi_performance['Conv'] = multi_conv_model.evaluate(multi_window.test, verbose=0)
+
+
 
 
 #multi_window.SetStandMean(std=train_std, mean=train_mean)

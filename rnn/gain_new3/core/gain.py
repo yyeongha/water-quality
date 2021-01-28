@@ -9,8 +9,6 @@ from tensorflow.keras.optimizers import Adam
 
 import os
 
-
-
 #-----------------------
 
 class GAIN(tf.keras.Model):
@@ -215,7 +213,10 @@ def dataset_slice(df, train_ratio, val_ratio, test_ratio):
     val = pd.DataFrame(df[val_slice])
     test = pd.DataFrame(df[test_slice])
 
-    return train, val, test
+    test_slice2 = slice(total_no - 288, None)
+    test2 = pd.DataFrame(df[test_slice2])
+
+    return train, val, test, test2
 
 
 
@@ -226,6 +227,7 @@ def create_dataset_with_gain(gain, df, window):
  #   print(df[0])
 
     unit_shape = window.dg.shape[1:]
+    #unit_shape = (24*5., df[0].shape[1])
 
     #print('unit_shape')
     #print(unit_shape)
@@ -326,7 +328,7 @@ def model_GAIN(shape, gen_sigmoid, window, training_flag, epochs = 100, model_sa
 
         # gain.compile(loss=GAIN.RMSE_loss)
         #history = gain.compile_and_fit(window, patience=MAX_EPOCHS // 5, epochs=epochs)
-        history = gain.compile_and_fit(window, patience=epochs // 5, epochs=epochs)
+        history = gain.compile_and_fit(window, patience=epochs//5, epochs=epochs)
         gain.save(save_dir=model_save_path)
     else:
         #print('gain load')

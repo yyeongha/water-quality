@@ -23,6 +23,7 @@ class WindowGenerator():
     def __init__(self, input_width, label_width, shift,
                #train_df=train_df, val_df=val_df, test_df=test_df,
             train_df=None, val_df=None, test_df=None, df=None, out_num_features=0,out_features=0, #model_save_path=None,
+                 test_df2=None,
 #                out_features = None,
                label_columns=None):
     # Store the raw data.
@@ -30,7 +31,7 @@ class WindowGenerator():
         self.train_df = train_df
         self.val_df = val_df
         self.test_df = test_df
-
+        self.test_df2 = test_df2
         self.df = df
 
         #print('model_save_path : ', model_save_path)
@@ -71,7 +72,8 @@ class WindowGenerator():
 
         #self.example # create self.dg
 
-        print(self.example[0].shape)
+        self.example3
+        #print(self.example[0].shape)
 
     def __repr__(self):
         return '\n'.join([
@@ -145,6 +147,10 @@ class WindowGenerator():
         return self.make_dataset(self.test_df)
 
     @property
+    def test2(self):
+        return self.make_dataset(self.test_df2)
+
+    @property
     def example(self):
         """Get and cache an example batch of `inputs, labels` for plotting."""
         result = getattr(self, '_example', None)
@@ -172,6 +178,17 @@ class WindowGenerator():
         if result is None:
             # No example batch was found, so get one from the `.train` dataset
             result = next(iter(self.test))
+            # And cache it for next time
+            self._example = result
+        return result
+
+    @property
+    def example_test(self):
+        """Get and cache an example batch of `inputs, labels` for plotting."""
+        result = getattr(self, '_example_test', None)
+        if result is None:
+            # No example batch was found, so get one from the `.train` dataset
+            result = next(iter(self.test2))
             # And cache it for next time
             self._example = result
         return result
@@ -242,10 +259,21 @@ class WindowGenerator():
 
     def compa(self, model=None, plot_col=0, max_subplots=3, plot_out_col=0, windows=None, min_max_normailze=False, target_std=None, target_mean=None):
 
+
         if windows is not None:
             inputs, labels = windows
+            #inputs, labels = self.example4
         else:
             inputs, labels = self.example
+
+        print('inputs.shape----------------')
+        print(inputs.shape)
+        print(labels.shape)
+        #print(inputs)
+        #print(inputs[0])
+        #model.sumary()
+        print('inputs.shape----------------')
+
 
         #inputs, labels = self.example
 
@@ -280,8 +308,9 @@ class WindowGenerator():
         pbias_sum1 = 0
         pbias_sum2 = 0
 
+        print('1111111111111111111111')
         predictions = model(inputs)
-
+        print('1111111111111122222222222')
 #        print(plot_col)
 
         predictions = predictions * target_std[plot_col] + target_mean[plot_col]
@@ -406,6 +435,8 @@ WindowGenerator.make_dataset = make_dataset_gain
 
 #class WaterWindowGenerator(WindowGenerator):
 def make_dataset_water(self, data):
+
+
     dg = WaterDataGenerator(
         data,
         # self.train_df,
@@ -419,6 +450,9 @@ def make_dataset_water(self, data):
         # out_num_features = g_out_num_features,
         out_num_features=self.out_num_features,
     )
+
+    #print('self.input_width, self.label_width11')
+    #print(self.input_width, self.label_width)
 
     # print('input_shape', 'label_shape')
     # print(dg.input_shape, dg.label_shape)
@@ -434,6 +468,11 @@ def make_dataset_water(self, data):
             # [batch_size, train_generator.dim],
         )
     )
+
+    #print('self.input_width, self.label_width')
+    #print(self.input_width, self.label_width)
+    #print('ds-----------------------------')
+    #print(ds)
 
     return ds
 

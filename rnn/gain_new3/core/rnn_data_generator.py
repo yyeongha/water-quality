@@ -37,10 +37,14 @@ class WaterDataGenerator(tf.keras.utils.Sequence):
 
         if (skip_time):
             # TO-DO
-            self.no = self.total_no - self.window_size
+            self.no = self.total_no - self.window_size + 1
+            if self.no < 1 :
+                self.no = 1
             self.data_idx = np.arange(0, self.no)
         else:
-            self.no = self.total_no - self.window_size
+            self.no = self.total_no - self.window_size + 1
+            if self.no < 1 :
+                self.no = 1
             self.data_idx = np.arange(0, self.no)
 
         if shuffle:
@@ -66,16 +70,17 @@ class WaterDataGenerator(tf.keras.utils.Sequence):
         batch_idx = self.batch_idx
 
         x = np.empty((0, self.input_width, self.data.shape[1]))
-
         # y = np.empty((0, self.input_width, self.data.shape[1]))
         y = np.empty((0, self.label_width, self.out_num_features))
 
-        # print(x.shape)
-        # print(y.shape)
+        #print('--------------------------------23123')
+        #print(x.shape)
+        #print(y.shape)
 
         for cnt in range(0, self.batch_size):
             i = self.batch_id
             self.batch_id += 1
+
             idx1 = self.data_idx[batch_idx[i]]
             idx2 = idx1 + self.input_width
 
@@ -90,12 +95,12 @@ class WaterDataGenerator(tf.keras.utils.Sequence):
             # print('Y.shape = ', Y.shape)
             # Y = Y.iloc[:,:out_num_features]
 
+
             self.batch_id %= self.no
             # print("x.shape=", x.shape)
             # print('X.shape=', X.shape)
             # print(type(x), type(X))
             x = np.append(x, [X], axis=0)
-
             y = np.append(y, [Y], axis=0)
 
         return x, y
