@@ -189,7 +189,7 @@ class GAIN(tf.keras.Model):
             print('model loadinng error')
 
     #def compile_and_fit(model, window, patience=10, epochs=100):
-    def compile_and_fit(self, window, patience=10, epochs=2000):
+    def compile_and_fit(self, window, patience=10, epochs=100):
 
         early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=patience, mode='min')
 
@@ -238,10 +238,27 @@ def create_dataset_with_gain(gain, df, window):
         x = df[i].to_numpy()
         total_n = x.shape[0]
         n = (total_n // time_seq) * time_seq
-        x = x[0:n]
-        x_block = x.reshape((-1,) + unit_shape)
+        #x = x[0:n]
+        #x_block = x.reshape((-1,) + unit_shape)
+        #y = gain.predict(x_block)
+        #y_gan = y.reshape(x.shape)
+
+        x_block = x[0:n].copy()
+        x_block_shape = x_block.shape
+        x_block = x_block.reshape((-1,) + unit_shape)
+
+        x_block_remain = x[-time_seq:].copy()
+        x_block_remain_shape = x_block_remain.shape
+        x_block_remain = x_block_remain.reshape((-1,) + unit_shape)
+
         y = gain.predict(x_block)
-        y_gan = y.reshape(x.shape)
+        y_remain = gain.predict(x_block_remain)
+
+        y_gan = y.reshape(x_block_shape)
+        y_remain_gan = y_remain.reshape(x_block_remain_shape)
+        y_gan = np.append(y_gan, y_remain_gan[-(total_n-n):], axis=0)
+
+        #x_block_remain = x[-time_seq]
 
         # cut off sin, cos data
         if (i > 0):
@@ -258,6 +275,10 @@ def create_dataset_with_gain(gain, df, window):
 
     ori = np.concatenate(oris, axis=1)
     gan = np.concatenate(gans, axis=1)
+
+    #print('------------------------')
+    #print(gan.shape)
+    #print('------------------------')
 
     return ori, gan
 
@@ -279,14 +300,14 @@ def create_dataset_interpol(df, window):
     oris = []
     for i in range(len(df)):
         x = df[i].to_numpy()
-        total_n = x.shape[0]
-        n = (total_n // time_seq) * time_seq
-        x = x[0:n]
-#        x_block = x.reshape((-1,) + unit_shape)
+        #total_n = x.shape[0]
+        #n = (total_n // time_seq) * time_seq
+        #x = x[0:n]
 
         # cut off sin, cos data
         #if (i > 0):
             #x = x[:, :-4]
+
 
         oris.append(x)
 
@@ -296,15 +317,16 @@ def create_dataset_interpol(df, window):
 
 
 
-def model_GAIN(shape, gen_sigmoid, window, training_flag, model_save_path='../save'):
+def model_GAIN(shape, gen_sigmoid, window, training_flag, epochs = 100, model_save_path='../save'):
     gain = GAIN(shape=shape, gen_sigmoid=gen_sigmoid)
 
     if training_flag == True:
 
-        MAX_EPOCHS = 10000
+        #MAX_EPOCHS = 2000
 
         # gain.compile(loss=GAIN.RMSE_loss)
-        history = gain.compile_and_fit(window, patience=MAX_EPOCHS // 5)
+        #history = gain.compile_and_fit(window, patience=MAX_EPOCHS // 5, epochs=epochs)
+        history = gain.compile_and_fit(window, patience=epochs // 5, epochs=epochs)
         gain.save(save_dir=model_save_path)
     else:
         #print('gain load')

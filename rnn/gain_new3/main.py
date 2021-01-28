@@ -21,6 +21,7 @@ from core.window import WindowGenerator, make_dataset_gain, make_dataset_water
 from file_open import make_dataframe
 from core.miss_data import MissData
 
+from datetime import datetime
 
 import os
 import datetime
@@ -29,9 +30,9 @@ os.environ["CUDA_VISIBLE_DEVICES"]="0,1"
 import time
 
 
-__GAIN_TRAINING__ = True
+__GAIN_TRAINING__ = False
 #__GAIN_TRAINING__ = True
-__RNN_TRAINING__ = True
+__RNN_TRAINING__ = False
 
 pd.set_option('display.max_columns', 1000)
 
@@ -192,6 +193,7 @@ target_std = 0
 target_mean = 0
 target_all = 0
 
+time_array = 0
 
 for i in range(len(run_num)):
 
@@ -205,9 +207,14 @@ for i in range(len(run_num)):
     #start = time.time()
 
 
-    df = make_dataframe(folder[idx], file_names[idx], iloc_val[idx], interpolate=interpolation_option[idx])
+    df, times = make_dataframe(folder[idx], file_names[idx], iloc_val[idx], interpolate=interpolation_option[idx])
     if i == 0:
         dfff = df
+        time_array = times
+
+   # print('11123123123412414')
+    #print(times.shape)
+    #print(times)
 
     print('-------df[0].shape-------- : ', df[0].shape)
 
@@ -233,7 +240,7 @@ for i in range(len(run_num)):
             #norm_data = norm_df.to_numpy()
             #MissData.save(norm_data, max_tseq=24, save_dir='save/')
 
-            gain_calc_falg = MissData.save(pd.concat(df, axis=0).to_numpy(), max_tseq = 24, save_dir='save/')
+            gain_calc_falg = MissData.save(pd.concat(df, axis=0).to_numpy(), max_tseq=24, save_dir='save/')
             print(folder[idx], ': training ', 'Miss date save : ', gain_calc_falg)
             #MissData.save(df.to_numpy(), max_tseq=24, save_dir='save/')
         else:
@@ -254,7 +261,8 @@ for i in range(len(run_num)):
             wide_window = WindowGenerator(input_width=24 * 5, label_width=24 * 5, shift=0, train_df = df_all, val_df = df_all, test_df = df_all, df = df)
             print('model_GAIN in main')
             #rint(wide_window.dg.shape[1:], df_all.shape[1])
-            gain = model_GAIN(shape=wide_window.dg.shape[1:], gen_sigmoid=False, training_flag=__GAIN_TRAINING__, window=wide_window, model_save_path='save/')
+            gain = model_GAIN(shape=wide_window.dg.shape[1:], gen_sigmoid=False, epochs=100,
+                              training_flag=__GAIN_TRAINING__, window=wide_window, model_save_path='save/')
 
             print('file proc in main')
             if __GAIN_TRAINING__ == True:
@@ -266,8 +274,13 @@ for i in range(len(run_num)):
 
             print('create_dataset_with_gain in main')
             ori, gan = create_dataset_with_gain(gain=gain, window=wide_window, df=df)
+
+
+            #times_t = create_dataset_interpol(window=24*5, df=times)
+            #print('time_t : ', times)
+
         else:
-            gan = create_dataset_interpol(window=24 * 5, df=df)
+            gan = create_dataset_interpol(window=24*5, df=df)
     else:
         gan = create_dataset_interpol(window=24*5, df=df)
 
@@ -301,7 +314,19 @@ for i in range(len(run_num)):
 #print( time.time() - start)
 #exit(1000)
 
-train_df, val_df, test_df = dataset_slice(real_df_all, 0.8, 0.1, 0.1)
+
+#2021-01-08 인풋 날자로 하여 정상작동함을 확인
+time_array = pd.Series(range(time_array.shape[0]), index=time_array)
+time_array = time_array['2019-12-01':'2019-12-07']
+real_df_all = real_df_all.iloc[time_array,:]
+
+print('------------predic real_df_all.shape : ', real_df_all)
+
+
+train_df = val_df = test_df = pd.DataFrame(real_df_all)
+
+#train_df, val_df, test_df = dataset_slice(real_df_all, 0, 0, 1)
+#train_df, val_df, test_df = dataset_slice(real_df_all, 0.8, 0.1, 0.1)
 #train_ori_df, val_ori_df, test_ori_df = dataset_slice(ori, 0.7)
 
 
@@ -339,47 +364,68 @@ print("target_col_idx : ", target_col_idx)
 print('out_num_features : ', out_num_features)
 
 OUT_STEPS = 24*3
-MAX_EPOCHS = 2000
-
+#MAX_EPOCHS = 400
+MAX_EPOCHS = 10
 #MAX_EPOCHS = 15
 
 WindowGenerator.make_dataset = make_dataset_water
 
-multi_window = WindowGenerator(
-    input_width=24*7,label_width=OUT_STEPS, shift=OUT_STEPS,
-    train_df=train_df, val_df=val_df, test_df=test_df,
-    out_features=out_features, out_num_features=out_num_features,
-    label_columns=dfff[0].columns
-)
 
 multi_linear_model = model_multi_linear(
-    window=multi_window, OUT_STEPS=OUT_STEPS, out_num_features=out_num_features, epochs=MAX_EPOCHS,
-    training_flag=__RNN_TRAINING__, checkpoint_path="save/models/multi_linear.ckpt")
+     window=None, OUT_STEPS=OUT_STEPS, out_num_features=out_num_features, epochs=MAX_EPOCHS,
+     training_flag=__RNN_TRAINING__, checkpoint_path="save/models/multi_linear.ckpt")
 
-elman_model = model_elman(
-    window=multi_window, OUT_STEPS=OUT_STEPS, out_num_features=out_num_features, epochs=MAX_EPOCHS,
-    training_flag=__RNN_TRAINING__, checkpoint_path="save/models/elman.ckpt")
 
-gru_model = model_gru(
-    window=multi_window, OUT_STEPS=OUT_STEPS, out_num_features=out_num_features, epochs=MAX_EPOCHS,
-    training_flag=__RNN_TRAINING__, checkpoint_path="save/models/gru.ckpt")
+test_df = test_df.to_numpy()
+test_df = test_df.reshape(-1,test_df.shape[0],test_df.shape[1])
+yy = multi_linear_model.predict(test_df)
 
-multi_lstm_model = model_multi_lstm(
-    window=multi_window, OUT_STEPS=OUT_STEPS, out_num_features=out_num_features, epochs=MAX_EPOCHS,
-    training_flag=__RNN_TRAINING__, checkpoint_path="save/models/multi_lstm.ckpt")
+print('-----------------------------------')
+print(yy.shape)
+print(yy)
+#print(yy.reshape[-1,:])
 
-multi_conv_model = model_multi_conv(
-    window=multi_window, OUT_STEPS=OUT_STEPS, out_num_features=out_num_features, epochs=MAX_EPOCHS,
-    training_flag=__RNN_TRAINING__, checkpoint_path="save/models/multi_conv.ckpt")
 
-multi_val_performance = {}
-multi_performance = {}
 
-val_nse = {}
-val_pbias = {}
-val_nse['Linear'], val_pbias['Linear'] = multi_window.compa(
-     multi_linear_model, plot_col=out_features[0], windows=multi_window.example3,
-     min_max_normailze=False, target_std=target_std, target_mean=target_mean)
+# multi_window = WindowGenerator(
+#     input_width=24*7,label_width=OUT_STEPS, shift=OUT_STEPS,
+#     train_df=train_df, val_df=val_df, test_df=test_df,
+#     out_features=out_features, out_num_features=out_num_features,
+#     label_columns=dfff[0].columns
+# )
+#
+# multi_linear_model = model_multi_linear(
+#     window=multi_window, OUT_STEPS=OUT_STEPS, out_num_features=out_num_features, epochs=MAX_EPOCHS,
+#     training_flag=__RNN_TRAINING__, checkpoint_path="save/models/multi_linear.ckpt")
+#
+# elman_model = model_elman(
+#     window=multi_window, OUT_STEPS=OUT_STEPS, out_num_features=out_num_features, epochs=MAX_EPOCHS,
+#     training_flag=__RNN_TRAINING__, checkpoint_path="save/models/elman.ckpt")
+#
+# gru_model = model_gru(
+#     window=multi_window, OUT_STEPS=OUT_STEPS, out_num_features=out_num_features, epochs=MAX_EPOCHS,
+#     training_flag=__RNN_TRAINING__, checkpoint_path="save/models/gru.ckpt")
+#
+# multi_lstm_model = model_multi_lstm(
+#     window=multi_window, OUT_STEPS=OUT_STEPS, out_num_features=out_num_features, epochs=MAX_EPOCHS,
+#     training_flag=__RNN_TRAINING__, checkpoint_path="save/models/multi_lstm.ckpt")
+#
+# multi_conv_model = model_multi_conv(
+#     window=multi_window, OUT_STEPS=OUT_STEPS, out_num_features=out_num_features, epochs=MAX_EPOCHS,
+#     training_flag=__RNN_TRAINING__, checkpoint_path="save/models/multi_conv.ckpt")
+#
+# multi_val_performance = {}
+# multi_performance = {}
+#
+#
+# #model_gru.
+# #predictions = model_gru(inputs)
+#
+# val_nse = {}
+# val_pbias = {}
+# val_nse['Linear'], val_pbias['Linear'] = multi_window.compa(
+#      multi_linear_model, plot_col=out_features[0], windows=multi_window.example3,
+#      min_max_normailze=False, target_std=target_std, target_mean=target_mean)
 
 #
 # multi_val_performance['Linear'] = multi_linear_model.evaluate(multi_window.val.repeat(-1), steps=100)

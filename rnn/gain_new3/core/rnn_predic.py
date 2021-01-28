@@ -16,7 +16,7 @@ from core.models import *
 
 
 
-def model_multi_linear(OUT_STEPS, out_num_features, window, epochs, training_flag, checkpoint_path):
+def model_multi_linear(OUT_STEPS, out_num_features, window = None, epochs = 2000, training_flag = False, checkpoint_path = 'save/model'):
     model = MultiLinearModel(OUT_STEPS, out_num_features)
     #checkpoint_path = "save/multi_linear_model.ckpt"
     if training_flag == True:

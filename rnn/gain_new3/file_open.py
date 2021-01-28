@@ -169,8 +169,14 @@ def make_dataframe(directory_path, file_names, iloc_val, interpolate=None):
         df.append(inter)
         #     df.append(df_full[loc].iloc[:, [2,3,4,5,6,7,10]])
         #     df.append(df_full[loc].iloc[:, 2:11])
+
+
+
         date_time = pd.to_datetime(df_full[loc].iloc[:, 0], format='%Y.%m.%d %H:%M', utc=True)
         timestamp_s = date_time.map(datetime.datetime.timestamp)
+
+        #print('df_full[loc].iloc[:, 0]--------------------------')
+        #print(date_time)
 
         #print('timestamp_s')
         #print(timestamp_s)
@@ -207,4 +213,6 @@ def make_dataframe(directory_path, file_names, iloc_val, interpolate=None):
         # df[loc].plot()
         # plt.show()
 
-    return df
+
+
+    return df, date_time.reset_index(drop=True)
