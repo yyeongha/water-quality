@@ -221,16 +221,8 @@ def dataset_slice(df, train_ratio, val_ratio, test_ratio):
 
 
 def create_dataset_with_gain(gain, df, window):
-    #unit_shape = (24 * 5, df_all.columns.size)
-
-  #  print('create_dataset_with_gain')
- #   print(df[0])
 
     unit_shape = window.dg.shape[1:]
-    #unit_shape = (24*5., df[0].shape[1])
-
-    #print('unit_shape')
-    #print(unit_shape)
 
     time_seq = unit_shape[0]
     # ----------
@@ -290,11 +282,6 @@ def create_dataset_with_gain(gain, df, window):
 
 
 def create_dataset_interpol(df, window):
-    #unit_shape = (24 * 5, df_all.columns.size)
-    #unit_shape = window.dg.shape[1:]
-    #print('create_dataset_interpol unit_shape : ')
-    #print(unit_shape)
-    #print(unit_shape[0])
 
     time_seq = window
     # ----------

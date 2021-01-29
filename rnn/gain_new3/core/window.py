@@ -23,7 +23,7 @@ class WindowGenerator():
     def __init__(self, input_width, label_width, shift,
                #train_df=train_df, val_df=val_df, test_df=test_df,
             train_df=None, val_df=None, test_df=None, df=None, out_num_features=0,out_features=0, #model_save_path=None,
-                 test_df2=None,
+                 test_df2=None, miss_rate=0.2, fill_no=3, batch_size = 32,
 #                out_features = None,
                label_columns=None):
     # Store the raw data.
@@ -33,6 +33,10 @@ class WindowGenerator():
         self.test_df = test_df
         self.test_df2 = test_df2
         self.df = df
+
+        self.miss_rate = miss_rate
+        self.fill_no = fill_no
+        self.batch_size = batch_size
 
         #print('model_save_path : ', model_save_path)
         #self.model_save_path = model_save_path
@@ -257,42 +261,16 @@ class WindowGenerator():
 
 
 
-    def compa(self, model=None, plot_col=0, max_subplots=3, plot_out_col=0, windows=None, min_max_normailze=False, target_std=None, target_mean=None):
+    def compa(self, model=None, plot_col=0, windows=None, target_std=None, target_mean=None, predict_day=4):
 
 
         if windows is not None:
             inputs, labels = windows
-            #inputs, labels = self.example4
         else:
             inputs, labels = self.example
 
-        print('inputs.shape----------------')
-        print(inputs.shape)
-        print(labels.shape)
-        #print(inputs)
-        #print(inputs[0])
-        #model.sumary()
-        print('inputs.shape----------------')
-
-
-        #inputs, labels = self.example
-
-        #print(self.column_indices)
-
-        plot_out_col_index = self.column_indices[plot_out_col]
-
-        #print(self.label_columns)
-
-        if self.label_columns is not None:
-            label_out_col_index = self.label_columns_indices.get(plot_out_col, None)
-        else:
-            label_out_col_index = plot_out_col_index
-        #label_out_col_index = plot_out_col_index
-
         if model is None:
             return
-
-        #print("column : " + df_all.columns[plot_col])
 
         mae = 0
         mse = 0
@@ -308,46 +286,21 @@ class WindowGenerator():
         pbias_sum1 = 0
         pbias_sum2 = 0
 
-        print('1111111111111111111111')
         predictions = model(inputs)
-        print('1111111111111122222222222')
-#        print(plot_col)
 
         predictions = predictions * target_std[plot_col] + target_mean[plot_col]
         labels = labels * target_std[plot_col] + target_mean[plot_col]
 
         o1 = np.mean(labels.numpy())
-        #     print(o1)
-        label_out_col_index = 0
 
         for n in range(len(inputs)):
+            pred_temp = self.hour_to_day_mean(predictions[n, :, :])
+            label_temp = self.hour_to_day_mean(labels[n, :, :])
 
-            pred_temp = self.hour_to_day_mean(predictions[n, :, label_out_col_index])
-            label_temp = self.hour_to_day_mean(labels[n, :, label_out_col_index])
-
-            o = label_temp[2].numpy()
-            p = pred_temp[2].numpy()
-
-            #o = label_temp[4].numpy()
-            #p = pred_temp[4].numpy()
-
-            #         print('pred_temp')
-            #         print(pred_temp[4])
-            #         print('+++++++++++++')
-            #         print(label_temp[4])
-
-            #         print('p')
-            #         print(p)
-            #         print('o')
-            #         print(o)
+            o = label_temp[predict_day].numpy()
+            p = pred_temp[predict_day].numpy()
 
             temp_m = o - p
-            #         print('temp')
-            #         print(temp_m)
-            #         print(o)
-
-            #         print(o-o1)
-            #         print('22222')
 
             nse_sum1 = nse_sum1 + temp_m ** 2
             nse_sum2 = nse_sum2 + (o - o1) ** 2
@@ -355,49 +308,16 @@ class WindowGenerator():
             pbias_sum1 = pbias_sum1 + temp_m
             pbias_sum2 = pbias_sum2 + o
 
-        #         pred_arr.append(pred_temp[4])
-        #         label_arr.append(label_temp[4])
-
-        #     print(nse_sum1)
-        #     print('111111')
-        #     print(nse_sum2)
-
-        #     print('nse_sum1')
-        #     print(nse_sum1)
-        #     print('nse_sum2')
-        #     print(nse_sum2)
-        #     print('pbias_sum1')
-        #     print(pbias_sum1)
-        #     print('pbias_sum2')
-        #     print(pbias_sum2)
-
         nse = 1 - (nse_sum1 / nse_sum2)
         pbias = (pbias_sum1 / pbias_sum2) * 100
 
-        print('NSE')
-        print(nse)
+        #print('NSE')
+        #print(nse)
 
-        print('PBIAS')
-        print(pbias)
+        #print('PBIAS')
+        #print(pbias)
 
-        return nse, np.abs(pbias)
-
-    #     mae = mean_absolute_error(label_arr, pred_arr)
-    #     mse = mean_squared_error(label_arr, pred_arr)
-    #     rmse = np.sqrt(mse)
-    #     mape = np.mean(np.abs((np.array(label_arr) - np.array(pred_arr))/np.array(label_arr)) )*100
-
-    #     print("mae:")
-    #     print(mae)
-
-    #     print("mse:")
-    #     print(mse)
-
-    #     print("rmse")
-    #     print(rmse)
-
-    #     print("mape")
-    #     print(mape)
+        return nse, np.abs(pbias), pred_temp.numpy(), label_temp.numpy()
 
 
 
@@ -409,11 +329,11 @@ def make_dataset_gain(self, data):
         #data,
         input_width=self.input_width,
         label_width=self.label_width,
-        batch_size=128,
+        batch_size=self.batch_size,
         normalize=False,
         miss_pattern=True,
-        miss_rate=0.15,
-        fill_no=3,
+        miss_rate=self.miss_rate,
+        fill_no=self.fill_no,
         #model_save_path = path
     )
     self.dg = dg
@@ -436,11 +356,10 @@ WindowGenerator.make_dataset = make_dataset_gain
 #class WaterWindowGenerator(WindowGenerator):
 def make_dataset_water(self, data):
 
-
     dg = WaterDataGenerator(
         data,
         # self.train_df,
-        batch_size=128,
+        batch_size=self.batch_size,
         input_width=self.input_width,
         label_width=self.label_width,
         shift=self.label_width,

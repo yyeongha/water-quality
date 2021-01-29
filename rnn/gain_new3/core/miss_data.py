@@ -59,8 +59,7 @@ class MissData(object):
         #print((no, dim))
         #print(type(data))
 
-
-        print(pd.DataFrame(data).head())
+        #print(pd.DataFrame(data).head())
 
         isnan = np.isnan(data).astype(int)
         #print(np.any(isnan, axis=1).astype(int))
