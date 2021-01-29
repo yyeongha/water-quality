@@ -34,7 +34,11 @@ import time
 
 # input parameter
 parameters_dir = 'input'
-parameters_file = '한강.json'
+#parameters_file = '한강.json'
+#parameters_file = '낙동강.json'
+#parameters_file = '금강.json'
+#parameters_file = '영산강1.json'
+parameters_file = '영산강2.json'
 parameters_path = '{dir}/{file}'.format(dir=parameters_dir, file=parameters_file)
 
 #parameters = json.load(parameters_path)
@@ -81,6 +85,7 @@ rnn_predict_day -= 1
 
 #run_num = [0, 1, 2, 3, 4, 5, 6, 7, 8]
 run_num = range(len(folder))
+#run_num = [0, 1, 2, 3]
 
 
 real_df_all = pd.DataFrame([])

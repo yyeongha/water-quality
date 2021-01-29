@@ -6,6 +6,23 @@ import datetime
 
 import matplotlib.pyplot as plt
 
+def make_columns(df):
+    column_list = ['측정날짜', '측정소명', '수온', '수소이온농도','전기전도도', '용존산소', '총유기탄소', '총질소', '총인', '클로로필-a']
+    list_df = pd.DataFrame(columns=column_list)
+    list_df
+    df = df.drop(columns=df.columns.difference(column_list))
+    new_column = list_df.columns.difference(df.columns)
+#     print(new_column)
+    if not new_column.empty :
+        print("Make_columns")
+        for i in range(new_column.shape[0]):
+            df[new_column[i]] = pd.Series()
+#     print('columns')
+#     print(df.columns)
+    return df
+
+
+
 def make_timeseries(df, interpolate=None, iloc_val= None, directory_path = ''):
 
     #print(df.shape)
@@ -23,6 +40,8 @@ def make_timeseries(df, interpolate=None, iloc_val= None, directory_path = ''):
         df = df.dropna(thresh=3)
     elif directory_path == '수위':
         df = df.dropna(thresh=3)
+    #elif directory_path == '자동':
+        #df = make_columns(df)
 
     #print(df.head())
 
@@ -91,6 +110,7 @@ def make_dataframe(directory_path, file_names, iloc_val, interpolate=None):
         date_time = pd.to_datetime(df_full[loc].iloc[:, 0], format='%Y.%m.%d %H:%M', utc=True)
         timestamp_s = date_time.map(datetime.datetime.timestamp)
 
+        print(file_names)
 
         print(df[loc].shape, timestamp_s.shape)
         df[loc].insert(df[loc].shape[1], 'Day sin', np.sin(timestamp_s * (2 * np.pi / day)))
@@ -230,3 +250,12 @@ def make_dataframe_in_test(directory_path, file_names, iloc_val, interpolate=Non
             df[loc] = df[loc].interpolate(method='polynomial', order=3, limit_direction='both')
 
     return df, date_time.reset_index(drop=True)
+
+
+
+
+
+#ori_time = str(df.iloc[0,0])+ "-06-15 12:00"
+#ori_time = datetime.datetime.strptime(ori_time, '%Y-%m-%d %H:%M')
+#df.iloc[0,0] = ori_time
+#df = make_timeseries(df)

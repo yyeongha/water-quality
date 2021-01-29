@@ -73,9 +73,7 @@ class WindowGenerator():
         self.labels_slice = slice(self.label_start, None)
         self.label_indices = np.arange(self.total_window_size)[self.labels_slice]
 
-
         #self.example # create self.dg
-
         self.example3
         #print(self.example[0].shape)
 
