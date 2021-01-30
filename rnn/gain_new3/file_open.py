@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import pandas as pd
 import numpy as np
 
@@ -26,17 +27,9 @@ def make_columns(df):
 
 
 # 녹조 조류 모니터링, 오염원
-def make_timeseries_by_day(df, directory_path):
+def make_timeseries_by_day(df, interpolation=None):
 
-    directory_path = directory_path.split('/')
-    directory_path = directory_path[len(directory_path)-2]
-
-    e = True
-    if directory_path == '조류':
-        e = False
-    elif directory_path == '방사성':
-        e = False
-    if e :
+    if interpolation[1] == False:
         return df
 
     time_day = []
@@ -106,27 +99,12 @@ def divideDataFrame(df_ori, de_iloc_val=0):
     return df_d
 '''
 
-def make_timeseries(df, interpolate=None, iloc_val= None, directory_path = ''):
+def make_timeseries(df, interpolation=None, iloc_val= None):
 
-    #print(df.shape)
     date_col = df.columns[0]
     df[date_col] = pd.to_datetime(df[date_col])
     df = df[df[date_col].notna()]
-    #print(df.shape)
-
-
-
-    #print('directory_path')
-#    directory_path = directory_path.split('/')[1]
-    directory_path = directory_path.split('/')
-    directory_path = directory_path[len(directory_path) - 2]
-    if directory_path == 'ASOS':
-        df = df.dropna(thresh=3)
-    elif directory_path == 'AWS':
-        df = df.dropna(thresh=3)
-    elif directory_path == '수위':
-        df = df.dropna(thresh=3)
-
+    df = df.dropna(thresh=3)
 
     year = pd.DatetimeIndex(df[date_col]).year.astype(np.int64)
 
@@ -135,7 +113,6 @@ def make_timeseries(df, interpolate=None, iloc_val= None, directory_path = ''):
     #print(year)
 
     print('time range in files : ', start, ' ~ ', end)
-
 
     time_series = pd.date_range(start=start, end=end, freq='H')
 
@@ -147,8 +124,7 @@ def make_timeseries(df, interpolate=None, iloc_val= None, directory_path = ''):
     time_series = time_series.sort_values([date_col], axis=0)
 
 
-
-    if interpolate:
+    if interpolation[0]:
         for i in range(1, df.shape[1], 1):
             idx = df.iloc[:, i].dropna()
 
@@ -156,16 +132,16 @@ def make_timeseries(df, interpolate=None, iloc_val= None, directory_path = ''):
                 time_series.iloc[0, i] = idx.iloc[0]
                 time_series.iloc[-1, i] = idx.iloc[-1]
 
-
     return time_series
 
 
-def make_dataframe(directory_path, file_names, iloc_val, interpolate=None):
+def make_dataframe(directory_path, file_names, iloc_val, interpolation=None):
     day = 24 * 60 * 60
     year = (365.2425) * day
 
     df_full = []
     df = []
+
 
     for loc in range(len(file_names)):
 
@@ -177,14 +153,16 @@ def make_dataframe(directory_path, file_names, iloc_val, interpolate=None):
             df_tmp = pd.read_excel(path)
 
             print(path)
-
-            df_tmp = make_timeseries_by_day(df = df_tmp, directory_path=directory_path)
+#
+            df_tmp = make_timeseries_by_day(df = df_tmp, interpolation=interpolation)
 
             df_loc.append(df_tmp)
 
 
         df_loc = pd.concat(df_loc)
-        df_loc = make_timeseries(df_loc, interpolate=interpolate, iloc_val = iloc_val, directory_path=directory_path)
+#
+        df_loc = make_timeseries(df_loc, interpolation=interpolation, iloc_val=iloc_val)
+
 
         #print(df_loc)
         df_full.append(df_loc)
@@ -207,8 +185,11 @@ def make_dataframe(directory_path, file_names, iloc_val, interpolate=None):
 
         df[loc] = df[loc].reset_index(drop=True)
 
-        if interpolate:
+        if interpolation[0]:
             df[loc] = df[loc].interpolate(method='polynomial', order=3, limit_direction='both')
+
+        #print('time_series.iloc[:, 10], time_series.iloc[:, 11]')
+        #print(df[loc].iloc[:, 0], df[loc].iloc[:, 1])
 
 
     return df, date_time.reset_index(drop=True)

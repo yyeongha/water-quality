@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 
 import pandas as pd
 import numpy as np
@@ -55,7 +55,7 @@ file_parameters = parameters['file']
 parameters_path = parameters_dir+'/'+ file_parameters['watershed'] + '.json'
 with open(parameters_path, encoding='utf8') as json_file:
     parameters = json.load(json_file)
-#pd.set_option('display.max_columns', 1000)
+pd.set_option('display.max_columns', 1000)
 
 data_parameters = parameters['data']
 
@@ -92,11 +92,15 @@ rnn_predict_day -= 1
 
 #run_num = [0, 1, 2, 3, 4, 5, 6, 7, 8]
 run_num = range(len(folder))
-#run_num = [0, 1, 2, 3]
+#run_num = [0]
 
 
 real_df_all = pd.DataFrame([])
 target_all = target_mean = target_std = 0
+
+
+gain_val_performance = {}
+gain_performance = {}
 
 for i in range(len(run_num)):
 
@@ -109,10 +113,10 @@ for i in range(len(run_num)):
 
     #start = time.time()
 
-    if watershed == '한강_12days_test':
-        df, times = make_dataframe_temp_12days(folder[idx], file_names[idx], colum_idx[idx], interpolate=interpolation_option[idx])
-    else:
-        df, times = make_dataframe(folder[idx], file_names[idx], colum_idx[idx], interpolate=interpolation_option[idx])
+    #if watershed == '한강_12days_test':
+    #    df, times = make_dataframe_temp_12days(folder[idx], file_names[idx], colum_idx[idx], interpolate=interpolation_option[idx])
+    #else:
+    df, times = make_dataframe(folder[idx], file_names[idx], colum_idx[idx], interpolation=interpolation_option[idx])
 
     #print('-------df[0].shape-------- : ', df[0].shape)
 
@@ -123,7 +127,7 @@ for i in range(len(run_num)):
         target_std = train_std
         target_mean = train_mean
 
-    if interpolation_option[idx] == False:
+    if interpolation_option[idx][0] == False:
 
         loadfiles = ['idx.npy', 'miss.npy', 'discriminator.h5', 'generator.h5']
 
@@ -151,6 +155,9 @@ for i in range(len(run_num)):
             #print('model_GAIN in main')
             #print(wide_window.dg.shape[1:])
             gain = model_GAIN(shape=wide_window.dg.shape[1:], gen_sigmoid=False, epochs=gain_epochs, training_flag=__GAIN_TRAINING__, window=wide_window, model_save_path='save/')
+
+            gain_val_performance[str(i)] = gain.evaluate(wide_window.val)
+            gain_performance[str(i)] = gain.evaluate(wide_window.test, verbose=0)
 
             #print('file proc in main')
             if __GAIN_TRAINING__ == True:
