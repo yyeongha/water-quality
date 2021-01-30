@@ -1,38 +1,17 @@
 {
-  "gain": {
-    "train": true,
-    "max_epochs": 12,
-    "batch_size":32,
-    "input_width": 120,
-    "label_width": 120,
-    "shift_width": 120,
-    "fill_width": 3,
-    "miss_rate": 0.15
-  },
-
-  "rnn": {
-    "train": true,
-    "max_epochs": 9,
-    "target_column": "클로로필-a_값",
-    "batch_size":128,
-    "input_width": 168,
-    "label_width": 120,
-    "predict_day": 5
-  },
-
   "data": {
     "watershed":"geum/",
     "directorys":[
       "자동/", "총량/", "수질/",
-      "퇴적물/"
+      "퇴적물/", "방사성/"
     ],
     "interpolation":[
       false, true, true,
-      true
+      true, true
     ],
     "columns": [
       ":,[26,27,28,29,30,31,32,33]", ":,28:45", ":,[28,29,30,31,32,33,34,35,36,37,39,40,41,42,43,44]",
-      ":,27:34"
+      ":,27:34", ":,[28,29]"
     ],
     "files": [
       [
@@ -53,6 +32,9 @@
         ["대청댐2_2016.xlsx", "대청댐2_2017.xlsx", "대청댐2_2018.xlsx", "대청댐2_2019.xlsx"],
         ["대청댐5_2016.xlsx", "대청댐5_2017.xlsx", "대청댐5_2018.xlsx", "대청댐5_2019.xlsx"],
         ["대청댐6_2016.xlsx", "대청댐6_2017.xlsx", "대청댐6_2018.xlsx", "대청댐6_2019.xlsx"]
+      ],
+      [
+        ["대청댐2_2016.xlsx", "대청댐2_2017.xlsx", "대청댐2_2018.xlsx", "대청댐2_2019.xlsx"]
       ]
     ]
   }

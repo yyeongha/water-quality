@@ -1,2 +1,2 @@
-model_checkpoint_path: "multi_conv.ckpt"
-all_model_checkpoint_paths: "multi_conv.ckpt"
+model_checkpoint_path: "multi_lstm.ckpt"
+all_model_checkpoint_paths: "multi_lstm.ckpt"

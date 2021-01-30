@@ -3,6 +3,9 @@ import numpy as np
 
 import os
 import datetime
+import calendar
+from time import time
+import time
 
 import matplotlib.pyplot as plt
 
@@ -22,8 +25,86 @@ def make_columns(df):
     return df
 
 
+# 녹조 조류 모니터링, 오염원
+def make_timeseries_by_day(df, directory_path):
+
+    directory_path = directory_path.split('/')
+    directory_path = directory_path[len(directory_path)-2]
+
+    e = True
+    if directory_path == '조류':
+        e = False
+    elif directory_path == '방사성':
+        e = False
+    if e :
+        return df
+
+    time_day = []
+    #year = int(str(df.iloc[0, 0]).split('-')[0])
+    year = int(str(df.iloc[0, 0])[0:4])
+    #print(year)
+
+    if df.shape[0] == 1:
+        print('row in')
+        ori_time = str(df.iloc[0, 0]) + "-06-15 12:00"
+        ori_time = datetime.datetime.strptime(ori_time, '%Y-%m-%d %H:%M')
+        df.iloc[0, 0] = ori_time
+        return df
+    elif df.shape[0] == 2:
+        #print('ddddddddddd')
+        #print(df.iloc[0, 0], df.iloc[1, 0])
+        if df.iloc[0, 0] == df.iloc[1, 0]:
+            ori_time = str(df.iloc[0, 0]) + "-03-15 12:00"
+            ori_time = datetime.datetime.strptime(ori_time, '%Y-%m-%d %H:%M')
+            df.iloc[0, 0] = ori_time
+
+            ori_time = str(df.iloc[1, 0]) + "-09-15 12:00"
+            ori_time = datetime.datetime.strptime(ori_time, '%Y-%m-%d %H:%M')
+            df.iloc[1, 0] = ori_time
+            return df
 
 
+    div_cnt = df[df.columns[0]].value_counts().sort_index().tolist()
+
+    for i in range(len(div_cnt)):
+
+        month = calendar.monthrange(year, i + 1)
+        for j in range(div_cnt[i]):
+            time_val = datetime.timedelta(days=(month[1] / div_cnt[i] * j) + 1)
+
+            time_day.append(
+                '-' + str(time_val.days) + ' ' + str(time.strftime('%H:00:00', time.gmtime(time_val.seconds))))
+
+    df.iloc[:, 0] = df.iloc[:, 0] + time_day
+
+    return df
+
+'''
+web용
+# example
+# 0:자동, 1:수질 , 2:총량, 3:유량, 4:수위
+de_iloc_val = ['9', '15', '17', '1', '1']
+de_iloc_val[0]
+
+
+def divideDataFrame(df_ori, de_iloc_val=0):
+    df = df_ori
+    #     print(de_iloc_val)
+    #     print(type(de_iloc_val))
+    df.set_index(df.columns[0], inplace=True)
+    #     print(df)
+
+    df_d = []
+    for i in range(4):
+        #         print((i*de_iloc_val))
+        #         print((i*de_iloc_val)+de_iloc_val)
+        #         print('aaaaaaa')
+        df_tmp = df.iloc[:, (i * de_iloc_val):(i * de_iloc_val) + de_iloc_val]
+        #         df_tmp.reset_index(inplace=True)
+        df_d.append(df_tmp)
+
+    return df_d
+'''
 
 def make_timeseries(df, interpolate=None, iloc_val= None, directory_path = ''):
 
@@ -34,8 +115,11 @@ def make_timeseries(df, interpolate=None, iloc_val= None, directory_path = ''):
     #print(df.shape)
 
 
+
     #print('directory_path')
-    directory_path = directory_path.split('/')[1]
+#    directory_path = directory_path.split('/')[1]
+    directory_path = directory_path.split('/')
+    directory_path = directory_path[len(directory_path) - 2]
     if directory_path == 'ASOS':
         df = df.dropna(thresh=3)
     elif directory_path == 'AWS':
@@ -91,6 +175,10 @@ def make_dataframe(directory_path, file_names, iloc_val, interpolate=None):
             path = os.path.join(directory_path, file_names[loc][y])
 
             df_tmp = pd.read_excel(path)
+
+            print(path)
+
+            df_tmp = make_timeseries_by_day(df = df_tmp, directory_path=directory_path)
 
             df_loc.append(df_tmp)
 

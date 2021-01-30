@@ -31,15 +31,17 @@ os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"   # see issue #152
 os.environ["CUDA_VISIBLE_DEVICES"]="0,1"
 import time
 
-
 # input parameter
 data_path = 'data/'
 parameters_dir = 'input'
 #parameters_file = '한강.json'
+#parameters_file = '한강_.json'
 #parameters_file = '낙동강.json'
 #parameters_file = '금강.json'
 #parameters_file = '영산강1.json'
-parameters_file = '영산강2.json'
+#parameters_file = '영산강2.json'
+
+parameters_file = 'input.json'
 parameters_path = '{dir}/{file}'.format(dir=parameters_dir, file=parameters_file)
 
 #parameters = json.load(parameters_path)
@@ -48,9 +50,14 @@ with open(parameters_path, encoding='utf8') as json_file:
 
 gain_parameters = parameters['gain']
 rnn_parameters = parameters['rnn']
-data_parameters = parameters['data']
+file_parameters = parameters['file']
 
+parameters_path = parameters_dir+'/'+ file_parameters['watershed'] + '.json'
+with open(parameters_path, encoding='utf8') as json_file:
+    parameters = json.load(json_file)
 #pd.set_option('display.max_columns', 1000)
+
+data_parameters = parameters['data']
 
 interpolation_option = data_parameters['interpolation']
 colum_idx = data_parameters['columns']
