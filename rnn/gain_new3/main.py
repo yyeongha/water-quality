@@ -33,6 +33,7 @@ import time
 
 
 # input parameter
+data_path = 'data/'
 parameters_dir = 'input'
 #parameters_file = '한강.json'
 #parameters_file = '낙동강.json'
@@ -57,7 +58,7 @@ watershed = data_parameters['watershed']
 file_names = data_parameters['files']
 folder = data_parameters['directorys']
 for i in range(len(folder)):
-    folder[i] = watershed+folder[i]
+    folder[i] = data_path+watershed+folder[i]
 
 __GAIN_TRAINING__ = gain_parameters['train']
 gain_epochs = gain_parameters['max_epochs']
@@ -67,7 +68,6 @@ gain_batch_size = gain_parameters['batch_size']
 gain_fill_no = gain_parameters['fill_width']
 gain_shift = gain_parameters['shift_width']
 gain_miss_rate = gain_parameters['miss_rate']
-
 
 __RNN_TRAINING__ = rnn_parameters['train']
 rnn_epochs = rnn_parameters['max_epochs']

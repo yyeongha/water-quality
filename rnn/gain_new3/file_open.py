@@ -23,6 +23,8 @@ def make_columns(df):
 
 
 
+
+
 def make_timeseries(df, interpolate=None, iloc_val= None, directory_path = ''):
 
     #print(df.shape)
@@ -40,10 +42,7 @@ def make_timeseries(df, interpolate=None, iloc_val= None, directory_path = ''):
         df = df.dropna(thresh=3)
     elif directory_path == '수위':
         df = df.dropna(thresh=3)
-    #elif directory_path == '자동':
-        #df = make_columns(df)
 
-    #print(df.head())
 
     year = pd.DatetimeIndex(df[date_col]).year.astype(np.int64)
 
@@ -110,9 +109,9 @@ def make_dataframe(directory_path, file_names, iloc_val, interpolate=None):
         date_time = pd.to_datetime(df_full[loc].iloc[:, 0], format='%Y.%m.%d %H:%M', utc=True)
         timestamp_s = date_time.map(datetime.datetime.timestamp)
 
-        print(file_names)
+        #print(file_names[loc])
 
-        print(df[loc].shape, timestamp_s.shape)
+        #print(df[loc].shape, timestamp_s.shape)
         df[loc].insert(df[loc].shape[1], 'Day sin', np.sin(timestamp_s * (2 * np.pi / day)))
         df[loc].insert(df[loc].shape[1], 'Day cos', np.cos(timestamp_s * (2 * np.pi / day)))
         df[loc].insert(df[loc].shape[1], 'Year sin', np.sin(timestamp_s * (2 * np.pi / year)))
@@ -168,7 +167,7 @@ def make_dataframe_temp_12days(directory_path, file_names, iloc_val, interpolate
 
         #print(date_time)
 
-        print(df[loc].shape, timestamp_s.shape)
+        #print(df[loc].shape, timestamp_s.shape)
         df[loc].insert(df[loc].shape[1], 'Day sin', np.sin(timestamp_s * (2 * np.pi / day)))
         df[loc].insert(df[loc].shape[1], 'Day cos', np.cos(timestamp_s * (2 * np.pi / day)))
         df[loc].insert(df[loc].shape[1], 'Year sin', np.sin(timestamp_s * (2 * np.pi / year)))
