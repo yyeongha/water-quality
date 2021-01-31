@@ -293,21 +293,21 @@ plt.show()
 
 
 
-#multi_window.SetStandMean(std=train_std, mean=train_mean)
-#multi_window.compa3(multi_linear_model, plot_col=out_features[0])
+multi_window.SetStandMean(std=train_std, mean=train_mean)
+multi_window.compa3(multi_linear_model, plot_col=out_features[0])
 
-#multi_window.plot24(multi_linear_model, plot_col=out_features[0])
-#
-# x = np.arange(len(multi_performance))
-# width = 0.3
-# metric_name = 'mean_absolute_error'
-# metric_index = multi_conv_model.metrics_names.index('mean_absolute_error')
-# val_mae = [v[metric_index] for v in multi_val_performance.values()]
-# test_mae = [v[metric_index] for v in multi_performance.values()]
-# plt.figure()
-# plt.bar(x - 0.17, val_mae, width, label='Validation')
-# plt.bar(x + 0.17, test_mae, width, label='Test')
-# plt.xticks(ticks=x, labels=multi_performance.keys(), rotation=45)
-# plt.ylabel(f'MAE (average over all times and outputs)')
-# _ = plt.legend()
-# plt.show()
+multi_window.plot24(multi_linear_model, plot_col=out_features[0])
+
+x = np.arange(len(multi_performance))
+width = 0.3
+metric_name = 'mean_absolute_error'
+metric_index = multi_conv_model.metrics_names.index('mean_absolute_error')
+val_mae = [v[metric_index] for v in multi_val_performance.values()]
+test_mae = [v[metric_index] for v in multi_performance.values()]
+plt.figure()
+plt.bar(x - 0.17, val_mae, width, label='Validation')
+plt.bar(x + 0.17, test_mae, width, label='Test')
+plt.xticks(ticks=x, labels=multi_performance.keys(), rotation=45)
+plt.ylabel(f'MAE (average over all times and outputs)')
+_ = plt.legend()
+plt.show()
