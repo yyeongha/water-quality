@@ -8,9 +8,10 @@ class MissData(object):
     def __init__(self, load_dir=None):
         #print('MissData : ', load_dir)
         if load_dir:
-            #print('MissData : ', load_dir)
+
             self.missarr = np.load(os.path.join(load_dir, 'miss.npy'))
             self.idxarr = np.load(os.path.join(load_dir, 'idx.npy'))
+            print('MissData : ', load_dir, " miss : ", self.missarr.shape)
 
     def make_missdata(self, data_x, missrate=0.2):
         data = data_x.copy()

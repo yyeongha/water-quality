@@ -21,10 +21,10 @@ fprop = fm.FontProperties(fname=font_location)
 
 
 class WindowGenerator():
-    def __init__(self, input_width, label_width, shift,
+    def __init__(self, input_width=24*5, label_width=24*5, shift=24*5,
                #train_df=train_df, val_df=val_df, test_df=test_df,
             train_df=None, val_df=None, test_df=None, df=None, out_num_features=0,out_features=0, #model_save_path=None,
-                 test_df2=None, miss_rate=0.2, fill_no=3, batch_size = 32,
+                 test_df2=None, miss_rate=0.2, fill_no=3, batch_size = 32, save_dir = 'save/',
 #                out_features = None,
                label_columns=None):
     # Store the raw data.
@@ -47,7 +47,7 @@ class WindowGenerator():
 
         self.train_std = None
         self.train_mean = None
-
+        self.save_dir = save_dir
     # Work out the label column indices.
         self.label_columns = label_columns
         if label_columns is not None:
@@ -75,7 +75,10 @@ class WindowGenerator():
         self.label_indices = np.arange(self.total_window_size)[self.labels_slice]
 
         #self.example # create self.dg
-        self.example3
+        print("++++++++++++++++++++++++++++++++++++")
+        print(self.example[0].shape)
+
+        print("++++++++++++++++++++++++++++++++++++")
         #print(self.example[0].shape)
 
     def __repr__(self):
@@ -333,7 +336,7 @@ def make_dataset_gain(self, data):
         miss_pattern=True,
         miss_rate=self.miss_rate,
         fill_no=self.fill_no,
-        #model_save_path = path
+        model_save_path = self.save_dir
     )
     self.dg = dg
     #print('asdfasdfasdfasfd')
@@ -351,6 +354,7 @@ def make_dataset_gain(self, data):
     return ds
 
 WindowGenerator.make_dataset = make_dataset_gain
+
 
 #class WaterWindowGenerator(WindowGenerator):
 def make_dataset_water(self, data):

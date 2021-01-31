@@ -23,6 +23,8 @@ class GainDataGenerator(tf.keras.utils.Sequence):
         'Initialization'
         window_size = input_width
         # interpollation
+
+
         filled_data = []
         for data in data_list:
             data = interpolate(data, max_gap=fill_no)

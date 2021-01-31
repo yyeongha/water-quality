@@ -221,14 +221,22 @@ def dataset_slice(df, train_ratio, val_ratio, test_ratio):
 
 
 
-def create_dataset_with_gain(gain, df, window):
+def create_dataset_with_gain(gain, df, window = None,shape = None):
 
-    unit_shape = window.dg.shape[1:]
+    if window == None:
+        unit_shape = shape
+    else:
+        unit_shape = window.dg.shape[1:]
+    #unit_shape = window
 
     time_seq = unit_shape[0]
     # ----------
     gans = []
     oris = []
+
+    #print(type(df))
+    #print(type(df[0]))
+
     for i in range(len(df)):
         x = df[i].to_numpy()
         total_n = x.shape[0]
@@ -257,8 +265,10 @@ def create_dataset_with_gain(gain, df, window):
 
         # cut off sin, cos data
         if (i > 0):
-            x = x[:, :-4]
-            y_gan = y_gan[:, :-4]
+            #x = x[:, :-4]
+            #y_gan = y_gan[:, :-4]
+            x = x[:, :]
+            y_gan = y_gan[:, :]
         gans.append(y_gan)
         oris.append(x)
 
@@ -282,7 +292,7 @@ def create_dataset_with_gain(gain, df, window):
 
 
 
-def create_dataset_interpol(df, window):
+def create_dataset_interpol(df, window=24*5):
 
     time_seq = window
     # ----------
@@ -307,7 +317,7 @@ def create_dataset_interpol(df, window):
 
 
 
-def model_GAIN(shape, gen_sigmoid, window, training_flag, epochs = 100, model_save_path='../save'):
+def model_GAIN(shape, gen_sigmoid, window=None, training_flag=False, epochs = 100, model_save_path='../save'):
     gain = GAIN(shape=shape, gen_sigmoid=gen_sigmoid)
 
     if training_flag == True:

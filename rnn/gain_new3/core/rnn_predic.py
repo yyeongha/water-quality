@@ -45,7 +45,7 @@ def model_elman(OUT_STEPS, out_num_features, window, epochs, training_flag, chec
 
 #print('gru_model train')
 
-def model_gru(OUT_STEPS, out_num_features, window, epochs, training_flag, checkpoint_path):
+def model_gru(OUT_STEPS=24*5, out_num_features=1, window=None, epochs=100, training_flag=False, checkpoint_path="save/"):
     model = GRUModel(OUT_STEPS, out_num_features)
     #checkpoint_path = "save/gru_model.ckpt"
     if training_flag == True:

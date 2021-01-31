@@ -15,7 +15,7 @@
   "rnn": {
     "train": true,
     "max_epochs": 500,
-    "target_column": "클로로필-a_값",
+    "target_column": "toc_value",
     "batch_size": 128,
     "input_width": 168,
     "label_width": 120,
