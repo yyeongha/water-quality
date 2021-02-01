@@ -1,10 +1,10 @@
 {
   "file": {
-    "watershed": "한강"
+    "watershed": "영산강1_수질_오염"
   },
   "gain": {
     "train": true,
-    "max_epochs": 2001,
+    "max_epochs": 1,
     "batch_size": 32,
     "input_width": 120,
     "label_width": 120,
@@ -14,7 +14,7 @@
   },
   "rnn": {
     "train": true,
-    "max_epochs": 501,
+    "max_epochs": 1,
     "target_column": "toc_value",
     "batch_size": 128,
     "input_width": 168,

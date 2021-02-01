@@ -1,15 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import tensorflow as tf
-
-from glob import glob
-from tensorflow.keras.layers import Input, Concatenate, Dot, Add, ReLU, Activation
-from tensorflow.keras.layers import Dense
-from tensorflow.keras.optimizers import Adam
-
 import shutil
 
 from core.gain import *
@@ -18,36 +8,20 @@ from core.models import *
 from core.util import *
 #from core.window import WindowGenerator, MissData, make_dataset_water, WaterDataGenerator
 from core.window import WindowGenerator, make_dataset_gain, make_dataset_water
-from file_open import make_dataframe, make_dataframe_temp_12days
+from core.file_open import make_dataframe
 from core.miss_data import MissData
 import json
 
-
-from datetime import datetime
-
 import os
-import datetime
+
 os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"   # see issue #152
 os.environ["CUDA_VISIBLE_DEVICES"]="0,1"
-import time
-
-
-
-print("2021_01_31-21:30:00 --- 삭제해야함")
-from predict_run import prediction_for_webpage
-AA = prediction_for_webpage()
 
 
 
 # input parameter
 data_path = 'data/'
 parameters_dir = 'input'
-#parameters_file = '한강.json'
-#parameters_file = '한강_.json'
-#parameters_file = '낙동강.json'
-#parameters_file = '금강.json'
-#parameters_file = '영산강1.json'
-#parameters_file = '영산강2.json'
 
 parameters_file = 'input.json'
 parameters_path = '{dir}/{file}'.format(dir=parameters_dir, file=parameters_file)
@@ -73,7 +47,7 @@ watershed = data_parameters['watershed']
 file_names = data_parameters['files']
 folder = data_parameters['directorys']
 for i in range(len(folder)):
-    folder[i] = data_path+watershed+folder[i]
+    folder[i] = watershed+folder[i]
 
 __GAIN_TRAINING__ = gain_parameters['train']
 gain_epochs = gain_parameters['max_epochs']
@@ -98,7 +72,8 @@ if rnn_predict_day < 3 or rnn_predict_day >5:
 rnn_predict_day -= 1
 
 
-#run_num = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+#run_num = [0, 10]
+#run_num = [0, 11, 12, 13 ,14 ,15, 16]
 run_num = range(len(folder))
 #run_num = [0]
 
@@ -114,7 +89,7 @@ for i in range(len(run_num)):
     idx = run_num[i]
 
     print('interpol flag : ', interpolation_option[idx])
-    print('folder : ', folder[idx])
+    print('folder : ', data_path + folder[idx])
     print('colum_idx : ', colum_idx[idx])
     print('file_names[idx] : ', file_names[idx])
 
@@ -123,7 +98,7 @@ for i in range(len(run_num)):
     #if watershed == '한강_12days_test':
     #    df, times = make_dataframe_temp_12days(folder[idx], file_names[idx], colum_idx[idx], interpolate=interpolation_option[idx])
     #else:
-    df, times = make_dataframe(folder[idx], file_names[idx], colum_idx[idx], interpolation=interpolation_option[idx])
+    df, times = make_dataframe(data_path+folder[idx], file_names[idx], colum_idx[idx], interpolation=interpolation_option[idx])
 
 
 
@@ -134,12 +109,6 @@ for i in range(len(run_num)):
     print(df_all.shape)
     print(len(df))
     print(df[0].shape)
-
-    for aaaa in range(len(df)):
-        print('-------df[0].shape-------- : ', df[aaaa].shape)
-    print('-------df[0].shape-------- : ', df_all.shape)
-    print('-------df[0].shape-------- : ', train_mean.shape)
-    print('-------df[0].shape-------- : ', train_std.shape)
 
     if i == 0:
         dfff = df
@@ -172,13 +141,10 @@ for i in range(len(run_num)):
             wide_window = WindowGenerator(input_width=gain_in_setps, label_width=gain_out_setps, shift=gain_shift,
                                           fill_no=gain_fill_no, miss_rate=gain_miss_rate, batch_size=gain_batch_size,
                                           train_df = df_all, val_df = df_all, test_df = df_all, df = df)
-            #print('model_GAIN in main')
-            #print(wide_window.dg.shape[1:])
-            print('wide_window.dg.shape[1:] : ',wide_window.dg.shape[1:])
-            print('wide_window.dg.shape[1:] : ', wide_window.dg.shape[1:])
-            print('wide_window.dg.shape[1:] : ', wide_window.dg.shape[1:])
 
-            gain = model_GAIN(shape=wide_window.dg.shape[1:], gen_sigmoid=False, epochs=gain_epochs, training_flag=__GAIN_TRAINING__, window=wide_window, model_save_path='save/')
+            #gain = model_GAIN(shape=wide_window.dg.shape[1:], gen_sigmoid=False, epochs=gain_epochs, training_flag=__GAIN_TRAINING__, window=wide_window, model_save_path='save/')
+            gain = model_GAIN(shape=(gain_in_setps, df_all.shape[1]), gen_sigmoid=False, epochs=gain_epochs,
+                              training_flag=__GAIN_TRAINING__, window=wide_window, model_save_path='save/')
 
             gain_val_performance[str(i)] = gain.evaluate(wide_window.val)
             gain_performance[str(i)] = gain.evaluate(wide_window.test, verbose=0)
@@ -192,7 +158,8 @@ for i in range(len(run_num)):
                     shutil.copyfile('save/' + file, 'save/' + folder[idx] + file)
 
             #print('create_dataset_with_gain in main')
-            ori, gan = create_dataset_with_gain(gain=gain, window=wide_window, df=df)
+            #ori, gan = create_dataset_with_gain(gain=gain, window=wide_window, df=df)
+            ori, gan = create_dataset_with_gain(gain=gain, shape=(gain_in_setps, df_all.shape[1]), df=df)
 
         else:
             gan = create_dataset_interpol(window=gain_in_setps, df=df)
@@ -200,19 +167,11 @@ for i in range(len(run_num)):
         gan = create_dataset_interpol(window=gain_in_setps, df=df)
 
     if i == 0 :
-        #print('in')
-        gan = pd.DataFrame(gan)
-        #gan = pd.DataFrame(gan).fillna(0)
-        real_df_all = gan
-    else:  # Day sin, Day cos, Year sin, Year cos
-        gan = pd.DataFrame(gan)
-        #gan = pd.DataFrame(gan).fillna(0)
-        real_df_all = pd.concat([real_df_all, gan], axis=1)
-
-        #print(real_df_all.shape)
+        real_df_all = pd.DataFrame(gan)
+    else:
+        real_df_all = pd.concat([real_df_all, pd.DataFrame(gan)], axis=1)
 
 
-#print('------------predic real_df_all.shape : ', real_df_all.shape)
 train_df, val_df, test_df, test_df2 = dataset_slice(real_df_all, 0.8, 0.1, 0.1)
 
 print('-------------------prediction')
@@ -245,8 +204,12 @@ print("2021_01_31-21:30:00 --- 삭제해야함")
 val_nse = {}
 val_pbias = {}
 
-idx = AA.target_column_index = [2, 4, 5, 6, 7]
-pa = AA.target_model_path = ["do/", "toc/", "nitrogen/", "phosphorus/", "chlorophyll-a/"]
+idx = [2, 4, 5, 6, 7]
+pa = ["do/", "toc/", "nitrogen/", "phosphorus/", "chlorophyll-a/"]
+
+
+## "save/" + watershed + "models/" + pa[i] +"gru.ckpt" -- path
+
 for i in range(len(pa)):
     WindowGenerator.make_dataset = make_dataset_water
     multi_window = WindowGenerator(
@@ -280,8 +243,6 @@ if __RNN_TRAINING__:
 
 val_nse = {}
 val_pbias = {}
-
-
 
 
 

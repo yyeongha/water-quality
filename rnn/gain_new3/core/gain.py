@@ -217,11 +217,18 @@ def dataset_slice(df, train_ratio, val_ratio, test_ratio):
     test_slice2 = slice(total_no - 288, None)
     test2 = pd.DataFrame(df[test_slice2])
 
+    #print('total_no :1111111111111111111111111 ')
+    #print('total_no : ', total_no)
+    #print('train : ', train.shape)
+    #print('val : ', val.shape)
+    #print('test : ', test.shape)
+
+
     return train, val, test, test2
 
 
 
-def create_dataset_with_gain(gain, df, window = None,shape = None):
+def create_dataset_with_gain(gain, df, window = None, shape = None):
 
     if window == None:
         unit_shape = shape

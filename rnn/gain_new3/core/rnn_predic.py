@@ -1,18 +1,6 @@
 # -*- coding: utf-8 -*-
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import tensorflow as tf
-
-from glob import glob
-from tensorflow.keras.layers import Input, Concatenate, Dot, Add, ReLU, Activation
-from tensorflow.keras.layers import Dense
-from tensorflow.keras.optimizers import Adam
 
 #import gain as Gain
-from core.gain import GAIN
-from file_open import make_dataframe
-from core.util import *
 from core.models import *
 
 

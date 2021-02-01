@@ -75,10 +75,10 @@ class WindowGenerator():
         self.label_indices = np.arange(self.total_window_size)[self.labels_slice]
 
         #self.example # create self.dg
-        print("++++++++++++++++++++++++++++++++++++")
-        print(self.example[0].shape)
+       # print("++++++++++++++++++++++++++++++++++++")
+        #print(self.example[0].shape)
 
-        print("++++++++++++++++++++++++++++++++++++")
+       # print("++++++++++++++++++++++++++++++++++++")
         #print(self.example[0].shape)
 
     def __repr__(self):
