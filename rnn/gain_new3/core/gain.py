@@ -204,11 +204,14 @@ def dataset_slice(df, train_ratio, val_ratio, test_ratio):
     total_no = df.shape[0]
     train_no = int(total_no * train_ratio)
 
-    val_no = int(total_no * (train_ratio + val_ratio))
+    #val_no = int(total_no * (train_ratio + val_ratio))
 
-    train_slice = slice(0, train_no)    #0.8
-    val_slice = slice(train_no, val_no)   #0.1
-    test_slice = slice(val_no, None)
+    #train_slice = slice(0, train_no)    #0.8
+    #val_slice = slice(train_no, val_no)   #0.1
+    #test_slice = slice(val_no, None)
+    train_slice = slice(0, train_no)  # 0.8
+    val_slice = slice(train_no, None)  # 0.1
+    test_slice = slice(0, None)
 
     train = pd.DataFrame(df[train_slice])
     val = pd.DataFrame(df[val_slice])

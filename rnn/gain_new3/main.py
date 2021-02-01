@@ -172,7 +172,8 @@ for i in range(len(run_num)):
         real_df_all = pd.concat([real_df_all, pd.DataFrame(gan)], axis=1)
 
 
-train_df, val_df, test_df, test_df2 = dataset_slice(real_df_all, 0.8, 0.1, 0.1)
+#train_df, val_df, test_df, test_df2 = dataset_slice(real_df_all, 0.8, 0.1, 0.1)
+train_df, val_df, test_df, test_df2 = dataset_slice(real_df_all, 0.7, 0.3, 0.0)
 
 print('-------------------prediction')
 print('-------------------prediction')
@@ -200,37 +201,38 @@ print("target_col_idx : ", target_col_idx)
 print('out_num_features : ', out_num_features)
 
 
-print("2021_01_31-21:30:00 --- 삭제해야함")
+#print("2021_01_31-21:30:00 --- 삭제해야함")
 val_nse = {}
 val_pbias = {}
 
-idx = [2, 4, 5, 6, 7]
-pa = ["do/", "toc/", "nitrogen/", "phosphorus/", "chlorophyll-a/"]
 
 
 ## "save/" + watershed + "models/" + pa[i] +"gru.ckpt" -- path
-
-for i in range(len(pa)):
-    WindowGenerator.make_dataset = make_dataset_water
-    multi_window = WindowGenerator(
-        input_width=rnn_in_setps, label_width=rnn_out_steps, shift=rnn_out_steps, out_features=[idx[i]],
-        out_num_features=out_num_features, label_columns=dfff[0].columns, batch_size=rnn_batch_size,
-        train_df=train_df, val_df=val_df, test_df=test_df, test_df2=test_df2)
-    print(idx[i], ",,,,,,,,,,,,")
-    print("save/" + watershed + "models/" + pa[i] +"gru.ckpt")
-    gru_model = model_gru(
-        window=multi_window, OUT_STEPS=rnn_out_steps, out_num_features=out_num_features, epochs=rnn_epochs,
-        training_flag=__RNN_TRAINING__, checkpoint_path="save/" + watershed + "models/" + pa[i] +"gru.ckpt")
-
-    val_nse[str(i)], val_pbias[str(i)], pred, label = multi_window.compa(
-        gru_model, plot_col=out_features[0], windows=multi_window.example3,
-        target_std=target_std, target_mean=target_mean, predict_day = rnn_predict_day)
-
-print("2021_01_31-21:30:00 --- 삭제해야함")
-
-
-print("2021_01_31-21:30:00 --- 살려야함 아래아래")
+#for i in range(len(pa)):
+#    WindowGenerator.make_dataset = make_dataset_water
+#    multi_window = WindowGenerator(
+#        input_width=rnn_in_setps, label_width=rnn_out_steps, shift=rnn_out_steps, out_features=[idx[i]],
+#        out_num_features=out_num_features, label_columns=dfff[0].columns, batch_size=rnn_batch_size,
+#        train_df=train_df, val_df=val_df, test_df=test_df, test_df2=test_df2)
+#    print(idx[i], ",,,,,,,,,,,,")
+#    print("save/" + watershed + "models/" + pa[i] +"gru.ckpt")
+#    gru_model = model_gru(
+#        window=multi_window, OUT_STEPS=rnn_out_steps, out_num_features=out_num_features, epochs=rnn_epochs,
+#        training_flag=__RNN_TRAINING__, checkpoint_path="save/" + watershed + "models/" + pa[i] +"gru.ckpt")
+#
+#    val_nse[str(i)], val_pbias[str(i)], pred, label = multi_window.compa(
+#        gru_model, plot_col=out_features[0], windows=multi_window.example3,
+#        target_std=target_std, target_mean=target_mean, predict_day = rnn_predict_day)
+#
+#print("2021_01_31-21:30:00 --- 삭제해야함")
+#
+#
+#print("2021_01_31-21:30:00 --- 살려야함 아래아래")
 '''
+#'''
+
+
+
 WindowGenerator.make_dataset = make_dataset_water
 multi_window = WindowGenerator(
     input_width=rnn_in_setps,label_width=rnn_out_steps, shift=rnn_out_steps,out_features=out_features,
@@ -241,46 +243,67 @@ if __RNN_TRAINING__:
     if not os.path.exists('save/' + watershed):
         os.makedirs('save/' + watershed)
 
+
+idx = [2, 4, 5, 6, 7]
+pa = ["do/", "toc/", "nitrogen/", "phosphorus/", "chlorophyll-a/"]
+
+indices = {name: i for i, name in enumerate(idx)}
+
+model_path = "save/" + watershed + "models/" + pa[indices[target_col_idx]]
+print("save model path : ", model_path)
+
 val_nse = {}
 val_pbias = {}
 
+ # +"gru.ckpt" -- path
 
-
-#multi_linear_model = model_multi_linear(
-#    window=multi_window, OUT_STEPS=rnn_out_steps, out_num_features=out_num_features, epochs=rnn_epochs,
-#    training_flag=__RNN_TRAINING__, checkpoint_path="save/"+watershed+"models/multi_linear.ckpt")
-#elman_model = model_elman(
-#    window=multi_window, OUT_STEPS=rnn_out_steps, out_num_features=out_num_features, epochs=rnn_epochs,
-#    training_flag=__RNN_TRAINING__, checkpoint_path="save/"+watershed+"models/elman.ckpt")
+multi_linear_model = model_multi_linear(
+    window=multi_window, OUT_STEPS=rnn_out_steps, out_num_features=out_num_features, epochs=rnn_epochs,
+    #training_flag=__RNN_TRAINING__, checkpoint_path="save/"+watershed+"models/multi_linear.ckpt")
+    training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"multi_linear.ckpt")
+elman_model = model_elman(
+    window=multi_window, OUT_STEPS=rnn_out_steps, out_num_features=out_num_features, epochs=rnn_epochs,
+    training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"elman.ckpt")
 gru_model = model_gru(
     window=multi_window, OUT_STEPS=rnn_out_steps, out_num_features=out_num_features, epochs=rnn_epochs,
-    training_flag=__RNN_TRAINING__, checkpoint_path="save/"+watershed+"models/gru.ckpt")
-#multi_lstm_model = model_multi_lstm(
-#    window=multi_window, OUT_STEPS=rnn_out_steps, out_num_features=out_num_features, epochs=rnn_epochs,
-#    training_flag=__RNN_TRAINING__, checkpoint_path="save/"+watershed+"models/multi_lstm.ckpt")
-#multi_conv_model = model_multi_conv(
-#    window=multi_window, OUT_STEPS=rnn_out_steps, out_num_features=out_num_features, epochs=rnn_epochs,
-#    training_flag=__RNN_TRAINING__, checkpoint_path="save/"+watershed+"models/multi_conv.ckpt")
+    training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"gru.ckpt")
+multi_lstm_model = model_multi_lstm(
+    window=multi_window, OUT_STEPS=rnn_out_steps, out_num_features=out_num_features, epochs=rnn_epochs,
+    training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"multi_lstm.ckpt")
+multi_conv_model = model_multi_conv(
+    window=multi_window, OUT_STEPS=rnn_out_steps, out_num_features=out_num_features, epochs=rnn_epochs,
+    training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"multi_conv.ckpt")
 
 
-#val_nse['Linear'], val_pbias['Linear'], pred, label = multi_window.compa(
-#     multi_linear_model, plot_col=out_features[0], windows=multi_window.example,
-#     target_std=target_std, target_mean=target_mean, predict_day = rnn_predict_day)
-#val_nse['ELMAN'], val_pbias['ELMAN'], pred, label = multi_window.compa(
-#     elman_model, plot_col=out_features[0], windows=multi_window.example3,
-#     target_std=target_std, target_mean=target_mean, predict_day = rnn_predict_day)
+val_nse['Linear'], val_pbias['Linear'], pred, label = multi_window.compa(
+     multi_linear_model, plot_col=out_features[0], windows=multi_window.example,
+     target_std=target_std, target_mean=target_mean, predict_day = rnn_predict_day)
+val_nse['ELMAN'], val_pbias['ELMAN'], pred, label = multi_window.compa(
+     elman_model, plot_col=out_features[0], windows=multi_window.example3,
+     target_std=target_std, target_mean=target_mean, predict_day = rnn_predict_day)
 val_nse['GRU'], val_pbias['GRU'], pred, label = multi_window.compa(
      gru_model, plot_col=out_features[0], windows=multi_window.example3,
      target_std=target_std, target_mean=target_mean, predict_day = rnn_predict_day)
-#val_nse['LSTM'], val_pbias['LSTM'], pred, label = multi_window.compa(
-#     multi_lstm_model, plot_col=out_features[0], windows=multi_window.example3,
-#     target_std=target_std, target_mean=target_mean, predict_day = rnn_predict_day)
-#val_nse['CONV'], val_pbias['CONV'], pred, label = multi_window.compa(
-#     multi_conv_model, plot_col=out_features[0], windows=multi_window.example3,
-#     target_std=target_std, target_mean=target_mean, predict_day = rnn_predict_day)
+val_nse['LSTM'], val_pbias['LSTM'], pred, label = multi_window.compa(
+     multi_lstm_model, plot_col=out_features[0], windows=multi_window.example3,
+     target_std=target_std, target_mean=target_mean, predict_day = rnn_predict_day)
+val_nse['CONV'], val_pbias['CONV'], pred, label = multi_window.compa(
+     multi_conv_model, plot_col=out_features[0], windows=multi_window.example3,
+     target_std=target_std, target_mean=target_mean, predict_day = rnn_predict_day)
 
-'''
-print("2021_01_31-21:30:00 --- 살려야함 위에위에")
+print("save model path : ", model_path)
+print('run : ', run_num)
+print('tartget : ', rnn_target_column)
+print('target col index : ', target_col_idx)
+print('Linear : ', val_nse['Linear'])
+print('ELMAN : ', val_nse['ELMAN'])
+print('GRU : ', val_nse['GRU'])
+print('LSTM : ', val_nse['LSTM'])
+print('CNN : ', val_nse['CONV'])
+print('GAIN_VAL_PER : ', gain_val_performance['0'])
+print('GAIN_TEST_PER : ', gain_performance['0'])
+
+#print("2021_01_31-21:30:00 --- 살려야함 위에위에")
 
 x = np.arange(len(val_nse))
 width = 0.35
@@ -296,8 +319,8 @@ plt.show()
 # multi_val_performance['Linear'] = multi_linear_model.evaluate(multi_window.val.repeat(-1), steps=100)
 # multi_performance['Linear'] = multi_linear_model.evaluate(multi_window.test.repeat(-1), verbose=0, steps=100)
 #
-# multi_val_performance['ELMAN_RNN'] = elman_model.evaluate(multi_window.val.repeat(-1), steps=100)
-# multi_performance['ELMAN_RNN'] = elman_model.evaluate(multi_window.test.repeat(-1), verbose=1, steps=100)
+# multi_val_performance['ELMAN'] = elman_model.evaluate(multi_window.val.repeat(-1), steps=100)
+# multi_performance['ELMAN'] = elman_model.evaluate(multi_window.test.repeat(-1), verbose=1, steps=100)
 #
 # multi_val_performance['GRU'] = gru_model.evaluate(multi_window.val.repeat(-1), steps=100)
 # multi_performance['GRU'] = gru_model.evaluate(multi_window.test.repeat(-1), verbose=1, steps=100)
@@ -307,13 +330,8 @@ plt.show()
 #
 # multi_val_performance['Conv'] = multi_conv_model.evaluate(multi_window.val)
 # multi_performance['Conv'] = multi_conv_model.evaluate(multi_window.test, verbose=0)
-
-
-
-
 #multi_window.SetStandMean(std=train_std, mean=train_mean)
 #multi_window.compa3(multi_linear_model, plot_col=out_features[0])
-
 #multi_window.plot24(multi_linear_model, plot_col=out_features[0])
 #
 # x = np.arange(len(multi_performance))
@@ -329,3 +347,7 @@ plt.show()
 # plt.ylabel(f'MAE (average over all times and outputs)')
 # _ = plt.legend()
 # plt.show()
+
+
+
+
