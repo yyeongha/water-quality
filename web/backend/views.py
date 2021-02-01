@@ -134,7 +134,7 @@ def file_upload(request):
         fs = FileSystemStorage(location=settings.UPLOAD_ROOT, base_url=settings.UPLOAD_URL)
         fs.save(myfile.name, myfile)
 
-        read_xlsx(settings.UPLOAD_ROOT)
+        read_xlsx(settings.UPLOAD_ROOT, request.POST.get('start_date'), request.POST.get('end_date'))
         # upload file unzip save
         if myfile.name[-4:] == '.zip':
             with zipfile.ZipFile(myfile, 'r') as existing_zip:
@@ -346,7 +346,7 @@ def call_model(request):
         return JsonResponse({'web_info': parameters['web_info'], "x": x, "y": y})
 
 
-def read_xlsx(files_Path):
+def read_xlsx(files_Path, start_date=None, end_date=None):
     files_Path = files_Path + "/"
     file_name_and_time_lst = []
     # 해당 경로에 있는 파일들의 생성시간을 함께 리스트로 넣어줌
@@ -362,21 +362,19 @@ def read_xlsx(files_Path):
 
     # df_loc = []
     path = os.path.join(files_Path, recent_file_name)
-    # df_loc.append(pd.read_excel(path))
     df_loc = pd.DataFrame(pd.read_excel(path))
-    # print(df_loc)
-    # set date
-    start_date = '2019.01.20'
-    end_date = '2019.03.10'
+    first_column = str(df_loc.columns[0])
 
-    after_start_date = df_loc["측정날짜"] >= start_date
-    before_end_date = df_loc["측정날짜"] <= end_date
+    # set date
+    after_start_date = df_loc[first_column] >= start_date
+    before_end_date = df_loc[first_column] < end_date
     between_two_dates = after_start_date & before_end_date
 
     filtered_dates = df_loc.loc[between_two_dates]
     print(filtered_dates)
 
     return
+
 
 ##============backup==================
 # {'river_id':'R01'},{'key':'의암호'},{'key':'127.678647'},{'key':'37.877653'},
@@ -447,3 +445,10 @@ def read_xlsx(files_Path):
 #     {'river_id':'R04'},{'key':'NULL'},{'key':'NULL'},{'key':'NULL'},
 #     {'river_id':'R04'},{'key':'우치'},{'key':'126.888631'},{'key':'35.242171'},
 #     {'river_id':'R04'},{'key':'용봉'},{'key':'126.777789'},{'key':'35.073675'}
+
+def drawing(request):
+    return render(request, 'backend/draw.html')
+
+
+def drawing2(request):
+    return render(request, 'backend/draw2.html')

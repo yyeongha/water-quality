@@ -14,6 +14,8 @@ urlpatterns = [
     path('load_df', IndexViews.load_df, name='load_df'),
     path('predict', IndexViews.predict, name='predict'),
     path('call_model', IndexViews.call_model, name='call_model'),
+    path('drawing', IndexViews.drawing, name='drawing'),
+    path('drawing2', IndexViews.drawing2, name='drawing2'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

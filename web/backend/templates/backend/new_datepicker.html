@@ -76,13 +76,13 @@
 
             $('#start-train').change(function () {
                 _startTrain = new Date($("#start-train").val());
-                _endTrain = new Date();
-                _startPredict = new Date();
-                _endPredict = new Date();
+                _endTrain = new Date($("#start-train").val());
+                _startPredict = new Date($("#start-train").val());
+                _endPredict = new Date($("#start-train").val());
 
                 _endTrain.setDate(_startTrain.getDate() + 6);
                 _startPredict.setDate(_startTrain.getDate() + 7);
-                _endPredict.setDate(_startTrain.getDate() + 9);
+                _endPredict.setDate(_startTrain.getDate() + 11);
 
                 let AA = formatDate(_endTrain);
                 $('#end-train').datepicker("setDate", AA);
@@ -92,7 +92,6 @@
 
                 let CC = formatDate(_endPredict);
                 $('#end-predict').datepicker("setDate", CC);
-
             })
 
         });

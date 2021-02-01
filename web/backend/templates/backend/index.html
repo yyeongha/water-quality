@@ -6,7 +6,9 @@
     <div class="container pt-25 debug">
         <div id="loading">
             <img id="loading-image" src='../../../media/loading.svg' alt="Loading..."/>
+
         </div>
+
         <div class="text-center debug">
             <div>
                 <span class="main-title">수질 예측시스템</span>
@@ -57,7 +59,7 @@
                 </div>
                 <div>
                     <div class="title">대상 지점</div>
-                    <H2 id="target_point"> ads</H2>
+                    <H2 id="target_point"> 미 지정</H2>
                 </div>
 
                 <div hidden>
@@ -76,6 +78,7 @@
         {% include "backend/new_datepicker.html" %}
         <div class="pd-20 debug">
             <div style="display: flex; flex-direction: row; justify-content: space-around; ">
+                {% csrf_token %}
                 <form method="post" enctype="multipart/form-data" id="fileUploadForm">
                     <label>측정 DATA 등록</label>
                     {% csrf_token %}
@@ -174,7 +177,7 @@
                     data: {
                         csrfmiddlewaretoken: $("#csrf_token").val(),
                         "key": $('#column_list').val(),
-                        "model":model_activate,
+                        "model": model_activate,
                         "start_date": formatDate(_startTrain),
                         "end_date": formatDate(_endTrain),
                         "predict_start_date": formatDate(_startPredict),
@@ -253,7 +256,10 @@
         $("#btnSubmit").click(function (event) {
             event.preventDefault();
             var form = $('#fileUploadForm')[0];
+
             var data = new FormData(form);
+            data.append('start_date', $('#start-predict').val());
+            data.append('end_date', $('#end-predict').val());
             $.ajax({
                 type: "POST",
                 enctype: 'multipart/form-data',
@@ -304,6 +310,7 @@
             /*
             $.ajax({
                 url: "
+
 
 
 
