@@ -1,0 +1,24 @@
+{
+  "file": {
+    "watershed": "nak"
+  },
+  "gain": {
+    "train": true,
+    "max_epochs": 1,
+    "batch_size": 32,
+    "input_width": 120,
+    "label_width": 120,
+    "shift_width": 120,
+    "fill_width": 3,
+    "miss_rate": 0.15
+  },
+  "rnn": {
+    "train": true,
+    "max_epochs": 1,
+    "target_column": "do",
+    "batch_size": 128,
+    "input_width": 168,
+    "label_width": 120,
+    "predict_day": 5
+  }
+}
