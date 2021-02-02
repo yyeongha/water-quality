@@ -204,14 +204,14 @@ def dataset_slice(df, train_ratio, val_ratio, test_ratio):
     total_no = df.shape[0]
     train_no = int(total_no * train_ratio)
 
-    #val_no = int(total_no * (train_ratio + val_ratio))
+    val_no = int(total_no * (train_ratio + val_ratio))
 
-    #train_slice = slice(0, train_no)    #0.8
-    #val_slice = slice(train_no, val_no)   #0.1
-    #test_slice = slice(val_no, None)
-    train_slice = slice(0, train_no)  # 0.8
-    val_slice = slice(train_no, None)  # 0.1
-    test_slice = slice(0, None)
+    train_slice = slice(0, train_no)    #0.8
+    val_slice = slice(train_no, val_no)   #0.1
+    test_slice = slice(val_no, None)
+    #train_slice = slice(0, train_no)  # 0.8
+    #val_slice = slice(train_no, None)  # 0.1
+    #test_slice = slice(0, None)
 
     train = pd.DataFrame(df[train_slice])
     val = pd.DataFrame(df[val_slice])
@@ -247,7 +247,8 @@ def create_dataset_with_gain(gain, df, window = None, shape = None):
     #print(type(df))
     #print(type(df[0]))
 
-    for i in range(len(df)):
+    length = len(df)
+    for i in range(length):
         x = df[i].to_numpy()
         total_n = x.shape[0]
         n = (total_n // time_seq) * time_seq
@@ -274,11 +275,16 @@ def create_dataset_with_gain(gain, df, window = None, shape = None):
         #x_block_remain = x[-time_seq]
 
         # cut off sin, cos data
-        if (i > 0):
-            #x = x[:, :-4]
-            #y_gan = y_gan[:, :-4]
-            x = x[:, :]
-            y_gan = y_gan[:, :]
+        #if (i > 0):
+        #    #x = x[:, :-4]
+        #    #y_gan = y_gan[:, :-4]
+        #    x = x[:, :]
+        #    y_gan = y_gan[:, :]
+
+      #  if i<length-1:         #맨마지막전까지 사인코사인삭제
+      #      x = x[:, :-4]
+      #      y_gan = y_gan[:, :-4]
+
         gans.append(y_gan)
         oris.append(x)
 
@@ -308,7 +314,9 @@ def create_dataset_interpol(df, window=24*5):
     # ----------
     gans = []
     oris = []
-    for i in range(len(df)):
+
+    length = len(df)
+    for i in range(length):
         x = df[i].to_numpy()
         #total_n = x.shape[0]
         #n = (total_n // time_seq) * time_seq
@@ -318,6 +326,8 @@ def create_dataset_interpol(df, window=24*5):
         #if (i > 0):
             #x = x[:, :-4]
 
+        #if i < length - 1:   #맨마지막전까지 사인코사인삭제
+        #    x = x[:,:-4]
 
         oris.append(x)
 

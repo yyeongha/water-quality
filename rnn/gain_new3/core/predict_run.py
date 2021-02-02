@@ -19,8 +19,6 @@ def hour_to_day_mean(array):
 class prediction_for_webpage():
 
 
-    model_prediction_path = ["save/han/models/",""]
-
     dataframe_all_data_2016_2019 = None
 
 
@@ -31,13 +29,14 @@ class prediction_for_webpage():
         #self.mais_path = 'save/'
 
         #self.base_path = '../save/'
-        self.base_path = '../save/'
+        #self.base_path = '../save/'
+        self.base_path = 'save/'
 
         self.watershed_path = ['han/', 'nak/']
 
         self.options = [
             #[3,  9, 2, 6, 4, 8,  5, 6, 2], #최과장님이준거 방사성 2개로들어감 직접컬럼날림
-            [3, 9, 1, 6, 4, 8, 5, 6, 2],
+            [3,      9,   1,   6,   4,   8,    5,   6,   2],
             [8+4, 16+4, 1+4, 7+4, 1+4, 1+4, 17+4, 6+4, 5+4],
             ["자동/", "수질/", "방사성/", "TMS/", "유량/", "수위/", "총량/", "퇴적물/", "조류/"],
             [False, True, True, True, False, False, True, True, True],
@@ -112,12 +111,6 @@ class prediction_for_webpage():
             measerement_name = self.options[2][i]
             gain_skip = self.options[3][i]
 
-            #print(column_num)
-            #print(measurement_num)
-            #print(measerement_name)
-            #print(gain_skip)
-
-            df = []
             mean = []
             std = []
 
@@ -131,17 +124,15 @@ class prediction_for_webpage():
 
                 df_tmp = (df_tmp - mean[j]) / std[j]
 
-                df.append(df_tmp)
-
                 if gain_skip == False:
 
                     for file in self.loadfiles:
                         if os.path.isfile(base_path + measerement_name + file):
-                            shutil.copyfile(base_path + measerement_name + file, 'save/' + file)
+                            shutil.copyfile(base_path + measerement_name + file, self.base_path + file)
                         else:
-                            print('can not load file name : save/' + measerement_name + file)
+                            print('can not load file name : ' +base_path + measerement_name + file)
 
-                    gain = model_GAIN(shape=(120, measurement_num), gen_sigmoid=False, model_save_path='../save/')
+                    gain = model_GAIN(shape=(120, measurement_num), gen_sigmoid=False, model_save_path=self.base_path)
 
                     _, gan = create_dataset_with_gain(gain=gain, window=None, shape=(120, measurement_num),df=[df_tmp])
 
@@ -152,15 +143,12 @@ class prediction_for_webpage():
 
         #print(real_df_all)
 
-        train_df, val_df, test_df, test_df2 = dataset_slice(real_df_all, 0.8, 0.1, 0.1)
-        model_path = "save/" + self.watershed_path[watershed] + "models/" + self.target_model_path[target] + "gru.ckpt"
-        #print(model_path)
+        model_path = base_path + "models/" + self.target_model_path[target] + "gru.ckpt"
+        print(model_path)
         gru_model = model_gru(OUT_STEPS=5*24, checkpoint_path=model_path)
 
         input_hour = real_df_all.iloc[:24*7,:].to_numpy()
         input_hour = input_hour.reshape((1,) + input_hour.shape)
-        #print(input_hour.shape)
-
 
         label_hour = real_df_all.iloc[24 * 7 : 24 * 7 + 24 * 5, target_index:target_index + 1].to_numpy()
         label_hour = label_hour.reshape((1,) + label_hour.shape)
@@ -170,6 +158,10 @@ class prediction_for_webpage():
         pred_hour = gru_model.predict(input_hour)
         pred_hour = pred_hour * target_std + target_mean
         pred_day = hour_to_day_mean(pred_hour)
+
+        input_hour = input_hour[:,:,target_index:target_index+1]
+        input_hour = input_hour * target_std + target_mean
+        input_day = hour_to_day_mean(input_hour)
 
         nse_sum1 = 0
         nse_sum2 = 0
@@ -195,7 +187,7 @@ class prediction_for_webpage():
         nse = 1 - (nse_sum1 / nse_sum2)
         pbias = (pbias_sum1 / pbias_sum2) * 100
 
-        return nse, np.abs(pbias), label_day, pred_day
+        return nse, np.abs(pbias), input_day.reshape(-1), label_day.reshape(-1), pred_day.reshape(-1)
 
 
 #

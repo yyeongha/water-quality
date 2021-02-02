@@ -84,7 +84,8 @@ target_all = target_mean = target_std = 0
 gain_val_performance = {}
 gain_performance = {}
 
-for i in range(len(run_num)):
+length = len(run_num)
+for i in range(length):
 
     idx = run_num[i]
 
@@ -100,21 +101,17 @@ for i in range(len(run_num)):
     #else:
     df, times = make_dataframe(data_path+folder[idx], file_names[idx], colum_idx[idx], interpolation=interpolation_option[idx])
 
-
-
-
     df_all, train_mean, train_std, df = normalize(df)
 
-    print('df_all.shape1233333333333333333333333')
-    print(df_all.shape)
-    print(len(df))
-    print(df[0].shape)
+
 
     if i == 0:
         dfff = df
         target_all = df_all
         target_std = train_std
         target_mean = train_mean
+        start_year = str(times.iloc[0].year)
+        end_year = str(times.iloc[-1].year)
 
     if interpolation_option[idx][0] == False:
 
@@ -167,13 +164,21 @@ for i in range(len(run_num)):
         gan = create_dataset_interpol(window=gain_in_setps, df=df)
 
     if i == 0 :
+#        if i < length -1:
+#            gan = gan[:,:-4]  #맨마지막전까지 사인코사인삭제
+#            print(gan.shape)
         real_df_all = pd.DataFrame(gan)
     else:
+#        if i < length -1:
+#            gan = gan[:,:-4]  #맨마지막전까지 사인코사인삭제
+#            print(gan.shape)
         real_df_all = pd.concat([real_df_all, pd.DataFrame(gan)], axis=1)
 
 
-#train_df, val_df, test_df, test_df2 = dataset_slice(real_df_all, 0.8, 0.1, 0.1)
-train_df, val_df, test_df, test_df2 = dataset_slice(real_df_all, 0.7, 0.3, 0.0)
+print(real_df_all.shape)
+
+train_df, val_df, test_df, test_df2 = dataset_slice(real_df_all, 0.8, 0.1, 0.1)
+#train_df, val_df, test_df, test_df2 = dataset_slice(real_df_all, 0.7, 0.3, 0.0)
 
 print('-------------------prediction')
 print('-------------------prediction')
@@ -190,10 +195,12 @@ print("label_columns_indices:")
 print(label_columns_indices)
 
 
+target_dic = {"do":"do_value", "toc":"toc_value", "tn":"총질소_값", "tp":"총인_값", "chl-a":"클로로필-a_값"}
+
 print('target columns : ', rnn_target_column)
 num_features = dfff[0].shape[1]
 
-target_col_idx = label_columns_indices[rnn_target_column]
+target_col_idx = label_columns_indices[target_dic[rnn_target_column]]
 out_features = [target_col_idx]
 out_num_features = len(out_features)
 
@@ -204,33 +211,6 @@ print('out_num_features : ', out_num_features)
 #print("2021_01_31-21:30:00 --- 삭제해야함")
 val_nse = {}
 val_pbias = {}
-
-
-
-## "save/" + watershed + "models/" + pa[i] +"gru.ckpt" -- path
-#for i in range(len(pa)):
-#    WindowGenerator.make_dataset = make_dataset_water
-#    multi_window = WindowGenerator(
-#        input_width=rnn_in_setps, label_width=rnn_out_steps, shift=rnn_out_steps, out_features=[idx[i]],
-#        out_num_features=out_num_features, label_columns=dfff[0].columns, batch_size=rnn_batch_size,
-#        train_df=train_df, val_df=val_df, test_df=test_df, test_df2=test_df2)
-#    print(idx[i], ",,,,,,,,,,,,")
-#    print("save/" + watershed + "models/" + pa[i] +"gru.ckpt")
-#    gru_model = model_gru(
-#        window=multi_window, OUT_STEPS=rnn_out_steps, out_num_features=out_num_features, epochs=rnn_epochs,
-#        training_flag=__RNN_TRAINING__, checkpoint_path="save/" + watershed + "models/" + pa[i] +"gru.ckpt")
-#
-#    val_nse[str(i)], val_pbias[str(i)], pred, label = multi_window.compa(
-#        gru_model, plot_col=out_features[0], windows=multi_window.example3,
-#        target_std=target_std, target_mean=target_mean, predict_day = rnn_predict_day)
-#
-#print("2021_01_31-21:30:00 --- 삭제해야함")
-#
-#
-#print("2021_01_31-21:30:00 --- 살려야함 아래아래")
-'''
-#'''
-
 
 
 WindowGenerator.make_dataset = make_dataset_water
@@ -276,7 +256,7 @@ multi_conv_model = model_multi_conv(
 
 
 val_nse['Linear'], val_pbias['Linear'], pred, label = multi_window.compa(
-     multi_linear_model, plot_col=out_features[0], windows=multi_window.example,
+     multi_linear_model, plot_col=out_features[0], windows=multi_window.example3,
      target_std=target_std, target_mean=target_mean, predict_day = rnn_predict_day)
 val_nse['ELMAN'], val_pbias['ELMAN'], pred, label = multi_window.compa(
      elman_model, plot_col=out_features[0], windows=multi_window.example3,
@@ -292,61 +272,30 @@ val_nse['CONV'], val_pbias['CONV'], pred, label = multi_window.compa(
      target_std=target_std, target_mean=target_mean, predict_day = rnn_predict_day)
 
 print("save model path : ", model_path)
+print("year : " + start_year + " ~ "+ end_year)
 print('run : ', run_num)
-print('tartget : ', rnn_target_column)
+print('tatget : ', rnn_target_column)
 print('target col index : ', target_col_idx)
-print('Linear : ', val_nse['Linear'])
-print('ELMAN : ', val_nse['ELMAN'])
-print('GRU : ', val_nse['GRU'])
-print('LSTM : ', val_nse['LSTM'])
-print('CNN : ', val_nse['CONV'])
-print('GAIN_VAL_PER : ', gain_val_performance['0'])
-print('GAIN_TEST_PER : ', gain_performance['0'])
+print('Linear : ', val_nse['Linear'], val_pbias['Linear'])
+print('ELMAN : ', val_nse['ELMAN'], val_pbias['ELMAN'])
+print('GRU : ', val_nse['GRU'], val_pbias['GRU'])
+print('LSTM : ', val_nse['LSTM'], val_pbias['LSTM'])
+print('CNN : ', val_nse['CONV'], val_pbias['CONV'])
+print('GAIN_VAL_PER : ', gain_val_performance)
+print('GAIN_TEST_PER : ', gain_performance)
 
 #print("2021_01_31-21:30:00 --- 살려야함 위에위에")
 
 x = np.arange(len(val_nse))
 width = 0.35
 plt.figure()
+plt.title(watershed + '['+start_year+','+end_year+']' + rnn_target_column)
 plt.bar(x, val_pbias.values(), 0.3, label='PBIAS' )
 plt.bar(x + width, val_nse.values(), 0.3, label='NSE')
 plt.xticks(x,val_nse.keys(), rotation=45)
 _ = plt.legend()
 plt.show()
 
-
-#
-# multi_val_performance['Linear'] = multi_linear_model.evaluate(multi_window.val.repeat(-1), steps=100)
-# multi_performance['Linear'] = multi_linear_model.evaluate(multi_window.test.repeat(-1), verbose=0, steps=100)
-#
-# multi_val_performance['ELMAN'] = elman_model.evaluate(multi_window.val.repeat(-1), steps=100)
-# multi_performance['ELMAN'] = elman_model.evaluate(multi_window.test.repeat(-1), verbose=1, steps=100)
-#
-# multi_val_performance['GRU'] = gru_model.evaluate(multi_window.val.repeat(-1), steps=100)
-# multi_performance['GRU'] = gru_model.evaluate(multi_window.test.repeat(-1), verbose=1, steps=100)
-#
-# multi_val_performance['LSTM'] = multi_lstm_model.evaluate(multi_window.val)
-# multi_performance['LSTM'] = multi_lstm_model.evaluate(multi_window.test, verbose=0)
-#
-# multi_val_performance['Conv'] = multi_conv_model.evaluate(multi_window.val)
-# multi_performance['Conv'] = multi_conv_model.evaluate(multi_window.test, verbose=0)
-#multi_window.SetStandMean(std=train_std, mean=train_mean)
-#multi_window.compa3(multi_linear_model, plot_col=out_features[0])
-#multi_window.plot24(multi_linear_model, plot_col=out_features[0])
-#
-# x = np.arange(len(multi_performance))
-# width = 0.3
-# metric_name = 'mean_absolute_error'
-# metric_index = multi_conv_model.metrics_names.index('mean_absolute_error')
-# val_mae = [v[metric_index] for v in multi_val_performance.values()]
-# test_mae = [v[metric_index] for v in multi_performance.values()]
-# plt.figure()
-# plt.bar(x - 0.17, val_mae, width, label='Validation')
-# plt.bar(x + 0.17, test_mae, width, label='Test')
-# plt.xticks(ticks=x, labels=multi_performance.keys(), rotation=45)
-# plt.ylabel(f'MAE (average over all times and outputs)')
-# _ = plt.legend()
-# plt.show()
 
 
 

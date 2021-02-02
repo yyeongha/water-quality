@@ -27,9 +27,10 @@ prediction = prediction_for_webpage()
 ## Target index =  0: 용존산소(DO), 1:총유기탄소(TOC) 2:총질소(TN) 3:총인(TP), 4:클로로필-a(Chl-a)
 
 #for i in range(5):
-nse, pbias, label, pred = prediction.run(dataframe=df, watershed=0, target=0)
+nse, pbias, input, label, pred = prediction.run(dataframe=df, watershed=0, target=1)
 
 print(nse)
 print(pbias)
+print(input)
 print(label)
 print(pred)
