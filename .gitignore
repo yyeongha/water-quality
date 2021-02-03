@@ -2,4 +2,7 @@
 rnn/__pycache__
 *.index
 *.data-00000-of-00001
+*.ckpt
+*.h5
+checkpoint
 gain/
