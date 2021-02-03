@@ -1,5 +1,4 @@
 .DS_Store
 rnn/__pycache__
-gain/data/
-gain/output/
-gain/__pycache__
+.h5
+gain/
