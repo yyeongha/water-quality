@@ -23,12 +23,16 @@
         var _predictWater = new Chart(predictWater, {
             type: 'bar',
             data: {
-                labels: ['first', 'second', 'third'],
+                labels: ['first', 'second', 'third', 'forth', 'fifth'],
                 datasets: [
                     {
                         label: '예측 수질',
-                        data: [3, 2, 3],
-                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        data: [3, 2, 3, 7, 5],
+                        backgroundColor: ['rgba(66,238,46,0.95)',
+                                            'rgb(152,235,78)',
+                                            'rgb(218,238,99)',
+                                            'rgb(235,183,114)',
+                                            'rgb(235,20,37)']
                     }
                 ]
             },
@@ -51,28 +55,28 @@
         var _predictGraph = new Chart(predictGraph, {
             type: 'line',
             data: {
-                labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
                 datasets: [
                     {
                         label: '기준값',
-                        data: [0, 0, 2, 0, 1.8, 0, 2, 0, 2, 0],
+                        data: [0, 0, 2, 0, 1.8, 0, 2, 0, 2, 0, 3, 5],
                         borderColor: 'rgba(255, 99, 132, 0.2)',
                         fill: false,
-                        lineTension: 0,
+                        //lineTension: 0,
                     },
                     {
                         label: '실측값',
-                        data: [1, -1, 1, 0, 1.5, 0, 1.8, 0, 1.7, 0.3],
+                        data: [1, -1, 1, 0, 1.5, 0, 1.8, 0, 1.7, 0.3, 1.2, 2],
                         borderColor: 'rgba(99,235,181,0.56)',
                         fill: false,
-                        lineTension: 0,
+                        //lineTension: 0,
                     },
                     {
                         label: '예측값',
-                        data: [1, -1, 1, 0, 1.5, 0, 1.8, 0, 1.7, 0.3,],
+                        data: [1, -1, 1, 0, 1.5, 0, 1.8, 0, 1.7, 0.3, 1.9, 3],
                         borderColor: 'rgba(31,43,235,0.44)',
                         fill: false,
-                        lineTension: 0,
+                        //lineTension: 0,
                     },
                 ]
             },
@@ -80,7 +84,8 @@
                 scales: {
                     yAxes: [{
                         ticks: {
-                            beginAtZero: true,
+                            //기준값을 0으로 설정
+                            beginAtZero: false,
                         }
                     }]
                 }

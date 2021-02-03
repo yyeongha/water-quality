@@ -10,10 +10,10 @@ from tensorflow.keras.layers import Dense
 from tensorflow.keras.optimizers import Adam
 from tensorflow import keras
 
-from core.gain import GAIN
-from core.gain_data_generator import GainDataGenerator
-from core.window_generator import WindowGenerator
-from core.utils import *
+from gain_new.core.gain import GAIN
+from gain_new.core.gain_data_generator import GainDataGenerator
+from gain_new.core.window_generator import WindowGenerator
+from gain_new.core.utils import *
 
 
 # input parameter

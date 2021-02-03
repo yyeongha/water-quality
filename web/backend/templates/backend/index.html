@@ -41,13 +41,11 @@
         </div>
 
 
-        {#        {% include "backend/sample_map.html" %}#}
         {#        {% include "backend/new_map.html" %}#}
         {% include "backend/new_map3.html" %}
 
-
-        {#        {% include "backend/sample_datepicker.html" %}#}
         {% include "backend/sample_table.html" %}
+
         <div class="pd-20 debug">
             <div style="display: flex; flex-direction: row;">
 
@@ -83,8 +81,11 @@
                     <label>측정 DATA 등록</label>
                     {% csrf_token %}
                     <input type="file" name="myfile">
-                    <button type="submit" class="btn btn-light" id="btnSubmit">
-                        <i class="fas fa-download mr-8"></i>모델 불러오기
+                    <button type="submit" class="btn btn-light" id="activate">
+                        <i class="fas fa-download mr-8"></i>activate
+                    </button>
+                    <button type="button" class="btn btn-light" onclick="deactivate()" >
+                        <i class="fas fa-download mr-8"></i>deactivate
                     </button>
                 </form>
                 <button type="button" type='submit' class="btn btn-light" onclick="file_download()" download>
@@ -186,37 +187,41 @@
                     type: "POST",
                     dataType: "json"
                 }).done(function (data) {
-                    let water_arr = Array();
-                    let graph_arr = Array();
+                    if (data.return == 'fail') {
+                        alert("predict_fail");
+                    } else {
+                        let water_arr = Array();
+                        let graph_arr = Array();
 
-                    $('#loading').hide();
-                    // chart_data
-                    _predictWater.data.datasets[0].data = data.predict_water;
-                    // chart_column
-                    _predictWater.options.title.text = data.column;
-                    // chart_labels
-                    for (let i = 7; i < 10; i++) {
-                        tmp_date = new Date();
-                        tmp_date.setDate(_startTrain.getDate() + i);
-                        let A = formatDate(tmp_date);
-                        water_arr.push(A)
+                        $('#loading').hide();
+                        // chart_data
+                        _predictWater.data.datasets[0].data = data.predict_water;
+                        _predictWater.data.datasets[0].backgroundColor = data.color;
+                        // chart_column
+                        _predictWater.options.title.text = data.column;
+                        // chart_labels
+                        for (let i = 7; i < 12; i++) {
+                            tmp_date = new Date($("#start-train").val());
+                            tmp_date.setDate(_startTrain.getDate() + i);
+                            let A = formatDate(tmp_date);
+                            water_arr.push(A)
 
+                        }
+                        _predictWater.data.labels = water_arr
+                        _predictWater.update();
+                        for (let i = 0; i < 12; i++) {
+                            tmp_date = new Date($("#start-train").val());
+                            tmp_date.setDate(_startTrain.getDate() + i);
+                            let A = formatDate(tmp_date);
+                            graph_arr.push(A)
+
+                        }
+                        _predictGraph.data.labels = graph_arr
+                        _predictGraph.data.datasets[0].data = data.predict_cahrt.origin;
+                        _predictGraph.data.datasets[1].data = data.predict_cahrt.origin_2;
+                        _predictGraph.data.datasets[2].data = data.predict_cahrt.predict;
+                        _predictGraph.update();
                     }
-                    _predictWater.data.labels = water_arr
-                    _predictWater.update();
-                    for (let i = 0; i < 10; i++) {
-                        tmp_date = new Date();
-                        tmp_date.setDate(_startTrain.getDate() + i);
-                        let A = formatDate(tmp_date);
-                        graph_arr.push(A)
-
-                    }
-                    _predictGraph.data.labels = graph_arr
-                    _predictGraph.data.datasets[0].data = data.predict_cahrt.origin;
-                    _predictGraph.data.datasets[1].data = data.predict_cahrt.predict;
-                    _predictGraph.data.datasets[2].data = data.predict_cahrt.origin_2;
-                    _predictGraph.update();
-
                 })
             }
 
@@ -253,12 +258,12 @@
             })
         };
 
-        $("#btnSubmit").click(function (event) {
+        $("#activate").click(function (event) {
             event.preventDefault();
             var form = $('#fileUploadForm')[0];
 
             var data = new FormData(form);
-            data.append('start_date', $('#start-predict').val());
+            data.append('start_date', $('#start-train').val());
             data.append('end_date', $('#end-predict').val());
             $.ajax({
                 type: "POST",
@@ -270,15 +275,34 @@
                 cache: false,
                 timeout: 600000,
                 success: function (data) {
+                    $('#activate').css('border', 'solid');
+                    $('#deactivate').css('border', 'none');
                     alert("complete");
                 },
                 error: function (e) {
                     console.log("ERROR : ", e);
+                    $('#activate').css('border', 'none');
+                    $('#deactivate').css('border', 'solid');
                     alert("fail");
                 }
             });
-
         });
+
+        function deactivate() {
+            $.ajax({
+                url: "{% url "deactivate" %}",
+                data: {
+                    csrfmiddlewaretoken: $("#csrf_token").val()
+                },
+                type: "POST",
+                dataType: "json"
+            }).done(function (data) {
+                $('#activate').css('border', 'none');
+                $('#deactivate').css('border', 'solid black');
+                alert("deactivate");
+            });
+        }
+
         $("#btnSubmits").click(function (event) {
             event.preventDefault();
             var form = $('#fileUploadForms')[0];
@@ -310,6 +334,8 @@
             /*
             $.ajax({
                 url: "
+
+
 
 
 

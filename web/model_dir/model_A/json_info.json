@@ -60,13 +60,13 @@
       "tp": "총인(T-P)"
     },
     "map_info": [
-        {"target": "target_a", "location": "가평", "y": 37.673854, "x": 127.38222, "rch_id": "", "rch_did": "", "node_id": "", "node_did": "", "cat_id": 10150601, "cat_did": 1015060100},
-        {"target": "target_a", "location": "의암호", "y": 37.877653, "x": 127.678647, "rch_id": "", "rch_did": "", "node_id": "", "node_did": "", "cat_id": 10130201, "cat_did": 1013020100},
-        {"target": "target_a", "location": "화천", "y": 38.09903, "x": 127.709603, "rch_id": 10100901, "rch_did": 1010090100, "node_id": "", "node_did": "", "cat_id": 10100901, "cat_did": 1010090100},
+        {"target": "target_a", "location": "가평", "y": 37.673854, "x": 127.38222, "rch_id": "", "rch_did": "", "node_id": "", "node_did": "", "cat_id": 10150601, "cat_did": 11111},
+        {"target": "target_a", "location": "의암호", "y": 37.877653, "x": 127.678647, "rch_id": "", "rch_did": "", "node_id": "", "node_did": "", "cat_id": 10130201, "cat_did": 11111},
+        {"target": "target_a", "location": "화천", "y": 38.09903, "x": 127.709603, "rch_id": 10100901, "rch_did": 1010090100, "node_id": "", "node_did": "", "cat_id": 10100901, "cat_did": 11111},
 
-          {"target": "target_b", "location": "가평천3", "y": 37.828611, "x": 127.51925, "rch_id": 10130617, "rch_did": 1013061700, "node_id": "", "node_did": "", "cat_id": 10130617, "cat_did": 1013061700},
+          {"target": "target_b", "location": "가평천3", "y": 37.828611, "x": 127.51925, "rch_id": 10130617, "rch_did": 1013061700, "node_id": "", "node_did": "", "cat_id": 10130617, "cat_did": 11111},
 {"target": "target_b", "location": "대성리", "y": 37.678122, "x": 127.382125, "rch_id": "", "rch_did": "", "node_id": "", "node_did": "", "cat_id": 10150601, "cat_did": 1015060100},
-{"target": "target_b", "location": "청평댐3", "y": 37.708, "x": 127.478361, "rch_id": 10150204, "rch_did": 1015020400, "node_id": "", "node_did": "", "cat_id": 10150204, "cat_did": 1015020400},
+{"target": "target_b", "location": "청평댐3", "y": 37.708, "x": 127.478361, "rch_id": 10150204, "rch_did": 1015020400, "node_id": "", "node_did": "", "cat_id": 10150204, "cat_did": 11111},
 {"target": "target_b", "location": "남이섬", "y": 37.736894, "x": 127.517644, "rch_id": 10130710, "rch_did": 1013071000, "node_id": "", "node_did": "", "cat_id": 10130708, "cat_did": 1013070800},
 {"target": "target_b", "location": "가평천3", "y": 37.828611, "x": 127.51925, "rch_id": 10130617, "rch_did": 1013061700, "node_id": "", "node_did": "", "cat_id": 10130617, "cat_did": 1013061700},
 {"target": "target_b", "location": "춘성교", "y": 37.84325, "x": 127.554638, "rch_id": 10130405, "rch_did": 1013040500, "node_id": "", "node_did": "", "cat_id": 10130405, "cat_did": 1013040500},
