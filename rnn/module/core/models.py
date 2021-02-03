@@ -4,6 +4,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import tensorflow as tf
 
+def nse(y_true, y_pred):
+    mean = tf.reduce_mean(y_true)
+    return 1. - tf.reduce_sum(tf.square(y_true-y_pred))/tf.reduce_sum(tf.square(y_true-mean))
+
 def compile_and_fit(model, window, patience=1000, epochs=400):
     early_stopping = tf.keras.callbacks.EarlyStopping(
         monitor='val_loss',
@@ -13,15 +17,11 @@ def compile_and_fit(model, window, patience=1000, epochs=400):
     model.compile(
         loss=tf.losses.MeanSquaredError(),
         optimizer=tf.optimizers.Adam(),
-        metrics=[tf.metrics.MeanAbsoluteError()])
-
-#   model.compile(loss=tf.losses.MeanSquaredError(),
-#                 optimizer=tf.optimizers.Adam(),
-#                 metrics=[tf.metrics.MeanSquaredError()])
-  #model.compile(loss=GAIN.RMSE_loss)
+        metrics=[tf.metrics.MeanAbsoluteError(), nse])
 
     history = model.fit(
-        window.train, epochs=epochs,
+        #window.train, epochs=epochs,
+        window.train, epochs=epochs, steps_per_epoch=10,
         validation_data=window.val,
         callbacks=[early_stopping])
     return history
@@ -91,25 +91,29 @@ def ElmanModel(OUT_STEPS, out_num_features):
     ])
     return elman_model
 
+#def GRUModel(OUT_STEPS, out_num_features):
+#    gru_model = tf.keras.Sequential([
+#        tf.keras.layers.GRU(128, return_sequences=False),
+#        tf.keras.layers.Dense(OUT_STEPS * out_num_features,
+#                              kernel_initializer=tf.initializers.zeros),
+#        # Shape => [batch, out_steps, features]
+#        tf.keras.layers.Reshape([OUT_STEPS, out_num_features])
+#    ])
+#    return gru_model
+
 def GRUModel(OUT_STEPS, out_num_features):
     gru_model = tf.keras.Sequential([
-        # Take the last time step.
-        # Shape [batch, time, features] => [batch, 1, features]
-        #     tf.keras.layers.GRU(128, return_sequences=True),
-        #     tf.keras.layers.GRU(128, return_sequences=True),
-        #     tf.keras.layers.GRU(128, return_sequences=True),
-        #     tf.keras.layers.GRU(128, return_sequences=True),
-        #     tf.keras.layers.GRU(128, return_sequences=True),
-        #     tf.keras.layers.GRU(128, return_sequences=True),
-        #     tf.keras.layers.GRU(128, return_sequences=True),
-        #     tf.keras.layers.GRU(128, return_sequences=True),
-        tf.keras.layers.GRU(128, return_sequences=False),
+        tf.keras.layers.GRU(256, return_sequences=True, dropout=0.1, recurrent_dropout=0.5),
+        tf.keras.layers.GRU(256, return_sequences=False, dropout=0.1, recurrent_dropout=0.5),
+        tf.keras.layers.Dropout(0.5),
         tf.keras.layers.Dense(OUT_STEPS * out_num_features,
                               kernel_initializer=tf.initializers.zeros),
         # Shape => [batch, out_steps, features]
         tf.keras.layers.Reshape([OUT_STEPS, out_num_features])
     ])
     return gru_model
+
+
 
 
 def MultiLSTMModel(OUT_STEPS, out_num_features):

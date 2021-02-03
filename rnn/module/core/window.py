@@ -140,9 +140,12 @@ class WindowGenerator():
 #WindowGenerator.plot = plot
 
 
+#    @property
+#    def train(self):
+#        return self.make_dataset(self.train_df)
     @property
     def train(self):
-        return self.make_dataset(self.train_df)
+        return self.make_dataset(self.train_df, train=True)
 
     @property
     def val(self):
@@ -325,7 +328,7 @@ class WindowGenerator():
 
 
 #class GainWindowGenerator(WindowGenerator):
-def make_dataset_gain(self, data):
+def make_dataset_gain(self, data, train=False):
     dg = GainDataGenerator(
         self.df,
         #data,
@@ -357,7 +360,7 @@ WindowGenerator.make_dataset = make_dataset_gain
 
 
 #class WaterWindowGenerator(WindowGenerator):
-def make_dataset_water(self, data):
+def make_dataset_water(self, data, train=False):
 
     dg = WaterDataGenerator(
         data,
@@ -395,8 +398,13 @@ def make_dataset_water(self, data):
     #print(self.input_width, self.label_width)
     #print('ds-----------------------------')
     #print(ds)
+    if train:
+        # return ds.repeat(10).prefetch(3)
+        return ds.repeat(-1).prefetch(5)
+    else:
+        return ds.prefetch(5)
 
-    return ds
+    #return ds
 
 
 

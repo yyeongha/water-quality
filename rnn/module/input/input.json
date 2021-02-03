@@ -3,8 +3,8 @@
     "watershed": "han"
   },
   "gain": {
-    "train": false,
-    "max_epochs": 2000,
+    "train": true,
+    "max_epochs": 1,
     "batch_size": 32,
     "input_width": 120,
     "label_width": 120,
@@ -14,7 +14,7 @@
   },
   "rnn": {
     "train": true,
-    "max_epochs": 150,
+    "max_epochs": 1,
     "target_column": "do",
     "batch_size": 128,
     "input_width": 168,
