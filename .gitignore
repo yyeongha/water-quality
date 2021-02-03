@@ -1,4 +1,6 @@
 .DS_Store
 rnn/__pycache__
 .h5
+.index
+.data-00000-of-00001
 gain/
