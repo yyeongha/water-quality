@@ -219,9 +219,7 @@ multi_window = WindowGenerator(
     out_num_features=out_num_features,label_columns=dfff[0].columns, batch_size=rnn_batch_size,
     train_df=train_df, val_df=val_df, test_df=test_df, test_df2=test_df2)
 
-if __RNN_TRAINING__:
-    if not os.path.exists('save/' + watershed):
-        os.makedirs('save/' + watershed)
+
 
 
 idx = [2, 4, 5, 6, 7]
@@ -231,6 +229,12 @@ indices = {name: i for i, name in enumerate(idx)}
 
 model_path = "save/" + watershed + "models/" + pa[indices[target_col_idx]]
 print("save model path : ", model_path)
+
+if __RNN_TRAINING__:
+    if not os.path.exists('save/' + watershed):
+        os.makedirs('save/' + watershed)
+    if not os.path.exists(model_path):
+        os.makedirs(model_path)
 
 val_nse = {}
 val_pbias = {}
