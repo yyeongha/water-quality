@@ -102,3 +102,82 @@ def interpolate(np_data, max_gap=3):
     data = data.interpolate(method='polynomial', order=5, limit=max_gap, axis=0).bfill()[mask]
     return data.to_numpy()
     # return data
+
+
+def hour_to_day_mean(array):
+    time = 24
+    array = array.reshape((array.shape[0], array.shape[1] // time, time, array.shape[2]))
+    array = array.mean(2)
+    return array
+
+
+def compa(model=None, df=None, plot_col=0, input_width=7 * 24, label_width=5 * 24, target_std=None, target_mean=None,
+          predict_day=4):
+    # print(df.shape)
+    # print(plot_col)
+
+    width = input_width + label_width
+
+    length = df.shape[0]
+    length -= width
+
+    inputs = []
+    labels = []
+
+    for i in range(0, length, 24):
+        dataset = df.iloc[i:i + width].to_numpy()
+        input = dataset[:input_width]
+        label = dataset[input_width:, plot_col:plot_col + 1]
+
+        input = input.reshape((-1,) + input.shape)
+        label = label.reshape((-1,) + label.shape)
+
+        inputs.append(input)
+        labels.append(label)
+
+    inputs = np.concatenate(inputs, axis=0)
+    labels = np.concatenate(labels, axis=0)
+
+    predictions = model(inputs).numpy()
+
+    print("input : ", inputs.shape, "labels : ", labels.shape, "predictions : ", predictions.shape)
+    # print(predictions.shape)
+
+    predictions = predictions * target_std[plot_col] + target_mean[plot_col]
+    labels = labels * target_std[plot_col] + target_mean[plot_col]
+
+    pred_day = hour_to_day_mean(predictions)
+
+    label_day = hour_to_day_mean(labels)
+
+    inputs_target = inputs[:, :, plot_col:plot_col + 1]
+    inputs_target = inputs_target * target_std[plot_col] + target_mean[plot_col]
+    inputs_day = hour_to_day_mean(inputs_target)
+
+    o1 = np.mean(labels)
+    nse1 = ((label_day - pred_day) ** 2).sum(axis=0)
+    nse2 = ((label_day - o1) ** 2).sum(axis=0)
+    nse3 = 1 - (nse1[predict_day] / nse2[predict_day])
+
+    pbias1 = (label_day - pred_day).sum(axis=0)
+    pbias2 = (label_day).sum(axis=0)
+    pbias3 = (pbias1[predict_day] / pbias2[predict_day]) * 100
+
+    mae = (np.abs(label_day - pred_day)).mean()
+    mse = ((label_day - pred_day)**2).mean()
+    rmse = np.sqrt(((label_day - pred_day)**2).mean())
+
+    #print('------------------------')
+    labels_test = labels.mean(axis=1)
+    predis_test = inputs_target.mean(axis=1)
+
+    nse2_1 = ((labels_test - predis_test) ** 2).sum()
+    nse2_2 = ((labels_test - o1) ** 2).sum()
+    nse2_3 = 1 - (nse2_1 / nse2_2)
+
+    pbias2_1 = (labels_test - predis_test).sum()
+    pbias2_2 = labels_test.sum()
+    pbias2_3 = pbias2_1 / pbias2_2 * 100
+
+    return nse3, np.abs(pbias3), pred_day, labels
+
