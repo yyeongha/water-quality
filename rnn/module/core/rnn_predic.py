@@ -9,8 +9,10 @@ def model_multi_linear(OUT_STEPS, out_num_features, window = None, epochs = 2000
     model = MultiLinearModel(OUT_STEPS, out_num_features)
     #checkpoint_path = "save/multi_linear_model.ckpt"
     if training_flag == True:
-        history = compile_and_fit(model, window, epochs=epochs)
-        model.save_weights(checkpoint_path)
+        history = compile_and_fit(model, window, epochs=epochs, save_path = checkpoint_path)
+        model.load_weights(checkpoint_path)
+#        model = tf.keras.models.load_model('save'+'/best_model.h5')
+        #model.save_weights(checkpoint_path)
     else :
         model.load_weights(checkpoint_path)
         compile(model)
@@ -22,7 +24,7 @@ def model_elman(OUT_STEPS, out_num_features, window, epochs, training_flag, chec
     model = ElmanModel(OUT_STEPS, out_num_features)
     #checkpoint_path = "save/elman_model.ckpt"
     if training_flag == True:
-        history = compile_and_fit(model, window, epochs=epochs)
+        history = compile_and_fit(model, window, epochs=epochs, save_path = checkpoint_path)
         model.save_weights(checkpoint_path)
     else :
         model.load_weights(checkpoint_path)
@@ -37,7 +39,7 @@ def model_gru(OUT_STEPS=24*5, out_num_features=1, window=None, epochs=100, train
     model = GRUModel(OUT_STEPS, out_num_features)
     #checkpoint_path = "save/gru_model.ckpt"
     if training_flag == True:
-        history = compile_and_fit(model,window, epochs=epochs)
+        history = compile_and_fit(model,window, epochs=epochs, save_path = checkpoint_path)
         model.save_weights(checkpoint_path)
     else:
         model.load_weights(checkpoint_path)
@@ -53,7 +55,7 @@ def model_multi_lstm(OUT_STEPS, out_num_features, window, epochs, training_flag,
     model = MultiLSTMModel(OUT_STEPS, out_num_features)
     #checkpoint_path = "save/multi_lstm_model.ckpt"
     if training_flag == True:
-        history = compile_and_fit(model, window, epochs=epochs)
+        history = compile_and_fit(model, window, epochs=epochs, save_path = checkpoint_path)
         model.save_weights(checkpoint_path)
     else:
         model.load_weights(checkpoint_path)
@@ -67,7 +69,7 @@ def model_multi_conv(OUT_STEPS, out_num_features, window, epochs, training_flag,
     model = MultiConvModel(OUT_STEPS, out_num_features)
     #checkpoint_path = "save/multi_conv_model.ckpt"
     if training_flag == True:
-        history = compile_and_fit(model, window, epochs=epochs)
+        history = compile_and_fit(model, window, epochs=epochs, save_path = checkpoint_path)
         model.save_weights(checkpoint_path)
     else:
         model.load_weights(checkpoint_path)

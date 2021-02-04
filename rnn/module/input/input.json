@@ -4,7 +4,7 @@
   },
   "gain": {
     "train": false,
-    "max_epochs": 50,
+    "max_epochs": 1,
     "batch_size": 32,
     "input_width": 120,
     "label_width": 120,
@@ -14,7 +14,7 @@
   },
   "rnn": {
     "train": true,
-    "max_epochs": 7,
+    "max_epochs": 1,
     "target_column": "tp",
     "batch_size": 128,
     "input_width": 168,

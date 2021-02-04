@@ -3,12 +3,18 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import tensorflow as tf
+import tensorflow.keras as keras
+
 
 def nse(y_true, y_pred):
     mean = tf.reduce_mean(y_true)
     return 1. - tf.reduce_sum(tf.square(y_true-y_pred))/tf.reduce_sum(tf.square(y_true-mean))
 
-def compile_and_fit(model, window, patience=1000, epochs=400):
+def compile_and_fit(model, window, patience=1000, epochs=400, save_path=None):
+    checkpoint = keras.callbacks.ModelCheckpoint(
+        save_path, monitor='val_loss', verbose=1,
+        save_best_only=True, save_weights_only= True, mode='auto', period=1)
+
     early_stopping = tf.keras.callbacks.EarlyStopping(
         monitor='val_loss',
         patience=patience,
@@ -23,7 +29,7 @@ def compile_and_fit(model, window, patience=1000, epochs=400):
         #window.train, epochs=epochs,
         window.train, epochs=epochs, steps_per_epoch=10,
         validation_data=window.val,
-        callbacks=[early_stopping])
+        callbacks=[early_stopping, checkpoint])
     return history
 
 def compile(model):
