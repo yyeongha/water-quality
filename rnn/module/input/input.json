@@ -1,10 +1,10 @@
 {
   "file": {
-    "watershed": "han"
+    "watershed": "han_auto"
   },
   "gain": {
-    "train": true,
-    "max_epochs": 1,
+    "train": false,
+    "max_epochs": 50,
     "batch_size": 32,
     "input_width": 120,
     "label_width": 120,
@@ -14,8 +14,8 @@
   },
   "rnn": {
     "train": true,
-    "max_epochs": 1,
-    "target_column": "do",
+    "max_epochs": 7,
+    "target_column": "tp",
     "batch_size": 128,
     "input_width": 168,
     "label_width": 120,

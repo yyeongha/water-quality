@@ -162,7 +162,7 @@ def make_dataframe(directory_path, file_names, iloc_val, interpolation=None):
         df_loc = pd.concat(df_loc)
 #
         #자동만
-        df_loc = make_timeseries(df_loc, interpolation=interpolation, iloc_val=iloc_val)
+#        df_loc = make_timeseries(df_loc, interpolation=interpolation, iloc_val=iloc_val)
 
 
         #print(df_loc)
