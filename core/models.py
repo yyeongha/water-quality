@@ -28,7 +28,7 @@ def compile_and_fit(model, window, patience=1000, epochs=400, save_path=None):
 
     history = model.fit(
         #window.train, epochs=epochs,
-        window.train, epochs=epochs, steps_per_epoch=10,
+        window.train, epochs=epochs, steps_per_epoch=1,
         validation_data=window.val,
         callbacks=[early_stopping, checkpoint])
     return history
@@ -38,7 +38,7 @@ def compile(model):
     model.compile(
         loss=tf.losses.MeanSquaredError(),
         optimizer=tf.optimizers.Adam(),
-        metrics=[tf.metrics.MeanAbsoluteError()])
+        metrics=[tf.metrics.MeanAbsoluteError(), nse])
 
 
 def plot_history(history):
