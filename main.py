@@ -75,7 +75,7 @@ rnn_predict_day -= 1
 #run_num = [0, 10]
 #run_num = [0, 11, 12, 13 ,14 ,15, 16]
 run_num = range(len(folder))
-#run_num = [0]
+run_num = [0]
 
 
 real_df_all = pd.DataFrame([])
@@ -242,27 +242,27 @@ print('Linear Training...')
 multi_linear_model = model_multi_linear(
     window=multi_window, OUT_STEPS=rnn_out_steps, out_num_features=out_num_features, epochs=rnn_epochs,
     #training_flag=__RNN_TRAINING__, checkpoint_path="save/"+watershed+"models/multi_linear.ckpt")
-    training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"multi_linear.h5")
+    training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"multi_linear.ckpt")
 
 print('ELMAN Training...')
 elman_model = model_elman(
     window=multi_window, OUT_STEPS=rnn_out_steps, out_num_features=out_num_features, epochs=rnn_epochs,
-    training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"elman.h5")
+    training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"elman.ckpt")
 
 print('GRU Training...')
 gru_model = model_gru(
     window=multi_window, OUT_STEPS=rnn_out_steps, out_num_features=out_num_features, epochs=rnn_epochs,
-    training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"gru.h5")
+    training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"gru.ckpt")
 
 print('LSTM Training...')
 multi_lstm_model = model_multi_lstm(
     window=multi_window, OUT_STEPS=rnn_out_steps, out_num_features=out_num_features, epochs=rnn_epochs,
-    training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"multi_lstm.h5")
+    training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"multi_lstm.ckpt")
 
 print('CNN Training...')
 multi_conv_model = model_multi_conv(
     window=multi_window, OUT_STEPS=rnn_out_steps, out_num_features=out_num_features, epochs=rnn_epochs,
-    training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"multi_conv.h5")
+    training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"multi_conv.ckpt")
 
 
 val_nse['Linear'], val_pbias['Linear'], pred['Linear'], label['Linear'] = evaluate_predict(

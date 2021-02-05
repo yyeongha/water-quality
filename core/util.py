@@ -97,8 +97,8 @@ def hour_to_day_mean(array):
 
 def evaluate_predict(model=None,df = None, plot_col=0, input_width=7*24, label_width=5*24, target_std=None, target_mean=None, predict_day=4):
 
-#    print(df.shape)
-#    print(plot_col)
+    print(df.shape)
+    print(plot_col)
 
     width = input_width + label_width
 
@@ -151,10 +151,10 @@ def evaluate_predict(model=None,df = None, plot_col=0, input_width=7*24, label_w
 
     return nse3, np.abs(pbias3), pred_day, label_day
 
-def plot_pred(model=None, pred_day=None, label_day=None, predict_day=0, target_column = None):
+def plot_pred(model=None, pred_day=None, label_day=None, target_column = None):
         plt.figure()
-        plt.title(model+'  --  '+target_column)
-        plt.plot(label_day[:, predict_day, :], label='label')
-        plt.plot(pred_day[:, predict_day, :], label='pred')
+        plt.title(model+'-'+target_column)
+        plt.plot(label_day[:, 0, :], label='label')
+        plt.plot(pred_day[:, 0, :], label='pred')
         plt.legend()
         plt.show()
