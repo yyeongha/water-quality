@@ -163,7 +163,7 @@ def make_dataframe(directory_path, file_names, iloc_val, interpolation=None):
 #
         #자동만
         print("You must check this make_timeseries : time length")
-        #df_loc = make_timeseries(df_loc, interpolation=interpolation, iloc_val=iloc_val)
+        df_loc = make_timeseries(df_loc, interpolation=interpolation, iloc_val=iloc_val)
 
 
         #print(df_loc)
