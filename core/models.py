@@ -14,6 +14,7 @@ def compile_and_fit(model, window, patience=1000, epochs=400, save_path=None):
     checkpoint = keras.callbacks.ModelCheckpoint(
         save_path, monitor='val_loss', verbose=1,
         save_best_only=True, save_weights_only= True, mode='auto', period=1)
+        #save_best_only=True)
 
     early_stopping = tf.keras.callbacks.EarlyStopping(
         monitor='val_loss',

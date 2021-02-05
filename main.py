@@ -219,9 +219,6 @@ multi_window = WindowGenerator(
     out_num_features=out_num_features,label_columns=dfff[0].columns, batch_size=rnn_batch_size,
     train_df=train_df, val_df=val_df, test_df=test_df, test_df2=test_df2)
 
-
-
-
 idx = [2, 4, 5, 6, 7]
 pa = ["do/", "toc/", "nitrogen/", "phosphorus/", "chlorophyll-a/"]
 
@@ -243,25 +240,25 @@ val_pbias = {}
 
 multi_linear_model = model_multi_linear(
     window=multi_window, OUT_STEPS=rnn_out_steps, out_num_features=out_num_features, epochs=rnn_epochs,
-    #training_flag=__RNN_TRAINING__, checkpoint_path="save/"+watershed+"models/multi_linear.ckpt")
-    #training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"multi_linear.ckpt")
-    training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"multi_linear.h5")
+    training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"multi_linear.ckpt")
+#    training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"multi_linear.h5")
+
 elman_model = model_elman(
     window=multi_window, OUT_STEPS=rnn_out_steps, out_num_features=out_num_features, epochs=rnn_epochs,
-    #training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"elman.ckpt")
-    training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"elman.h5")
+    training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"elman.ckpt")
+#    training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"elman.h5")
 gru_model = model_gru(
     window=multi_window, OUT_STEPS=rnn_out_steps, out_num_features=out_num_features, epochs=rnn_epochs,
-    #training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"gru.ckpt")
-    training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"gru.h5")
+    training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"gru.ckpt")
+    #training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"gru.h5")
 multi_lstm_model = model_multi_lstm(
     window=multi_window, OUT_STEPS=rnn_out_steps, out_num_features=out_num_features, epochs=rnn_epochs,
-    #training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"multi_lstm.ckpt")
-    training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"multi_lstm.h5")
+    training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"multi_lstm.ckpt")
+#    training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"multi_lstm.h5")
 multi_conv_model = model_multi_conv(
     window=multi_window, OUT_STEPS=rnn_out_steps, out_num_features=out_num_features, epochs=rnn_epochs,
-    #training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"multi_conv.ckpt")
-    training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"multi_conv.h5")
+    training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"multi_conv.ckpt")
+#    training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"multi_conv.h5")
 
 
 val_nse['Linear'], val_pbias['Linear'], pred, label = multi_window.compa(
