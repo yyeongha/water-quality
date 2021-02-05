@@ -77,26 +77,36 @@
         <div class="pd-20 debug">
             <div style="display: flex; flex-direction: row; justify-content: space-around; ">
                 {% csrf_token %}
-                <form method="post" enctype="multipart/form-data" id="fileUploadForm">
-                    <label>측정 DATA 등록</label>
-                    {% csrf_token %}
-                    <input type="file" name="myfile">
-                    <button type="submit" class="btn btn-light" id="activate">
-                        <i class="fas fa-download mr-8"></i>activate
+                <div id="upload_active">
+                    <button onclick="upload_show()">Custom Data Upload</button>
+                </div>
+                <div id="upload_active_div">
+                    <form method="post" enctype="multipart/form-data" id="fileUploadForm" onSubmit="return false;">
+                        <label>측정 DATA 등록</label>
+                        {% csrf_token %}
+                        <input type="file" name="myfile">
+                        <button type="submit" class="btn btn-light" id="acti" onclick="activate()">
+                            <i class="fas fa-download mr-8"></i>Activate
+                        </button>
+                        <button type="button" class="btn btn-light" id="deacti" onclick="deactivate()">
+                            <i class="fas fa-download mr-8"></i>Cancel
+                        </button>
+                    </form>
+                </div>
+
+                <div>
+                    <button type="button" type='submit' class="btn btn-light" onclick="file_download()" download>
+                        <i class="fas fa-chart-line mr-8"></i>샘플 다운로드
                     </button>
-                    <button type="button" class="btn btn-light" onclick="deactivate()" >
-                        <i class="fas fa-download mr-8"></i>deactivate
-                    </button>
-                </form>
-                <button type="button" type='submit' class="btn btn-light" onclick="file_download()" download>
-                    <i class="fas fa-chart-line mr-8"></i>샘플 다운로드
-                </button>
+                </div>
                 {#                <form method="get" action="{% url "file_download" %}">#}
                 {#   <button type="submit">Download!</button>#}
                 {#</form>#}
-                <button type="button" class="btn btn-light" onclick="pridict()">
-                    <i class="fas fa-chart-line mr-8"></i>예측하기
-                </button>
+                <div>
+                    <button type="button" class="btn btn-light" onclick="pridict()">
+                        <i class="fas fa-chart-line mr-8"></i>예측하기
+                    </button>
+                </div>
             </div>
 
 
@@ -156,7 +166,9 @@
 
 {% block javascript %}
     <script>
+        $('#upload_active_div').hide();
         $('#loading').hide();
+        var upload_df = 'N'
         <!-- model 별 위치를 위한 map setting-->
         var options = { //지도를 생성할 때 필요한 기본 옵션
             center: new kakao.maps.LatLng(36.5, 127.5), //지도의 중심좌표.
@@ -182,7 +194,8 @@
                         "start_date": formatDate(_startTrain),
                         "end_date": formatDate(_endTrain),
                         "predict_start_date": formatDate(_startPredict),
-                        "predict_end_date": formatDate(_endPredict)
+                        "predict_end_date": formatDate(_endPredict),
+                        "upload_df":upload_df
                     },
                     type: "POST",
                     dataType: "json"
@@ -205,10 +218,10 @@
                             tmp_date.setDate(_startTrain.getDate() + i);
                             let A = formatDate(tmp_date);
                             water_arr.push(A)
-
                         }
                         _predictWater.data.labels = water_arr
                         _predictWater.update();
+
                         for (let i = 0; i < 12; i++) {
                             tmp_date = new Date($("#start-train").val());
                             tmp_date.setDate(_startTrain.getDate() + i);
@@ -221,6 +234,13 @@
                         _predictGraph.data.datasets[1].data = data.predict_cahrt.origin_2;
                         _predictGraph.data.datasets[2].data = data.predict_cahrt.predict;
                         _predictGraph.update();
+
+                        _rain_chart.data.labels = graph_arr
+                        _rain_chart.data.datasets[0].data = data.rain_chart.rain_list;
+                        _rain_chart.data.datasets[1].data = data.rain_chart.temp_list;
+                        _rain_chart.update();
+
+
                     }
                 })
             }
@@ -257,7 +277,37 @@
                 load_map_data(map_info);
             })
         };
+        function activate(){
+            var form = $('#fileUploadForm')[0];
+            var data = new FormData(form);
+            data.append('start_date', $('#start-train').val());
+            data.append('end_date', $('#end-predict').val());
+            $.ajax({
+                type: "POST",
+                enctype: 'multipart/form-data',
+                url: "{% url "file_upload" %}",
+                data: data,
+                processData: false,
+                contentType: false,
+                cache: false,
+                timeout: 600000,
+                success: function (data) {
+                    $('#acti').css('border', 'solid');
+                    $('#deacti').css('border', 'none');
+                    upload_df = "Y"
+                    alert("complete");
 
+                },
+                error: function (e) {
+                    console.log("ERROR : ", e);
+                    $('#acti').css('border', 'none');
+                    $('#deacti').css('border', 'solid');
+                    upload_df = "Y"
+                    alert("fail");
+                }
+            });
+        }
+        /*
         $("#activate").click(function (event) {
             event.preventDefault();
             var form = $('#fileUploadForm')[0];
@@ -286,21 +336,33 @@
                     alert("fail");
                 }
             });
-        });
+        });*/
 
         function deactivate() {
+            upload_df = 'N'
+            $('#acti').css('border', 'none');
+            $('#deacti').css('border', 'solid black');
+            $('#upload_active_div').hide();
+            /*
             $.ajax({
                 url: "{% url "deactivate" %}",
                 data: {
-                    csrfmiddlewaretoken: $("#csrf_token").val()
+                    csrfmiddlewaretoken: $("#csrf_token").val(),
+                    "key": $('#column_list').val(),
+                    "model": model_activate,
+                    "start_date": formatDate(_startTrain),
+                    "end_date": formatDate(_endTrain),
+                    "predict_start_date": formatDate(_startPredict),
+                    "predict_end_date": formatDate(_endPredict)
                 },
                 type: "POST",
                 dataType: "json"
             }).done(function (data) {
-                $('#activate').css('border', 'none');
-                $('#deactivate').css('border', 'solid black');
+                $('#acti').css('border', 'none');
+                $('#deacti').css('border', 'solid black');
                 alert("deactivate");
             });
+            */
         }
 
         $("#btnSubmits").click(function (event) {
@@ -334,19 +396,6 @@
             /*
             $.ajax({
                 url: "
-
-
-
-
-
-
-
-
-
-
-
-
-
             {% url "file_download" %}", // 클라이언트가 요청을 보낼 서버의 URL 주소
                 data: {csrfmiddlewaretoken: $("#csrf_token").val()},
                 type: "GET"
@@ -357,7 +406,11 @@
             var url = "../../../media/xlsx_sample.xlsx";
             location.href = url;
         }
+        function upload_show() {
+            $('#upload_active').hide();
+            $('#upload_active_div').show();
 
+        }
 
     </script>
 {% endblock %}

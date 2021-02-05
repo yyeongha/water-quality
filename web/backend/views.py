@@ -11,9 +11,6 @@ from django.shortcuts import render
 
 from gain_new.core.predict_run import prediction_for_webpage
 
-upload_df = ''
-
-
 def index(request):
     context = {}
 
@@ -66,12 +63,11 @@ def load_df(request):
                 elif i['target'] == 'target_i':
                     target_name = '방사성'
                 target_list.append(target_name)
-                # addr_list.append(i['addr'])
                 location_list.append(i['location'])
                 x_list.append(i['x'])
                 y_list.append(i['y'])
                 cat_id_list.append(i['cat_id'])
-                cat_did_list.append(i['cat_did'])
+                cat_did_list.append(format(i['cat_did'], '.53g'))
                 rch_id_list.append(i['rch_id'])
                 rch_did_list.append(i['rch_did'])
                 node_id_list.append(i['node_id'])
@@ -106,7 +102,7 @@ def load_df(request):
                         x_list.append(i['x'])
                         y_list.append(i['y'])
                         cat_id_list.append(i['cat_id'])
-                        cat_did_list.append(i['cat_did'])
+                        cat_did_list.append(format(i['cat_did'], '.53g'))
                         rch_id_list.append(i['rch_id'])
                         rch_did_list.append(i['rch_did'])
                         node_id_list.append(i['node_id'])
@@ -134,6 +130,7 @@ def load_df(request):
 
 def predict(request):
     key = request.POST.get('key')
+    upload_df = request.POST.get('upload_df')
     start_date = request.POST.get('start_date')
     end_date = request.POST.get('end_date')
     predict_start_date = request.POST.get('predict_start_date')
@@ -148,13 +145,14 @@ def predict(request):
         parameters_path = '{dir}/{file}'.format(dir=model_dir, file=parameters_file)
         excel_path = '{dir}/{file}'.format(dir=model_dir, file=excel_file)
 
-        if upload_df != '':
-            print('upload_df', upload_df)
-            df = upload_df
+        if upload_df == 'Y':
+            df = read_xlsx(settings.UPLOAD_ROOT, start_date, predict_end_date, 'N')
+            print('upload_df', df)
         else:
-            print('not upload', upload_df)
             df = read_xlsx(excel_path, start_date, predict_end_date, 'Y')
             print('df', df)
+        # 강우량,기온
+        rain_list, temp_list = load_rain(key,start_date, predict_end_date,model_dir)
         '''
         watershed 
             0:한강, 1:낙동강, 2:금강, 3:영산강
@@ -193,6 +191,8 @@ def predict(request):
     predict_cahrt = {"origin": input_data,
                      "origin_2": data + label,
                      "predict": data + pred}
+    rain_chart = {"rain_list":rain_list,
+                  "temp_list":temp_list}
     predict_water = pred
     if key == 'toc':
         value = {"1": "2"}
@@ -200,7 +200,7 @@ def predict(request):
 
     print(color)
     return JsonResponse({"predict_cahrt": predict_cahrt, "predict_water": predict_water,
-                         "column": parameters['web_info']['columns'][key], "color": color})
+                         "column": parameters['web_info']['columns'][key], "color": color,"rain_chart":rain_chart})
 
 
 def call_model(request):
@@ -232,6 +232,35 @@ def call_model(request):
 
         return JsonResponse({'web_info': parameters['web_info'], "x": x, "y": y})
 
+def load_rain(key,start_date,end_date,model_dir):
+
+    rain_file = 'rain.xlsx'
+    rain_path = '{dir}/{file}'.format(dir=model_dir, file=rain_file)
+
+    start_date = datetime.datetime.strptime(start_date, '%Y.%m.%d')
+
+    start_date = datetime.datetime.strftime(start_date, '%Y-%m-%d')
+
+    end_date = datetime.datetime.strptime(end_date, '%Y.%m.%d')
+    end_date += datetime.timedelta(days=1)
+    end_date = datetime.datetime.strftime(end_date, '%Y-%m-%d')
+
+    # dataframe convert
+    df_loc = pd.DataFrame(pd.read_excel(rain_path)).filter(["aws_dt", "rn60m_value", "ta_value"])
+    # set date
+    first_column = str(df_loc.columns[0])
+    after_start_date = df_loc[first_column] >= start_date
+    before_end_date = df_loc[first_column] < end_date
+    between_two_dates = after_start_date & before_end_date
+
+    filtered_dates = df_loc.loc[between_two_dates]
+    filtered_dates.aws_dt = pd.to_datetime(filtered_dates.aws_dt)
+    filtered_dates = filtered_dates.set_index('aws_dt')
+
+    newDf = filtered_dates.resample('D').mean()
+    rn60m_value = list(newDf["rn60m_value"])
+    ta_value = list(newDf["ta_value"])
+    return rn60m_value, ta_value
 
 def read_xlsx(files_Path, start_date=None, end_date=None, predict=None):
     # dateformat convert
@@ -287,22 +316,59 @@ def file_download(request):
 
 def deactivate(request):
     if request.method == 'POST':
-        upload_df = ''
-        return JsonResponse({"return": "success"})
+        start_date = request.POST.get('start_date')
+        end_date = request.POST.get('end_date')
+        predict_start_date = request.POST.get('predict_start_date')
+        predict_end_date = request.POST.get('predict_end_date')
 
+        model = request.POST.get('model')
+        for i in ['A', 'B', 'C', 'D']:
+            if model == i:
+                model_dir = './model_dir/model_' + i
+        rain_file = 'rain.xlsx'
+        rain_path = '{dir}/{file}'.format(dir=model_dir, file=rain_file)
+
+        start_date = datetime.datetime.strptime(start_date, '%Y.%m.%d')
+
+        start_date = datetime.datetime.strftime(start_date, '%Y-%m-%d')
+        # start_date = str(start_date)
+        print('start_date', start_date)
+
+        end_date = datetime.datetime.strptime(predict_end_date, '%Y.%m.%d')
+        end_date += datetime.timedelta(days=1)
+        end_date = datetime.datetime.strftime(end_date, '%Y-%m-%d')
+        # end_date = str(end_date)
+        print('end_date', end_date)
+
+        # dataframe convert
+        df_loc = pd.DataFrame(pd.read_excel(rain_path)).filter(["aws_dt", "rn60m_value", "ta_value"])
+        # set date
+        first_column = str(df_loc.columns[0])
+        after_start_date = df_loc[first_column] >= start_date
+        before_end_date = df_loc[first_column] < end_date
+        between_two_dates = after_start_date & before_end_date
+
+        filtered_dates = df_loc.loc[between_two_dates]
+        filtered_dates.aws_dt = pd.to_datetime(filtered_dates.aws_dt)
+        filtered_dates = filtered_dates.set_index('aws_dt')
+
+        newDf = filtered_dates.resample('D').mean()
+        rn60m_value = list(newDf["rn60m_value"])
+        ta_value = list(newDf["ta_value"])
+        print('ta_value',ta_value)
+        print('rn60m_value',rn60m_value)
+
+        return JsonResponse({"return": "success"})
 
 def file_upload(request):
     if request.method == 'POST' and request.FILES['myfile']:
         myfile = request.FILES['myfile']
-        print('myfile', myfile)
-
         # upload file save default
         # fs = FileSystemStorage()
         fs = FileSystemStorage(location=settings.UPLOAD_ROOT, base_url=settings.UPLOAD_URL)
         fs.save(myfile.name, myfile)
-        df = read_xlsx(settings.UPLOAD_ROOT, request.POST.get('start_date'), request.POST.get('end_date'))
+        # df = read_xlsx(settings.UPLOAD_ROOT, request.POST.get('start_date'), request.POST.get('end_date'))
 
-        upload_df = df
         return JsonResponse({"rusult": 'success'})
         # ------------
         # upload file unzip save
@@ -341,6 +407,7 @@ def drawing(request):
 
 def drawing2(request):
     return render(request, 'backend/draw2.html')
+
 
 def color_list(key, data_list):
     color = []
