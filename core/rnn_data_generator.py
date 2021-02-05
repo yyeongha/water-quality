@@ -58,8 +58,8 @@ class WaterDataGenerator(tf.keras.utils.Sequence):
         'Denotes the number of batches per epoch'
         # return int(128/self.batch_size)
         # return 2
-        #return 1
-        return self.no//self.batch_size
+        return 1
+        #return self.no//self.batch_size
 
     def __getitem__(self, index):
         'Generate one batch of data'
