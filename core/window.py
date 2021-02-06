@@ -139,10 +139,10 @@ class WindowGenerator():
 
 #WindowGenerator.plot = plot
 
-
 #    @property
 #    def train(self):
 #        return self.make_dataset(self.train_df)
+
     @property
     def train(self):
         return self.make_dataset(self.train_df, train=True)
