@@ -1,9 +1,9 @@
 {
   "file": {
-    "watershed": "geum_auto"
+    "watershed": "han_auto"
   },
   "gain": {
-    "train": false,
+    "train": true,
     "max_epochs": 2000,
     "batch_size": 32,
     "input_width": 120,
