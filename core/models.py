@@ -72,6 +72,8 @@ class MultiStepLastBaseline(tf.keras.Model):
 
 #def LastBaseLine(OUT_STEPS, out_features):
 
+#kernel_initializer=tf.initializers.he_normal()
+#bias_initializer=tf.initializers.zeros()
 
 
 def MultiLinearModel(OUT_STEPS, out_num_features):
