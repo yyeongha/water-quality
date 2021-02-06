@@ -240,28 +240,28 @@ pred = {}
 label = {}
 
  # +"gru.ckpt" -- path
-print('Linear Training...')
+print('Linear Running...')
 multi_linear_model = model_multi_linear(
     window=multi_window, OUT_STEPS=rnn_out_steps, out_num_features=out_num_features, epochs=rnn_epochs,
     #training_flag=__RNN_TRAINING__, checkpoint_path="save/"+watershed+"models/multi_linear.ckpt")
     training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"multi_linear.ckpt")
 
-print('ELMAN Training...')
+print('ELMAN Running...')
 elman_model = model_elman(
     window=multi_window, OUT_STEPS=rnn_out_steps, out_num_features=out_num_features, epochs=rnn_epochs,
     training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"elman.ckpt")
 
-print('GRU Training...')
+print('GRU Running...')
 gru_model = model_gru(
     window=multi_window, OUT_STEPS=rnn_out_steps, out_num_features=out_num_features, epochs=rnn_epochs,
     training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"gru.ckpt")
 
-print('LSTM Training...')
+print('LSTM Running...')
 multi_lstm_model = model_multi_lstm(
     window=multi_window, OUT_STEPS=rnn_out_steps, out_num_features=out_num_features, epochs=rnn_epochs,
     training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"multi_lstm.ckpt")
 
-print('CNN Training...')
+print('CNN Running...')
 multi_conv_model = model_multi_conv(
     window=multi_window, OUT_STEPS=rnn_out_steps, out_num_features=out_num_features, epochs=rnn_epochs,
     training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"multi_conv.ckpt")
