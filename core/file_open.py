@@ -99,7 +99,7 @@ def divideDataFrame(df_ori, de_iloc_val=0):
     return df_d
 '''
 
-def make_timeseries(df, interpolation=None, iloc_val= None):
+def make_timeseries(df, interpolation=None, iloc_val= None, loc=0, first_file_no=0, month=12, day=31):
 
     date_col = df.columns[0]
     df[date_col] = pd.to_datetime(df[date_col])
@@ -107,9 +107,18 @@ def make_timeseries(df, interpolation=None, iloc_val= None):
     df = df.dropna(thresh=3)
 
     year = pd.DatetimeIndex(df[date_col]).year.astype(np.int64)
+    if loc==0 and first_file_no==0:
+        month_tmp = pd.DatetimeIndex(df[date_col]).month.astype(np.int64)
+        day_tmp = pd.DatetimeIndex(df[date_col]).day.astype(np.int64)
+        month = month_tmp[-1] 
+        day = day_tmp[-1] 
+    else: 
+        month = month
+        day = day
 
     start = str(year[0]) + "-01-01 00:00"    #     start
-    end = str(year[-1]) + "-12-31 23:00"#     end
+    end = str(year[-1]) + "-" +str(month) + "-" + str(day) + " 23:00"#     end
+#    end = str(year[-1]) + "-12-31 23:00"#     end
     #print(year)
 
     print('time range in files : ', start, ' ~ ', end)
@@ -132,12 +141,12 @@ def make_timeseries(df, interpolation=None, iloc_val= None):
                 time_series.iloc[0, i] = idx.iloc[0]
                 time_series.iloc[-1, i] = idx.iloc[-1]
 
-    return time_series
+    return time_series, month, day
 
 
-def make_dataframe(directory_path, file_names, iloc_val, interpolation=None):
-    day = 24 * 60 * 60
-    year = (365.2425) * day
+def make_dataframe(directory_path, file_names, iloc_val, interpolation=None, first_file_no=0, month=12, day=31):
+    day_for_sincos = 24 * 60 * 60
+    year_for_sincos = (365.2425) * day_for_sincos
 
     df_full = []
     df = []
@@ -162,7 +171,7 @@ def make_dataframe(directory_path, file_names, iloc_val, interpolation=None):
         df_loc = pd.concat(df_loc)
 #
         #자동만
-        df_loc = make_timeseries(df_loc, interpolation=interpolation, iloc_val=iloc_val)
+        df_loc, month, day = make_timeseries(df_loc, interpolation=interpolation, iloc_val=iloc_val, month=month, day=day, loc=loc, first_file_no=first_file_no)
 
 
         #print(df_loc)
@@ -179,10 +188,10 @@ def make_dataframe(directory_path, file_names, iloc_val, interpolation=None):
         #print(file_names[loc])
 
         #print(df[loc].shape, timestamp_s.shape)
-        df[loc].insert(df[loc].shape[1], 'Day sin', np.sin(timestamp_s * (2 * np.pi / day)))
-        df[loc].insert(df[loc].shape[1], 'Day cos', np.cos(timestamp_s * (2 * np.pi / day)))
-        df[loc].insert(df[loc].shape[1], 'Year sin', np.sin(timestamp_s * (2 * np.pi / year)))
-        df[loc].insert(df[loc].shape[1], 'Year cos', np.cos(timestamp_s * (2 * np.pi / year)))
+        df[loc].insert(df[loc].shape[1], 'Day sin', np.sin(timestamp_s * (2 * np.pi / day_for_sincos)))
+        df[loc].insert(df[loc].shape[1], 'Day cos', np.cos(timestamp_s * (2 * np.pi / day_for_sincos)))
+        df[loc].insert(df[loc].shape[1], 'Year sin', np.sin(timestamp_s * (2 * np.pi / year_for_sincos)))
+        df[loc].insert(df[loc].shape[1], 'Year cos', np.cos(timestamp_s * (2 * np.pi / year_for_sincos)))
 
         df[loc] = df[loc].reset_index(drop=True)
 
@@ -193,7 +202,7 @@ def make_dataframe(directory_path, file_names, iloc_val, interpolation=None):
         #print(df[loc].iloc[:, 0], df[loc].iloc[:, 1])
 
 
-    return df, date_time.reset_index(drop=True)
+    return df, date_time.reset_index(drop=True), month, day
 
 
 

@@ -75,7 +75,7 @@ rnn_predict_day -= 1
 #run_num = [0, 10]
 #run_num = [0, 11, 12, 13 ,14 ,15, 16]
 run_num = range(len(folder))
-run_num = [0]
+#run_num = [0]
 
 
 real_df_all = pd.DataFrame([])
@@ -83,6 +83,8 @@ target_all = target_mean = target_std = 0
 
 gain_val_performance = {}
 gain_performance = {}
+month = 12
+day = 31
 
 length = len(run_num)
 for i in range(length):
@@ -99,7 +101,7 @@ for i in range(length):
     #if watershed == '한강_12days_test':
     #    df, times = make_dataframe_temp_12days(folder[idx], file_names[idx], colum_idx[idx], interpolate=interpolation_option[idx])
     #else:
-    df, times = make_dataframe(data_path+folder[idx], file_names[idx], colum_idx[idx], interpolation=interpolation_option[idx])
+    df, times, month, day = make_dataframe(data_path+folder[idx], file_names[idx], colum_idx[idx], interpolation=interpolation_option[idx], first_file_no=i, month=month, day=day)
 
     df_all, train_mean, train_std, df = normalize(df)
 
@@ -177,7 +179,7 @@ for i in range(length):
 
 print(real_df_all.shape)
 
-train_df, test_df, val_df, test_df2 = dataset_slice(real_df_all, 0.8, 0.1, 0.1)
+train_df, test_df, val_df, test_df2 = dataset_slice(real_df_all, 0.7, 0.1, 0.2)
 #train_df, val_df, test_df, test_df2 = dataset_slice(real_df_all, 0.7, 0.3, 0.0)
 
 print('-------------------prediction')
@@ -265,20 +267,23 @@ multi_conv_model = model_multi_conv(
     training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"multi_conv.ckpt")
 
 
+df_test = val_df
+
+
 val_nse['Linear'], val_pbias['Linear'], pred['Linear'], label['Linear'] = evaluate_predict(
-    model=multi_linear_model,df=test_df, plot_col=out_features[0], target_std=target_std, target_mean=target_mean, predict_day = rnn_predict_day)
+    model=multi_linear_model,df=df_test, plot_col=out_features[0], target_std=target_std, target_mean=target_mean, predict_day = rnn_predict_day)
 
 val_nse['ELMAN'], val_pbias['ELMAN'], pred['ELMAN'], label['ELMAN'] = evaluate_predict(
-    model=elman_model,df=test_df, plot_col=out_features[0], target_std=target_std, target_mean=target_mean, predict_day = rnn_predict_day)
+    model=elman_model,df=df_test, plot_col=out_features[0], target_std=target_std, target_mean=target_mean, predict_day = rnn_predict_day)
 
 val_nse['GRU'], val_pbias['GRU'], pred['GRU'], label['GRU'] = evaluate_predict(
-    model=gru_model,df=test_df, plot_col=out_features[0], target_std=target_std, target_mean=target_mean, predict_day = rnn_predict_day)
+    model=gru_model,df=df_test, plot_col=out_features[0], target_std=target_std, target_mean=target_mean, predict_day = rnn_predict_day)
 
 val_nse['LSTM'], val_pbias['LSTM'], pred['LSTM'], label['LSTM'] = evaluate_predict(
-    model=multi_lstm_model,df=test_df, plot_col=out_features[0], target_std=target_std, target_mean=target_mean, predict_day = rnn_predict_day)
+    model=multi_lstm_model,df=df_test, plot_col=out_features[0], target_std=target_std, target_mean=target_mean, predict_day = rnn_predict_day)
 
 val_nse['CNN'], val_pbias['CNN'], pred['CNN'], label['CNN'] = evaluate_predict(
-    model=multi_conv_model,df=test_df, plot_col=out_features[0], target_std=target_std, target_mean=target_mean, predict_day = rnn_predict_day)
+    model=multi_conv_model,df=df_test, plot_col=out_features[0], target_std=target_std, target_mean=target_mean, predict_day = rnn_predict_day)
 
 
 print("save model path : ", model_path)
@@ -295,17 +300,15 @@ print('LSTM : ', val_nse['LSTM'], val_pbias['LSTM'])
 print('CNN : ', val_nse['CNN'], val_pbias['CNN'])
 
 #print("2021_01_31-21:30:00 --- 살려야함 위에위에")
-'''
 x = np.arange(len(val_nse))
 width = 0.35
 plt.figure()
 plt.title(watershed + '['+start_year+','+end_year+']' + rnn_target_column)
-plt.bar(x, val_pbias.values(), 0.3, label='PBIAS' )
+#plt.bar(x, val_pbias.values(), 0.3, label='PBIAS' )
 plt.bar(x+width, val_nse.values(), 0.3, label='NSE')
 plt.xticks(x,val_nse.keys(), rotation=45)
 _ = plt.legend()
 plt.show()
-'''
 
 for key in pred.keys():
-    plot_pred(model=key, pred_day=pred[key], label_day=label[key], predict_day=rnn_predict_day, target_column=rnn_target_column)
+    plot_pred(model=key, pred_day=pred[key], label_day=label[key], predict_target_day=rnn_predict_day, target_column=rnn_target_column)

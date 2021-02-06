@@ -149,12 +149,12 @@ def evaluate_predict(model=None,df = None, plot_col=0, input_width=7*24, label_w
 
 
 
-    return nse3, np.abs(pbias3), pred_day, label_day
+    return float(nse3), float(np.abs(pbias3)), pred_day, label_day
 
-def plot_pred(model=None, pred_day=None, label_day=None, target_column = None):
+def plot_pred(model=None, pred_day=None, label_day=None, predict_target_day=4, target_column = None):
         plt.figure()
         plt.title(model+'-'+target_column)
-        plt.plot(label_day[:, 0, :], label='label')
-        plt.plot(pred_day[:, 0, :], label='pred')
+        plt.plot(label_day[:, predict_target_day, :], label='label')
+        plt.plot(pred_day[:, predict_target_day, :], label='pred')
         plt.legend()
         plt.show()

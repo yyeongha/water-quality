@@ -1,9 +1,9 @@
 {
   "file": {
-    "watershed": "nak_pull"
+    "watershed": "geum_1"
   },
   "gain": {
-    "train": true,
+    "train": false,
     "max_epochs": 2000,
     "batch_size": 32,
     "input_width": 120,
@@ -14,7 +14,7 @@
   },
   "rnn": {
     "train": true,
-    "max_epochs": 10,
+    "max_epochs": 15,
     "target_column": "do",
     "batch_size": 128,
     "input_width": 168,
