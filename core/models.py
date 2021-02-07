@@ -12,8 +12,10 @@ def nse(y_true, y_pred):
 
 def compile_and_fit(model, window, patience=1000, epochs=400, save_path=None):
     checkpoint = keras.callbacks.ModelCheckpoint(
-        save_path, monitor='val_loss', verbose=1,
-        save_best_only=True, save_weights_only= True, mode='auto', period=1)
+        save_path, monitor='val_nse', verbose=1,
+        save_best_only=True, 
+        save_weights_only= True,
+        mode='max', period=1)
 
     early_stopping = tf.keras.callbacks.EarlyStopping(
         monitor='val_loss',
@@ -79,8 +81,9 @@ def MultiLinearModel(OUT_STEPS, out_num_features):
         # Shape [batch, time, features] => [batch, 1, features]
         tf.keras.layers.Lambda(lambda x: x[:, -1:, :]),
         # Shape => [batch, 1, out_steps*features]
-        tf.keras.layers.Dense(OUT_STEPS * out_num_features,
-                              kernel_initializer=tf.initializers.zeros),
+        tf.keras.layers.Dense(OUT_STEPS * out_num_features),
+#                              kernel_initializer=tf.initializers.he_normal(),
+#                              bias_initializer=tf.keras.initializers.zeros()),
         # Shape => [batch, out_steps, features]
         tf.keras.layers.Reshape([OUT_STEPS, out_num_features])
     ])
@@ -91,8 +94,9 @@ def ElmanModel(OUT_STEPS, out_num_features):
         # Take the last time step.
         # Shape [batch, time, features] => [batch, 1, features]
         tf.keras.layers.SimpleRNN(128, return_sequences=False),
-        tf.keras.layers.Dense(OUT_STEPS*out_num_features,
-                          kernel_initializer=tf.initializers.zeros),
+        tf.keras.layers.Dense(OUT_STEPS*out_num_features),
+#                          kernel_initializer=tf.initializers.he_normal(),
+#                          bias_initializer=tf.keras.initializers.zeros()),
         tf.keras.layers.Reshape([OUT_STEPS, out_num_features])
     ])
     return elman_model
@@ -112,8 +116,9 @@ def GRUModel(OUT_STEPS, out_num_features):
         tf.keras.layers.GRU(256, return_sequences=True, dropout=0.1, recurrent_dropout=0.5),
         tf.keras.layers.GRU(256, return_sequences=False, dropout=0.1, recurrent_dropout=0.5),
         tf.keras.layers.Dropout(0.5),
-        tf.keras.layers.Dense(OUT_STEPS * out_num_features,
-                              kernel_initializer=tf.initializers.zeros),
+        tf.keras.layers.Dense(OUT_STEPS * out_num_features),
+#                              kernel_initializer=tf.initializers.he_normal()),
+#                              bias_initializer=tf.keras.initializers.zeros()),
         # Shape => [batch, out_steps, features]
         tf.keras.layers.Reshape([OUT_STEPS, out_num_features])
     ])
@@ -139,8 +144,9 @@ def MultiLSTMModel(OUT_STEPS, out_num_features):
         #     tf.keras.layers.LSTM(128, return_sequences=True),
         tf.keras.layers.LSTM(128, return_sequences=False),
         # Shape => [batch, out_steps*features]
-        tf.keras.layers.Dense(OUT_STEPS * out_num_features,
-                              kernel_initializer=tf.initializers.zeros),
+        tf.keras.layers.Dense(OUT_STEPS * out_num_features),
+#                              kernel_initializer=tf.initializers.he_normal(),
+#                              bias_initializer=tf.keras.initializers.zeros()),
         # Shape => [batch, out_steps, features]
         tf.keras.layers.Reshape([OUT_STEPS, out_num_features])
     ])
@@ -161,8 +167,9 @@ def MultiConvModel(OUT_STEPS, out_num_features):
                                                for i in range(CONV_LAYER_NO)
                                            ] + [
                                                # Shape => [batch, 1,  out_steps*features]
-                                               tf.keras.layers.Dense(OUT_STEPS * out_num_features,
-                                                                     kernel_initializer=tf.initializers.zeros),
+                                               tf.keras.layers.Dense(OUT_STEPS * out_num_features),
+#                                                                     kernel_initializer=tf.initializers.he_normal(),
+#                                                                     bias_initializer=tf.keras.initializers.zeros()),
                                                # Shape => [batch, out_steps, features]
                                                tf.keras.layers.Reshape([OUT_STEPS, out_num_features])
                                            ])

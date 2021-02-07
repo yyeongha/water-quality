@@ -117,8 +117,8 @@ def make_timeseries(df, interpolation=None, iloc_val= None, loc=0, first_file_no
         day = day
 
     start = str(year[0]) + "-01-01 00:00"    #     start
-    end = str(year[-1]) + "-" +str(month) + "-" + str(day) + " 23:00"#     end
-#    end = str(year[-1]) + "-12-31 23:00"#     end
+#    end = str(year[-1]) + "-" +str(month) + "-" + str(day) + " 23:00"#     end
+    end = str(year[-1]) + "-12-31 23:00"#     end
     #print(year)
 
     print('time range in files : ', start, ' ~ ', end)
