@@ -39,7 +39,7 @@ def compile(model):
     model.compile(
         loss=tf.losses.MeanSquaredError(),
         optimizer=tf.optimizers.Adam(),
-        metrics=[tf.metrics.MeanAbsoluteError()])
+        metrics=[tf.metrics.MeanAbsoluteError(),nse] )
 
 
 def plot_history(history):
