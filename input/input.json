@@ -1,9 +1,9 @@
 {
   "file": {
-    "watershed": "nak_auto_13"
+    "watershed": "yeong_auto_13"
   },
   "gain": {
-    "train": false,
+    "train": true,
     "max_epochs": 2000,
     "batch_size": 32,
     "input_width": 120,
