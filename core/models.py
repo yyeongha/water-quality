@@ -5,16 +5,40 @@ import matplotlib.pyplot as plt
 import tensorflow as tf
 import tensorflow.keras as keras
 
+from tensorflow.keras.callbacks import Callback
+
+
+class checkpoint_save(Callback):
+    def __init__(self, model=None, save_path=None, val_nse=None):
+        super(Callback, self).__init__()
+#         print('val_nse in checkpoint = ' , val_nse)
+        self.best_score = val_nse
+        self.model = model
+        self.save_path=save_path
+
+    def on_epoch_end(self, epoch, logs={}):
+        #current_score = logs.get('val_accuracy')
+#         current_score = logs.get('accuracy')
+        current_score = logs.get('val_nse')
+#         print('self.best_score = ', float(val_nse[2]))
+#         print(type(float(val_nse[2])))
+#         print('current_score = ', current_score)
+
+#         print(type(current_score))
+        if current_score > self.best_score:
+            print('save model: nse from %.3f to %.3f' %(self.best_score, current_score) )
+            self.best_score = current_score
+            self.model.save_weights(self.save_path)
+
 
 def nse(y_true, y_pred):
     mean = tf.reduce_mean(y_true)
     return 1. - tf.reduce_sum(tf.square(y_true-y_pred))/tf.reduce_sum(tf.square(y_true-mean))
 
-def compile_and_fit(model, window, patience=1000, epochs=400, save_path=None):
-    checkpoint = keras.callbacks.ModelCheckpoint(
-        save_path, monitor='val_nse', verbose=1,
-        save_best_only=True, save_weights_only= True, mode='max', period=1)
-        #save_best_only=True)
+def compile_and_fit(model, window, patience=1000, epochs=400, save_path=None, val_nse=-100):
+
+    checkpoint = checkpoint_save(model=model, save_path=save_path, val_nse = val_nse)
+
 
     early_stopping = tf.keras.callbacks.EarlyStopping(
         monitor='val_loss',
@@ -23,6 +47,7 @@ def compile_and_fit(model, window, patience=1000, epochs=400, save_path=None):
 
     model.compile(
         loss=tf.losses.MeanSquaredError(),
+        
         optimizer=tf.optimizers.Adam(),
         metrics=[tf.metrics.MeanAbsoluteError(), nse])
 
@@ -72,8 +97,6 @@ class MultiStepLastBaseline(tf.keras.Model):
 
 #def LastBaseLine(OUT_STEPS, out_features):
 
-#kernel_initializer=tf.initializers.he_normal()
-#bias_initializer=tf.initializers.zeros()
 
 
 def MultiLinearModel(OUT_STEPS, out_num_features):
@@ -82,8 +105,9 @@ def MultiLinearModel(OUT_STEPS, out_num_features):
         # Shape [batch, time, features] => [batch, 1, features]
         tf.keras.layers.Lambda(lambda x: x[:, -1:, :]),
         # Shape => [batch, 1, out_steps*features]
-        tf.keras.layers.Dense(OUT_STEPS * out_num_features,
-                              kernel_initializer=tf.initializers.zeros),
+        tf.keras.layers.Dense(OUT_STEPS * out_num_features),
+#                              kernel_initializer=tf.initializers.he_normal(),
+#                              bias_initializer=tf.keras.initializers.zeros()),
         # Shape => [batch, out_steps, features]
         tf.keras.layers.Reshape([OUT_STEPS, out_num_features])
     ])
@@ -94,8 +118,9 @@ def ElmanModel(OUT_STEPS, out_num_features):
         # Take the last time step.
         # Shape [batch, time, features] => [batch, 1, features]
         tf.keras.layers.SimpleRNN(128, return_sequences=False),
-        tf.keras.layers.Dense(OUT_STEPS*out_num_features,
-                          kernel_initializer=tf.initializers.zeros),
+        tf.keras.layers.Dense(OUT_STEPS*out_num_features),
+#                          kernel_initializer=tf.initializers.he_normal(),
+#                          bias_initializer=tf.keras.initializers.zeros()),
         tf.keras.layers.Reshape([OUT_STEPS, out_num_features])
     ])
     return elman_model
@@ -115,8 +140,9 @@ def GRUModel(OUT_STEPS, out_num_features):
         tf.keras.layers.GRU(256, return_sequences=True, dropout=0.1, recurrent_dropout=0.5),
         tf.keras.layers.GRU(256, return_sequences=False, dropout=0.1, recurrent_dropout=0.5),
         tf.keras.layers.Dropout(0.5),
-        tf.keras.layers.Dense(OUT_STEPS * out_num_features,
-                              kernel_initializer=tf.initializers.zeros),
+        tf.keras.layers.Dense(OUT_STEPS * out_num_features),
+#                              kernel_initializer=tf.initializers.he_normal()),
+#                              bias_initializer=tf.keras.initializers.zeros()),
         # Shape => [batch, out_steps, features]
         tf.keras.layers.Reshape([OUT_STEPS, out_num_features])
     ])
@@ -142,8 +168,9 @@ def MultiLSTMModel(OUT_STEPS, out_num_features):
         #     tf.keras.layers.LSTM(128, return_sequences=True),
         tf.keras.layers.LSTM(128, return_sequences=False),
         # Shape => [batch, out_steps*features]
-        tf.keras.layers.Dense(OUT_STEPS * out_num_features,
-                              kernel_initializer=tf.initializers.zeros),
+        tf.keras.layers.Dense(OUT_STEPS * out_num_features),
+#                              kernel_initializer=tf.initializers.he_normal(),
+#                              bias_initializer=tf.keras.initializers.zeros()),
         # Shape => [batch, out_steps, features]
         tf.keras.layers.Reshape([OUT_STEPS, out_num_features])
     ])
@@ -164,8 +191,9 @@ def MultiConvModel(OUT_STEPS, out_num_features):
                                                for i in range(CONV_LAYER_NO)
                                            ] + [
                                                # Shape => [batch, 1,  out_steps*features]
-                                               tf.keras.layers.Dense(OUT_STEPS * out_num_features,
-                                                                     kernel_initializer=tf.initializers.zeros),
+                                               tf.keras.layers.Dense(OUT_STEPS * out_num_features),
+#                                                                     kernel_initializer=tf.initializers.he_normal(),
+#                                                                     bias_initializer=tf.keras.initializers.zeros()),
                                                # Shape => [batch, out_steps, features]
                                                tf.keras.layers.Reshape([OUT_STEPS, out_num_features])
                                            ])

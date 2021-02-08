@@ -5,20 +5,19 @@ from core.models import *
 
 
 
-def model_multi_linear(OUT_STEPS, out_num_features, window = None, epochs = 2000, training_flag = False, checkpoint_path = 'save/model', continue_train=False):
+def model_multi_linear(OUT_STEPS, out_num_features, window = None, epochs = 2000, training_flag = False, checkpoint_path = 'save/model', continue_train = False):
     model = MultiLinearModel(OUT_STEPS, out_num_features)
     #checkpoint_path = "save/multi_linear_model.ckpt"
+#    model.load_weights(checkpoint_path)
     if training_flag == True:
         if continue_train:
-            model.load_weights("save/best_model.h5")
+            model.load_weights(checkpoint_path)
             compile(model)
             model_evaluate_value = model.evaluate(window.val)
-            print('model_evaluate_value = ', model_evaluate_value)
-        history = compile_and_fit(model, window, epochs=epochs, save_path = "save/best_model.h5")
-        model.load_weights("save/best_model.h5")
-        model.save_weights(checkpoint_path)
-#        model = tf.keras.models.load_model('save'+'/best_model.h5')
-        #model.save_weights(checkpoint_path)
+            history = compile_and_fit(model,window, epochs=epochs, save_path = checkpoint_path,
+                                      val_nse=model_evaluate_value[2])
+        else:
+            history = compile_and_fit(model,window, epochs=epochs, save_path = checkpoint_path)
     else :
         model.load_weights(checkpoint_path)
         compile(model)
@@ -26,20 +25,19 @@ def model_multi_linear(OUT_STEPS, out_num_features, window = None, epochs = 2000
 
 
 #print('elman_model train')
-def model_elman(OUT_STEPS, out_num_features, window, epochs, training_flag, checkpoint_path, continue_train=False):
+def model_elman(OUT_STEPS, out_num_features, window, epochs, training_flag, checkpoint_path, continue_train = False):
     model = ElmanModel(OUT_STEPS, out_num_features)
     #checkpoint_path = "save/elman_model.ckpt"
+#    model.load_weights(checkpoint_path)
     if training_flag == True:
-        if continue_train:
-            model.load_weights("save/best_model.h5")
+        if continue_train :
+            model.load_weights(checkpoint_path)
             compile(model)
             model_evaluate_value = model.evaluate(window.val)
-            print('model_evaluate_value = ', model_evaluate_value)
-        history = compile_and_fit(model, window, epochs=epochs, save_path = "save/best_model.h5")
-        model.load_weights("save/best_model.h5")
-        model.save_weights(checkpoint_path)
-        #model.load_weights(checkpoint_path)
-        #model.save_weights(checkpoint_path)
+            history = compile_and_fit(model,window, epochs=epochs, save_path = checkpoint_path,
+                                      val_nse=model_evaluate_value[2])
+        else:
+            history = compile_and_fit(model,window, epochs=epochs, save_path = checkpoint_path)
     else :
         model.load_weights(checkpoint_path)
         compile(model)
@@ -49,19 +47,22 @@ def model_elman(OUT_STEPS, out_num_features, window, epochs, training_flag, chec
 
 #print('gru_model train')
 
-def model_gru(OUT_STEPS=24*5, out_num_features=1, window=None, epochs=100, training_flag=False, checkpoint_path="save/", continue_train=False):
+def model_gru(OUT_STEPS=24*5, out_num_features=1, window=None, epochs=100, training_flag=False, checkpoint_path="save/", continue_train = False):
     model = GRUModel(OUT_STEPS, out_num_features)
     #checkpoint_path = "save/gru_model.ckpt"
+#   model.load_weights(checkpoint_path)
     if training_flag == True:
-        if continue_train:
-            model.load_weights("save/best_model.h5")
+        model_evaluate_value = 0
+        if continue_train :
+            model.load_weights(checkpoint_path)
             compile(model)
             model_evaluate_value = model.evaluate(window.val)
-            print('model_evaluate_value = ', model_evaluate_value)
-        history = compile_and_fit(model,window, epochs=epochs, save_path = "save/best_model.h5")
-        model.load_weights("save/best_model.h5")
-        model.save_weights(checkpoint_path)
-        #model.load_weights(checkpoint_path)
+            history = compile_and_fit(model,window, epochs=epochs, save_path = checkpoint_path,
+                                      val_nse=model_evaluate_value[2])
+        else:
+            history = compile_and_fit(model,window, epochs=epochs, save_path = checkpoint_path)
+
+        model.load_weights(checkpoint_path)
     else:
         model.load_weights(checkpoint_path)
         compile(model)
@@ -72,19 +73,19 @@ def model_gru(OUT_STEPS=24*5, out_num_features=1, window=None, epochs=100, train
 
 
 #print('multi_lstm_model train')
-def model_multi_lstm(OUT_STEPS, out_num_features, window, epochs, training_flag, checkpoint_path, continue_train=False):
+def model_multi_lstm(OUT_STEPS, out_num_features, window, epochs, training_flag, checkpoint_path, continue_train = False):
     model = MultiLSTMModel(OUT_STEPS, out_num_features)
     #checkpoint_path = "save/multi_lstm_model.ckpt"
+#    model.load_weights(checkpoint_path)
     if training_flag == True:
         if continue_train:
-            model.load_weights("save/best_model.h5")
+            model.load_weights(checkpoint_path)
             compile(model)
             model_evaluate_value = model.evaluate(window.val)
-            print('model_evaluate_value = ', model_evaluate_value)
-        history = compile_and_fit(model, window, epochs=epochs, save_path = "save/best_model.h5")
-        model.load_weights("save/best_model.h5")
-        #model.load_weights(checkpoint_path)
-        model.save_weights(checkpoint_path)
+            history = compile_and_fit(model,window, epochs=epochs, save_path = checkpoint_path,
+                                      val_nse=model_evaluate_value[2])
+        else:
+            history = compile_and_fit(model,window, epochs=epochs, save_path = checkpoint_path)
     else:
         model.load_weights(checkpoint_path)
         compile(model)
@@ -93,19 +94,19 @@ def model_multi_lstm(OUT_STEPS, out_num_features, window, epochs, training_flag,
 #multi_val_performance['LSTM'] = multi_lstm_model.evaluate(multi_window.val)
 #multi_performance['LSTM'] = multi_lstm_model.evaluate(multi_window.test, verbose=0)
 
-def model_multi_conv(OUT_STEPS, out_num_features, window, epochs, training_flag, checkpoint_path, continue_train=False):
+def model_multi_conv(OUT_STEPS, out_num_features, window, epochs, training_flag, checkpoint_path, continue_train = False):
     model = MultiConvModel(OUT_STEPS, out_num_features)
     #checkpoint_path = "save/multi_conv_model.ckpt"
+#    model.load_weights(checkpoint_path)
     if training_flag == True:
         if continue_train:
-            model.load_weights("save/best_model.h5")
+            model.load_weights(checkpoint_path)
             compile(model)
             model_evaluate_value = model.evaluate(window.val)
-            print('model_evaluate_value = ', model_evaluate_value)
-        history = compile_and_fit(model, window, epochs=epochs, save_path = "save/best_model.h5")
-        model.load_weights("save/best_model.h5")
-        #model.load_weights(checkpoint_path)
-        model.save_weights(checkpoint_path)
+            history = compile_and_fit(model,window, epochs=epochs, save_path = checkpoint_path,
+                                      val_nse=model_evaluate_value[2])
+        else:
+            history = compile_and_fit(model,window, epochs=epochs, save_path = checkpoint_path)
     else:
         model.load_weights(checkpoint_path)
         compile(model)
