@@ -1,9 +1,9 @@
 {
   "file": {
-    "watershed": "geum_1"
+    "watershed": "han_auto"
   },
   "gain": {
-    "train": false,
+    "train": true,
     "max_epochs": 2000,
     "batch_size": 32,
     "input_width": 120,
@@ -15,7 +15,7 @@
   "rnn": {
     "train": true,
     "max_epochs": 15,
-    "target_column": "do",
+    "target_column": "toc",
     "batch_size": 128,
     "input_width": 168,
     "label_width": 120,
