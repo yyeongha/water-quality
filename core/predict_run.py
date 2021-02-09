@@ -19,10 +19,6 @@ def hour_to_day_mean(array):
 class prediction_for_webpage():
 
 
-    dataframe_all_data_2016_2019 = None
-
-
-
     def __init__(self):
         self.gain_train = False
         self.rnn_train = False
@@ -92,7 +88,7 @@ class prediction_for_webpage():
             self.push_checker += 1
         return df1
 
-    def run(self, dataframe=dataframe_all_data_2016_2019, target = 0, watershed = 0):
+    def run(self, dataframe=None, target = 0, watershed = 0):
         #print(dataframe.shape)
         self.push_checker = 0
         real_df_all = pd.DataFrame([])
@@ -166,10 +162,12 @@ class prediction_for_webpage():
         print(model_path)
         gru_model = model_gru(OUT_STEPS=5*24, checkpoint_path=model_path)
 
-        input_hour = real_df_all.iloc[:24*7,:].to_numpy()
+        #input_hour = real_df_all.iloc[:24*7,:].to_numpy()
+        input_hour = real_df_all.iloc[:24 * 10, :].to_numpy()
         input_hour = input_hour.reshape((1,) + input_hour.shape)
 
-        label_hour = real_df_all.iloc[24 * 7 : 24 * 7 + 24 * 5, target_index:target_index + 1].to_numpy()
+        #label_hour = real_df_all.iloc[24 * 7 : 24 * 7 + 24 * 5, target_index:target_index + 1].to_numpy()
+        label_hour = real_df_all.iloc[24 * 10: 24 * 10 + 24 * 5, target_index:target_index + 1].to_numpy()
         label_hour = label_hour.reshape((1,) + label_hour.shape)
         label_hour = label_hour * target_std + target_mean
         label_day = hour_to_day_mean(label_hour)

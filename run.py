@@ -14,7 +14,7 @@ df_all = pd.read_excel('../web_data/han_2019-2020.xlsx')
 print(df_all)
 
 start_day = datetime.datetime(2019,6,1)
-end_day = datetime.datetime(2019,6,12)
+end_day = datetime.datetime(2019,6,15)
 end_day += datetime.timedelta(days=1)
 
 df = df_all.loc[(df_all[df_all.columns[0]]>=start_day) & (df_all[df_all.columns[0]]<end_day)]
