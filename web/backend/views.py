@@ -51,17 +51,7 @@ def load_df(request):
                 elif i['target'] == 'target_c':
                     target_name = '총량측정망'
                 elif i['target'] == 'target_d':
-                    target_name = '수리수문'
-                elif i['target'] == 'target_e':
-                    target_name = '기상 AWS'
-                elif i['target'] == 'target_f':
-                    target_name = '수질 TMS'
-                elif i['target'] == 'target_g':
-                    target_name = '녹조조류'
-                elif i['target'] == 'target_h':
-                    target_name = '퇴적물'
-                elif i['target'] == 'target_i':
-                    target_name = '방사성'
+                    target_name = '녹조 조류'
                 target_list.append(target_name)
                 location_list.append(i['location'])
                 x_list.append(i['x'])
@@ -86,17 +76,7 @@ def load_df(request):
                         elif i['target'] == 'target_c':
                             target_name = '총량측정망'
                         elif i['target'] == 'target_d':
-                            target_name = '수리수문'
-                        elif i['target'] == 'target_e':
-                            target_name = '기상 AWS'
-                        elif i['target'] == 'target_f':
-                            target_name = '수질 TMS'
-                        elif i['target'] == 'target_g':
-                            target_name = '녹조조류'
-                        elif i['target'] == 'target_h':
-                            target_name = '퇴적물'
-                        elif i['target'] == 'target_i':
-                            target_name = '방사성'
+                            target_name = '녹조 조류'
                         target_list.append(target_name)
                         location_list.append(i['location'])
                         x_list.append(i['x'])
@@ -141,7 +121,7 @@ def predict(request):
             if model == i:
                 model_dir = './model_dir/model_' + i
         parameters_file = 'json_info.json'
-        excel_file = 'han_2019.xlsx'
+        excel_file = 'river.xlsx'
         parameters_path = '{dir}/{file}'.format(dir=model_dir, file=parameters_file)
         excel_path = '{dir}/{file}'.format(dir=model_dir, file=excel_file)
 
@@ -215,14 +195,14 @@ def call_model(request):
             x = 37.868107908588094
             y = 127.68186772257765
         elif key == 'B':
-            x = 34.763777479336866
-            y = 127.65906215819086
+            x = 36.477884511195995
+            y = 127.48034948700723
         elif key == 'C':
-            x = 35.15942797012162
-            y = 126.84165533876025
+            x = 34.91217642389682
+            y = 126.77230673652103
         elif key == 'D':
-            x = 33.39005208514738
-            y = 126.49920630257895
+            x = 36.437705725281816
+            y = 128.21182763524286
         # parameters_dir = './model_dir/model_A'
         parameters_file = 'json_info.json'
         parameters_path = '{dir}/{file}'.format(dir=model_dir, file=parameters_file)
@@ -304,7 +284,7 @@ def read_xlsx(files_Path, start_date=None, end_date=None, predict=None):
 
 def file_download(request):
     if request.is_ajax():
-        file_path = os.path.join(settings.MEDIA_ROOT, 'sample_excel.txt')
+        file_path = os.path.join(settings.MEDIA_ROOT, 'han.txt')
         if os.path.exists(file_path):
             with open(file_path, 'rb') as fh:
                 response = HttpResponse(fh.read(), content_type="text/csv")

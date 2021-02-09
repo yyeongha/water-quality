@@ -9,12 +9,7 @@
             <button id="a_Menu" onclick="changeMarker('target_a')">자동측정망</button>
             <button id="b_Menu" onclick="changeMarker('target_b')">수질측정망</button>
             <button id="c_Menu" onclick="changeMarker('target_c')">총량측정망</button>
-            <button id="d_Menu" onclick="changeMarker('target_d')">수리수문</button>
-            <button id="e_Menu" onclick="changeMarker('target_e')">기상 AWS</button>
-            <button id="f_Menu" onclick="changeMarker('target_f')">수질TMS</button>
-            <button id="g_Menu" onclick="changeMarker('target_g')">녹조조류</button>
-            <button id="g_Menu" onclick="changeMarker('target_h')">퇴적물</button>
-            <button id="g_Menu" onclick="changeMarker('target_i')">방사성</button>
+            <button id="d_Menu" onclick="changeMarker('target_d')">녹조 조류</button>
         </div>
 
         <div id="map" style="width:100%;height:500px;"></div>
@@ -33,11 +28,6 @@
         var target_b_Positions = '';
         var target_c_Positions = '';
         var target_d_Positions = '';
-        var target_e_Positions = '';
-        var target_f_Positions = '';
-        var target_g_Positions = '';
-        var target_h_Positions = '';
-        var target_i_Positions = '';
 
 
         var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
@@ -58,15 +48,10 @@
         var markerImageSrc2 = '../../../media/chrome_test.png';
         //var markerImageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png';  // 마커이미지의 주소입니다. 스프라이트 이미지 입니다
         // 마커 객체를 가지고 있을 배열
-        target_a_Markers = [];
-        target_b_Markers = [];
-        target_c_Markers = [];
-        target_d_Markers = [];
-        target_e_Markers = [];
-        target_f_Markers = [];
-        target_g_Markers = [];
-        target_h_Markers = [];
-        target_i_Markers = [];
+        let target_a_Markers = [];
+        let target_b_Markers = [];
+        let target_c_Markers = [];
+        let target_d_Markers = [];
 
         //create_all_Markers();
         changeMarker('all'); // 지도에 커피숍 마커가 보이도록 설정합니다
@@ -99,7 +84,7 @@
             let marker_list = []
             let all_Markers = []
             all_Markers = all_Markers.concat(target_a_Markers, target_b_Markers, target_c_Markers,
-                target_d_Markers, target_e_Markers, target_f_Markers, target_g_Markers, target_h_Markers, target_i_Markers);
+                target_d_Markers);
             for (var i = 0; i < all_Markers.length; i++) {
                 all_Markers[i].setMap(null);
             }
@@ -111,16 +96,6 @@
                 marker_list = target_c_Markers
             } else if (type == 'target_d') {
                 marker_list = target_d_Markers
-            } else if (type == 'target_e') {
-                marker_list = target_e_Markers
-            } else if (type == 'target_f') {
-                marker_list = target_f_Markers
-            } else if (type == 'target_g') {
-                marker_list = target_g_Markers
-            } else if (type == 'target_h') {
-                marker_list = target_h_Markers
-            } else if (type == 'target_i') {
-                marker_list = target_i_Markers
             } else if (type == 'all') {
                 marker_list = all_Markers
             }
@@ -134,12 +109,7 @@
                 {'position': target_a_Positions, "markers": target_a_Markers, "img": "../../../media/test_img.png"},
                 {'position': target_b_Positions, "markers": target_b_Markers, "img": "../../../media/marker_red.png"},
                 {'position': target_c_Positions, "markers": target_c_Markers, "img": "../../../media/test_img.png"},
-                {'position': target_d_Positions, "markers": target_d_Markers, "img": "../../../media/marker_red.png"},
-                {'position': target_e_Positions, "markers": target_e_Markers, "img": "../../../media/test_img.png"},
-                {'position': target_f_Positions, "markers": target_f_Markers, "img": "../../../media/marker_red.png"},
-                {'position': target_g_Positions, "markers": target_g_Markers, "img": "../../../media/marker_red.png"},
-                {'position': target_h_Positions, "markers": target_h_Markers, "img": "../../../media/marker_red.png"},
-                {'position': target_i_Positions, "markers": target_i_Markers, "img": "../../../media/test_img.png"}];
+                {'position': target_d_Positions, "markers": target_d_Markers, "img": "../../../media/marker_red.png"}];
 
             arr.forEach(function (el, index) {
                 for (var i = 0; i < el.position.length; i++) {
@@ -185,29 +155,6 @@
 
                 setMarkers(map, type);
                 load_table(model_activate, type);
-            } else if (type === 'target_e') {
-
-                setMarkers(map, type);
-                load_table(model_activate, type);
-            } else if (type === 'target_f') {
-
-                setMarkers(map, type);
-                load_table(model_activate, type);
-            } else if (type === 'target_g') {
-
-                // 마커를 지도에 표시하도록 설정
-                setMarkers(map, type);
-                load_table(model_activate, type);
-            } else if (type === 'target_h') {
-
-                // 마커를 지도에 표시하도록 설정
-                setMarkers(map, type);
-                load_table(model_activate, type);
-            } else if (type === 'target_i') {
-
-                // 마커를 지도에 표시하도록 설정
-                setMarkers(map, type);
-                load_table(model_activate, type);
             }
         }
 
@@ -229,11 +176,6 @@
             target_b_Positions = [];
             target_c_Positions = [];
             target_d_Positions = [];
-            target_e_Positions = [];
-            target_f_Positions = [];
-            target_g_Positions = [];
-            target_h_Positions = [];
-            target_i_Positions = [];
             for (let i = 0; i < data.length; i++) {
                 if (data[i]['target'] == 'target_a') {
                     target_a_Positions.push({
@@ -252,31 +194,6 @@
                     })
                 } else if (data[i]['target'] == 'target_d') {
                     target_d_Positions.push({
-                        content: '<div>' + data[i]['location'] + '</div>',
-                        latlng: new kakao.maps.LatLng(data[i]['y'], data[i]['x'])
-                    })
-                } else if (data[i]['target'] == 'target_e') {
-                    target_e_Positions.push({
-                        content: '<div>' + data[i]['location'] + '</div>',
-                        latlng: new kakao.maps.LatLng(data[i]['y'], data[i]['x'])
-                    })
-                } else if (data[i]['target'] == 'target_f') {
-                    target_f_Positions.push({
-                        content: '<div>' + data[i]['location'] + '</div>',
-                        latlng: new kakao.maps.LatLng(data[i]['y'], data[i]['x'])
-                    })
-                } else if (data[i]['target'] == 'target_g') {
-                    target_g_Positions.push({
-                        content: '<div>' + data[i]['location'] + '</div>',
-                        latlng: new kakao.maps.LatLng(data[i]['y'], data[i]['x'])
-                    })
-                } else if (data[i]['target'] == 'target_h') {
-                    target_h_Positions.push({
-                        content: '<div>' + data[i]['location'] + '</div>',
-                        latlng: new kakao.maps.LatLng(data[i]['y'], data[i]['x'])
-                    })
-                } else if (data[i]['target'] == 'target_i') {
-                    target_i_Positions.push({
                         content: '<div>' + data[i]['location'] + '</div>',
                         latlng: new kakao.maps.LatLng(data[i]['y'], data[i]['x'])
                     })
