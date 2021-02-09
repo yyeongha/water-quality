@@ -196,7 +196,7 @@ def make_dataframe(directory_path, file_names, iloc_val, interpolation=None, fir
         df[loc] = df[loc].reset_index(drop=True)
 
         if interpolation[0]:
-            df[loc] = df[loc].interpolate(method='polynomial', order=3, limit_direction='both')
+            df[loc] = df[loc].interpolate(method='pchip', order=3, limit_direction='both')
 
         #print('time_series.iloc[:, 10], time_series.iloc[:, 11]')
         #print(df[loc].iloc[:, 0], df[loc].iloc[:, 1])
