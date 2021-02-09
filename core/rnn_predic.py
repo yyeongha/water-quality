@@ -47,7 +47,7 @@ def model_elman(OUT_STEPS, out_num_features, window, epochs, training_flag, chec
 
 #print('gru_model train')
 
-def model_gru(OUT_STEPS=24*5, out_num_features=1, window=None, epochs=100, training_flag=False, checkpoint_path="save/", continue_train = False):
+def model_gru(OUT_STEPS=24*5, out_num_features=1, window=None, epochs=100, training_flag=False, checkpoint_path="save/", continue_train = False, steps_per_epoch = 10):
     model = GRUModel(OUT_STEPS, out_num_features)
     #checkpoint_path = "save/gru_model.ckpt"
 #   model.load_weights(checkpoint_path)
@@ -58,7 +58,7 @@ def model_gru(OUT_STEPS=24*5, out_num_features=1, window=None, epochs=100, train
             compile(model)
             model_evaluate_value = model.evaluate(window.val)
             history = compile_and_fit(model,window, epochs=epochs, save_path = checkpoint_path,
-                                      val_nse=model_evaluate_value[2])
+                                      val_nse=model_evaluate_value[2], steps_per_epoch)
         else:
             history = compile_and_fit(model,window, epochs=epochs, save_path = checkpoint_path)
 

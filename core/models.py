@@ -35,7 +35,7 @@ def nse(y_true, y_pred):
     mean = tf.reduce_mean(y_true)
     return 1. - tf.reduce_sum(tf.square(y_true-y_pred))/tf.reduce_sum(tf.square(y_true-mean))
 
-def compile_and_fit(model, window, patience=1000, epochs=400, save_path=None, val_nse=-100):
+def compile_and_fit(model, window, patience=1000, epochs=400, save_path=None, val_nse=-100, steps_per_epoch = 10):
 
     checkpoint = checkpoint_save(model=model, save_path=save_path, val_nse = val_nse)
 
@@ -53,7 +53,7 @@ def compile_and_fit(model, window, patience=1000, epochs=400, save_path=None, va
 
     history = model.fit(
         #window.train, epochs=epochs,
-        window.train, epochs=epochs, steps_per_epoch=10,
+        window.train, epochs=epochs, steps_per_epoch=steps_per_epoch,
         validation_data=window.val,
         callbacks=[early_stopping, checkpoint])
     return history
