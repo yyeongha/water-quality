@@ -207,24 +207,21 @@ val_rmse = {}
 val_r = {}
 val_rs = {}
 
-gru_model = model_gru(
-    window=multi_window, OUT_STEPS=rnn_out_steps, out_num_features=out_num_features, epochs=rnn_epochs,
-    training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"gru.ckpt", continue_train=False)
 multi_linear_model = model_multi_linear(
     window=multi_window, OUT_STEPS=rnn_out_steps, out_num_features=out_num_features, epochs=rnn_epochs,
-    training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"multi_linear.ckpt", continue_train=False)
+    training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"multi_linear.ckpt", continue_train=True)
 elman_model = model_elman(
     window=multi_window, OUT_STEPS=rnn_out_steps, out_num_features=out_num_features, epochs=rnn_epochs,
-    training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"elman.ckpt", continue_train=False)
+    training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"elman.ckpt", continue_train=True)
 gru_model = model_gru(
     window=multi_window, OUT_STEPS=rnn_out_steps, out_num_features=out_num_features, epochs=rnn_epochs,
-    training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"gru.ckpt", continue_train=False)
+    training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"gru.ckpt", continue_train=True)
 multi_lstm_model = model_multi_lstm(
     window=multi_window, OUT_STEPS=rnn_out_steps, out_num_features=out_num_features, epochs=rnn_epochs,
-    training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"multi_lstm.ckpt", continue_train=False)
+    training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"multi_lstm.ckpt", continue_train=True)
 multi_conv_model = model_multi_conv(
     window=multi_window, OUT_STEPS=rnn_out_steps, out_num_features=out_num_features, epochs=rnn_epochs,
-    training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"multi_conv.ckpt", continue_train=False)
+    training_flag=__RNN_TRAINING__, checkpoint_path=model_path+"multi_conv.ckpt", continue_train=True)
 
 
 val_nse['Linear'], val_pbias['Linear'], pred, label, val_mae['Linear'], val_rmse['Linear'], val_rs['Linear'], val_r['Linear'] = compa(
