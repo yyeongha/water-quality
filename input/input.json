@@ -1,9 +1,9 @@
 {
     "file": {
-        "watershed": "nak"
+        "watershed": "yeong"
     },
     "gain": {
-        "train": True,
+        "train": true,
         "max_epochs": 2000,
         "batch_size": 32,
         "input_width": 120,
@@ -13,7 +13,7 @@
         "miss_rate": 0.15
     },
     "rnn": {
-        "train": False,
+        "train": false,
         "max_epochs": 15,
         "target_column": "do",
         "batch_size": 128,
