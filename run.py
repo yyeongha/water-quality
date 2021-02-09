@@ -8,7 +8,8 @@ import datetime
 
 #############################################################################################
 ## 테스트용 엑셀 로드
-df_all = pd.read_excel('data/han_2019.xlsx')
+#df_all = pd.read_excel('data/han_2019.xlsx')
+df_all = pd.read_excel('../web_data/han_2019-2020.xlsx')
 
 print(df_all)
 

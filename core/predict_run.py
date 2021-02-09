@@ -32,14 +32,33 @@ class prediction_for_webpage():
         #self.base_path = '../save/'
         self.base_path = 'save/'
 
-        self.watershed_path = ['han/', 'nak/']
+        self.watershed_path = ['han/', 'nak/', 'geum/', 'yeong/']
 
         self.options = [
-            #[3,  9, 2, 6, 4, 8,  5, 6, 2], #최과장님이준거 방사성 2개로들어감 직접컬럼날림
-            [3,      9,   1,   6,   4,   8,    5,   6,   2],
-            [8+4, 16+4, 1+4, 7+4, 1+4, 1+4, 17+4, 6+4, 5+4],
-            ["자동/", "수질/", "방사성/", "TMS/", "유량/", "수위/", "총량/", "퇴적물/", "조류/"],
-            [False, True, True, True, False, False, True, True, True],
+            [
+                [3],
+                [8 + 4, 6 + 4, 7 + 4],
+                ["자동/", "수질/", "총량/"],
+                [False, True, True],
+            ],
+            [
+                [3, 3, 3, 2],
+                [8 + 4, 7 + 4, 6 + 4, 3 + 4],
+                ["자동/", "총량/", "수질/", "조류/"],
+                [False, True, True, True],
+            ],
+            [
+                [3, 1, 4],
+                [8 + 4, 7 + 4, 6 + 4],
+                ["자동/", "총량/", "수질/"],
+                [False, True, True],
+            ],
+            [
+                [3, 6, 7, 2],
+                [8 + 4, 7 + 4, 6 + 4, 3 + 4],
+                ["자동/", "총량/", "수질/", "조류/"],
+                [False, True, True, True],
+            ]
         ]
 
         #                         2                   4          5       6         7
@@ -50,11 +69,11 @@ class prediction_for_webpage():
 
         self.push_checker = 0
 
-        sum = 0
-        for i in range(len(self.options[0])):
-            column_num = self.options[0][i]
-            measurement_num = self.options[1][i]
-            sum += measurement_num*column_num
+        #sum = 0
+        #for i in range(len(self.options[0])):
+#            column_num = self.options[0][i]
+ #           measurement_num = self.options[1][i]
+  #          sum += measurement_num*column_num
 
 
         # print('sumsumsumsumsumsumsumsumsumsum')
@@ -105,11 +124,11 @@ class prediction_for_webpage():
         target_name = self.target_model_path[target]
         base_path = self.base_path + self.watershed_path[watershed]
 
-        for i in range(len(self.options[0])):
-            column_num = self.options[0][i]
-            measurement_num = self.options[1][i]
-            measerement_name = self.options[2][i]
-            gain_skip = self.options[3][i]
+        for i in range(len(self.options[watershed][0])):
+            column_num = self.options[watershed][0][i]
+            measurement_num = self.options[watershed][1][i]
+            measerement_name = self.options[watershed][2][i]
+            gain_skip = self.options[watershed][3][i]
 
             mean = []
             std = []
