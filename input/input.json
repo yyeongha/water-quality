@@ -1,9 +1,9 @@
 {
   "file": {
-    "watershed": "han_auto"
+    "watershed": "nak_auto_13"
   },
   "gain": {
-    "train": true,
+    "train": false,
     "max_epochs": 2000,
     "batch_size": 32,
     "input_width": 120,
@@ -14,8 +14,8 @@
   },
   "rnn": {
     "train": true,
-    "max_epochs": 15,
-    "target_column": "toc",
+    "max_epochs": 20,
+    "target_column": "tp",
     "batch_size": 128,
     "input_width": 168,
     "label_width": 120,

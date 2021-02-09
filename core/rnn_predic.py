@@ -12,10 +12,12 @@ def model_multi_linear(OUT_STEPS, out_num_features, window = None, epochs = 2000
     if training_flag == True:
         if continue_train:
             model.load_weights(checkpoint_path)
-        history = compile_and_fit(model, window, epochs=epochs, save_path = checkpoint_path)
-        model.load_weights(checkpoint_path)
-#        model = tf.keras.models.load_model('save'+'/best_model.h5')
-        #model.save_weights(checkpoint_path)
+            compile(model)
+            model_evaluate_value = model.evaluate(window.val)
+            history = compile_and_fit(model,window, epochs=epochs, save_path = checkpoint_path,
+                                      val_nse=model_evaluate_value[2])
+        else:
+            history = compile_and_fit(model,window, epochs=epochs, save_path = checkpoint_path)
     else :
         model.load_weights(checkpoint_path)
         compile(model)
@@ -30,8 +32,12 @@ def model_elman(OUT_STEPS, out_num_features, window, epochs, training_flag, chec
     if training_flag == True:
         if continue_train :
             model.load_weights(checkpoint_path)
-        history = compile_and_fit(model, window, epochs=epochs, save_path = checkpoint_path)
-        model.load_weights(checkpoint_path)
+            compile(model)
+            model_evaluate_value = model.evaluate(window.val)
+            history = compile_and_fit(model,window, epochs=epochs, save_path = checkpoint_path,
+                                      val_nse=model_evaluate_value[2])
+        else:
+            history = compile_and_fit(model,window, epochs=epochs, save_path = checkpoint_path)
     else :
         model.load_weights(checkpoint_path)
         compile(model)
@@ -46,9 +52,16 @@ def model_gru(OUT_STEPS=24*5, out_num_features=1, window=None, epochs=100, train
     #checkpoint_path = "save/gru_model.ckpt"
 #   model.load_weights(checkpoint_path)
     if training_flag == True:
+        model_evaluate_value = 0
         if continue_train :
             model.load_weights(checkpoint_path)
-        history = compile_and_fit(model,window, epochs=epochs, save_path = checkpoint_path)
+            compile(model)
+            model_evaluate_value = model.evaluate(window.val)
+            history = compile_and_fit(model,window, epochs=epochs, save_path = checkpoint_path,
+                                      val_nse=model_evaluate_value[2])
+        else:
+            history = compile_and_fit(model,window, epochs=epochs, save_path = checkpoint_path)
+
         model.load_weights(checkpoint_path)
     else:
         model.load_weights(checkpoint_path)
@@ -67,8 +80,12 @@ def model_multi_lstm(OUT_STEPS, out_num_features, window, epochs, training_flag,
     if training_flag == True:
         if continue_train:
             model.load_weights(checkpoint_path)
-        history = compile_and_fit(model, window, epochs=epochs, save_path = checkpoint_path)
-        model.load_weights(checkpoint_path)
+            compile(model)
+            model_evaluate_value = model.evaluate(window.val)
+            history = compile_and_fit(model,window, epochs=epochs, save_path = checkpoint_path,
+                                      val_nse=model_evaluate_value[2])
+        else:
+            history = compile_and_fit(model,window, epochs=epochs, save_path = checkpoint_path)
     else:
         model.load_weights(checkpoint_path)
         compile(model)
@@ -84,8 +101,12 @@ def model_multi_conv(OUT_STEPS, out_num_features, window, epochs, training_flag,
     if training_flag == True:
         if continue_train:
             model.load_weights(checkpoint_path)
-        history = compile_and_fit(model, window, epochs=epochs, save_path = checkpoint_path)
-        model.load_weights(checkpoint_path)
+            compile(model)
+            model_evaluate_value = model.evaluate(window.val)
+            history = compile_and_fit(model,window, epochs=epochs, save_path = checkpoint_path,
+                                      val_nse=model_evaluate_value[2])
+        else:
+            history = compile_and_fit(model,window, epochs=epochs, save_path = checkpoint_path)
     else:
         model.load_weights(checkpoint_path)
         compile(model)

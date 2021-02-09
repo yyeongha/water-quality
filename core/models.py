@@ -5,17 +5,40 @@ import matplotlib.pyplot as plt
 import tensorflow as tf
 import tensorflow.keras as keras
 
+from tensorflow.keras.callbacks import Callback
+
+
+class checkpoint_save(Callback):
+    def __init__(self, model=None, save_path=None, val_nse=None):
+        super(Callback, self).__init__()
+#         print('val_nse in checkpoint = ' , val_nse)
+        self.best_score = val_nse
+        self.model = model
+        self.save_path=save_path
+
+    def on_epoch_end(self, epoch, logs={}):
+        #current_score = logs.get('val_accuracy')
+#         current_score = logs.get('accuracy')
+        current_score = logs.get('val_nse')
+#         print('self.best_score = ', float(val_nse[2]))
+#         print(type(float(val_nse[2])))
+#         print('current_score = ', current_score)
+
+#         print(type(current_score))
+        if current_score > self.best_score:
+            print('save model: nse from %.3f to %.3f' %(self.best_score, current_score) )
+            self.best_score = current_score
+            self.model.save_weights(self.save_path)
+
 
 def nse(y_true, y_pred):
     mean = tf.reduce_mean(y_true)
     return 1. - tf.reduce_sum(tf.square(y_true-y_pred))/tf.reduce_sum(tf.square(y_true-mean))
 
-def compile_and_fit(model, window, patience=1000, epochs=400, save_path=None):
-    checkpoint = keras.callbacks.ModelCheckpoint(
-        save_path, monitor='val_nse', verbose=1,
-        save_best_only=True, 
-        save_weights_only= True,
-        mode='max', period=1)
+def compile_and_fit(model, window, patience=1000, epochs=400, save_path=None, val_nse=-100):
+
+    checkpoint = checkpoint_save(model=model, save_path=save_path, val_nse = val_nse)
+
 
     early_stopping = tf.keras.callbacks.EarlyStopping(
         monitor='val_loss',
@@ -24,6 +47,7 @@ def compile_and_fit(model, window, patience=1000, epochs=400, save_path=None):
 
     model.compile(
         loss=tf.losses.MeanSquaredError(),
+        
         optimizer=tf.optimizers.Adam(),
         metrics=[tf.metrics.MeanAbsoluteError(), nse])
 
@@ -39,7 +63,7 @@ def compile(model):
     model.compile(
         loss=tf.losses.MeanSquaredError(),
         optimizer=tf.optimizers.Adam(),
-        metrics=[tf.metrics.MeanAbsoluteError(),nse] )
+        metrics=[tf.metrics.MeanAbsoluteError(), nse])
 
 
 def plot_history(history):
