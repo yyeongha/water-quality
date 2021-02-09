@@ -60,7 +60,7 @@ def model_gru(OUT_STEPS=24*5, out_num_features=1, window=None, epochs=100, train
             history = compile_and_fit(model,window, epochs=epochs, save_path = checkpoint_path,
                                       val_nse=model_evaluate_value[2], steps_per_epoch=steps_per_epoch)
         else:
-            history = compile_and_fit(model,window, epochs=epochs, save_path = checkpoint_path)
+            history = compile_and_fit(model,window, epochs=epochs, save_path = checkpoint_path, steps_per_epoch=steps_per_epoch)
 
         model.load_weights(checkpoint_path)
     else:
