@@ -156,7 +156,7 @@ class prediction_for_webpage():
                     real_df_all = self.dataframe_concat(real_df_all, df_tmp)
 
 
-        #print(real_df_all)
+        print(real_df_all.shape)
 
         model_path = base_path + "models/" + self.target_model_path[target] + "gru.ckpt"
         print(model_path)
