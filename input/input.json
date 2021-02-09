@@ -1,9 +1,9 @@
 {
   "file": {
-    "watershed": "geum"
+    "watershed": "yeong"
   },
   "gain": {
-    "train": true,
+    "train": false,
     "max_epochs": 2000,
     "batch_size": 32,
     "input_width": 120,
