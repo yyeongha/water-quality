@@ -1,6 +1,6 @@
 {
   "file": {
-    "watershed": "yeong"
+    "watershed": "han"
   },
   "gain": {
     "train": true,
@@ -14,7 +14,7 @@
   },
   "rnn": {
     "train": true,
-    "max_epochs": 20,
+    "max_epochs": 15,
     "target_column": "do",
     "batch_size": 128,
     "input_width": 240,
