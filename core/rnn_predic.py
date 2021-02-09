@@ -58,7 +58,7 @@ def model_gru(OUT_STEPS=24*5, out_num_features=1, window=None, epochs=100, train
             compile(model)
             model_evaluate_value = model.evaluate(window.val)
             history = compile_and_fit(model,window, epochs=epochs, save_path = checkpoint_path,
-                                      val_nse=model_evaluate_value[2], steps_per_epoch)
+                                      val_nse=model_evaluate_value[2], steps_per_epoch=steps_per_epoch)
         else:
             history = compile_and_fit(model,window, epochs=epochs, save_path = checkpoint_path)
 
