@@ -263,7 +263,9 @@ def make_dataframe_temp_12days(directory_path, file_names, iloc_val, interpolate
         #print(df[loc].iloc[-1:, :])
 
         if interpolate:
-            df[loc] = df[loc].interpolate(method='polynomial', order=3, limit_direction='both')
+#            df[loc] = df[loc].interpolate(method='polynomial', order=3, limit_direction='both')
+            
+            df[loc] = df[loc].interpolate(method='pchip', order=3, limit_direction='both')
         #df[loc] = df[loc].interpolate(method='polynomial', order=3)
 
 
