@@ -4,7 +4,7 @@
     },
     "gain": {
         "train": false,
-        "max_epochs": 2000,
+        "max_epochs": 2,
         "batch_size": 32,
         "input_width": 120,
         "label_width": 120,
@@ -14,7 +14,7 @@
     },
     "rnn": {
         "train": true,
-        "max_epochs": 20,
+        "max_epochs": 2,
         "target_column": "do",
         "batch_size": 128,
         "input_width": 240,
