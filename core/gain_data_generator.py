@@ -35,17 +35,14 @@ class GainDataGenerator(tf.keras.utils.Sequence):
         # whole data
         self.data = np.concatenate(data_list)
 
-        #print('self.data : ', self.data.shape)
 
         # TO-DO
-
         # pre calculation for  sequence data
         last_cum = 0
         cums = []
         for data in data_list:
             isnan = np.isnan(data)
             isany = np.any(isnan, axis=1)
-            # shift same as pd.shift(isany, fill_value=True)
             shifted = np.roll(isany, 1)
             shifted[0] = True  # set to nan
 
@@ -58,11 +55,8 @@ class GainDataGenerator(tf.keras.utils.Sequence):
 
         # Define mask matrix
         if miss_pattern is None:
-            #print("pattern none")
             self.data_m = binary_sampler(1 - miss_rate, self.data.shape)
         else:
-            # MissData.save(self.data, max_tseq = 12)
-            #print("load save")
             self.miss = MissData(load_dir=model_save_path)
             self.miss_rate = miss_rate
             miss_data = self.miss.make_missdata(self.data, self.miss_rate)
@@ -101,31 +95,16 @@ class GainDataGenerator(tf.keras.utils.Sequence):
 
     def __len__(self):
         'Denotes the number of batches per epoch'
-        # return int(128/self.batch_size)
-        # return 2
-        #return self.no // self.batch_size
         return 1
 
     def __getitem__(self, index):
         'Generate one batch of data'
-        # print('index =', index)
         # Sample batch
         x = np.empty((0, self.input_width, self.data.shape[1]))
-        # m = np.empty((0, self.input_width, self.data.shape[1]))
-        # h = np.empty((0, self.input_width, self.data.shape[1]))
         y = np.empty((0, self.input_width, self.data.shape[1]))
-        # print(x.shape)
-        # print(self.data.shape)
-        # print(self.input_width)
-        # self.batch_idx = sample_batch_index(self.no, self.batch_size)
         for cnt in range(0, self.batch_size):
-  #          if self.batch_size == 1:
-   #             i = self.batch_idx
- #           else :
-#                i = self.batch_idx[self.batch_id]
             i = self.batch_idx[self.batch_id]
             self.batch_id += 1
-            # self.batch_id %= self.batch_size
             self.batch_id %= self.no
             if self.miss_pattern and (self.batch_id == 0):
                 self.batch_idx = sample_batch_index(self.no, self.no)
@@ -135,23 +114,17 @@ class GainDataGenerator(tf.keras.utils.Sequence):
                 self.data_m[self.data_m_rand == 0.] = 0.
             idx1 = self.data_idx[i]
             idx2 = self.data_idx[i] + self.input_width
-            # print(idx1, idx2)
 
             Y_mb = self.data[idx1:idx2].copy()
             X_mb = Y_mb.copy()
             M_mb = self.data_m[idx1:idx2]
             Z_mb = uniform_sampler(0, 0.01, shape=X_mb.shape)
             X_mb = M_mb * X_mb + (1 - M_mb) * Z_mb
-            # H_mb_temp = binary_sampler(self.hint_rate, shape=X_mb.shape)
-            # H_mb = M_mb * H_mb_temp
             X_mb[M_mb == 0] = np.nan
             Y_mb[M_mb == 1] = np.nan
             x = np.append(x, [X_mb], axis=0)
-            # m = np.append(m, [M_mb], axis=0)
-            # h = np.append(h, [H_mb], axis=0)
             y = np.append(y, [Y_mb], axis=0)
 
-        # return [x, m, h], y
         return x, y
 
     def on_epoch_end(self):
