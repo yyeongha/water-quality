@@ -99,9 +99,6 @@
                         <i class="fas fa-chart-line mr-8"></i>샘플 다운로드
                     </button>
                 </div>
-                {#                <form method="get" action="{% url "file_download" %}">#}
-                {#   <button type="submit">Download!</button>#}
-                {#</form>#}
                 <div>
                     <button type="button" class="btn btn-light" onclick="pridict()">
                         <i class="fas fa-chart-line mr-8"></i>예측하기
@@ -121,42 +118,7 @@
             {% endif %}
         </div>
         -->
-        <!--
-        <div class="pd-20 debug">
-            <div class="title">기능</div>
-            <div class="row">
-                <div class="col text-center">
-                    <button type="button" class="btn btn-light">
-                        <i class="fas fa-theater-masks mr-8"></i>학습하기
-                    </button>
-                </div>
-                <div class="col text-center">
-                    <button type="button" onclick="file_download()" class="btn btn-light">
-                        <i class="fas fa-upload mr-8"></i>모델 저장
-                    </button>
-                </div>
 
-                <div class="col text-center">
-                    <form method="post" enctype="multipart/form-data" id="fileUploadForm">
-
-                        <input type="file" name="myfile">
-                        <button type="submit" class="btn btn-light" id="btnSubmit">
-                            <i class="fas fa-download mr-8"></i>모델 불러오기
-                        </button>
-                    </form>
-                </div>
-
-                <div class="col text-center">
-
-                </div>
-                <div class="col text-center">
-                    <button type="button" class="btn btn-light">
-                        <i class="fas fa-chart-line mr-8"></i>예측하기
-                    </button>
-                </div>
-            </div>
-        </div>
-    -->
         {% include "backend/chart.html" %}
 
 
@@ -213,7 +175,7 @@
                         // chart_column
                         _predictWater.options.title.text = data.column;
                         // chart_labels
-                        for (let i = 7; i < 12; i++) {
+                        for (let i = 10; i < 15; i++) {
                             tmp_date = new Date($("#start-train").val());
                             tmp_date.setDate(_startTrain.getDate() + i);
                             let A = formatDate(tmp_date);
@@ -222,7 +184,7 @@
                         _predictWater.data.labels = water_arr
                         _predictWater.update();
 
-                        for (let i = 0; i < 12; i++) {
+                        for (let i = 0; i < 15; i++) {
                             tmp_date = new Date($("#start-train").val());
                             tmp_date.setDate(_startTrain.getDate() + i);
                             let A = formatDate(tmp_date);
@@ -307,62 +269,13 @@
                 }
             });
         }
-        /*
-        $("#activate").click(function (event) {
-            event.preventDefault();
-            var form = $('#fileUploadForm')[0];
-
-            var data = new FormData(form);
-            data.append('start_date', $('#start-train').val());
-            data.append('end_date', $('#end-predict').val());
-            $.ajax({
-                type: "POST",
-                enctype: 'multipart/form-data',
-                url: "{% url "file_upload" %}",
-                data: data,
-                processData: false,
-                contentType: false,
-                cache: false,
-                timeout: 600000,
-                success: function (data) {
-                    $('#activate').css('border', 'solid');
-                    $('#deactivate').css('border', 'none');
-                    alert("complete");
-                },
-                error: function (e) {
-                    console.log("ERROR : ", e);
-                    $('#activate').css('border', 'none');
-                    $('#deactivate').css('border', 'solid');
-                    alert("fail");
-                }
-            });
-        });*/
 
         function deactivate() {
             upload_df = 'N'
             $('#acti').css('border', 'none');
             $('#deacti').css('border', 'solid black');
             $('#upload_active_div').hide();
-            /*
-            $.ajax({
-                url: "{% url "deactivate" %}",
-                data: {
-                    csrfmiddlewaretoken: $("#csrf_token").val(),
-                    "key": $('#column_list').val(),
-                    "model": model_activate,
-                    "start_date": formatDate(_startTrain),
-                    "end_date": formatDate(_endTrain),
-                    "predict_start_date": formatDate(_startPredict),
-                    "predict_end_date": formatDate(_endPredict)
-                },
-                type: "POST",
-                dataType: "json"
-            }).done(function (data) {
-                $('#acti').css('border', 'none');
-                $('#deacti').css('border', 'solid black');
-                alert("deactivate");
-            });
-            */
+
         }
 
         $("#btnSubmits").click(function (event) {
@@ -393,23 +306,12 @@
 
 
         function file_download() {
-            /*
-            $.ajax({
-                url: "
-            {% url "file_download" %}", // 클라이언트가 요청을 보낼 서버의 URL 주소
-                data: {csrfmiddlewaretoken: $("#csrf_token").val()},
-                type: "GET"
-            }).done(function () {
-                alert(333);
-            })
-            */
-            var url = "../../../media/han.xlsx";
+            var url = "../../../media/sample_excel.xlsx";
             location.href = url;
         }
         function upload_show() {
             $('#upload_active').hide();
             $('#upload_active_div').show();
-
         }
 
     </script>

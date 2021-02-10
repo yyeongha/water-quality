@@ -11,6 +11,7 @@ from django.shortcuts import render
 
 from gain_new.core.predict_run import prediction_for_webpage
 
+
 def index(request):
     context = {}
 
@@ -132,7 +133,7 @@ def predict(request):
             df = read_xlsx(excel_path, start_date, predict_end_date, 'Y')
             print('df', df)
         # 강우량,기온
-        rain_list, temp_list = load_rain(key,start_date, predict_end_date,model_dir)
+        rain_list, temp_list = load_rain(key, start_date, predict_end_date, model_dir)
         '''
         watershed 
             0:한강, 1:낙동강, 2:금강, 3:영산강
@@ -171,8 +172,8 @@ def predict(request):
     predict_cahrt = {"origin": input_data,
                      "origin_2": data + label,
                      "predict": data + pred}
-    rain_chart = {"rain_list":rain_list,
-                  "temp_list":temp_list}
+    rain_chart = {"rain_list": rain_list,
+                  "temp_list": temp_list}
     predict_water = pred
     if key == 'toc':
         value = {"1": "2"}
@@ -180,7 +181,7 @@ def predict(request):
 
     print(color)
     return JsonResponse({"predict_cahrt": predict_cahrt, "predict_water": predict_water,
-                         "column": parameters['web_info']['columns'][key], "color": color,"rain_chart":rain_chart})
+                         "column": parameters['web_info']['columns'][key], "color": color, "rain_chart": rain_chart})
 
 
 def call_model(request):
@@ -212,8 +213,8 @@ def call_model(request):
 
         return JsonResponse({'web_info': parameters['web_info'], "x": x, "y": y})
 
-def load_rain(key,start_date,end_date,model_dir):
 
+def load_rain(key, start_date, end_date, model_dir):
     rain_file = 'rain.xlsx'
     rain_path = '{dir}/{file}'.format(dir=model_dir, file=rain_file)
 
@@ -241,6 +242,7 @@ def load_rain(key,start_date,end_date,model_dir):
     rn60m_value = list(newDf["rn60m_value"])
     ta_value = list(newDf["ta_value"])
     return rn60m_value, ta_value
+
 
 def read_xlsx(files_Path, start_date=None, end_date=None, predict=None):
     # dateformat convert
@@ -296,49 +298,10 @@ def file_download(request):
 
 def deactivate(request):
     if request.method == 'POST':
-        start_date = request.POST.get('start_date')
-        end_date = request.POST.get('end_date')
-        predict_start_date = request.POST.get('predict_start_date')
-        predict_end_date = request.POST.get('predict_end_date')
 
-        model = request.POST.get('model')
-        for i in ['A', 'B', 'C', 'D']:
-            if model == i:
-                model_dir = './model_dir/model_' + i
-        rain_file = 'rain.xlsx'
-        rain_path = '{dir}/{file}'.format(dir=model_dir, file=rain_file)
-
-        start_date = datetime.datetime.strptime(start_date, '%Y.%m.%d')
-
-        start_date = datetime.datetime.strftime(start_date, '%Y-%m-%d')
-        # start_date = str(start_date)
-        print('start_date', start_date)
-
-        end_date = datetime.datetime.strptime(predict_end_date, '%Y.%m.%d')
-        end_date += datetime.timedelta(days=1)
-        end_date = datetime.datetime.strftime(end_date, '%Y-%m-%d')
-        # end_date = str(end_date)
-        print('end_date', end_date)
-
-        # dataframe convert
-        df_loc = pd.DataFrame(pd.read_excel(rain_path)).filter(["aws_dt", "rn60m_value", "ta_value"])
-        # set date
-        first_column = str(df_loc.columns[0])
-        after_start_date = df_loc[first_column] >= start_date
-        before_end_date = df_loc[first_column] < end_date
-        between_two_dates = after_start_date & before_end_date
-
-        filtered_dates = df_loc.loc[between_two_dates]
-        filtered_dates.aws_dt = pd.to_datetime(filtered_dates.aws_dt)
-        filtered_dates = filtered_dates.set_index('aws_dt')
-
-        newDf = filtered_dates.resample('D').mean()
-        rn60m_value = list(newDf["rn60m_value"])
-        ta_value = list(newDf["ta_value"])
-        print('ta_value',ta_value)
-        print('rn60m_value',rn60m_value)
 
         return JsonResponse({"return": "success"})
+
 
 def file_upload(request):
     if request.method == 'POST' and request.FILES['myfile']:
@@ -359,13 +322,6 @@ def file_upload(request):
         else:
             return JsonResponse({"rusult": 'fail'})
 
-        # # upload file unzip save
-        # if myfile.name[-4:] == '.zip':
-        #     with zipfile.ZipFile(myfile, 'r') as existing_zip:
-        #         existing_zip.extractall(settings.MEDIA_ROOT)
-        #     return JsonResponse({"rusult": 'success'})
-        # else:
-        #     return JsonResponse({"rusult": 'fail'})
 
 
 def multi_file_upload(request):
@@ -379,14 +335,6 @@ def multi_file_upload(request):
         return JsonResponse({"rusult": 'success'})
     else:
         return JsonResponse({"rusult": 'fail'})
-
-
-def drawing(request):
-    return render(request, 'backend/draw.html')
-
-
-def drawing2(request):
-    return render(request, 'backend/draw2.html')
 
 
 def color_list(key, data_list):

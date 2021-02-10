@@ -75,10 +75,10 @@ class WindowGenerator():
         self.label_indices = np.arange(self.total_window_size)[self.labels_slice]
 
         #self.example # create self.dg
-        print("++++++++++++++++++++++++++++++++++++")
-        print(self.example[0].shape)
+       # print("++++++++++++++++++++++++++++++++++++")
+        #print(self.example[0].shape)
 
-        print("++++++++++++++++++++++++++++++++++++")
+       # print("++++++++++++++++++++++++++++++++++++")
         #print(self.example[0].shape)
 
     def __repr__(self):
@@ -139,10 +139,13 @@ class WindowGenerator():
 
 #WindowGenerator.plot = plot
 
+#    @property
+#    def train(self):
+#        return self.make_dataset(self.train_df)
 
     @property
     def train(self):
-        return self.make_dataset(self.train_df)
+        return self.make_dataset(self.train_df, train=True)
 
     @property
     def val(self):
@@ -264,8 +267,6 @@ class WindowGenerator():
 
 
     def compa(self, model=None, plot_col=0, windows=None, target_std=None, target_mean=None, predict_day=4):
-
-
         if windows is not None:
             inputs, labels = windows
         else:
@@ -274,19 +275,13 @@ class WindowGenerator():
         if model is None:
             return
 
-        mae = 0
-        mse = 0
-        rmse = 0
-        mape = 0
         pred_arr = []
         label_arr = []
-        o = 0
-        o1 = 0
-        p = 0
-        nse_sum1 = 0
-        nse_sum2 = 0
-        pbias_sum1 = 0
-        pbias_sum2 = 0
+        mae = mse = rmse = mape = 0
+
+        o = o1 = p = 0
+        nse_sum1 = nse_sum2 = 0
+        pbias_sum1 = pbias_sum2 = 0
 
         predictions = model(inputs)
 
@@ -304,20 +299,22 @@ class WindowGenerator():
 
             temp_m = o - p
 
-            nse_sum1 = nse_sum1 + temp_m ** 2
-            nse_sum2 = nse_sum2 + (o - o1) ** 2
+            mae += np.abs(temp_m)
+            mse += temp_m ** 2
 
-            pbias_sum1 = pbias_sum1 + temp_m
-            pbias_sum2 = pbias_sum2 + o
+            nse_sum1 += temp_m ** 2
+            nse_sum2 += (o - o1) ** 2
+
+            pbias_sum1 += temp_m
+            pbias_sum2 += o
 
         nse = 1 - (nse_sum1 / nse_sum2)
         pbias = (pbias_sum1 / pbias_sum2) * 100
 
-        #print('NSE')
-        #print(nse)
+        mae /= len(inputs)
+        mse /= len(inputs)
 
-        #print('PBIAS')
-        #print(pbias)
+        rmse = np.sqrt(mse)
 
         return nse, np.abs(pbias), pred_temp.numpy(), label_temp.numpy()
 
@@ -325,7 +322,7 @@ class WindowGenerator():
 
 
 #class GainWindowGenerator(WindowGenerator):
-def make_dataset_gain(self, data):
+def make_dataset_gain(self, data, train=False):
     dg = GainDataGenerator(
         self.df,
         #data,
@@ -357,7 +354,7 @@ WindowGenerator.make_dataset = make_dataset_gain
 
 
 #class WaterWindowGenerator(WindowGenerator):
-def make_dataset_water(self, data):
+def make_dataset_water(self, data, train=False):
 
     dg = WaterDataGenerator(
         data,
@@ -395,8 +392,13 @@ def make_dataset_water(self, data):
     #print(self.input_width, self.label_width)
     #print('ds-----------------------------')
     #print(ds)
+    if train:
+        # return ds.repeat(10).prefetch(3)
+        return ds.repeat(-1).prefetch(5)
+    else:
+        return ds.prefetch(5)
 
-    return ds
+    #return ds
 
 
 
