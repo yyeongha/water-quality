@@ -164,6 +164,7 @@
                 }).done(function (data) {
                     if (data.return == 'fail') {
                         alert("predict_fail");
+                        $('#loading').hide();
                     } else {
                         let water_arr = Array();
                         let graph_arr = Array();

@@ -93,7 +93,7 @@ def load_df(request):
 
         # 데이터프레임 샘플
         df_sample = pd.DataFrame(
-            {'target': target_list,
+            {'종류': target_list,
              'location': location_list,
              '위도': y_list,
              '경도': x_list,
@@ -159,27 +159,28 @@ def predict(request):
 
     with open(parameters_path, encoding='utf8') as json_file:
         parameters = json.load(json_file)
+    try:
+        '''
+        toc = 총유기 탄소량
+        chl = 클로로필 -a
+        do = 용존 산소량
+        tn = 총질소
+        tp = 총인
+        '''
+        # data
+        data = [None, None, None, None, None, None, None, None, None]
+        predict_cahrt = {"origin": input_data,
+                         "origin_2": data + [input_data[9]]+label,
+                         "predict": data + [input_data[9]] + pred}
 
-    '''
-    toc = 총유기 탄소량
-    chl = 클로로필 -a
-    do = 용존 산소량
-    tn = 총질소
-    tp = 총인
-    '''
-    # data
-    data = [None, None, None, None, None, None, None]
-    predict_cahrt = {"origin": input_data,
-                     "origin_2": data + label,
-                     "predict": data + pred}
-    rain_chart = {"rain_list": rain_list,
-                  "temp_list": temp_list}
-    predict_water = pred
-    if key == 'toc':
-        value = {"1": "2"}
-    print('run')
-
-    print(color)
+        rain_chart = {"rain_list": rain_list,
+                      "temp_list": temp_list}
+        predict_water = pred
+        if key == 'toc':
+            value = {"1": "2"}
+    except Exception as e:
+        print(e)
+        return JsonResponse({"return": "fail"})
     return JsonResponse({"predict_cahrt": predict_cahrt, "predict_water": predict_water,
                          "column": parameters['web_info']['columns'][key], "color": color, "rain_chart": rain_chart})
 
@@ -298,8 +299,6 @@ def file_download(request):
 
 def deactivate(request):
     if request.method == 'POST':
-
-
         return JsonResponse({"return": "success"})
 
 
@@ -321,7 +320,6 @@ def file_upload(request):
             return JsonResponse({"rusult": 'success'})
         else:
             return JsonResponse({"rusult": 'fail'})
-
 
 
 def multi_file_upload(request):
