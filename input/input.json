@@ -1,6 +1,6 @@
 {
     "file": {
-        "watershed": "geum"
+        "watershed": "han_pull"
     },
     "gain": {
         "train": true,
@@ -13,7 +13,7 @@
         "miss_rate": 0.15
     },
     "rnn": {
-        "train": false,
+        "train": true,
         "max_epochs": 15,
         "target_column": "do",
         "batch_size": 128,
