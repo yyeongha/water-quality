@@ -70,8 +70,13 @@ $ python main.py
 측정지표 NSE 수치 범위    
 
 ||Very Good|Good|Satisfactory|Not Satisfatory|
-|------|---|-----|------|-----|
-|NSE|  0.80 > |0.70 ≤ NSE ≤ 0.80| 0.50 <NSE < 0.70|    ≤0.50|
+|:---:|:---:|:---:|:---:|:---:|
+|NSE|  0.80 > |0.70 ≤ NSE ≤ 0.80| 0.50 <NSE < 0.70|    ≤0.50|    
+
+    
+        
+            
+            
 
 |유역|측정항목|NSE|비고|
 |---|---|---|---|
@@ -82,6 +87,6 @@ $ python main.py
 	
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTMzNTA2NDc0OSwtMjAyMTkzNDYwNyw2OT
-M0NzgzMzQsNTE0NjE3NTMwLC0xNDEzMjQ4ODgzXX0=
+eyJoaXN0b3J5IjpbLTI2MjAwOTc1LC0yMDIxOTM0NjA3LDY5Mz
+Q3ODMzNCw1MTQ2MTc1MzAsLTE0MTMyNDg4ODNdfQ==
 -->
