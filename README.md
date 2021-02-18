@@ -61,7 +61,8 @@ input.json을 변경 후 다음의 명령어로 AI 모델을 실행합니다.
 ```bash
 $ python main.py
 ```
-
+이후 input.json의 "target_column"을 “toc”, ”tn”, ”tp“, ”chl-a“로 변경하며 각각의 항목을 테스트 합니다.     
+(또한 강 유역별로 변경하며 테스트 가능합니다. ”nak“, ”geum“, ”yeong”)    
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTc4ODI0Mjk3OF19
+eyJoaXN0b3J5IjpbLTEzMzk3NzE2MDZdfQ==
 -->
