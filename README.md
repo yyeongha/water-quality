@@ -71,12 +71,8 @@ $ python main.py
 
 ||Very Good|Good|Satisfactory|Not Satisfatory|
 |------|---|---|---|---|
-|테스트1|테스트2|테스트3|
-|테스트1|테스트2|테스트3|
-|테스트1|테스트2|테스트3|
-
-
+|NSE|0.80 > |0.70 | |
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTg2MzQ2NTg5LC0xNDEzMjQ4ODgzXX0=
+eyJoaXN0b3J5IjpbMTE4MjQ3MDM3MiwtMTQxMzI0ODg4M119
 -->
