@@ -16,9 +16,11 @@
 
 ## Install Libraries
 ```bash
-$ pip install -r
+$ pip install –r requirement.txt
 ```
 
+
+
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTc2NzU2NzE4OF19
+eyJoaXN0b3J5IjpbLTU1NDkyNDczXX0=
 -->
