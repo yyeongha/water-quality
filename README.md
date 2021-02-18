@@ -16,13 +16,18 @@
 > [data]->[han] 폴더에 측정망별로 엑셀파일이 존재합니다.     
 
 ## Install Libraries
+필요 Library를 설치 합니다.    
+ 
 ```bash
 $ pip install –r requirement.txt
 ```
 
-## 
+## Run 
+1. input.json 
+[input] 폴더안의 input.json을 변경 합니다. 
+
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTg4MzQ5NDUxOF19
+eyJoaXN0b3J5IjpbMjk3MzQwODcwXX0=
 -->
