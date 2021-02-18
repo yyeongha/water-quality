@@ -71,13 +71,13 @@ $ python main.py
 
 ||Very Good|Good|Satisfactory|Not Satisfatory|
 |------|---|-----|------|-----|
-|NSE|0.80 > |0.70 ≤ NSE ≤ 0.80| 0.50 <NSE < 0.70|≤0.50|
+|NSE|  0.80 > |0.70 ≤ NSE ≤ 0.80| 0.50 <NSE < 0.70|    ≤0.50|
 
 
 
 	
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTE0ODIyNTA2LC0yMDIxOTM0NjA3LDY5Mz
-Q3ODMzNCw1MTQ2MTc1MzAsLTE0MTMyNDg4ODNdfQ==
+eyJoaXN0b3J5IjpbLTc3MDg0NTU5MCwtMjAyMTkzNDYwNyw2OT
+M0NzgzMzQsNTE0NjE3NTMwLC0xNDEzMjQ4ODgzXX0=
 -->
