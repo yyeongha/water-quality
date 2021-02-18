@@ -94,7 +94,7 @@ $ python main.py
 ||toc|0.5617|Satisfactory|
 ||tn|0.7760|Good|
 ||tp|0.2091|Not Satisfactory|
-||chl-a|0.6018Satisfactory|
+||chl-a|0.6018|Satisfactory|
 |금강|do|0.8738|Very Good|
 ||toc|0.6741|Satisfactory|
 ||tn|0.5099|Satisfactory|
@@ -106,7 +106,7 @@ $ python main.py
 	
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTg0Mjg4MTMzMiwtMjYyMDA5NzUsLTIwMj
+eyJoaXN0b3J5IjpbMjAyODkwNTUwMiwtMjYyMDA5NzUsLTIwMj
 E5MzQ2MDcsNjkzNDc4MzM0LDUxNDYxNzUzMCwtMTQxMzI0ODg4
 M119
 -->
