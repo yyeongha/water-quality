@@ -1,5 +1,6 @@
 # water-quality	
 
+## Preperation
 ❏ 테스트 시스템 사양은 다음과 같습니다. 
 - Ubuntu 18.04
 - Python 3.7.9
@@ -21,6 +22,7 @@ $ pip install –r requirement.txt
 
 
 
+
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTU1NDkyNDczXX0=
+eyJoaXN0b3J5IjpbLTE4ODQyNzI1MTBdfQ==
 -->
