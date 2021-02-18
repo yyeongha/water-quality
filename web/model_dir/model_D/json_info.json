@@ -34,7 +34,7 @@
     "fill_no": 0
   },
   "web_info": {
-    "target_point": "도개",
+    "target_point": "예측지점: 도개",
     "column": [
       {
         "toc": "총유기 탄소량(TOC)"

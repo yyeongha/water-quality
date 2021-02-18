@@ -26,15 +26,19 @@
                 <div style="display: flex; flex-direction: row; justify-content: space-around; ">
                     <button class="btn btn-skyblue" onclick="select_model('A')">
                         <i class="fas fa-water mr-8" style="color:#0fa7ff;"></i>한강(MODEL1)
+                        <div class="AAA" style="font-size:15px;"><span class="target_point"></span></div>
                     </button>
                     <button class="btn btn-skyblue" onclick="select_model('B')">
                         <i class="fas fa-water mr-8" style="color:#0fa7ff;"></i>금강(MODEL2)
+                        <div class="BBB" style="font-size:15px;"><span class="target_point"></span></div>
                     </button>
                     <button class="btn btn-skyblue" onclick="select_model('C')">
                         <i class="fas fa-water mr-8" style="color:#0fa7ff;"></i>영산강(MODEL3)
+                        <div class="CCC" style="font-size:15px;"><span class="target_point"></span></div>
                     </button>
-                    <button class="btn btn-skyblue onclick="select_model('D')">
+                    <button class="btn btn-skyblue" onclick="select_model('D')">
                         <i class="fas fa-water mr-8" style="color:#0fa7ff;"></i>낙동강(MODEL4)
+                        <div class="DDD" style="font-size:15px;"><span class="target_point"></span></div>
                     </button>
                 </div>
             </div>
@@ -43,15 +47,11 @@
         <div class="pd-20 debug mt-30">
             <div style="display: flex; flex-direction: row;">
 
-                <div class="col-6">
+                <div class="col-12">
                     <div class="title" style="float:left; margin-right: 20px;">측정데이터 선택</div>
                     <select id="column_list" style="margin-top:5px;">
                         <option value="">유역을 먼저 선택해 주세요</option>
                     </select>
-                </div>
-                <div class="col-6">
-                    <div class="title" style="float:left; margin-right: 20px;">대상 지점</div>
-                    <div id="target_point" class="to_where"> 미 지정</div>
                 </div>
 
                 <div hidden>
@@ -88,9 +88,9 @@
                         <button type="submit" class="btn btn-light" id="acti" onclick="activate()">
                             <i class="fas fa-check mr-8"></i>적용
                         </button>
-                        <button type="button" class="btn btn-light" id="deacti" onclick="deactivate()">
+                        <!-- <button type="button" class="btn btn-light" id="deacti" onclick="deactivate()">
                             <i class="fas fa-ban mr-8"></i>취소
-                        </button>
+                        </button> -->
                     </form>
 
                     <div>
@@ -244,7 +244,36 @@
                         $('#column_list').append("<option value=" + key + ">" + col_dict[i][key] + "</option>")
                     }
                 }
-                $('#target_point').text(data.web_info.target_point);
+                $('.target_point').text(data.web_info.target_point);
+
+                $('.BBB').hide();
+                $('.CCC').hide();
+                $('.DDD').hide();
+                $('.AAA').hide();
+
+                if (model_activate == 'A') {
+                    $('.BBB').hide();
+                    $('.CCC').hide();
+                    $('.DDD').hide();
+                    $('.AAA').show();
+                } else if (model_activate == 'B') {
+                    $('.AAA').hide();
+                    $('.CCC').hide();
+                    $('.DDD').hide();
+                    $('.BBB').show();
+                } else if (model_activate == 'C') {
+                    $('.AAA').hide();
+                    $('.BBB').hide();
+                    $('.DDD').hide();
+                    $('.CCC').show();
+                } else if (model_activate == 'D') {
+                    $('.AAA').hide();
+                    $('.BBB').hide();
+                    $('.CCC').hide();
+                    $('.DDD').show();
+                }
+
+
                 options = { //지도를 생성할 때 필요한 기본 옵션
                     center: new kakao.maps.LatLng(data.x, data.y), //지도의 중심좌표.
                     level: 10//지도의 레벨(확대, 축소 정도)
@@ -254,6 +283,7 @@
                 load_map_data(map_info);
             })
         };
+
 
         function activate() {
             var form = $('#fileUploadForm')[0];
