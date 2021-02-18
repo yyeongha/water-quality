@@ -82,15 +82,16 @@ $ python main.py
 |:---:|:---:|:---:|:---:|
 |한강|do|0.9152|Very Good|
 ||toc|0.6799|Satisfactory|
-||tn|0.7119||
-||tp|0.4021||
-||chl-a|||
+||tn|0.7119|Good|
+||tp|0.4021|Not satisfactory|
+||chl-a|0.7019|Good|
+
 
 
 	
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNjg1OTYxMTM2LC0yNjIwMDk3NSwtMjAyMT
-kzNDYwNyw2OTM0NzgzMzQsNTE0NjE3NTMwLC0xNDEzMjQ4ODgz
-XX0=
+eyJoaXN0b3J5IjpbLTE4MjcxNzM1OTQsLTI2MjAwOTc1LC0yMD
+IxOTM0NjA3LDY5MzQ3ODMzNCw1MTQ2MTc1MzAsLTE0MTMyNDg4
+ODNdfQ==
 -->
