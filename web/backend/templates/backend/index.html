@@ -21,20 +21,20 @@
 
         <div class="pd-20 debug">
 
-            <div>
-                <div class="title">Model Select</div>
+            <div style="margin-top:30px;">
+                <!-- <div class="title">위치 선택</div> -->
                 <div style="display: flex; flex-direction: row; justify-content: space-around; ">
                     <button class="btn btn-skyblue" onclick="select_model('A')">
-                        <i class="fas fa-water mr-8"></i>한강(MODEL1)
+                        <i class="fas fa-water mr-8" style="color:#0fa7ff;"></i>한강(MODEL1)
                     </button>
                     <button class="btn btn-skyblue" onclick="select_model('B')">
-                        <i class="fas fa-water mr-8"></i>금강(MODEL2)
+                        <i class="fas fa-water mr-8" style="color:#0fa7ff;"></i>금강(MODEL2)
                     </button>
                     <button class="btn btn-skyblue" onclick="select_model('C')">
-                        <i class="fas fa-water mr-8"></i>영산강(MODEL3)
+                        <i class="fas fa-water mr-8" style="color:#0fa7ff;"></i>영산강(MODEL3)
                     </button>
                     <button class="btn btn-skyblue onclick="select_model('D')">
-                        <i class="fas fa-water mr-8"></i>낙동강(MODEL4)
+                        <i class="fas fa-water mr-8" style="color:#0fa7ff;"></i>낙동강(MODEL4)
                     </button>
                 </div>
             </div>
@@ -48,7 +48,7 @@
 
                 <div class="col-6">
                     <div class="title" style="float:left; margin-right: 20px;">측정데이터 선택</div>
-                    <select id="column_list" style="padding-top:7px;">
+                    <select id="column_list" style="margin-top:5px;">
                         <option value="">모델을 먼저 선택해야합니다.</option>
                     </select>
                 </div>
@@ -101,6 +101,15 @@
                         <i class="fas fa-chart-line mr-8"></i>샘플 다운로드
                     </button>
                 </div>
+            </div>
+
+
+        </div>
+
+
+        <div class="pd-20 debug">
+            <div style="display: flex; flex-direction: row; justify-content: space-around; ">
+                {% csrf_token %}
                 <div>
                     <button type="button" class="btn btn-light" onclick="pridict()">
                         <i class="fas fa-chart-line mr-8"></i>예측하기
@@ -110,6 +119,9 @@
 
 
         </div>
+
+
+
         <!--
         <div class="pd-20 debug">
             <div class="title">현재 사용중인 모델</div>
