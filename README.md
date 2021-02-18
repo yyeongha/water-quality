@@ -69,13 +69,15 @@ $ python main.py
 
 측정지표 NSE 수치 범위    
 
-|제목|내용|설명|
+||Very Good|설명|
 |------|---|---|
 |테스트1|테스트2|테스트3|
 |테스트1|테스트2|테스트3|
 |테스트1|테스트2|테스트3|
 
+
+
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTIwMDY2MzQ1MTAsLTE0MTMyNDg4ODNdfQ
+eyJoaXN0b3J5IjpbLTE1NDQ0NjUzOTUsLTE0MTMyNDg4ODNdfQ
 ==
 -->
