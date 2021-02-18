@@ -27,14 +27,11 @@ class WaterDataGenerator(tf.keras.utils.Sequence):
         self.batch_size = batch_size
         self.input_shape = (batch_size, input_width, self.data.shape[1])
         self.out_num_features = out_num_features
-        #         print("out_features")
-        #         print(out_features)
         if out_features:
             self.out_features = out_features
         else:
             self.out_features = [i for i in range(out_num_features)]
         self.label_shape = (batch_size, label_width, self.out_num_features)
-
 
         if (skip_time):
             # TO-DO
@@ -56,29 +53,16 @@ class WaterDataGenerator(tf.keras.utils.Sequence):
 
     def __len__(self):
         'Denotes the number of batches per epoch'
-        # return int(128/self.batch_size)
-        # return 2
-        #return 1
-
         return self.no//self.batch_size
 
     def __getitem__(self, index):
         'Generate one batch of data'
-        # print('index =', index)
-        # print('self.no =', self.no)
-        # print('self.total_no =', self.total_no)
-        # print('self.batch_id =', self.batch_id)
         # Sample batch
         label_width = self.label_width
         batch_idx = self.batch_idx
 
         x = np.empty((0, self.input_width, self.data.shape[1]))
-        # y = np.empty((0, self.input_width, self.data.shape[1]))
         y = np.empty((0, self.label_width, self.out_num_features))
-
-        #print('--------------------------------23123')
-        #print(x.shape)
-        #print(y.shape)
 
         for cnt in range(0, self.batch_size):
             i = self.batch_id
@@ -92,17 +76,8 @@ class WaterDataGenerator(tf.keras.utils.Sequence):
             idx1 = self.data_idx[batch_idx[i]] + self.window_size - label_width
             idx2 = idx1 + label_width
 
-            # Y = self.data[idx1:idx2,:,:out_num_features]
             Y = self.data.iloc[idx1:idx2, self.out_features].to_numpy()
-            # Y = self.data[idx1:idx2]
-            # print('Y.shape = ', Y.shape)
-            # Y = Y.iloc[:,:out_num_features]
-
-
             self.batch_id %= self.no
-            # print("x.shape=", x.shape)
-            # print('X.shape=', X.shape)
-            # print(type(x), type(X))
             x = np.append(x, [X], axis=0)
             y = np.append(y, [Y], axis=0)
 

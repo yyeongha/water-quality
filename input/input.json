@@ -19,6 +19,6 @@
         "batch_size": 128,
         "input_width": 240,
         "label_width": 120,
-        "predict_day": 4
+        "predict_day": 5
     }
 }

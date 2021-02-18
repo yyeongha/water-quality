@@ -20,6 +20,8 @@ def main (args):
 
         json_parameters['file']['watershed'] = watershed
         json_parameters['gain']['train'] = train_gain
+        print('train_gain = ', train_gain)
+        print('parameter = ' , json_parameters['gain']['train'])
         json_parameters['rnn']['train'] = train_rnn
         json_parameters['rnn']['target_column'] = target_col
         json_parameters['rnn']['predict_day'] = predict_day
@@ -42,13 +44,15 @@ if __name__ == '__main__':
     parser.add_argument(
         '--train_gain',
         help='GAIN training option(True/False)',
+        choices=['True','False'],
         default=False,
-        type=bool)
+        type=str)
     parser.add_argument(
         '--train_rnn',
         help='RNN training option(True/False)',
+        choices=['True','False'],
         default=False,
-        type=bool)
+        type=str)
     parser.add_argument(
         '--target_col',
         choices=['do','toc', 'tn', 'tp', 'chl-a'],
