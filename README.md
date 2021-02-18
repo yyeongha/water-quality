@@ -73,11 +73,14 @@ $ python main.py
 |------|---|-----|------|-----|
 |NSE|  0.80 > |0.70 ≤ NSE ≤ 0.80| 0.50 <NSE < 0.70|    ≤0.50|
 
+|유역|측정항목|NSE|비고|
+|---|---|---|---|
+|한강|
 
 
 	
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTc3MDg0NTU5MCwtMjAyMTkzNDYwNyw2OT
-M0NzgzMzQsNTE0NjE3NTMwLC0xNDEzMjQ4ODgzXX0=
+eyJoaXN0b3J5IjpbLTE1NzY2OTkzODQsLTIwMjE5MzQ2MDcsNj
+kzNDc4MzM0LDUxNDYxNzUzMCwtMTQxMzI0ODg4M119
 -->
