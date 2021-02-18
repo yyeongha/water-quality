@@ -2,14 +2,14 @@
 {% load static %}
 {% block content %}
 
-    <div class="container pt-25 debug">
-        <div class="pd-20 debug">
-            <div class="title">new_map</div>
-            <button id="allMenu" onclick="changeMarker('all')">ALL</button>
-            <button id="a_Menu" onclick="changeMarker('target_a')">자동측정망</button>
-            <button id="b_Menu" onclick="changeMarker('target_b')">수질측정망</button>
-            <button id="c_Menu" onclick="changeMarker('target_c')">총량측정망</button>
-            <button id="d_Menu" onclick="changeMarker('target_d')">녹조 조류</button>
+    <div class="pd-25 debug">
+        <div class="pb-20">
+{#            <div class="title">new_map</div>#}
+            <button class="btn-select-sub" id="allMenu" onclick="changeMarker('all')">ALL</button>
+            <button class="btn-select-sub" id="a_Menu" onclick="changeMarker('target_a')">자동측정망</button>
+            <button class="btn-select-sub" id="b_Menu" onclick="changeMarker('target_b')">수질측정망</button>
+            <button class="btn-select-sub" id="c_Menu" onclick="changeMarker('target_c')">총량측정망</button>
+            <button class="btn-select-sub" id="d_Menu" onclick="changeMarker('target_d')">녹조 조류</button>
         </div>
 
         <div id="map" style="width:100%;height:500px;"></div>

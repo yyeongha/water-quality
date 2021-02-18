@@ -1,10 +1,45 @@
 {% extends "backend/layout/base.html" %}
 
 {% block content %}
-    <div class="pd-20 debug">
-        <div class="title">예측 수질</div>
-        <canvas id="predictWater" width="400" height="100"></canvas>
+    <div style="display: flex;">
+        <div class="pd-20 debug" style="width: 80%;">
+            <div class="title">예측 수질</div>
+            <canvas id="predictWater" width="300" height="100"></canvas>
+        </div>
+        <div class="pd-20 debug" style="width: 20%; padding-top:130px;">
+            <table>
+                <tr>
+                    <td style="background-color: rgba(66,238,46,0.95); width: 50%;"></td>
+                    <td>매우 좋음</td>
+                </tr>
+                <tr>
+                    <td style="background-color: rgba(152,235,78,0.95); width: 50%;"></td>
+                    <td>좋음</td>
+                </tr>
+                <tr>
+                    <td style="background-color: rgba(178,238,84,0.95); width: 50%;"></td>
+                    <td>약간 좋음</td>
+                </tr>
+                <tr>
+                    <td style="background-color: rgba(235,229,97,0.95); width: 50%;"></td>
+                    <td>보통</td>
+                </tr>
+                <tr>
+                    <td style="background-color: rgba(235,200,79,0.95); width: 50%;"></td>
+                    <td>약간 나쁨</td>
+                </tr>
+                <tr>
+                    <td style="background-color: rgba(235,127,80,0.95); width: 50%;"></td>
+                    <td>나쁨</td>
+                </tr>
+                <tr>
+                    <td style="background-color: rgba(235,20,37,0.95); width: 50%;"></td>
+                    <td>매우 나쁨</td>
+                </tr>
+            </table>
+        </div>
     </div>
+
 
     <div class="pd-20 debug">
         <div class="title">예측 그래프</div>
@@ -29,10 +64,10 @@
                         label: '예측 수질',
                         data: [3, 2, 3, 7, 5],
                         backgroundColor: ['rgba(66,238,46,0.95)',
-                                            'rgb(152,235,78)',
-                                            'rgb(218,238,99)',
-                                            'rgb(235,183,114)',
-                                            'rgb(235,20,37)']
+                            'rgb(152,235,78)',
+                            'rgb(218,238,99)',
+                            'rgb(235,183,114)',
+                            'rgb(235,20,37)']
                     }
                 ]
             },

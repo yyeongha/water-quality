@@ -8,8 +8,20 @@
   border: solid 0px #aa97ff;
 }
 
+.pb-20 {
+  padding-bottom: 20px;
+}
+
 .pd-20 {
   padding: 20px;
+}
+
+.pd-25 {
+  padding: 25px;
+}
+
+.pd-30 {
+  padding: 50px;
 }
 
 .pt-25 {
@@ -31,12 +43,41 @@
 .title {
   font-weight: bold;
   margin-bottom: 10px;
+  font-size: 22px;
 }
 
 .main-title {
-  font-size: 25px;
+  font-size: 28px;
   font-weight: bold;
 }
+
+.color-skyblue {
+  color: deepskyblue;
+}
+
 .main-title-sub {
   color: #b9b9b9;
+}
+
+.btn-skyblue {
+  background: #cee2ff;
+  width:24%;
+}
+
+.btn-select-sub {
+  background: #ececec;
+  padding: 5px 20px;
+  border: none;
+}
+
+.to_where {
+  background-color: #ffe7e7;
+  margin-left: 105px;
+  width: 130px;
+  text-align: center;
+  padding-top: 3px;
+  vertical-align: middle;
+  height: 33px;
+  font-size: 18px;
+  border-radius: 5px;
 }

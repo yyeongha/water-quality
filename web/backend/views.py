@@ -140,9 +140,10 @@ def predict(request):
         Target index 
             0: 용존산소(DO), 1:총유기탄소(TOC) 2:총질소(TN) 3:총인(TP), 4:클로로필-a(Chl-a)
         '''
-        watershed = {"A": 0, "B": 1, "C": 2, "D": 3}
+        watershed = {"A": 0, "B": 2, "C": 3, "D": 1}
         target = {"do": 0, "toc": 1, "tn": 2, "tp": 3, "chl": 4}
         prediction = prediction_for_webpage()
+
         nse, pbias, input_data, label, pred = prediction.run(dataframe=df, watershed=watershed[model],
                                                              target=target[key])
         # 수질등급별 색상

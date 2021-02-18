@@ -11,7 +11,7 @@
 
         <div class="text-center debug">
             <div>
-                <span class="main-title">수질 예측시스템</span>
+                <span class="main-title"><i class="fas fa-tint mr-8 color-skyblue"></i>수질 예측시스템</span>
             </div>
             <div>
                 <span class="main-title-sub">Water quality prediction system</span>
@@ -24,40 +24,37 @@
             <div>
                 <div class="title">Model Select</div>
                 <div style="display: flex; flex-direction: row; justify-content: space-around; ">
-                    <button class="btn btn-light" onclick="select_model('A')">
-                        <i class="fas fa-download mr-8"></i>한강(MODEL1)
+                    <button class="btn btn-skyblue" onclick="select_model('A')">
+                        <i class="fas fa-water mr-8"></i>한강(MODEL1)
                     </button>
-                    <button class="btn btn-light" onclick="select_model('B')">
-                        <i class="fas fa-download mr-8"></i>금강(MODEL2)
+                    <button class="btn btn-skyblue" onclick="select_model('B')">
+                        <i class="fas fa-water mr-8"></i>금강(MODEL2)
                     </button>
-                    <button class="btn btn-light" onclick="select_model('C')">
-                        <i class="fas fa-download mr-8"></i>영산강(MODEL3)
+                    <button class="btn btn-skyblue" onclick="select_model('C')">
+                        <i class="fas fa-water mr-8"></i>영산강(MODEL3)
                     </button>
-                    <button class="btn btn-light" onclick="select_model('D')">
-                        <i class="fas fa-download mr-8"></i>낙동강(MODEL4)
+                    <button class="btn btn-skyblue onclick="select_model('D')">
+                        <i class="fas fa-water mr-8"></i>낙동강(MODEL4)
                     </button>
                 </div>
             </div>
         </div>
 
-
         {#        {% include "backend/new_map.html" %}#}
         {% include "backend/new_map3.html" %}
-
-        {% include "backend/sample_table.html" %}
 
         <div class="pd-20 debug">
             <div style="display: flex; flex-direction: row;">
 
-                <div class="col-5">
-                    <div class="title">측정데이터 선택</div>
-                    <select id="column_list">
+                <div class="col-6">
+                    <div class="title" style="float:left; margin-right: 20px;">측정데이터 선택</div>
+                    <select id="column_list" style="padding-top:7px;">
                         <option value="">모델을 먼저 선택해야합니다.</option>
                     </select>
                 </div>
-                <div>
-                    <div class="title">대상 지점</div>
-                    <H2 id="target_point"> 미 지정</H2>
+                <div class="col-6">
+                    <div class="title" style="float:left; margin-right: 20px;">대상 지점</div>
+                    <div id="target_point" class="to_where"> 미 지정</div>
                 </div>
 
                 <div hidden>
@@ -73,6 +70,11 @@
 
             </div>
         </div>
+
+        {% include "backend/sample_table.html" %}
+
+
+
         {% include "backend/new_datepicker.html" %}
         <div class="pd-20 debug">
             <div style="display: flex; flex-direction: row; justify-content: space-around; ">
@@ -157,7 +159,7 @@
                         "end_date": formatDate(_endTrain),
                         "predict_start_date": formatDate(_startPredict),
                         "predict_end_date": formatDate(_endPredict),
-                        "upload_df":upload_df
+                        "upload_df": upload_df
                     },
                     type: "POST",
                     dataType: "json"
@@ -240,7 +242,8 @@
                 load_map_data(map_info);
             })
         };
-        function activate(){
+
+        function activate() {
             var form = $('#fileUploadForm')[0];
             var data = new FormData(form);
             data.append('start_date', $('#start-train').val());
@@ -307,9 +310,24 @@
 
 
         function file_download() {
-            var url = "../../../media/sample_excel.xlsx";
-            location.href = url;
+            if (model_activate == 'A') {
+                let url = "../../../media/river_han.xlsx";
+                location.href = url;
+            } else if (model_activate == 'B') {
+                let url = "../../../media/river_geum.xlsx";
+                location.href = url;
+            } else if (model_activate == 'C') {
+                let url = "../../../media/river_yeong.xlsx";
+                location.href = url;
+            } else if (model_activate == 'D') {
+                let url = "../../../media/river_nak.xlsx";
+                location.href = url;
+            } else {
+                alert("모델을 선택해주세요.");
+            }
+
         }
+
         function upload_show() {
             $('#upload_active').hide();
             $('#upload_active_div').show();

@@ -17,7 +17,6 @@ def hour_to_day_mean(array):
 
 class prediction_for_webpage():
 
-
     def __init__(self):
         self.gain_train = False
         self.rnn_train = False
@@ -39,7 +38,7 @@ class prediction_for_webpage():
                 [False, True, True, True],
             ],
             [
-                [3],
+                [2],
                 [8 + 4, 7 + 4, 6 + 4],
                 ["자동/", "총량/", "수질/"],
                 [False, True, True],
@@ -52,13 +51,12 @@ class prediction_for_webpage():
             ]
         ]
 
-        #tmpr_value, ph_value, do_value, ec_value, toc_value, 총질소_값, 총인_값, 클로로필-a_값
+        # tmpr_value, ph_value, do_value, ec_value, toc_value, 총질소_값, 총인_값, 클로로필-a_값
 
         self.target_column_index = [2, 4, 5, 6, 7]
         self.target_model_path = ["do/", "toc/", "nitrogen/", "phosphorus/", "chlorophyll-a/"]
 
         self.push_checker = 0
-
 
         self.loadfiles = ['idx.npy', 'miss.npy', 'discriminator.h5', 'generator.h5']
 
