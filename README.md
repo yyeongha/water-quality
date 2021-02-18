@@ -69,8 +69,8 @@ $ python main.py
 
 측정지표 NSE 수치 범위    
 
-||Very Good|설명|
-|------|---|---|
+||Very Good|Good|Satisfactory|Not Satisfatory|
+|------|---|---|---|---|
 |테스트1|테스트2|테스트3|
 |테스트1|테스트2|테스트3|
 |테스트1|테스트2|테스트3|
@@ -78,6 +78,5 @@ $ python main.py
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE1NDQ0NjUzOTUsLTE0MTMyNDg4ODNdfQ
-==
+eyJoaXN0b3J5IjpbLTg2MzQ2NTg5LC0xNDEzMjQ4ODgzXX0=
 -->
