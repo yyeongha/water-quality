@@ -70,14 +70,14 @@ $ python main.py
 측정지표 NSE 수치 범위    
 
 ||Very Good|Good|Satisfactory|Not Satisfatory|
-|------|---|---|---|---|
-|NSE|0.80 > |0.70 $U+2264$ NSE $\leq$ 0.80| |
+|------|---|-----|------|-----|
+|NSE|0.80 > |0.70 ≤ NSE ≤ 0.80| 0.50 <N|
 
 
-\\({e}^{i\pi}+1=0\\)
 
+	
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTIwMjE5MzQ2MDcsNjkzNDc4MzM0LDUxND
-YxNzUzMCwtMTQxMzI0ODg4M119
+eyJoaXN0b3J5IjpbLTUyNTQ4MzA0OCwtMjAyMTkzNDYwNyw2OT
+M0NzgzMzQsNTE0NjE3NTMwLC0xNDEzMjQ4ODgzXX0=
 -->
