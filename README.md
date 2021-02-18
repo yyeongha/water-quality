@@ -75,12 +75,13 @@ $ python main.py
 
 |유역|측정항목|NSE|비고|
 |---|---|---|---|
-|한강|
+|한강|do|0.9152|Very Good|
+||dasfasdf|||
 
 
 	
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE1NzY2OTkzODQsLTIwMjE5MzQ2MDcsNj
-kzNDc4MzM0LDUxNDYxNzUzMCwtMTQxMzI0ODg4M119
+eyJoaXN0b3J5IjpbLTMzNTA2NDc0OSwtMjAyMTkzNDYwNyw2OT
+M0NzgzMzQsNTE0NjE3NTMwLC0xNDEzMjQ4ODgzXX0=
 -->
