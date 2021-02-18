@@ -83,30 +83,30 @@ $ python main.py
 |한강|do|0.9152|Very Good|
 ||toc|0.6799|Satisfactory|
 ||tn|0.7119|Good|
-||tp|0.4021|Not satisfactory|
+||tp|0.4021|Not Satisfactory|
 ||chl-a|0.7019|Good|
 |낙동강|do|0.5112|Satisfactory|
 ||toc|0.6251|Satisfactory|
 ||tn|0.7780|Good|
 ||tp|0.5092|Satisfactory|
-||chl-a|0.4822|Not Satisfactory
-|금강|do|0.5651
-||toc|0.5617
-||tn|0.7760
-||tp|0.2091
-||chl-a|0.6018
-|영산강|do|0.8738
-||toc|0.6741
-||tn|0.5099
-||tp|0.7422
-||chl-a|0.1075
+||chl-a|0.4822|Not Satisfactory|
+|영산강|do|0.5651|Satisfactory|
+||toc|0.5617|Satisfactory|
+||tn|0.7760|Good|
+||tp|0.2091|Not Satisfactory|
+||chl-a|0.6018Satisfactory|
+|금강|do|0.8738|Very Good|
+||toc|0.6741|Satisfactory|
+||tn|0.5099|Satisfactory|
+||tp|0.7422|Good|
+||chl-a|0.1075|Not Satisfactory|
 
 
 
 	
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTQxNjQ3MzkwNywtMjYyMDA5NzUsLTIwMj
+eyJoaXN0b3J5IjpbLTg0Mjg4MTMzMiwtMjYyMDA5NzUsLTIwMj
 E5MzQ2MDcsNjkzNDc4MzM0LDUxNDYxNzUzMCwtMTQxMzI0ODg4
 M119
 -->
