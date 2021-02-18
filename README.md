@@ -23,8 +23,10 @@ $ pip install –r requirement.txt
 ```
 
 ## Run 
-1. input.json 변경
-[input] 폴더안의 input.json을 변경 합니다. 
+1. input.json 변경    
+
+[input] 폴더안의 input.json을 변경 합니다.     
+
 input.json 의 형식은 다음과 같습니다. 
 ```json
     "file": {
@@ -54,5 +56,5 @@ input.json 의 형식은 다음과 같습니다.
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTcxMTY4NTg3OV19
+eyJoaXN0b3J5IjpbLTIyMzQyMDM2MV19
 -->
