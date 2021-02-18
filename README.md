@@ -85,28 +85,28 @@ $ python main.py
 ||tn|0.7119|Good|
 ||tp|0.4021|Not satisfactory|
 ||chl-a|0.7019|Good|
-|낙동강|do|
-||toc|
-||tn|
-||tp|
-||chl-a|
-|금강|do|
-||toc|
-||tn|
-||tp|
-||chl-a|
-|영산강|do|
-||toc|
-||tn|
-||tp|
-||chl-a|
+|낙동강|do|0.5112|Satisfactory|
+||toc|0.6251|Satisfactory|
+||tn|0.7780|Good|
+||tp|0.5092|Satisfactory|
+||chl-a|0.4822|Not Satisfactory
+|금강|do|0.5651
+||toc|0.5617
+||tn|0.7760
+||tp|0.2091
+||chl-a|0.6018
+|영산강|do|0.8738
+||toc|0.6741
+||tn|0.5099
+||tp|0.7422
+||chl-a|0.1075
 
 
 
 	
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE5Mjg1NzcyMjYsLTI2MjAwOTc1LC0yMD
-IxOTM0NjA3LDY5MzQ3ODMzNCw1MTQ2MTc1MzAsLTE0MTMyNDg4
-ODNdfQ==
+eyJoaXN0b3J5IjpbMTQxNjQ3MzkwNywtMjYyMDA5NzUsLTIwMj
+E5MzQ2MDcsNjkzNDc4MzM0LDUxNDYxNzUzMCwtMTQxMzI0ODg4
+M119
 -->
