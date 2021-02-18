@@ -72,8 +72,15 @@ $ python main.py
 ||Very Good|Good|Satisfactory|Not Satisfatory|
 |------|---|---|---|---|
 |NSE|0.80 > |0.70 $U+2264$ NSE $\leq$ 0.80| |
-	
+
+
+```
+\frac{<=}
+```
+
+$\frac{<=}$$
+
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNjkzNDc4MzM0LDUxNDYxNzUzMCwtMTQxMz
-I0ODg4M119
+eyJoaXN0b3J5IjpbMTQwNzg3OTM3NCw2OTM0NzgzMzQsNTE0Nj
+E3NTMwLC0xNDEzMjQ4ODgzXX0=
 -->
