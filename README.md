@@ -79,14 +79,18 @@ $ python main.py
             
 
 |유역|측정항목|NSE|비고|
-|---|---|---|---|
+|:---:|:---:|:---:|:---:|
 |한강|do|0.9152|Very Good|
-||dasfasdf|||
+||toc|0.6799|Satisfactory|
+||tn|0.7119||
+||tp|0.4021||
+||chl-a|||
 
 
 	
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTI2MjAwOTc1LC0yMDIxOTM0NjA3LDY5Mz
-Q3ODMzNCw1MTQ2MTc1MzAsLTE0MTMyNDg4ODNdfQ==
+eyJoaXN0b3J5IjpbNjg1OTYxMTM2LC0yNjIwMDk3NSwtMjAyMT
+kzNDYwNyw2OTM0NzgzMzQsNTE0NjE3NTMwLC0xNDEzMjQ4ODgz
+XX0=
 -->
