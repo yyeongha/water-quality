@@ -74,13 +74,10 @@ $ python main.py
 |NSE|0.80 > |0.70 $U+2264$ NSE $\leq$ 0.80| |
 
 
-```
-\frac{<=}
-```
+\\({e}^{i\pi}+1=0\\)
 
-$\frac{<=}$$
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTQwNzg3OTM3NCw2OTM0NzgzMzQsNTE0Nj
-E3NTMwLC0xNDEzMjQ4ODgzXX0=
+eyJoaXN0b3J5IjpbLTIwMjE5MzQ2MDcsNjkzNDc4MzM0LDUxND
+YxNzUzMCwtMTQxMzI0ODg4M119
 -->
