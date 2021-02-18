@@ -37,7 +37,7 @@ input.json 의 형식은 다음과 같습니다.
         "label_width": 120,
         "shift_width": 120,
         "fill_width": 3,
-        "miss_rate": 0.15
+        "miss_rate": 0.2
     },
     "rnn": {
         "train": false,
@@ -46,7 +46,7 @@ input.json 의 형식은 다음과 같습니다.
         "batch_size": 128,
         "input_width": 240,
         "label_width": 120,
-        "predict_day": 4
+        "predict_day": 5
     }
 }
 ```
@@ -62,7 +62,13 @@ input.json을 변경 후 다음의 명령어로 AI 모델을 실행합니다.
 $ python main.py
 ```
 이후 input.json의 "target_column"을 “toc”, ”tn”, ”tp“, ”chl-a“로 변경하며 각각의 항목을 테스트 합니다.     
-(또한 강 유역별로 변경하며 테스트 가능합니다. ”nak“, ”geum“, ”yeong”)    
+(또한 강 유역별로 변경하며 테스트 가능합니다. ”nak“, ”geum“, ”yeong”)        
+
+## Test Result
+예측 일자 5일 후를 기준으로 4대강의 5가지 항목을 테스트한 결과입니다.     
+
+측정지표 NSE 수치 범위    
+
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEzMzk3NzE2MDZdfQ==
+eyJoaXN0b3J5IjpbLTE0MTMyNDg4ODNdfQ==
 -->
