@@ -21,7 +21,15 @@
 }
 
 .pd-30 {
+  padding: 30px;
+}
+
+.pd-50 {
   padding: 50px;
+}
+
+.mt-30 {
+  margin-top: 30px;
 }
 
 .pt-25 {
@@ -69,6 +77,20 @@
   border: 2px solid #0fa7ff;
 }
 
+.btn-upload {
+      background: #ffffff;
+      font-weight: 600;
+      font-size: 20px;
+      color: #5d5d5d;
+      border: 1px solid #0fa7ff;
+      font-size: 15px;
+      padding: 5px 20px;
+      margin-left: 25px;
+      margin-top: -10px;
+}
+
+
+
 .btn-select-sub {
   background: #ececec;
   padding: 5px 20px;
@@ -86,4 +108,28 @@
   font-size: 18px;
   border-radius: 5px;
   border: 1px solid #ffb8b8;
+}
+
+.period-box {
+  border: 1px solid #dcdcdc;
+  padding: 25px;
+  margin: 5px;
+  border-radius: 5px;
+  background: #fbfbfb;
+}
+
+.table-hk tr {border:none! important; }
+.table-hk tr:nth-child(even)  {
+background-color:#fbfbfb;
+}
+.table-hk th {background: #d4e4f1;}
+.table-hk td {font-size:15px;}
+
+.table-rainbow tr{
+  height: 33px;
+}
+
+.rainbow-txt {
+  padding-left:10px;
+  font-size:15px;
 }

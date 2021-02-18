@@ -2,14 +2,14 @@
 {% load static %}
 {% block content %}
 
-    <div class="pd-25 debug">
+    <div class="pd-25 debug mt-30">
         <div class="pb-20">
 {#            <div class="title">new_map</div>#}
             <button class="btn-select-sub" id="allMenu" onclick="changeMarker('all')">ALL</button>
-            <button class="btn-select-sub" id="a_Menu" onclick="changeMarker('target_a')">자동측정망</button>
-            <button class="btn-select-sub" id="b_Menu" onclick="changeMarker('target_b')">수질측정망</button>
-            <button class="btn-select-sub" id="c_Menu" onclick="changeMarker('target_c')">총량측정망</button>
-            <button class="btn-select-sub" id="d_Menu" onclick="changeMarker('target_d')">녹조 조류</button>
+            <button class="btn-select-sub" id="a_Menu" onclick="changeMarker('target_a')"><i class="fas fa-square mr-8" style="color:#ff0000"></i>자동측정망</button>
+            <button class="btn-select-sub" id="b_Menu" onclick="changeMarker('target_b')"><i class="fas fa-square mr-8" style="color:#0098f0"></i>수질측정망</button>
+            <button class="btn-select-sub" id="c_Menu" onclick="changeMarker('target_c')"><i class="fas fa-square mr-8" style="color:#23a20f"></i>총량측정망</button>
+            <button class="btn-select-sub" id="d_Menu" onclick="changeMarker('target_d')"><i class="fas fa-square mr-8" style="color:#ff8a00"></i>녹조 조류</button>
         </div>
 
         <div id="map" style="width:100%;height:500px;"></div>
@@ -106,10 +106,10 @@
 
         function create_all_Markers() {
             let arr = [
-                {'position': target_a_Positions, "markers": target_a_Markers, "img": "../../../media/test_img.png"},
-                {'position': target_b_Positions, "markers": target_b_Markers, "img": "../../../media/marker_red.png"},
-                {'position': target_c_Positions, "markers": target_c_Markers, "img": "../../../media/test_img.png"},
-                {'position': target_d_Positions, "markers": target_d_Markers, "img": "../../../media/marker_red.png"}];
+                {'position': target_a_Positions, "markers": target_a_Markers, "img": "http://kotech.co.kr/icon_01.png"},
+                {'position': target_b_Positions, "markers": target_b_Markers, "img": "http://kotech.co.kr/icon_02.png"},
+                {'position': target_c_Positions, "markers": target_c_Markers, "img": "http://kotech.co.kr/icon_03.png"},
+                {'position': target_d_Positions, "markers": target_d_Markers, "img": "http://kotech.co.kr/icon_04.png"}];
 
             arr.forEach(function (el, index) {
                 for (var i = 0; i < el.position.length; i++) {
