@@ -71,8 +71,8 @@ $ python main.py
 
 ||Very Good|Good|Satisfactory|Not Satisfatory|
 |------|---|---|---|---|
-|NSE|0.80 > |0.70 | |
+|NSE|0.80 > |0.70$$<=$$NSE$$<=$$ 0.80 | |
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTE4MjQ3MDM3MiwtMTQxMzI0ODg4M119
+eyJoaXN0b3J5IjpbLTMwNTQ3MDUxNCwtMTQxMzI0ODg4M119
 -->
