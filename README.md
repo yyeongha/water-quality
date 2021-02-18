@@ -50,11 +50,11 @@ input.json 의 형식은 다음과 같습니다.
     }
 }
 ```
-watershed : 강 유역을 선택하는 항목으로 “han”, “nak”, “geum”, “yeong”을 입력할 수 있습니다. han을 입력할 경우 [input] 폴더 안에 han.json  파일이 존재해야 합니다.  (han.json은 한강의 예측에 사용될 데이터(엑셀파일)가 명시된 파일입니다.)    
-gain : data imputation의 train 여부와 epoch등의 파라메터를 정의 합니다.     
-rnn : AI 예측 모델의 train 여부와 epoch, 예측항목 등의 파라메터를 정의 합니다.     
+watershed :     강 유역을 선택하는 항목으로 “han”, “nak”, “geum”, “yeong”을 입력할 수 있습니다. han을 입력할 경우 [input] 폴더 안에 han.json  파일이 존재해야 합니다.  (han.json은 한강의 예측에 사용될 데이터(엑셀파일)가 명시된 파일입니다.)    
+gain :     data imputation의 train 여부와 epoch등의 파라메터를 정의 합니다.     
+rnn :     AI 예측 모델의 train 여부와 epoch, 예측항목 등의 파라메터를 정의 합니다.     
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTYxMjM4NDU5Nl19
+eyJoaXN0b3J5IjpbLTE1Njc4ODEwMDRdfQ==
 -->
