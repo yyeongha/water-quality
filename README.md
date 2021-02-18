@@ -89,24 +89,24 @@ $ python main.py
 ||toc|
 ||tn|
 ||tp|
-||chl-a|0.7019|Good|
-|금강|do|0.9152|Very Good|
-||toc|0.6799|Satisfactory|
-||tn|0.7119|Good|
-||tp|0.4021|Not satisfactory|
-||chl-a|0.7019|Good|
-|영산강|do|0.9152|Very Good|
-||toc|0.6799|Satisfactory|
-||tn|0.7119|Good|
-||tp|0.4021|Not satisfactory|
-||chl-a|0.7019|Good|
+||chl-a|
+|금강|do|
+||toc|
+||tn|
+||tp|
+||chl-a|
+|영산강|do|
+||toc|
+||tn|
+||tp|
+||chl-a|
 
 
 
 	
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTgyNjI1MDMxMiwtMjYyMDA5NzUsLTIwMj
-E5MzQ2MDcsNjkzNDc4MzM0LDUxNDYxNzUzMCwtMTQxMzI0ODg4
-M119
+eyJoaXN0b3J5IjpbLTE5Mjg1NzcyMjYsLTI2MjAwOTc1LC0yMD
+IxOTM0NjA3LDY5MzQ3ODMzNCw1MTQ2MTc1MzAsLTE0MTMyNDg4
+ODNdfQ==
 -->
