@@ -139,7 +139,7 @@ def make_dataframe(directory_path, file_names, iloc_val, interpolation=None, fir
         df[loc] = df[loc].reset_index(drop=True)
 
         if interpolation[0]:
-            df[loc] = df[loc].interpolate(method='polynomial', order=3, limit_direction='both')
+            df[loc] = df[loc].interpolate(method='pchip', order=3, limit_direction='both')
 
 
 
