@@ -4,7 +4,7 @@ import shutil
 
 from gain_new.core.gain import *
 from gain_new.core.rnn_predic import *
-from gain_new.core.util import *
+# from gain_new.core.util import *
 from django.conf import settings
 
 

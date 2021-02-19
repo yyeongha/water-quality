@@ -58,11 +58,11 @@
         var _predictWater = new Chart(predictWater, {
             type: 'bar',
             data: {
-                labels: ['first', 'second', 'third', 'forth', 'fifth'],
+                labels: [],
                 datasets: [
                     {
                         label: '예측 수질',
-                        data: [3, 2, 3, 7, 5],
+                        data: [],
                         backgroundColor: ['rgba(66,238,46,0.95)',
                             'rgb(152,235,78)',
                             'rgb(218,238,99)',
@@ -88,27 +88,30 @@
 
         var predictGraph = document.getElementById('predictGraph');
         var _predictGraph = new Chart(predictGraph, {
-            type: 'line',
+            type: 'bar',
             data: {
-                labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+                labels: [],
                 datasets: [
                     {
                         label: '기준값',
-                        data: [0, 0, 2, 0, 1.8, 0, 2, 0, 2, 0, 3, 5],
+                        type: 'line',
+                        data: [],
                         borderColor: 'rgba(255, 99, 132, 0.2)',
                         fill: false,
                         //lineTension: 0,
                     },
                     {
                         label: '실측값',
-                        data: [1, -1, 1, 0, 1.5, 0, 1.8, 0, 1.7, 0.3, 1.2, 2],
+                        type: 'line',
+                        data: [],
                         borderColor: 'rgba(99,235,181,0.56)',
                         fill: false,
                         //lineTension: 0,
                     },
                     {
                         label: '예측값',
-                        data: [1, -1, 1, 0, 1.5, 0, 1.8, 0, 1.7, 0.3, 1.9, 3],
+                        type: 'line',
+                        data: [],
                         borderColor: 'rgba(31,43,235,0.44)',
                         fill: false,
                         //lineTension: 0,
@@ -121,6 +124,13 @@
                         ticks: {
                             //기준값을 0으로 설정
                             beginAtZero: false,
+
+                        }
+                    }],
+                    xAxes: [{
+                        gridLines: {
+                            drawOnChartArea:true
+
                         }
                     }]
                 }
@@ -131,17 +141,17 @@
         var _rain_chart = new Chart(rain_chart, {
             type: 'bar',
             data: {
-                labels: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+                labels: [],
                 datasets: [
                     {
                         label: '강우량',
-                        data: [50, 50, 55, 60, 100, 140, 260, 300, 220, 120, 100, 50],
+                        data: [],
                         backgroundColor: 'rgba(54, 162, 235, 0.2)',
                         type: 'bar',
                     },
                     {
                         label: '기온',
-                        data: [150, 155, 180, 250, 280, 300, 340, 350, 320, 280, 210, 160],
+                        data: [],
                         type: 'line',
                         borderColor: 'rgba(255, 99, 132, 0.2)',
                         fill: false,

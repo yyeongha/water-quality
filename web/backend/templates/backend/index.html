@@ -25,19 +25,19 @@
                 <div class="title">유역을 선택하세요</div>
                 <div style="display: flex; flex-direction: row; justify-content: space-around; ">
                     <button class="btn btn-skyblue" onclick="select_model('A')">
-                        <i class="fas fa-water mr-8" style="color:#0fa7ff;"></i>한강(MODEL1)
+                        <i class="fas fa-water mr-8" style="color:#0fa7ff;"></i>한강
                         <div class="AAA" style="font-size:15px;"><span class="target_point"></span></div>
                     </button>
                     <button class="btn btn-skyblue" onclick="select_model('B')">
-                        <i class="fas fa-water mr-8" style="color:#0fa7ff;"></i>금강(MODEL2)
+                        <i class="fas fa-water mr-8" style="color:#0fa7ff;"></i>금강
                         <div class="BBB" style="font-size:15px;"><span class="target_point"></span></div>
                     </button>
                     <button class="btn btn-skyblue" onclick="select_model('C')">
-                        <i class="fas fa-water mr-8" style="color:#0fa7ff;"></i>영산강(MODEL3)
+                        <i class="fas fa-water mr-8" style="color:#0fa7ff;"></i>영산강
                         <div class="CCC" style="font-size:15px;"><span class="target_point"></span></div>
                     </button>
                     <button class="btn btn-skyblue" onclick="select_model('D')">
-                        <i class="fas fa-water mr-8" style="color:#0fa7ff;"></i>낙동강(MODEL4)
+                        <i class="fas fa-water mr-8" style="color:#0fa7ff;"></i>낙동강
                         <div class="DDD" style="font-size:15px;"><span class="target_point"></span></div>
                     </button>
                 </div>
@@ -45,7 +45,13 @@
         </div>
 
         <div class="pd-20 debug mt-30">
-            <div style="display: flex; flex-direction: row;">
+            <div style="margin-top:30px;">
+                <div class="title">측정데이터 선택</div>
+                <div style="display: flex; flex-direction: row; justify-content: space-around;" id="data_select">
+
+                </div>
+            </div>
+            <div style="display: flex; flex-direction: row; display: none;">
 
                 <div class="col-12">
                     <div class="title" style="float:left; margin-right: 20px;">측정데이터 선택</div>
@@ -69,35 +75,34 @@
         </div>
 
 
-
         {% include "backend/new_datepicker.html" %}
 
 
         <div>
-                {% csrf_token %}
-                <div id="upload_active">
-                    <button onclick="upload_show()" class="btn-upload">수동 Data 업로드</button>
-                </div>
-                <div id="upload_active_div" style="padding-left:20px; margin-top:-10px;">
-                    <form method="post" enctype="multipart/form-data" id="fileUploadForm" onSubmit="return false;">
-                        {% csrf_token %}
-                        <input type="file" name="myfile">
-                        <button type="button" type='submit' class="btn btn-light" onclick="file_download()" download>
-                            <i class="fas fa-download mr-8"></i>샘플 파일 다운로드
-                        </button>
-                        <button type="submit" class="btn btn-light" id="acti" onclick="activate()">
-                            <i class="fas fa-check mr-8"></i>적용
-                        </button>
-                        <!-- <button type="button" class="btn btn-light" id="deacti" onclick="deactivate()">
-                            <i class="fas fa-ban mr-8"></i>취소
-                        </button> -->
-                    </form>
+            {% csrf_token %}
+            <div id="upload_active">
+                <button onclick="upload_show()" class="btn-upload">수동 Data 업로드</button>
+            </div>
+            <div id="upload_active_div" style="padding-left:20px; margin-top:-10px;">
+                <form method="post" enctype="multipart/form-data" id="fileUploadForm" onSubmit="return false;">
+                    {% csrf_token %}
+                    <input type="file" name="myfile">
+                    <button type="button" type='submit' class="btn btn-light" onclick="file_download()" download>
+                        <i class="fas fa-download mr-8"></i>샘플 파일 다운로드
+                    </button>
+                    <button type="submit" class="btn btn-light" id="acti" onclick="activate()">
+                        <i class="fas fa-check mr-8"></i>적용
+                    </button>
+                    <!-- <button type="button" class="btn btn-light" id="deacti" onclick="deactivate()">
+                        <i class="fas fa-ban mr-8"></i>취소
+                    </button> -->
+                </form>
 
-                    <div>
-
-                    </div>
+                <div>
 
                 </div>
+
+            </div>
         </div>
 
         <div class="pd-20 debug">
@@ -113,13 +118,10 @@
         </div>
 
 
-
         {#        {% include "backend/new_map.html" %}#}
         {% include "backend/new_map3.html" %}
 
-        {% include "backend/sample_table.html" %}
-
-
+        {% include "backend/table.html" %}
 
 
         <!--
@@ -144,7 +146,8 @@
     <script>
         $('#upload_active_div').hide();
         $('#loading').hide();
-        var upload_df = 'N'
+        var upload_df = 'N';
+        var select_column = '';
         <!-- model 별 위치를 위한 map setting-->
         var options = { //지도를 생성할 때 필요한 기본 옵션
             center: new kakao.maps.LatLng(36.5, 127.5), //지도의 중심좌표.
@@ -155,8 +158,8 @@
         var model_activate = ''
 
         function pridict() {
-            if ($('#column_list').children().length == 1) {
-                alert("Model 선택은 필수사항입니다");
+            if (select_column == '') {
+                alert("측정 데이터 선택은 필수사항입니다");
             } else if ($('#start-train').val() == "") {
                 alert("날짜 선택은 필수사항입니다");
             } else {
@@ -165,7 +168,7 @@
                     url: "{% url "predict" %}",
                     data: {
                         csrfmiddlewaretoken: $("#csrf_token").val(),
-                        "key": $('#column_list').val(),
+                        "key": select_column,
                         "model": model_activate,
                         "start_date": formatDate(_startTrain),
                         "end_date": formatDate(_endTrain),
@@ -225,7 +228,7 @@
         };
 
         function select_model(param) {
-
+            select_column == '';
             $.ajax({
                 url: "{% url "call_model" %}",
                 data: {
@@ -237,11 +240,14 @@
             }).done(function (data) {
                 model_activate = param
                 let map_info = data.web_info.map_info
-                $('#column_list').empty();
+                $('#data_select').empty();
                 for (let i = 0; i < (data.web_info.column).length; i++) {
                     let col_dict = data.web_info.column
                     for (let key in col_dict[i]) {
-                        $('#column_list').append("<option value=" + key + ">" + col_dict[i][key] + "</option>")
+                        $('#data_select').append("<button class=\"btn btn-skyblue\" onclick=\"select_col('" + key + "')\">\n" +
+                            "                        <i class=\"fas fa-water mr-8\" style=\"color:#0fa7ff;\"></i>" + col_dict[i][key] + "\n" +
+                            "                    </button>")
+                        //$('#column_list').append("<option value=" + key + ">" + col_dict[i][key] + "</option>")
                     }
                 }
                 $('.target_point').text(data.web_info.target_point);
@@ -375,5 +381,9 @@
             $('#upload_active_div').show();
         }
 
+        function select_col(key) {
+
+            select_column = key;
+        }
     </script>
 {% endblock %}
