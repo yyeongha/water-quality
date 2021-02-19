@@ -132,6 +132,8 @@ def predict(request):
         else:
             df = read_xlsx(excel_path, start_date, predict_end_date, 'Y')
             print('df', df)
+        if df == 0:
+            return JsonResponse({"return": "date_fail"})
         # 강우량,기온
         rain_list, temp_list = load_rain(key, start_date, predict_end_date, model_dir)
         '''
@@ -171,7 +173,7 @@ def predict(request):
         # data
         data = [None, None, None, None, None, None, None, None, None]
         predict_cahrt = {"origin": input_data,
-                         "origin_2": data + [input_data[9]]+label,
+                         "origin_2": data + [input_data[9]] + label,
                          "predict": data + [input_data[9]] + pred}
 
         rain_chart = {"rain_list": rain_list,
@@ -282,8 +284,9 @@ def read_xlsx(files_Path, start_date=None, end_date=None, predict=None):
     between_two_dates = after_start_date & before_end_date
 
     filtered_dates = df_loc.loc[between_two_dates]
-
-    return filtered_dates
+    print('filtered_dates', filtered_dates)
+    return 0
+    # return filtered_dates
 
 
 def file_download(request):

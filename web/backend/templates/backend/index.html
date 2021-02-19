@@ -182,7 +182,11 @@
                     if (data.return == 'fail') {
                         alert("predict_fail");
                         $('#loading').hide();
-                    } else {
+                    }
+                    else if(data.return == 'date_fail'){
+                        alert("선택한 날짜에 데이터값이 없습니다.");
+                        $('#loading').hide();
+                    }else {
                         let water_arr = Array();
                         let graph_arr = Array();
 
