@@ -86,20 +86,20 @@ $ python main.py
 |한강|do|0.9152|0.3760|Very Good|
 ||toc|0.6799|0.1021|Satisfactory|
 ||tn|0.7119|0.0809|Good|
-||tp|0.4021|2.3804Not Satisfactory|
-||chl-a|0.7019|Good|
-|낙동강|do|0.5112|Satisfactory|
-||toc|0.6251|Satisfactory|
-||tn|0.7780|Good|
-||tp|0.5092|Satisfactory|
-||chl-a|0.4822|Not Satisfactory|
-|영산강|do|0.5651|Satisfactory|
-||toc|0.5617|Satisfactory|
-||tn|0.7760|Good|
-||tp|0.2091|Not Satisfactory|
-||chl-a|0.6018|Satisfactory|
-|금강|do|0.8738|Very Good|
-||toc|0.6741|Satisfactory|
+||tp|0.4021|0.0015|Not Satisfactory|
+||chl-a|0.7019|2.3804|Good|
+|낙동강|do|0.5112|0.8398|Satisfactory|
+||toc|0.6251|0.3020|Satisfactory|
+||tn|0.7780|0.2517|Good|
+||tp|0.5092|0.0056|Satisfactory|
+||chl-a|0.4822|6.0130|Not Satisfactory|
+|영산강|do|0.5651|1.4165|Satisfactory|
+||toc|0.5617|0.3801|Satisfactory|
+||tn|0.7760|0.4784|Good|
+||tp|0.2091|0.0206|Not Satisfactory|
+||chl-a|0.6018|18.4623|Satisfactory|
+|금강|do|0.8738|0.4410|Very Good|
+||toc|0.6741|0.0850Satisfactory|
 ||tn|0.5099|Satisfactory|
 ||tp|0.7422|Good|
 ||chl-a|0.1075|Not Satisfactory|
@@ -109,7 +109,7 @@ $ python main.py
 	
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTkyMDA4Nzk3MiwtMTg4OTEyODExNiwyNT
-c4OTI1NzQsMjAyODkwNTUwMiwtMjYyMDA5NzUsLTIwMjE5MzQ2
-MDcsNjkzNDc4MzM0LDUxNDYxNzUzMCwtMTQxMzI0ODg4M119
+eyJoaXN0b3J5IjpbOTk1Nzc1NjEzLC0xODg5MTI4MTE2LDI1Nz
+g5MjU3NCwyMDI4OTA1NTAyLC0yNjIwMDk3NSwtMjAyMTkzNDYw
+Nyw2OTM0NzgzMzQsNTE0NjE3NTMwLC0xNDEzMjQ4ODgzXX0=
 -->
