@@ -81,12 +81,12 @@ $ python main.py
             
             
 
-|**유역**|**측정항목**|**NSE**|**비고**|
-|:---:|:---:|:---:|:---:|
-|한강|do|0.9152|Very Good|
-||toc|0.6799|Satisfactory|
-||tn|0.7119|Good|
-||tp|0.4021|Not Satisfactory|
+|**유역**|**측정항목**|**NSE**|**MAE**|**비고**|
+|:---:|:---:|:---:|:---:|:---:|
+|한강|do|0.9152|0.3760|Very Good|
+||toc|0.6799|0.1021|Satisfactory|
+||tn|0.7119|0.0809|Good|
+||tp|0.4021|2.3804Not Satisfactory|
 ||chl-a|0.7019|Good|
 |낙동강|do|0.5112|Satisfactory|
 ||toc|0.6251|Satisfactory|
@@ -109,7 +109,7 @@ $ python main.py
 	
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE4ODkxMjgxMTYsMjU3ODkyNTc0LDIwMj
-g5MDU1MDIsLTI2MjAwOTc1LC0yMDIxOTM0NjA3LDY5MzQ3ODMz
-NCw1MTQ2MTc1MzAsLTE0MTMyNDg4ODNdfQ==
+eyJoaXN0b3J5IjpbMTkyMDA4Nzk3MiwtMTg4OTEyODExNiwyNT
+c4OTI1NzQsMjAyODkwNTUwMiwtMjYyMDA5NzUsLTIwMjE5MzQ2
+MDcsNjkzNDc4MzM0LDUxNDYxNzUzMCwtMTQxMzI0ODg4M119
 -->
