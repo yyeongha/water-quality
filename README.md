@@ -99,17 +99,17 @@ $ python main.py
 ||tp|0.2091|0.0206|Not Satisfactory|
 ||chl-a|0.6018|18.4623|Satisfactory|
 |금강|do|0.8738|0.4410|Very Good|
-||toc|0.6741|0.0850Satisfactory|
-||tn|0.5099|Satisfactory|
-||tp|0.7422|Good|
-||chl-a|0.1075|Not Satisfactory|
+||toc|0.6741|0.0850|Satisfactory|
+||tn|0.5099|0.0890|Satisfactory|
+||tp|0.7422|0.0030|Good|
+||chl-a|0.1075|0.8840|Not Satisfactory|
 
 
 
 	
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbOTk1Nzc1NjEzLC0xODg5MTI4MTE2LDI1Nz
+eyJoaXN0b3J5IjpbODY1MDI0Mzk5LC0xODg5MTI4MTE2LDI1Nz
 g5MjU3NCwyMDI4OTA1NTAyLC0yNjIwMDk3NSwtMjAyMTkzNDYw
 Nyw2OTM0NzgzMzQsNTE0NjE3NTMwLC0xNDEzMjQ4ODgzXX0=
 -->
