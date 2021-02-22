@@ -74,8 +74,32 @@
   font-weight: 600;
   font-size: 20px;
   color: #5d5d5d;
-  border: 2px solid #0fa7ff;
+  border: 2px solid #eee;
 }
+
+.top_button button.active {
+  border: 2px solid #0fa7ff;
+  background: #f1fbff;
+}
+
+
+.btn-gray {
+  background: #ffffff;
+  width: 19%;
+  height: 60px;
+  font-weight: 600;
+  font-size: 18px;
+  color: #5d5d5d;
+  border: 1px solid #eee;
+}
+
+
+.second_button button.active {
+  border: 2px solid #0fa7ff;
+  background: #f1fbff;
+}
+
+
 
 .btn-upload {
       background: #ffffff;
