@@ -40,7 +40,7 @@
         "toc": "총유기 탄소량(TOC)"
       },
       {
-        "chl": "클로로이 -a(chl -a)"
+        "chl": "클로로필 -a(chl -a)"
       },
       {
         "do": "용존 산소량(DO)"
@@ -54,20 +54,20 @@
     ],
     "columns": {
       "toc": "총유기 탄소량(TOC)",
-      "chl": "클로로이 -a(chl -a)",
+      "chl": "클로로필 -a(chl -a)",
       "do": "용존 산소량(DO)",
       "tn": "총질소(T-N)",
       "tp": "총인(T-P)"
     },
     "map_info": [
-{"target": "target_a", "location": "현도", "y": 36.459901, "x": 127.461732, "rch_id": 30080501.0, "rch_did": 3008050102.0, "node_id": "", "node_did": "", "cat_id": 30080501, "cat_did": 3008050102},
+{"target": "target_a", "location": "현도", "y": 36.459901, "x": 127.461732, "rch_id": 30080501, "rch_did": 3008050102, "node_id": "", "node_did": "", "cat_id": 30080501, "cat_did": 3008050102},
 {"target": "target_a", "location": "대청호", "y": 36.432077, "x": 127.552556, "rch_id": "", "rch_did": "", "node_id": "", "node_did": "", "cat_id": 30080401, "cat_did": 3008040100},
-{"target": "target_a", "location": "장계", "y": 36.377695, "x": 127.637659, "rch_id": 30080106.0, "rch_did": 3008010600.0, "node_id": "", "node_did": "", "cat_id": 30080105, "cat_did": 3008010500},
-{"target": "target_c", "location": "대청", "y": 36.472958, "x": 127.47738, "rch_id": 30080501.0, "rch_did": 3008050101.0, "node_id": "", "node_did": "", "cat_id": 30080501, "cat_did": 3008050101},
+{"target": "target_a", "location": "장계", "y": 36.377695, "x": 127.637659, "rch_id": 30080106, "rch_did": 3008010600, "node_id": "", "node_did": "", "cat_id": 30080105, "cat_did": 3008010500},
+{"target": "target_c", "location": "대청", "y": 36.472958, "x": 127.47738, "rch_id": 30080501, "rch_did": 3008050101, "node_id": "", "node_did": "", "cat_id": 30080501, "cat_did": 3008050101},
 {"target": "target_b", "location": "대청댐2", "y": 36.476944, "x": 127.484833, "rch_id": "", "rch_did": "", "node_id": "", "node_did": "", "cat_id": 30080401, "cat_did": 3008040100},
 {"target": "target_b", "location": "대청댐5", "y": 36.433111, "x": 127.552583, "rch_id": "", "rch_did": "", "node_id": "", "node_did": "", "cat_id": 30080401, "cat_did": 3008040100},
 {"target": "target_b", "location": "대청댐6", "y": 36.3885, "x": 127.556972, "rch_id": "", "rch_did": "", "node_id": "", "node_did": "", "cat_id": 30080401, "cat_did": 3008040100},
-{"target": "target_b", "location": "대청", "y": 36.472958, "x": 127.47738, "rch_id": 30080501.0, "rch_did": 3008050101.0, "node_id": "", "node_did": "", "cat_id": 30080501, "cat_did": 3008050101}
+{"target": "target_b", "location": "대청", "y": 36.472958, "x": 127.47738, "rch_id": 30080501, "rch_did": 3008050101, "node_id": "", "node_did": "", "cat_id": 30080501, "cat_did": 3008050101}
     ]
   }
 }

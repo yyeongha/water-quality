@@ -40,7 +40,7 @@
         "toc": "총유기 탄소량(TOC)"
       },
       {
-        "chl": "클로로이 -a(chl -a)"
+        "chl": "클로로필 -a(chl -a)"
       },
       {
         "do": "용존 산소량(DO)"
@@ -54,30 +54,30 @@
     ],
     "columns": {
       "toc": "총유기 탄소량(TOC)",
-      "chl": "클로로이 -a(chl -a)",
+      "chl": "클로로필 -a(chl -a)",
       "do": "용존 산소량(DO)",
       "tn": "총질소(T-N)",
       "tp": "총인(T-P)"
     },
     "map_info": [
-{"target": "target_a", "location": "나주", "y": 34.978524, "x": 126.633109, "rch_id": 50040506.0, "rch_did": 5004050602.0, "node_id": "", "node_did": "", "cat_id": 50040505, "cat_did": 5004050502},
-{"target": "target_a", "location": "용봉", "y": 35.073675, "x": 126.777789, "rch_id": 50040103.0, "rch_did": 5004010302.0, "node_id": "", "node_did": "", "cat_id": 50040103, "cat_did": 5004010302},
-{"target": "target_a", "location": "우치", "y": 35.242171, "x": 126.888631, "rch_id": 50010605.0, "rch_did": 5001060500.0, "node_id": "", "node_did": "", "cat_id": 50010605, "cat_did": 5001060500},
+{"target": "target_a", "location": "나주", "y": 34.978524, "x": 126.633109, "rch_id": 50040506, "rch_did": 5004050602, "node_id": "", "node_did": "", "cat_id": 50040505, "cat_did": 5004050502},
+{"target": "target_a", "location": "용봉", "y": 35.073675, "x": 126.777789, "rch_id": 50040103, "rch_did": 5004010302, "node_id": "", "node_did": "", "cat_id": 50040103, "cat_did": 5004010302},
+{"target": "target_a", "location": "우치", "y": 35.242171, "x": 126.888631, "rch_id": 50010605, "rch_did": 5001060500, "node_id": "", "node_did": "", "cat_id": 50010605, "cat_did": 5001060500},
 {"target": "target_c", "location": "문평천", "y": 34.990277, "x": 126.6425, "rch_id": "", "rch_did": "", "node_id": "", "node_did": "", "cat_id": 50040504, "cat_did": 5004050400},
-{"target": "target_c", "location": "만봉천", "y": 34.992222, "x": 126.705277, "rch_id": 50040403.0, "rch_did": 5004040300.0, "node_id": "", "node_did": "", "cat_id": 50040403, "cat_did": 5004040300},
-{"target": "target_c", "location": "광산", "y": 35.062861, "x": 126.772972, "rch_id": 50030709.0, "rch_did": 5003070900.0, "node_id": "", "node_did": "", "cat_id": 50030709, "cat_did": 5003070900},
-{"target": "target_c", "location": "우치", "y": 35.241602, "x": 126.892877, "rch_id": 50010606.0, "rch_did": 5001060600.0, "node_id": "", "node_did": "", "cat_id": 50010606, "cat_did": 5001060600},
+{"target": "target_c", "location": "만봉천", "y": 34.992222, "x": 126.705277, "rch_id": 50040403, "rch_did": 5004040300, "node_id": "", "node_did": "", "cat_id": 50040403, "cat_did": 5004040300},
+{"target": "target_c", "location": "광산", "y": 35.062861, "x": 126.772972, "rch_id": 50030709, "rch_did": 5003070900, "node_id": "", "node_did": "", "cat_id": 50030709, "cat_did": 5003070900},
+{"target": "target_c", "location": "우치", "y": 35.241602, "x": 126.892877, "rch_id": 50010606, "rch_did": 5001060600, "node_id": "", "node_did": "", "cat_id": 50010606, "cat_did": 5001060600},
 {"target": "target_c", "location": "장성천2", "y": 35.055277, "x": 126.741388, "rch_id": "", "rch_did": "", "node_id": "", "node_did": "", "cat_id": 50040207, "cat_did": 5004020700},
 {"target": "target_c", "location": "평동천", "y": 35.0875, "x": 126.786388, "rch_id": "", "rch_did": "", "node_id": "", "node_did": "", "cat_id": 50040102, "cat_did": 5004010200},
 {"target": "target_b", "location": "영산포", "y": 35.004616, "x": 126.680375, "rch_id": "", "rch_did": "", "node_id": "", "node_did": "", "cat_id": 50040501, "cat_did": 5004050100},
-{"target": "target_b", "location": "광산", "y": 35.062861, "x": 126.772972, "rch_id": 50030709.0, "rch_did": 5003070900.0, "node_id": "", "node_did": "", "cat_id": 50030709, "cat_did": 5003070900},
-{"target": "target_b", "location": "광주1", "y": 35.161011, "x": 126.8237, "rch_id": 50010808.0, "rch_did": 5001080800.0, "node_id": "", "node_did": "", "cat_id": 50010808, "cat_did": 5001080800},
-{"target": "target_b", "location": "광주2-1", "y": 35.109522, "x": 126.8193, "rch_id": 50010818.0, "rch_did": 5001081802.0, "node_id": "", "node_did": "", "cat_id": 50010818, "cat_did": 5001081802},
-{"target": "target_b", "location": "나주", "y": 35.03578, "x": 126.736172, "rch_id": 50040302.0, "rch_did": 5004030200.0, "node_id": "", "node_did": "", "cat_id": 50040302, "cat_did": 5004030200},
-{"target": "target_b", "location": "우치", "y": 35.241602, "x": 126.892877, "rch_id": 50010606.0, "rch_did": 5001060600.0, "node_id": "", "node_did": "", "cat_id": 50010606, "cat_did": 5001060600},
-{"target": "target_b", "location": "죽산", "y": 34.973286, "x": 126.634941, "rch_id": 50040507.0, "rch_did": 5004050700.0, "node_id": "", "node_did": "", "cat_id": 50040506, "cat_did": 5004050600},
-{"target": "target_d", "location": "승촌보", "y": 35.062777, "x": 126.773055, "rch_id": 50030709.0, "rch_did": 5003070900.0, "node_id": "", "node_did": "", "cat_id": 50030709, "cat_did": 5003070900},
-{"target": "target_d", "location": "죽산보", "y": 34.973333, "x": 126.635, "rch_id": 50040507.0, "rch_did": 5004050700.0, "node_id": "", "node_did": "", "cat_id": 50040506, "cat_did": 5004050600}
+{"target": "target_b", "location": "광산", "y": 35.062861, "x": 126.772972, "rch_id": 50030709, "rch_did": 5003070900, "node_id": "", "node_did": "", "cat_id": 50030709, "cat_did": 5003070900},
+{"target": "target_b", "location": "광주1", "y": 35.161011, "x": 126.8237, "rch_id": 50010808, "rch_did": 5001080800, "node_id": "", "node_did": "", "cat_id": 50010808, "cat_did": 5001080800},
+{"target": "target_b", "location": "광주2-1", "y": 35.109522, "x": 126.8193, "rch_id": 50010818, "rch_did": 5001081802, "node_id": "", "node_did": "", "cat_id": 50010818, "cat_did": 5001081802},
+{"target": "target_b", "location": "나주", "y": 35.03578, "x": 126.736172, "rch_id": 50040302, "rch_did": 5004030200, "node_id": "", "node_did": "", "cat_id": 50040302, "cat_did": 5004030200},
+{"target": "target_b", "location": "우치", "y": 35.241602, "x": 126.892877, "rch_id": 50010606, "rch_did": 5001060600, "node_id": "", "node_did": "", "cat_id": 50010606, "cat_did": 5001060600},
+{"target": "target_b", "location": "죽산", "y": 34.973286, "x": 126.634941, "rch_id": 50040507, "rch_did": 5004050700, "node_id": "", "node_did": "", "cat_id": 50040506, "cat_did": 5004050600},
+{"target": "target_d", "location": "승촌보", "y": 35.062777, "x": 126.773055, "rch_id": 50030709, "rch_did": 5003070900, "node_id": "", "node_did": "", "cat_id": 50030709, "cat_did": 5003070900},
+{"target": "target_d", "location": "죽산보", "y": 34.973333, "x": 126.635, "rch_id": 50040507, "rch_did": 5004050700, "node_id": "", "node_did": "", "cat_id": 50040506, "cat_did": 5004050600}
     ]
   }
 }

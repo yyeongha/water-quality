@@ -40,7 +40,7 @@
         "toc": "총유기 탄소량(TOC)"
       },
       {
-        "chl": "클로로이 -a(chl -a)"
+        "chl": "클로로필 -a(chl -a)"
       },
       {
         "do": "용존 산소량(DO)"
@@ -54,7 +54,7 @@
     ],
     "columns": {
       "toc": "총유기 탄소량(TOC)",
-      "chl": "클로로이 -a(chl -a)",
+      "chl": "클로로필 -a(chl -a)",
       "do": "용존 산소량(DO)",
       "tn": "총질소(T-N)",
       "tp": "총인(T-P)"
@@ -62,20 +62,20 @@
     "map_info": [
 {"target": "target_a", "location": "가평", "y": 37.673854, "x": 127.38222, "rch_id": "", "rch_did": "", "node_id": "", "node_did": "", "cat_id": 10150601, "cat_did": 1015060100},
 {"target": "target_a", "location": "의암호", "y": 37.877653, "x": 127.678647, "rch_id": "", "rch_did": "", "node_id": "", "node_did": "", "cat_id": 10130201, "cat_did": 1013020100},
-{"target": "target_a", "location": "서상", "y": 37.955208, "x": 127.685785, "rch_id": 10101201.0, "rch_did": 1010120102.0, "node_id": "", "node_did": "", "cat_id": 10101201, "cat_did": 1010120102},
-{"target": "target_c", "location": "가평천3", "y": 37.828611, "x": 127.51925, "rch_id": 10130617.0, "rch_did": 1013061700.0, "node_id": "", "node_did": "", "cat_id": 10130617, "cat_did": 1013061700},
+{"target": "target_a", "location": "서상", "y": 37.955208, "x": 127.685785, "rch_id": 10101201, "rch_did": 1010120102, "node_id": "", "node_did": "", "cat_id": 10101201, "cat_did": 1010120102},
+{"target": "target_c", "location": "가평천3", "y": 37.828611, "x": 127.51925, "rch_id": 10130617, "rch_did": 1013061700, "node_id": "", "node_did": "", "cat_id": 10130617, "cat_did": 1013061700},
 {"target": "target_c", "location": "조종천3", "y": 37.725694, "x": 127.41025, "rch_id": "", "rch_did": "", "node_id": "", "node_did": "", "cat_id": 10150601, "cat_did": 1015060100},
-{"target": "target_c", "location": "청평", "y": 37.7205, "x": 127.422222, "rch_id": 10150204.0, "rch_did": 1015020400.0, "node_id": "", "node_did": "", "cat_id": 10150204, "cat_did": 1015020400},
-{"target": "target_c", "location": "춘성교", "y": 37.84325, "x": 127.554638, "rch_id": 10130405.0, "rch_did": 1013040500.0, "node_id": "", "node_did": "", "cat_id": 10130405, "cat_did": 1013040500},
-{"target": "target_c", "location": "화천", "y": 38.090194, "x": 127.75925, "rch_id": 10100705.0, "rch_did": 1010070502.0, "node_id": "", "node_did": "", "cat_id": 10100705, "cat_did": 1010070502},
-{"target": "target_b", "location": "가평천3", "y": 37.828611, "x": 127.51925, "rch_id": 10130617.0, "rch_did": 1013061700.0, "node_id": "", "node_did": "", "cat_id": 10130617, "cat_did": 1013061700},
-{"target": "target_b", "location": "남이섬", "y": 37.736894, "x": 127.517644, "rch_id": 10130710.0, "rch_did": 1013071000.0, "node_id": "", "node_did": "", "cat_id": 10130708, "cat_did": 1013070800},
+{"target": "target_c", "location": "청평", "y": 37.7205, "x": 127.422222, "rch_id": 10150204, "rch_did": 1015020400, "node_id": "", "node_did": "", "cat_id": 10150204, "cat_did": 1015020400},
+{"target": "target_c", "location": "춘성교", "y": 37.84325, "x": 127.554638, "rch_id": 10130405, "rch_did": 1013040500, "node_id": "", "node_did": "", "cat_id": 10130405, "cat_did": 1013040500},
+{"target": "target_c", "location": "화천", "y": 38.090194, "x": 127.75925, "rch_id": 10100705, "rch_did": 1010070502, "node_id": "", "node_did": "", "cat_id": 10100705, "cat_did": 1010070502},
+{"target": "target_b", "location": "가평천3", "y": 37.828611, "x": 127.51925, "rch_id": 10130617, "rch_did": 1013061700, "node_id": "", "node_did": "", "cat_id": 10130617, "cat_did": 1013061700},
+{"target": "target_b", "location": "남이섬", "y": 37.736894, "x": 127.517644, "rch_id": 10130710, "rch_did": 1013071000, "node_id": "", "node_did": "", "cat_id": 10130708, "cat_did": 1013070800},
 {"target": "target_b", "location": "대성리", "y": 37.678122, "x": 127.382125, "rch_id": "", "rch_did": "", "node_id": "", "node_did": "", "cat_id": 10150601, "cat_did": 1015060100},
-{"target": "target_b", "location": "의암", "y": 37.830402, "x": 127.67685, "rch_id": 10130301.0, "rch_did": 1013030100.0, "node_id": "", "node_did": "", "cat_id": 10130301, "cat_did": 1013030100},
-{"target": "target_b", "location": "청평댐3", "y": 37.708, "x": 127.478361, "rch_id": 10150204.0, "rch_did": 1015020400.0, "node_id": "", "node_did": "", "cat_id": 10150204, "cat_did": 1015020400},
-{"target": "target_b", "location": "춘성교", "y": 37.84325, "x": 127.554638, "rch_id": 10130405.0, "rch_did": 1013040500.0, "node_id": "", "node_did": "", "cat_id": 10130405, "cat_did": 1013040500},
-{"target": "target_b", "location": "춘천", "y": 37.947336, "x": 127.702244, "rch_id": 10101201.0, "rch_did": 1010120103.0, "node_id": "", "node_did": "", "cat_id": 10101201, "cat_did": 1010120103},
-{"target": "target_b", "location": "춘천댐1", "y": 37.97898, "x": 127.650077, "rch_id": 10101104.0, "rch_did": 1010110400.0, "node_id": "", "node_did": "", "cat_id": 10101104, "cat_did": 1010110400},
-{"target": "target_b", "location": "춘천댐3", "y": 38.03033, "x": 127.646583, "rch_id": 10101101.0, "rch_did": 1010110100.0, "node_id": "", "node_did": "", "cat_id": 10101101, "cat_did": 1010110100}]
+{"target": "target_b", "location": "의암", "y": 37.830402, "x": 127.67685, "rch_id": 10130301, "rch_did": 1013030100, "node_id": "", "node_did": "", "cat_id": 10130301, "cat_did": 1013030100},
+{"target": "target_b", "location": "청평댐3", "y": 37.708, "x": 127.478361, "rch_id": 10150204, "rch_did": 1015020400, "node_id": "", "node_did": "", "cat_id": 10150204, "cat_did": 1015020400},
+{"target": "target_b", "location": "춘성교", "y": 37.84325, "x": 127.554638, "rch_id": 10130405, "rch_did": 1013040500, "node_id": "", "node_did": "", "cat_id": 10130405, "cat_did": 1013040500},
+{"target": "target_b", "location": "춘천", "y": 37.947336, "x": 127.702244, "rch_id": 10101201, "rch_did": 1010120103, "node_id": "", "node_did": "", "cat_id": 10101201, "cat_did": 1010120103},
+{"target": "target_b", "location": "춘천댐1", "y": 37.97898, "x": 127.650077, "rch_id": 10101104, "rch_did": 1010110400, "node_id": "", "node_did": "", "cat_id": 10101104, "cat_did": 1010110400},
+{"target": "target_b", "location": "춘천댐3", "y": 38.03033, "x": 127.646583, "rch_id": 10101101, "rch_did": 1010110100, "node_id": "", "node_did": "", "cat_id": 10101101, "cat_did": 1010110100}]
   }
 }
