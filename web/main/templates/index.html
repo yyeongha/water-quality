@@ -1,0 +1,109 @@
+{% extends "include/base.html" %}
+{% load static %}
+{% block content %}
+    <div class="main_content">
+
+        <div class="main_company" id="main_company">
+
+            <!-- 뉴스 -->
+            <div class="main_news">
+
+                <div class="main_column">
+                    <a href="intro">
+                        <div class="menu_info">
+                            <h2>사이트 소개</h2>
+                            <p>수질예측시스템에 대해 소개합니다.</p>
+                        </div>
+                        <div class="thumb"><img src="../static/../static/assets/images/main/img_main_company_m.jpg"
+                                                alt=""/></div>
+                    </a>
+                </div>
+                <div class="main_column">
+                    <a href="produce">
+                        <div class="menu_info">
+                            <h2>이용 방법</h2>
+                            <p>수질예측시스템 이용 방법입니다.</p>
+                        </div>
+                        <div class="thumb"><img src="../static/../static/assets/images/main/img_main_brandstory_m.jpg"
+                                                alt=""/></div>
+                    </a>
+                </div>
+
+            </div>
+
+            <div class="other_menu">
+
+
+                <div class="main_product">
+
+                    <figure class="snip1445">
+                        <img src="../static/assets/images/main/bg_main_pr01.jpg" alt="sample84"/>
+                        <figcaption>
+                            <div>
+                                <h2>한강</h2>
+                                <h4>가평</h4>
+                            </div>
+                        </figcaption>
+                        <p class="btn-group">
+                            <button>소개</button>
+                            <button onclick="location.href='{% url 'predict_set' 'A' %}'">예측</button>
+                        </p>
+                    </figure>
+
+
+                    <figure class="snip1445">
+                        <img src="../static/assets/images/main/bg_main_pr02.jpg" alt="sample84"/>
+                        <figcaption>
+                            <div>
+                                <h2>낙동강</h2>
+                                <h4>도개</h4>
+                            </div>
+                        </figcaption>
+                        <p class="btn-group">
+                            <button >소개</button>
+                            <button onclick="location.href='{% url 'predict_set' 'B' %}'">예측</button>
+                        </p>
+                    </figure>
+
+                    <figure class="snip1445">
+                        <img src="../static/assets/images/main/bg_main_pr03.jpg" alt="sample84"/>
+                        <figcaption>
+                            <div>
+                                <h2>금강</h2>
+                                <h4>현도</h4>
+                            </div>
+                        </figcaption>
+                        <p class="btn-group">
+                            <button>소개</button>
+                            <button onclick="location.href='{% url 'predict_set' 'C' %}'">예측</button>
+                        </p>
+                    </figure>
+
+                    <figure class="snip1445">
+                        <img src="../static/assets/images/main/bg_main_pr04.jpg" alt="sample84"/>
+                        <figcaption>
+                            <div>
+                                <h2>영산강</h2>
+                                <h4>나주</h4>
+                            </div>
+                        </figcaption>
+                        <p class="btn-group">
+                            <button>소개</button>
+                            <button onclick="location.href='{% url 'predict_set' 'D' %}'">예측</button>
+                        </p>
+                    </figure>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block javascript %}
+    <script>
+
+    </script>
+
+{% endblock %}

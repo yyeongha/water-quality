@@ -1,0 +1,174 @@
+{% extends "backend/layout/base.html" %}
+
+{% block content %}
+    <div style="display: flex;">
+        <div class="pd-20 debug" style="width: 80%;">
+            <div class="title">예측 수질</div>
+            <canvas id="predictWater" width="300" height="100"></canvas>
+        </div>
+        <div class="pd-20 debug" style="width: 20%; padding-top:130px;">
+            <table class="table-rainbow">
+                <tr>
+                    <td style="background-color: rgba(66,238,46,0.95); width: 50%;"></td>
+                    <td class="rainbow-txt">매우 좋음</td>
+                </tr>
+                <tr>
+                    <td style="background-color: rgba(152,235,78,0.95); width: 50%;"></td>
+                    <td class="rainbow-txt">좋음</td>
+                </tr>
+                <tr>
+                    <td style="background-color: rgba(178,238,84,0.95); width: 50%;"></td>
+                    <td class="rainbow-txt">약간 좋음</td>
+                </tr>
+                <tr>
+                    <td style="background-color: rgba(235,229,97,0.95); width: 50%;"></td>
+                    <td class="rainbow-txt">보통</td>
+                </tr>
+                <tr>
+                    <td style="background-color: rgba(235,200,79,0.95); width: 50%;"></td>
+                    <td class="rainbow-txt">약간 나쁨</td>
+                </tr>
+                <tr>
+                    <td style="background-color: rgba(235,127,80,0.95); width: 50%;"></td>
+                    <td class="rainbow-txt">나쁨</td>
+                </tr>
+                <tr>
+                    <td style="background-color: rgba(235,20,37,0.95); width: 50%;"></td>
+                    <td class="rainbow-txt">매우 나쁨</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+
+    <div class="pd-20 debug">
+        <div class="title">예측 그래프</div>
+        <canvas id="predictGraph" width="400" height="100"></canvas>
+    </div>
+
+    <div class="pd-20 debug">
+        <div class="title">강우량 및 기온</div>
+        <canvas id="predictData" width="400" height="100"></canvas>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        var predictWater = document.getElementById('predictWater');
+        var _predictWater = new Chart(predictWater, {
+            type: 'bar',
+            data: {
+                labels: [],
+                datasets: [
+                    {
+                        label: '예측 수질',
+                        data: [],
+                        backgroundColor: ['rgba(66,238,46,0.95)',
+                            'rgb(152,235,78)',
+                            'rgb(218,238,99)',
+                            'rgb(235,183,114)',
+                            'rgb(235,20,37)']
+                    }
+                ]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: '수질 기준 (BOD mg/l)'
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+
+        var predictGraph = document.getElementById('predictGraph');
+        var _predictGraph = new Chart(predictGraph, {
+            type: 'bar',
+            data: {
+                labels: [],
+                datasets: [
+                    {
+                        label: '기준값',
+                        type: 'line',
+                        data: [],
+                        borderColor: 'rgba(255, 99, 132, 0.2)',
+                        fill: false,
+                        //lineTension: 0,
+                    },
+                    {
+                        label: '실측값',
+                        type: 'line',
+                        data: [],
+                        borderColor: 'rgba(99,235,181,0.56)',
+                        fill: false,
+                        //lineTension: 0,
+                    },
+                    {
+                        label: '예측값',
+                        type: 'line',
+                        data: [],
+                        borderColor: 'rgba(31,43,235,0.44)',
+                        fill: false,
+                        //lineTension: 0,
+                    },
+                ]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            //기준값을 0으로 설정
+                            beginAtZero: false,
+
+                        }
+                    }],
+                    xAxes: [{
+                        gridLines: {
+                            drawOnChartArea:true
+
+                        }
+                    }]
+                }
+            }
+        });
+
+        var rain_chart = document.getElementById('predictData');
+        var _rain_chart = new Chart(rain_chart, {
+            type: 'bar',
+            data: {
+                labels: [],
+                datasets: [
+                    {
+                        label: '강우량',
+                        data: [],
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        type: 'bar',
+                    },
+                    {
+                        label: '기온',
+                        data: [],
+                        type: 'line',
+                        borderColor: 'rgba(255, 99, 132, 0.2)',
+                        fill: false,
+                    },
+                ]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                        }
+                    }]
+                }
+            }
+        });
+
+
+    </script>
+{% endblock %}

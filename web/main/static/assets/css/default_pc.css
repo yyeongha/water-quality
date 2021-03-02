@@ -1,0 +1,564 @@
+@charset "utf-8";
+/********************************************************************
+Publishing :Lee Kang Won
+Beginning : 2015-10-27
+Project Name : jevisco(제비표 페인트)
+*********************************************************************/
+
+@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+
+body,p,h1,h2,h3,h4,h5,h6,ul,ol,li,dl,dt,dd,table,th,td,form,fieldset,legend,input,textarea,button,select{margin:0;padding:0;}
+body,input,textarea,select,button,table{font-family:'Nanum Gothic', "돋움",Dotum,sans-serif; font-size:12px; color:#777; line-height:100%;}
+html,body{width:100%; height:100%; background:#fff; -webkit-text-size-adjust:none; text-size-adjust:none; min-width:1200px;}
+body{display:inline-block;}
+fieldset{border:0}
+legend{width:0; height:0; overflow:hidden; line-height:0; font-size:0;}
+caption{display:none;}
+button{margin:0; border:0; background:none; display:inline-block; cursor:pointer;  position:relative; overflow:visible; vertical-align:middle;}
+img{border:0; font-size:0; line-height:0;vertical-align: top;}
+ul,ol{list-style:none}
+em,address{font-style:normal}
+a{text-decoration:none; display:inline-block;color:#222;}
+a:hover,a:active,a:focus{text-decoration:none}
+article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block; margin:0; padding:0;}
+table{border-collapse:collapse;border-spacing:0; width:100%;}
+input[type="text"]{border:0; box-sizing:border-box; padding:0 10px;}
+input[type*="te"]:disabled, input[type="email"]:disabled, input[readonly="readonly"]{background:#f8f8f8;}
+textarea{box-sizing:border-box; resize:none; padding:5px; border:0; background:none;}
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder { 
+    color:#ebebeb !important;  vertical-align:middle;
+}
+input::-moz-placeholder, textarea::-moz-placeholder { 
+    color: #ebebeb !important;  vertical-align:middle;
+} for the future
+input:-ms-input-placeholder, textarea:-ms-input-placeholder { 
+    color: #ebebeb !important;  vertical-align:middle;
+}
+.indent{overflow:hidden; text-align:left; text-indent:-9999em; display:block; height:100%;}
+#fade{width:100%; height:100%; position:fixed; left:0; top:0; background:#3b3c3c; opacity:0.7; z-index:20; display:none;}
+.top{position:fixed;bottom:155px;left:50%;z-index: 1; margin-left:540px; background:url('http://www.jevisco.com/front/kr/asset/images/common/btn_top.png') no-repeat 0 0; width:60px; height:60px; overflow:hidden;}
+.top.etc{bottom:300px;}
+
+#header_wrap{width:100%; height:83px; position:fixed; z-index:10; background:#fff; box-shadow:0 4px 4px 0 rgba(0,0,0,0.15); left:0; top:0;}
+.header{width:1200px; height:100%; margin:0 auto; position:relative;}
+.header:after{content: ".";display:block;clear:both;visibility:hidden;line-height:0;height:0}
+.header h1{float:left; margin-top:20px; width:190px; height:41px; background:url('http://www.jevisco.com/front/kr/asset/images/common/h1_logo_1.gif') no-repeat 0 0;}
+.header .gnb_wrap{display:inline-block; float:left;}
+.header .gnb_wrap .fade_close{display:none;}
+.header .gnb_head{display:none;}
+.header .mobile_gnb{display:none;}
+.header .depth1{width:870px; display:inline-block; text-align:center; margin-top:28px;}
+.header .depth1 > li{display:inline-block; margin-left:70px; position:relative; padding-bottom:23px;}
+.header .depth1 > li:first-child{margin-left:0;}
+.header .depth1 > li > a{font-size:16px; line-height:24px; font-weight:bold;padding-bottom:8px;}
+.header .depth1 > li > a:hover/* , .header .depth1 > li > a.on */{ border-bottom:3px solid #07399c;}
+.header .depth1 > li.gnb_company > .depth2{left:-60px;}
+.header .depth1 > li > .depth2{position:absolute; left:-25px; top:55px; width:185px; text-align:left; box-shadow:5px 5px 4px 0 rgba(0,0,0,0.15); border-bottom:1px solid #07399c;  z-index:1; display:none;}
+.header .depth1 > li > .depth2 > li{border-top:1px solid #03205f; position:relative; box-sizing:border-box; border-left:1px solid #07399c; border-right:1px solid #07399c;}
+.header .depth1 > li > .depth2 > li.include{border-right:0;}
+.header .depth1 > li > .depth2 > li:first-child{border-top:1px solid #07399c;}
+.header .depth1 > li > .depth2 > li > a{color:#fff; font-size:14px; display:block; width:100%; height:100%; line-height:43px; box-sizing:border-box; padding-left:20px; background:#07399c;}
+.header .depth1 > li > .depth2 > li > a:hover, .header .depth1 > li > .depth2 > li a.on{background:#fff; color:#263238;}
+.header .depth1 > li > .depth2 > li.go_submain{display:block;}
+.header .depth1 > li > .depth2 > li.go_submain :hover{background:#00a6ff; color:#fff;}
+.header .depth1 > li > .depth2 > li.include > a{background:#07399c url('http://www.jevisco.com/front/kr/asset/images/common/bu_2depth.png') no-repeat 165px 50%;}
+.header .depth1 > li > .depth2 > li.include > a:hover, .header .depth1 > li > .depth2 > li.include a.on, .header .depth1 > li > .depth2 > li.over a{background:#fff url('http://www.jevisco.com/front/kr/asset/images/common/bu_2depth_on.png') no-repeat 165px 50%; color:#263238;}
+.header .depth1 > li > .depth2 > li > .depth3{position:absolute; left:-1px; top:-1px; margin-left:100%; width:190px; background:#fff url('http://www.jevisco.com/front/kr/asset/images/common/bg_3depth_left.gif') no-repeat 0 1px; box-shadow:5px 5px 4px 0 rgba(0,0,0,0.15); padding:5px 0;  box-sizing:border-box; border:1px solid #07399c; border-left-width:0; display:none;}
+.header .depth1 > li > .depth2 > li > .depth3 li{padding-left:20px; margin-top:0; background:url('http://www.jevisco.com/front/kr/asset/images/common/bg_3depth_line.gif') no-repeat 10px 17px;}
+.header .depth1 > li > .depth2 > li > .depth3 li:first-child{margin-top:0;}
+.header .depth1 > li > .depth2 > li > .depth3 li a{font-size:14px; color:#263238; line-height:22px; display:block; height:100%; box-sizing:border-box; padding:6px 0; background:none;}
+.header .depth1 > li > .depth2 > li > .depth3 li a:hover{text-decoration:underline; color:#07399c;}
+/* .header .search{float:right; margin:22px 0 0 0;} */
+.header .search{float:right; margin:22px 48px 0 0;}
+.header .search .ic_search{display:block; overflow:hidden; padding:0 36px 0 10px; height:36px; line-height:34px; color:#fff; font-weight:bold; color:#eceff1; background:#424c51 url('http://www.jevisco.com/front/kr/asset/images/common/ic_search.png') no-repeat 62px 50%; font-size:12px; border-radius:5px;}
+.header .search .input_search{position:absolute; right:0; top:83px; width:320px; height:50px; padding-left:115px; display:none;}
+.header .search .input_search input[type="text"]{width:100%; height:50px; font-size:14px; color:#ebebeb; background:#424c51 url('http://www.jevisco.com/front/kr/asset/images/common/bg_head_search.png') no-repeat 20px 50%; line-height:50px; padding:0 80px 0 20px; border:0;}
+.header .search .input_search input[type="text"].off{background-image:none;}
+.header .search .input_search .sch_function{width:80px; height:50px; position:absolute; right:0; top:0; background:url('http://www.jevisco.com/front/kr/asset/images/common/sch_close_line.png') no-repeat 50% 50%; box-sizing:border-box; padding:14px 13px 14px 6px;}
+.header .search .input_search .sch_function button{float:left; width:20px; height:20px; background:url('http://www.jevisco.com/front/kr/asset/images/common/ic_head_search.png') no-repeat 0 0;}
+.header .search .input_search .sch_function .sch_close{display:inline-block; width:14px; height:14px; background:url('http://www.jevisco.com/front/kr/asset/images/common/ic_close_search.png') no-repeat 0 0; float:right; margin-top:4px;}
+.header .foreign{position:absolute; right:0; top:22px; width:46px;}
+.header .foreign .local{width:46px; height:36px; border:1px solid #a9b0b8; box-sizing:border-box; border-radius:5px; line-height:18px; padding-top:5px; text-align:center; font-weight:bold; font-size:11px; background:url('http://www.jevisco.com/front/kr/asset/images/common/country_off.png') no-repeat 50% 25px; font-family:Verdana;}
+.header .foreign .local.on{background:url('http://www.jevisco.com/front/kr/asset/images/common/country_on.png') no-repeat 50% 25px;}
+.header .foreign ul{overflow:hidden; position:absolute; left:0; top:33px; height:0; overflow:hidden;}
+.header .foreign ul li{width:46px; border:1px solid #a9b0b8; box-sizing:border-box; background:#fff; font-family:Verdana;}
+.header .foreign ul li a{display:block; height:30px; line-height:30px; text-align:center; font-size:11px; color:#444;}
+.header .foreign ul li a:hover{background:#424c51; color:#fff;}
+.header .foreign ul li.chi{font-family:SimHei;}
+.header .foreign ul li.last{margin-top:-1px;}
+
+#container{width:1200px; margin:0 auto; overflow:hidden;}
+
+#lnb{float:left; width:190px; overflow:hidden; margin:112px 50px 0 0;}
+#lnb .lnb_nav{ border-top:2px solid #00a6ff; border-bottom:1px solid #818181;}
+#lnb .lnb_nav li{border-top:1px solid #d0d0d0;}
+#lnb .lnb_nav li:first-child{margin-top:0; border-top:0;}
+#lnb .lnb_nav li > a{display:block; width:100%; height:100%; box-sizing:border-box; line-height:50px; padding-left:20px; font-size:14px; color:#444; background:url('http://www.jevisco.com/front/kr/asset/images/common/bu_lnb_down.png') no-repeat 168px 50%; font-weight:bold;}
+#lnb .lnb_nav li > a:hover{background:#f1f1f1 url('http://www.jevisco.com/front/kr/asset/images/common/bu_lnb_down.png') no-repeat 168px 50%; color:#222;}
+#lnb .lnb_nav li.no_depth a:hover{background:#f1f1f1;}
+#lnb .lnb_nav li.current > a{background:#00a6ff url('http://www.jevisco.com/front/kr/asset/images/common/bu_lnb_up.png') no-repeat 168px 50%; color:#fff; font-weight:bold;}
+#lnb .lnb_nav li.no_depth a{background:none;}
+#lnb .lnb_nav li.no_depth.current a{background:#00a6ff;}
+#lnb .lnb_nav li.no_depth.current a:hover{background:#00a6ff;}
+#lnb .lnb_nav li.newWin a{background:none;}
+#lnb .lnb_nav li.newWin a:hover{background:#f1f1f1; font-weight:bold;}
+#lnb .lnb_nav li.newWin span{display:inline-block; padding-right:23px; background:url('http://www.jevisco.com/front/kr/asset/images/common/ic_new_window.png') no-repeat 100% 50%;}
+#lnb .lnb_nav li .lnb_2depth li.newWin a:hover{background:#fff url('http://www.jevisco.com/front/kr/asset/images/common/bu_lnb_2depth.gif') no-repeat 10px 9px;}
+#lnb .lnb_nav li .lnb_2depth{padding:9px 0; display:none;}
+#lnb .lnb_nav li .lnb_2depth li{ border-top:0; padding:6px 0;}
+#lnb .lnb_nav li .lnb_2depth li > a{padding:0 20px 0 20px; line-height:19px; font-size:13px; color:#666; background:url('http://www.jevisco.com/front/kr/asset/images/common/bu_lnb_2depth.gif') no-repeat 10px 9px;}
+#lnb .lnb_nav li .lnb_2depth li > a:hover{color:#444;}
+#lnb .lnb_nav li .lnb_2depth li > a.on{font-weight:bold; color:#07399c; background:url('http://www.jevisco.com/front/kr/asset/images/common/bu_lnb_2depth_on.gif') no-repeat 10px 9px;}
+#lnb .lnb_btn{margin-top:30px; overflow:hidden;}
+#lnb .lnb_btn a{display:block; width:100%; height:52px; border:1px solid #818181; box-sizing:border-box; margin-top:20px; background:url('http://www.jevisco.com/front/kr/asset/images/common/bu_lnb_btn_arrow.png') no-repeat 162px 50%; font-size:16px; color:#67676a; line-height:52px;}
+#lnb .lnb_btn a:first-child{margin-top:0;}
+#lnb .lnb_btn a strong{display:inline-block; padding-left:52px; color:#222;}
+#lnb .lnb_btn a .inquiry{background:url('http://www.jevisco.com/front/kr/asset/images/common/bg_inquiry_lnb.png') no-repeat 20px 50%;}
+#lnb .lnb_btn a .tech{background:url('http://www.jevisco.com/front/kr/asset/images/common/bg_tech_lnb.png') no-repeat 20px 50%;}
+#lnb .lnb_btn a .catalog{background:url('http://www.jevisco.com/front/kr/asset/images/common/bg_catalog_lnb.png') no-repeat 20px 50%;}
+#lnb .lnb_btn a .lnb_certi{background:url('http://www.jevisco.com/front/kr/asset/images/common/bg_certi_lnb.png') no-repeat 20px 50%;}
+#lnb .lnb_btn a .lnb_contact{background:url('http://www.jevisco.com/front/kr/asset/images/common/bg_contact_lnb.png') no-repeat 20px 50%;}
+
+#content{float:left; width:960px; margin-top:49px;position:relative;}
+#content .top{position:fixed;bottom:20px;right:20px;z-index: 1;}
+#content .content_visual{width:960px;height:230px;}
+#content .powder{background:url('http://www.jevisco.com/front/kr/asset/images/industrial/industrial_visual.jpg') no-repeat 0 0;}
+#content .product_01{background:url('http://www.jevisco.com/front/kr/asset/images/builders/builders_visual_01.jpg') no-repeat 0 0;}
+/* #content .header_group{width:100%; overflow:hidden; margin-bottom:10px;} */
+#content .header_group{width:100%; overflow:hidden; margin-bottom:10px; padding-bottom: 10px; border-bottom: 2px solid #555;}
+#content .header_group .location{float:right; width:auto; margin-top:27px;}
+#content .header_group .location li{float:left; padding-left:26px; background:url('http://www.jevisco.com/front/kr/asset/images/common/bu_location.png') no-repeat 11px 5px; line-height:18px;}
+#content .header_group .location li:first-child{padding-left:0; background:none; margin-top:4px;}
+#content .header_group .location li.home a{display:block; width:17px; height:14px; overflow:hidden; background:url('http://www.jevisco.com/front/kr/asset/images/common/ic_home.png') no-repeat 0 0;}
+#content .header_group .location li a{color:#666; font-size:14px;}
+#content .header_group .location li strong{color:#444; font-size:14px;}
+#content .header_group h2{font-size:35px; font-weight:bold; color:#222; line-height:1.5; float:left;}
+#content .header_group h2 .h2_arrow{display:none;}
+#content .content_visual img{width:100%;}
+#content .border{padding-top:60px;border-top:2px solid #555555;}
+
+#footer_wrap{width:100%; background:#e9eaeb; margin-top:100px;}
+.foot_util_wrap{width:100%; height:55px; background:#263238;}
+.foot_util{height:55px; width:1200px; margin:0 auto; position:relative; padding-top:18px; box-sizing:border-box;}
+.foot_util .foot_util_list{float:left;}
+.foot_util .foot_util_list li{float:left; padding-left:19px; background:url('http://www.jevisco.com/front/kr/asset/images/common/bg_foot_util.png') no-repeat 9px 3px;}
+.foot_util .foot_util_list li a{color:#a1a1a1; font-size:14px; font-weight:bold; line-height:18px;}
+.foot_util .foot_util_list li:first-child{background:none; padding-left:0;}
+.foot_util .etc_util{float:left; margin-left:40px; display:inline;}
+.foot_util .etc_util a{color:#a1a1a1; font-size:14px; font-weight:bold; line-height:18px;}
+.foot_util .family_site{width:240px; height:55px; overflow:hidden; position:absolute; right:0; bottom:0; background:#1e292e; display:block;}
+.foot_util .family_site > a{font-size:14px; display:block; height:55px; line-height:18px; color:#a1a1a1; font-weight:bold; background:url('http://www.jevisco.com/front/kr/asset/images/common/family_off.png') no-repeat 204px 50%; box-sizing:border-box; padding-left:29px; line-height:55px; border-bottom:1px solid #424242;}
+.foot_util .family_site.on > a{background:url('http://www.jevisco.com/front/kr/asset/images/common/family_on.png') no-repeat 204px 50%;}
+.foot_util .family_site ul{padding:14px 0;}
+.foot_util .family_site ul li > a{display:block; color:#a1a1a1; font-size:13px; line-height:27px; box-sizing:border-box; padding-left:29px;}
+.foot_util .family_site ul li > a:hover{color:#fff;}
+
+.foot_util .family_stie_m{display:none;}
+
+.footer{width:1200px; margin:0 auto; overflow:hidden; font-size:12px; line-height:18px; color:#37474f; padding:20px 0 28px 0; position:relative;}
+.footer address span{display:inline-block; padding-right:7px; margin-right:2px; background:url('http://www.jevisco.com/front/kr/asset/images/common/bg_address_line.png') no-repeat 100% 5px;}
+.footer .foot_logo{width:189px; height:31px; float:left; margin-right:20px; background:url('http://www.jevisco.com/front/kr/asset/images/common/bg_foot_logo.png') no-repeat 0 0; margin-top:5px;}
+.footer .foot_info{float:left;}
+.footer .social{position:absolute; right:0; top:16px; width:auto;}
+.footer .social li{float:left; width:60px; box-sizing:border-box; height:35px; background:url('http://www.jevisco.com/front/kr/asset/images/common/bg_social.png') no-repeat 0 50%;}
+.footer .social li:first-child{background:none;}
+.footer .social li a{display:block; width:100%; height:100%;}
+.footer .social li.facebook a{background:url('http://www.jevisco.com/front/kr/asset/images/common/ic_facebook.png') no-repeat 50% 50%;}
+.footer .social li.youtube a{background:url('http://www.jevisco.com/front/kr/asset/images/common/ic_youtube.png') no-repeat 50% 50%;}
+.footer .social li.flick a{background:url('http://www.jevisco.com/front/kr/asset/images/common/ic_flick.png') no-repeat 50% 50%;}
+
+
+.visual{width:100%; height:70px; overflow:hidden; margin-top:83px;}
+.visual.builders{background:url('http://www.jevisco.com/front/kr/asset/images/builders/sub_visual_builders.jpg') no-repeat 50% 0;}
+.visual.industrial{background:#9d9ea2 url('http://www.jevisco.com/front/kr/asset/images/industrial/sub_visual_industrial.jpg') no-repeat 50% 0;}
+.visual.ship {background:url('http://www.jevisco.com/front/kr/asset/images/ship/sub_visual_ship.jpg') no-repeat 50% 0;}
+
+
+/* 컬러북 */
+.tabstyle{margin:50px 0 25px 0;}
+.tabstyle select{display:none;}
+.tabstyle ul{width:100%; overflow:hidden;}
+.tabstyle ul li{float:left; height:47px; margin-left:-1px; padding-bottom:6px;}
+.tabstyle ul li:first-child{margin-left:0; width:192px;}
+.tabstyle ul li.on{background:url('http://www.jevisco.com/front/kr/asset/images/common/tab_arrow.png') no-repeat 50% 47px;}
+.tabstyle ul li a{display:block; height:100%; text-align:center; line-height:47px; color:#07399c; font-size:16px; font-weight:bold;border:1px solid #07399c; box-sizing:border-box; width:100%;}
+.tabstyle ul li.on a{background:#07399c; color:#fff;}
+.tabstyle ul.item02 li{width:481px;}
+.tabstyle ul.item02 li:first-child{width:480px;}
+.tabstyle ul.item03 li{width:321px;}
+.tabstyle ul.item03 li:first-child{width:320px;}
+.tabstyle ul.item04 li{width:241px;}
+.tabstyle ul.item04 li:first-child{width:240px;}
+/* .tabstyle ul.item05 li{width:193px; }
+.tabstyle ul.item05 li:first-child{width:192px;} */
+/*2017-04-11 수정*/
+.tabstyle ul.item05 li{width:137px; }
+.tabstyle ul.item05 li:first-child{width:140px;}
+/*2017-04-11 수정*/ 
+.tabstyle ul.item06 li{width:161px; }
+.tabstyle ul.item06 li:first-child{width:160px;}
+.tabstyle ul.item07 li{width:138px; }
+.tabstyle ul.item08 li{width:121px; }
+.tabstyle ul.item08 li:first-child{width:120px;}
+
+.sch_color{border:4px solid #cfd8dc; position:relative;}
+.sch_color dl{width:100%; overflow:hidden;}
+.sch_color dl dt{float:left; width:122px; font-size:16px; font-weight:bold; color:#263238; line-height:26px; padding:15px 0 15px 20px;}
+.sch_color dl dd{float:left; width:809px;}
+.sch_color dl dd label{vertical-align:middle; color:#263238; font-size:13px; line-height:22px; margin-right:25px; display:inline-block; position:relative; padding-left:22px; cursor:pointer;}
+.sch_color dl dd input{vertical-align:middle;}
+.sch_color dl.color_type dt{padding-top:10px;}
+.sch_color dl.color_type dd{padding:13px 0 20px 0;}
+.sch_color dl.color_type dd .text{width:405px; height:40px; padding-left:30px; margin-right:5px; background:#cfd8dc url('http://www.jevisco.com/front/kr/asset/images/builders/bg_sch_input.png') no-repeat 15px 50%; line-height:40px; color:#333; font-size:14px;}
+.sch_color dl.color_type dd .text.off{background-image:none;}
+.sch_color dl.color_type dd .rgb{width:100px; height:40px; margin:0 5px; background:#cfd8dc; line-height:40px; color:#fff; font-size:14px;}
+.sch_color dl.color_type dd .rgb.off{background:#1c97ff;}
+.sch_color dl input[type="radio"], .sch_color dl input[type="checkbox"]{position:absolute;  z-index:-1;}
+.sch_color dl.color_type .input_color_type{margin-top:17px;}
+.sch_color dl.color_type dd input::-webkit-input-placeholder, textarea::-webkit-input-placeholder { 
+    color:#455a64 !important;  vertical-align:middle;
+}
+.sch_color dl.color_type dd input::-moz-placeholder, textarea::-moz-placeholder { 
+    color: #455a64 !important;  vertical-align:middle;
+} for the future
+.sch_color dl.color_type dd input:-ms-input-placeholder, textarea:-ms-input-placeholder { 
+    color: #455a64 !important;  vertical-align:middle;
+}
+
+.sch_color dl.color_type, .sch_color dl.color_category{border-bottom:1px solid #cfd8dc;}
+.sch_color dl.color_category dd{padding:18px 0;}
+.sch_color dl.color_list dd{padding:19px 0;}
+
+.sch_color dl.color_type dd label span,
+.sch_color dl.color_category dd label span{
+	display:inline-block; width:15px; height:15px; position:absolute; left:0; top:4px; background:url('http://www.jevisco.com/front/kr/asset/images/builders/radio_off.png') no-repeat 0 0;
+}
+
+.sch_color dl.color_type dd label.on span,
+.sch_color dl.color_category dd label.on span{
+	background:url('http://www.jevisco.com/front/kr/asset/images/builders/radio_on.png') no-repeat 0 0;
+}
+
+.sch_color dl.color_list dd label, .sch_color dl.color_category dd label{color:#666;}
+.sch_color dl.color_list dd label span{display:inline-block; width:19px; height:19px; position:absolute; left:0; top:2px;background:url('http://www.jevisco.com/front/kr/asset/images/builders/label_all.gif') no-repeat 0 0;}
+.sch_color dl.color_list dd label.on span{background:url('http://www.jevisco.com/front/kr/asset/images/builders/label_all_on.gif') no-repeat 0 0;}
+
+/* .sch_color dl.color_list dd label.all span{}
+.sch_color dl.color_list dd label.red span{background:#ee1c24;}
+.sch_color dl.color_list dd label.yellow span{background:#f7cd0c;}
+.sch_color dl.color_list dd label.blue span{background:#1b7ae3;}
+.sch_color dl.color_list dd label.orange span{background:#ff6f00;}
+.sch_color dl.color_list dd label.green span{background:#388e3c;}
+.sch_color dl.color_list dd label.purple span{background:#7a4dd7;}
+.sch_color dl.color_list dd label.brown span{background:#b27539;}
+.sch_color dl.color_list dd label.monotone span{background:#000;}
+.sch_color dl.color_list dd label.all.on span{background:url('../images/builders/label_all_on.gif') no-repeat 0 0;}
+.sch_color dl.color_list dd label.red.on span{background:url('../images/builders/label_red_on.gif') no-repeat 0 0;}
+.sch_color dl.color_list dd label.yellow.on span{background:url('../images/builders/label_yellow_on.gif') no-repeat 0 0;}
+.sch_color dl.color_list dd label.blue.on span{background:url('../images/builders/label_blue_on.gif') no-repeat 0 0;}
+.sch_color dl.color_list dd label.orange.on span{background:url('../images/builders/label_orange_on.gif') no-repeat 0 0;}
+.sch_color dl.color_list dd label.green.on span{background:url('../images/builders/label_green_on.gif') no-repeat 0 0;}
+.sch_color dl.color_list dd label.purple.on span{background:url('../images/builders/label_purple_on.gif') no-repeat 0 0;}
+.sch_color dl.color_list dd label.brown.on span{background:url('../images/builders/label_brown_on.gif') no-repeat 0 0;}
+.sch_color dl.color_list dd label.monotone.on span{background:url('../images/builders/label_black_on.gif') no-repeat 0 0;} */
+
+.sch_color .category_disabled{width:100%; height:61px; position:absolute; left:0; top:112px; background:url('http://www.jevisco.com/front/kr/asset/images/builders/bg_disabled.png') repeat 0 0; display:none; }
+.sch_color .color_disabled{width:100%; height:61px; position:absolute; left:0; top:172px; background:url('http://www.jevisco.com/front/kr/asset/images/builders/bg_disabled.png') repeat 0 0; display:none;}
+
+.color_result{width:100%; overflow:hidden; margin:20px 0;}
+.color_result.masterCollection{width:100%; overflow:hidden; margin:40px 0 20px 0;}
+.color_result.otherKind{width:100%; overflow:hidden; margin:40px 0 20px 0; border-bottom: 1px solid #454545;}
+.color_result.crbkHiddenBar{width:100%; overflow:hidden; margin-top:20px;}
+.color_result p{float:left; font-size:18px; line-height:26px; color:#222; margin-top:4px;}
+.color_result.otherKind p{float:left; font-size:26px; line-height:26px; color:#222; margin-top:4px; padding-bottom:15px;}
+.color_result p span{color:#1269ca;}
+.color_result a{float:right;}
+
+.btn_down_l{display:inline-block; height:28px; line-height:28px; padding-left:11px; background:url('http://www.jevisco.com/front/kr/asset/images/common/btn_down_l.png') no-repeat 0 0; font-size:13px; color:#444;}
+.btn_down_r{display:inline-block; height:28px; line-height:28px; padding-right:32px; background:url('http://www.jevisco.com/front/kr/asset/images/common/btn_down_r.png') no-repeat 100% 0;}
+
+.color_board{width:100%; overflow:hidden;}
+.color_board .type01{width:962px; overflow:hidden;}
+.color_board .type01 li{float:left; margin:0 2px 2px 0; width:30px; height:30px;}
+.color_board .type01 li a{display:block; height:100%;}
+.color_board .type01 li a:hover , .color_board .type01 li a.on{background:url('http://www.jevisco.com/front/kr/asset/images/builders/small_color_on.png') no-repeat 0 0;}
+.color_board .btn_more{width:100%; overflow:hidden; text-align:center; margin:20px 0 300px 0;}
+.color_board .btn_more a{display:block; height:48px; border:1px solid #c3c8cd; font-size:13px; line-height:48px; color:#444; font-weight:bold;}
+
+.color_board .type02{width:962px; overflow:hidden;}
+.color_board .type02 li{float:left; margin:0 2px 2px 0; width:158px; height:158px;}
+.color_board .type02 a{display:block; height:100%; position:relative; color:#fff; font-size:13px; overflow:hidden;}
+.color_board .type02 a span{display:none; width:100%; height:100%; position:absolute; left:0; top:0; background:url('http://www.jevisco.com/front/kr/asset/images/builders/big_color_on.png') no-repeat 0 0; text-align:center; color:#fff; font-weight:bold; box-sizing:border-box; padding-top:130px;}
+.color_board .type02 a:hover span, .color_board .type02 a.on span{display:block;}
+
+/*마스터 컬러 컬렉션 검색 css 추가 17-04-12*/
+.color_board .type03{overflow:hidden; float: left; margin-bottom:40px;}
+.color_board .type03 li{margin:0 2px 2px 0; width:30px; height:30px;}
+.color_board .type03 li a{display:block; height:100%;}
+.color_board .type03 li a:hover , .color_board .type03 li a.on{background:url('http://www.jevisco.com/front/kr/asset/images/builders/small_color_on_02.png') no-repeat 0 0;}
+.color_board .btn_more{width:100%; overflow:hidden; text-align:center; margin:20px 0 300px 0;}
+.color_board .btn_more a{display:block; height:48px; border:1px solid #c3c8cd; font-size:13px; line-height:48px; color:#444; font-weight:bold;}
+
+/*마스터 컬러 컬렉션 검색 css 추가 17-04-12 1안*/
+.color_board .type04{overflow:hidden; float: left; margin-bottom:40px;}
+.color_board .type04 li{margin:0 2px 2px 0; width:60px; height:30px;}
+.color_board .type04 li a{display:block; height:100%;}
+.color_board .type04 li a:hover , .color_board .type04 li a.on{background:url('http://www.jevisco.com/front/kr/asset/images/builders/small_color_on_02.png') no-repeat 0 0;}
+.color_board .btn_more{width:100%; overflow:hidden; text-align:center; margin:20px 0 300px 0;}
+.color_board .btn_more a{display:block; height:48px; border:1px solid #c3c8cd; font-size:13px; line-height:48px; color:#444; font-weight:bold;}
+
+/*마스터 컬러 컬렉션 검색 css 추가 17-04-12 2안*/
+.color_board .type05{overflow:hidden; float: left; margin-bottom:40px;}
+.color_board .type05 li{margin:0 2px 2px 0; width:39px; height:39px;}
+.color_board .type05 li a{display:block; height:100%;}
+.color_board .type05 li a:hover , .color_board .type05 li a.on{background:url('http://www.jevisco.com/front/kr/asset/images/builders/small_color_on_02.png') no-repeat 0 0;}
+.color_board .btn_more{width:100%; overflow:hidden; text-align:center; margin:20px 0 300px 0;}
+.color_board .btn_more a{display:block; height:48px; border:1px solid #c3c8cd; font-size:13px; line-height:48px; color:#444; font-weight:bold;}
+
+/* 베스트 컬러 컬렉션 검색 css 추가 18-04-09 */
+.color_board .type06{overflow:hidden; float: left; margin-bottom:25px;}
+.color_board .type06 li{margin:0 2px 2px 0; width:90px; height:45px;}
+.color_board .type06 li a{display:block; height:100%;}
+.color_board .type06 li a:hover , .color_board .type06 li a.on{background:url('http://www.jevisco.com/front/kr/asset/images/builders/small_color_on_03.png') no-repeat 0 0;}
+.color_board .btn_more{width:100%; overflow:hidden; text-align:center; margin:20px 0 480px 0;}
+.color_board .btn_more a{display:block; height:48px; border:1px solid #c3c8cd; font-size:13px; line-height:48px; color:#444; font-weight:bold;}
+
+/* 컬러정보 레이어 */
+.colorinfo_layer{width:960px; height:57px; position:fixed; bottom:20px; left:50%; margin-left:-360px; z-index:2; box-sizing:border-box; background:#a6afb9; background:rgba(144, 155, 168, 0.8); overflow:hidden; display:block; padding:0 5px 5px 5px; border-radius:5px;}
+.colorinfo_in{position:relative;}
+.colorinfo_layer .flip{display:block; padding:0 19px 0 50px; height:57px; line-height:57px; color:#fff; font-size:18px; background:url('http://www.jevisco.com/front/kr/asset/images/builders/bg_colorinfo_title.png') no-repeat 20px 50%; position:relative;}
+.colorinfo_layer .flip .minimum{background:url('http://www.jevisco.com/front/kr/asset/images/builders/colorinfo_down.png') no-repeat 0 0; display:block; width:23px; height:13px; overflow:hidden; position:absolute; right:20px; top:50%; margin-top:-7px}
+.colorinfo_layer .flip .minimum.on{background:url('http://www.jevisco.com/front/kr/asset/images/builders/colorinfo_up.png') no-repeat 0 0;}
+.colorinfo_wrap{width:100%; overflow:hidden; background:#fff; box-sizing:border-box; border-radius:5px;}
+.colorinfo_wrap .color_plate{float:left; width:300px; height:160px; border:2px solid #cfd8dc; box-sizing:border-box; margin:19px 20px;}
+.colorinfo_wrap .color_plate img{display:block; width:100%; height:100%;}
+.colorinfo_wrap .color_info{float:left; width:276px; margin-right:20px;}
+.colorinfo_wrap dl dt{font-size:16px; line-height:26px; color:#222; font-weight:bold;}
+.colorinfo_wrap dt{border-bottom:1px solid #2672c1; padding-bottom:5px; margin-top:11px;}
+.colorinfo_wrap dt span{color:#1269ca;}
+.colorinfo_wrap .color_info dd{margin-top:14px;}
+.colorinfo_wrap .color_info dd li{width:100%; display:block; position:relative; padding-left:7px; box-sizing:border-box; padding-left:75px; line-height:26px; font-size:13px; font-weight:bold; color:#48515b;}
+.colorinfo_wrap .color_info dd li:after{content:''; display:block; width:2px; height:2px; background:#444; position:absolute; left:0; top:12px;}
+.colorinfo_wrap .color_info dd li strong{color:#858f9a; position:absolute; left:7px; top:0; }
+.colorinfo_wrap .color_info dd li:first-child em{color:#1269ca;font-size:16px; line-height:26px;}
+.colorinfo_wrap .color_info dd li span{display:inline-block; padding-left:19px; margin-right:7px; vertical-align:middle; line-height:26px;}
+.colorinfo_wrap .color_info dd li span.colorR{background:url('http://www.jevisco.com/front/kr/asset/images/builders/ic_r.png') no-repeat 0 6px;}
+.colorinfo_wrap .color_info dd li span.colorG{background:url('http://www.jevisco.com/front/kr/asset/images/builders/ic_g.png') no-repeat 0 6px;}
+.colorinfo_wrap .color_info dd li span.colorB{background:url('http://www.jevisco.com/front/kr/asset/images/builders/ic_b.png') no-repeat 0 6px;}
+.colorinfo_wrap .recent_color{float:left; width:314px; background:#f1f1f1; box-sizing:border-box; padding:0 15px 0 20px; height:198px;}
+.colorinfo_wrap .recent_color dd{width:100%; overflow:hidden;}
+.colorinfo_wrap .recent_color dd ul{width:282px; overflow:hidden; margin-top:20px;}
+.colorinfo_wrap .recent_color dd ul li{float:left; width:54px; height:54px; position:relative; margin:0 2px 2px 0; box-sizing:border-box; }
+.colorinfo_wrap .recent_color dd ul li a.removeChip{display:block; width:17px; height:17px; background:url('http://www.jevisco.com/front/kr/asset/images/builders/btn_color_delete.png') no-repeat 0 0; overflow:hidden; position:absolute; right:0; top:0;}
+.colorinfo_wrap .recent_color dd ul li a.colorChip {display:block; width:54px; height:54px; position:absolute; left:0; top:0; overflow:hidden;}
+.colorinfo_wrap .recent_color dd ul li a.colorChip:hover, .colorinfo_wrap .recent_color dd ul li.on a.colorChip{background:url('http://www.jevisco.com/front/kr/asset/images/builders/bg_recent_color.png') no-repeat 0 0;}
+.colorinfo_layer .layer_close{display:none;}
+
+.colorinfo_layer.mobile{width:90%; min-height:350px; overflow-y:auto; height:auto; position:fixed; top:5%; bottom:5%; left:5%; right:5%; z-index:30; border:0; background:#fff; overflow:hidden; bottom:auto;display:none; padding:0; border-radius:0; margin-left:0;}
+.colorinfo_layer.mobile .flip{display:block; padding:0 19px; height:57px; line-height:57px; color:#fff; font-size:15px; background-color:#07399c; background-image:none;}
+.colorinfo_layer.mobile .flip .minimum{display:none;}
+.colorinfo_layer.mobile .colorinfo_wrap{width:100%; overflow:hidden; padding:0 15px 25px 15px; box-sizing:border-box;}
+.colorinfo_layer.mobile .colorinfo_wrap .color_plate{float:none; margin:30px auto;}
+.colorinfo_layer.mobile .colorinfo_wrap .color_info{float:none; width:100%; margin-right:0; padding-top:25px; border-top:1px solid #e1e1e1;}
+.colorinfo_layer.mobile .colorinfo_wrap dl dt{font-size:13px; line-height:17px;}
+.colorinfo_layer.mobile .colorinfo_wrap .color_info dd li strong{font-size:12px; line-height:26px; width:20%;}
+.colorinfo_layer.mobile .colorinfo_wrap .color_info dd li:first-child span{font-size:16px;}
+.colorinfo_layer.mobile .colorinfo_wrap .recent_color{float:none; width:auto; margin-top:30px; height:auto; padding-bottom:25px;}
+.colorinfo_layer.mobile .colorinfo_wrap .recent_color dt{padding-top:25px;}
+.colorinfo_layer.mobile .colorinfo_wrap .recent_color dd ul{width:100%;}
+.colorinfo_layer.mobile .layer_close{display:block; width:32px; height:32px; background:url('http://www.jevisco.com/front/kr/asset/images/builders/btn_color_info_close.png') no-repeat 50% 50%; background-size:16px 16px; position:absolute; right:11px; top:11px;}
+
+@media screen and (max-width:959px) {
+	#header_wrap{position:static;}
+	#lnb .lnb_btn a{border-width:2px;}
+	.builders_visual{margin-top:0;}
+	.header .depth1 > li > .depth2 > li.go_submain{display:block;}
+
+	.color_board .type02 a:hover span{display:none;}
+	.color_board .type01 li a:hover{background:none;}
+
+}
+
+/* 공간별 추천 */
+.introText2 {font-size:13px; line-height:1.6; color:#333;}
+.introText2 strong {display:block; font-weight:bold; font-size:26px; line-height:1.2; color:#222;}
+.introText2 em {color:#008cff;}
+.jvDesign {position:relative; margin-top:30px;}
+.jvDesign .btns li {position:absolute;}
+.jvDesign.interior .btns li.btn1 {left:275px; top:175px;}	/* 엘리베이터(벽면) */
+.jvDesign.interior .btns li.btn2 {left:716px; top:162px;}	/* 다용도실(벽면) */
+.jvDesign.interior .btns li.btn3 {left:368px; top:213px;}	/* 현관문 */
+.jvDesign.interior .btns li.btn4 {left:624px; top:258px;}	/* 목재가구 */
+.jvDesign.interior .btns li.btn5 {left:408px; top:322px;}	/* (나무) 마루바닥 */
+.jvDesign.interior .btns li.btn6 {left:125px; top:379px;}	/* 베란다(벽면) */
+.jvDesign.interior .btns li.btn7 {left:392px; top:440px;}	/* 벽 */
+.jvDesign.interior .btns li.btn8 {left:542px; top:397px;}	/* 벽지 */
+.jvDesign.interior .btns li.btn9 {left:655px; top:390px;}	/* 화장실 */
+.jvDesign .btns li .bubbleTip {display:inline-block; padding-left:16px; background:url('http://www.jevisco.com/front/kr/asset/images/common/bg_bubble_left.png') no-repeat 0 0; font-weight:bold; font-size:13px; color:#fff; height:37px; line-height:16px; vertical-align:top; margin:-75px 0 0 12px;}
+.jvDesign .btns li .bubbleTip em{display:inline-block; vertical-align:top; padding:8px 16px 7px 0; background:url('http://www.jevisco.com/front/kr/asset/images/common/bg_bubble_right.png') no-repeat 100% 0;}
+/* .jvDesign .btns li .bubbleTip {display:block; position:relative; padding:0 20px; background:url('../images/common/bg_bubble.png') repeat 0 0; font-weight:bold; font-size:13px; color:#fff; border-radius:3px 3px 3px 0; height:29px; line-height:29px; border:1px solid #222; z-index:1;} */
+.jvDesign .btns li a:hover + .bubbleTip {background:url('http://www.jevisco.com/front/kr/asset/images/common/bg_bubble_left_on.png') no-repeat 0 0}
+.jvDesign .btns li a:hover + .bubbleTip em{background:url('http://www.jevisco.com/front/kr/asset/images/common/bg_bubble_right_on.png') no-repeat 100% 0}
+.jvDesign .btns li a {display:block; width:30px; height:31px; background:url(http://www.jevisco.com/front/kr/asset/images/common/btn_more.png) no-repeat left top;}
+
+.jvDesign.outside .btns li.btn1{left:219px; top:213px;} /* 방수 */
+.jvDesign.outside .btns li.btn2{left:369px; top:329px;} /* 벽면 */
+.jvDesign.outside .btns li.btn3{left:106px; bottom:150px;} /* 상가(바닥) */
+.jvDesign.outside .btns li.btn4{left:79px; bottom:38px;} /* 보행로/자전거도로 */
+.jvDesign.outside .btns li.btn5{left:245px; bottom:75px;} /* 내부주차장(바닥) */
+.jvDesign.outside .btns li.btn6{left:315px; bottom:36px;} /* 도로표지용 */
+.jvDesign.outside .btns li.btn7{left:455px; bottom:26px;} /* 벤치 */
+.jvDesign.outside .btns li.btn8{left:600px; bottom:50px;} /* 철재울타리 */
+.jvDesign.outside .btns li.btn9{left:617px; bottom:170px;} /* 적벽돌 */
+.jvDesign.outside .btns li.btn10{left:745px; bottom:100px;} /* 철재 놀이기구 */
+.jvDesign.outside .btns li.btn11{left:770px; bottom:215px;} /* 물탱크 */
+.jvDesign.outside .btns li.btn12{left:850px; bottom:205px;} /* 기와지붕 */
+
+.line_space{padding-top:60px; border-top:2px solid #555;}
+.jvDesign.ship .btns li.btn1{left:42px; top:124px;} /* 풍력발전소 */
+.jvDesign.ship .btns li.btn2{left:197px; top:116px;} /* 송전탑 */
+.jvDesign.ship .btns li.btn3{left:224px; top:210px;} /* 일반공장 */
+.jvDesign.ship .btns li.btn4{left:212px; top:295px;} /* 현수교케이블 */
+.jvDesign.ship .btns li.btn5{left:72px; top:375px;} /* 철재 교량 */
+.jvDesign.ship .btns li.btn6{left:399px; top:309px;} /* 거주구 */
+.jvDesign.ship .btns li.btn7{left:550px; top:166px;} /* 발전소 */
+.jvDesign.ship .btns li.btn8{left:730px; top:201px;} /* 탱크 */
+.jvDesign.ship .btns li.btn9{left:772px; top:274px;} /* 크레인 */
+.jvDesign.ship .btns li.btn10{left:846px; top:324px;} /* 컨테이너 */
+.jvDesign.ship .btns li.btn11{left:532px; top:367px;} /* LNG 내부 판넬 */
+.jvDesign.ship .btns li.btn12{left:336px; top:414px;} /* 선박강재 */
+.jvDesign.ship .btns li.btn13{left:751px; top:452px;} /* 데크 */
+.jvDesign.ship .btns li.btn14{left:609px; top:544px;} /* 선저류 */
+.jvDesign.ship .btns li.btn15{left:748px; top:544px;} /* 톱사이드 */
+.jvDesign.ship .btns li.btn16{left:304px; top:531px;} /* 카고탱크 */
+.jvDesign.ship .btns li.btn17{left:398px; top:550px;} /* 청수탱크 */
+.jvDesign.ship .btns li.btn18{left:289px; top:627px;} /* 발라스트탱크 */
+
+.layer_pop{position:fixed; left:50%; top:50%; z-index:2000;}
+.layer_pop h1{display:block; height:60px; line-height:60px; background:#07399c; color:#fff; font-weight:bold; font-size:22px; padding-left:20px;}
+.layer_pop .layer_cont{padding:30px;}
+.btn_C, .btn_C02{text-align:center; margin-top:20px; width:100%; overflow:hidden;}
+.btn_blue{display:inline-block; padding:0 30px; height:44px; overflow:hidden; color:#fff; text-align:center; font-weight:bold; font-size:15px; line-height:44px; background:#1269ca; border-radius:5px; box-sizing:border-box; vertical-align:middle;}
+.layer_close{display:block; width:22px; height:22px; background:url('http://www.jevisco.com/front/kr/asset/images/common/btn_layer_close.png') no-repeat 50% 50%; position:absolute; right:20px; top:20px;}
+
+.popDesign{top:0; width:100%; max-width:735px; margin-left:-367.5px; background:#fff;}
+.popDesign .itemInfo {position:relative;}
+.popDesign .itemInfo dl dt{font-size:16px; color:#222; line-height:26px; font-weight:bold; padding-left:10px; background:url('http://www.jevisco.com/front/kr/asset/images/builders/bu_product_list_name.gif') no-repeat 0 50%;}
+.popDesign .itemInfo dl dt .flag{display:inline-block; vertical-align:middle; margin-left:5px; padding-bottom:3px;}
+.popDesign .itemInfo dl dt .flag img {vertical-align:middle;}
+.popDesign .itemInfo dl dt a.more_cont{vertical-align:middle; display:inline-block; margin-left:10px; width:16px; height:16px; background:url('http://www.jevisco.com/front/kr/asset/images/builders/btn_product_plus.gif') no-repeat 0 0;}
+.popDesign .itemInfo dl dd{font-size:13px; color:#444; line-height:22px; letter-spacing:-1px;}
+.popDesign .itemInfo dl dd.path{color:#07399c; margin-bottom:6px;}
+.popDesign .itemInfo dl dd.path em{display:inline-block; padding-left:14px; background:url('http://www.jevisco.com/front/kr/asset/images/builders/bu_product_path.png') no-repeat 4px 6px;}
+.popDesign .itemInfo dl dd.path em.first{padding-left:0; background:none;}
+.popDesign .itemInfo dl dd.path em.divide{background:url('http://www.jevisco.com/front/kr/asset/images/builders/bu_path_devide.png') no-repeat 6px 6px;}
+.popDesign .itemInfo dl dd.long{display:none;}
+.product_view{margin-top:-1px; box-sizing:border-box;}
+.product_view dl dt a.more_cont{background:url('http://www.jevisco.com/front/kr/asset/images/builders/btn_product_minus.gif') no-repeat 0 0;}
+.product_view .detail_info{ width:100%; margin-top:14px; display:none; overflow:hidden;}
+.product_view .detail_info{display:block;}
+.product_view .detail_info .thumb_info{width:673px; border:1px solid #e1e1e1; padding:20px 0; background:#fff; margin:0 0 0 0;}
+.product_view .detail_info .thumb_info .thumb{float:left; width:223px; text-align:center; padding:0; border-right:1px solid #e1e1e1; vertical-align:middle; margin-right:20px;}
+.product_view .detail_info .thumb_info .thumb img {width:190px; height:190px;}
+.product_view .detail_info .thumb_info .thumb_txt{width:429px; height:190px;overflow-y:auto;}
+.product_view .detail_info .thumb_info .thumb_txt li{padding:0 0 0 9px; color:#444; font-size:13px; background:url('http://www.jevisco.com/front/kr/asset/images/builders/bu_product_edit.gif') no-repeat 0 8px; line-height:20px; margin-top:8px;}
+.product_view .detail_info .thumb_info .thumb_txt li:first-child{margin-top:0;}
+.product_view .detail_info .tech_document{overflow:hidden; margin-top:30px;}
+.product_view .detail_info .tech_document strong{font-size:15px; line-height:20px; color:#222; display:inline-block; padding-left:9px;background:url('http://www.jevisco.com/front/kr/asset/images/builders/bu_product_list_name.gif') no-repeat 0 50%;}
+.product_view .detail_info .tech_document ul{overflow:hidden;}
+.product_view .detail_info .tech_document ul li{float:left; margin:10px 8px 0 0;}
+.product_view .detail_info .tech_document .btn_down_l{display:inline-block; height:28px; line-height:28px; padding-left:10px; background:url('http://www.jevisco.com/front/kr/asset/images/builders/btn_techdown_l.gif') no-repeat 0 0; font-size:12px; color:#444;}
+.product_view .detail_info .tech_document .btn_down_r{display:inline-block; height:28px; line-height:28px; padding-right:32px; background:url('http://www.jevisco.com/front/kr/asset/images/builders/btn_techdown_r.gif') no-repeat 100% 0; min-width:56px;}
+.product_view .pr_detail_function{position:absolute; right:15px; top:15px; display:none;}
+.product_view .pr_detail_function{display:block;}
+.product_view .pr_detail_function a{display:inline-block; overflow:hidden; margin-left:10px; vertical-align:middle;}
+.product_view .pr_detail_function a.print, .product_view .pr_detail_function a.detail_close{display:none;}
+.layer_cont .product_view .pr_detail_function{top:-10px;}
+
+.tbl_basic{border-bottom:1px solid #898989; border-top:1px solid #1269ca;}
+.tbl_basic thead th{font-size:14px; color:#444; background:#f5f7f9; font-weight:bold; text-align:center; padding:15px 0; line-height:21px; border-right:1px solid #e1e1e1;}
+.tbl_basic thead th.last{border-right:0;}
+.tbl_basic tbody td{font-size:13px; color:#444; padding:15px 20px; border-right:1px solid #e1e1e1; border-top:1px solid #e1e1e1; text-align:left; line-height:21px;}
+.tbl_basic tbody td.last{border-right:0;}
+.tbl_basic tbody td.ac{text-align:center; padding:15px 5px;}
+.tbl_basic tbody td.ar{text-align:right;}
+.tbl_basic tbody td .blue_link{color:#07399c;}
+.tbl_basic tbody td .skyblue_link{color:#1c97ff}
+.tbl_basic tbody td .blue_link:hover, .tbl_basic tbody td .skyblue_link:hover{text-decoration:underline;}
+
+.sch_msds{border:4px solid #cfd8dc; padding:10px 20px; margin:30px 0;}
+.sch_msds .tit_sch{display:inline-block; width:119px; font-size:16px; line-height:40px;}
+.sch_msds input[type="text"]{background:#cfd8dc url('http://www.jevisco.com/front/kr/asset/images/builders/bg_sch_msds.png') no-repeat 15px 50%;width:380px; height:40px; color:#455a64; border:0; vertical-align:top; line-height:40px;}
+.sch_msds input[type="text"].off{background-image:none;}
+.sch_msds button{background:url('http://www.jevisco.com/front/kr/asset/images/common/btn_sch_color.gif') no-repeat 0 0; display:inline-block; width:40px; height:40px; vertical-align:top; margin-left:6px;}
+.msds .tbl_basic tbody td, .msds .tbl_basic thead th{padding-top:11px; padding-bottom:11px;}
+.msds .tbl_basic tbody .highlight, .popDesign .tbl_basic tbody .highlight{color:#008cff; font-weight:bold;}
+.layer_close{display:block; width:22px; height:22px; background:url('http://www.jevisco.com/front/kr/asset/images/common/btn_layer_close.png') no-repeat 50% 50%; position:absolute; right:20px; top:20px;}
+
+.info_bottom{padding:15px 20px 15px 45px;border:1px solid #e1e1e1;margin-top:20px;line-height:16px;background:#f8f9fb url('http://www.jevisco.com/front/kr/asset/images/common/info_point.gif') no-repeat 16px 16px;}
+.info_bottom.noline{background-color:#fff; border:0; font-size:15px;background-position:0 50%; padding-left:29px;}
+.info_bottom .info_title{font-size:14px; color:#667381; display:block; margin-bottom:10px;}
+.info_bottom.noline ul li{font-size:15px;}
+.info_bottom.noline ul li strong{color:#222;}
+.info_bottom ul li{color:#667381; font-size:12px; padding-left:10px; background:url('http://www.jevisco.com/front/kr/asset/images/common/bu_info_bottom_list.gif') no-repeat 0 9px; line-height:17px; margin-top:12px;}
+.info_bottom ul li strong{color:#667381;}
+.info_bottom ul li:first-child{margin-top:0;}
+.info_bottom ul li em {font-weight:bold;}
+.info_bottom .customer{margin-left:10px;color:#0097ff;text-decoration:underline;}
+.btn_small_gray{padding:0 10px; background:#858f9a; display:inline-block; vertical-align:middle; height:24px; line-height:24px; color:#fff; font-size:12px; border-radius:3px;font-weight:normal !important;}
+
+/* paging */
+.paging{text-align:center; margin-top:20px;}
+.paging .prev {margin-right:20px;background:url('http://www.jevisco.com/front/kr/asset/images/common/btn_prev.gif') no-repeat 50% 50%;}
+.paging .next {margin-left:20px;background:url('http://www.jevisco.com/front/kr/asset/images/common/btn_next.gif') no-repeat 50% 50%;}
+.paging .prev2{background:url('http://www.jevisco.com/front/kr/asset/images/common/btn_prev2.gif') no-repeat 50% 50%;}
+.paging .next2{background:url('http://www.jevisco.com/front/kr/asset/images/common/btn_next2.gif') no-repeat 50% 50%;}
+.paging a{margin-left:5px;width:34px;border:1px solid #e1e1e1; height:34px; line-height:34px; font-size:13px; text-align:center; vertical-align:middle;}
+.paging .on{background:#858f9a;color:#fff;border:1px solid #858f9a; font-size:14px; font-weight:bold;}
+
+
+@media screen and (max-width:959px) {
+	.popDesign{top:0; width:90%; max-width:90%; left:5%; right:5%; top:5%; bottom:5%; max-height:1300px; overflow-y:auto; background:#fff; margin-left:0;}
+	.popDesign .itemInfo dl dd.path em{display:inline-block; padding-left:14px;background:url('http://www.jevisco.com/front/kr/asset/images/builders/bu_product_path_m.png') no-repeat 3px 4px; background-size:7px 15px;}
+	.popDesign .itemInfo dl dd.path em.first{padding-left:0; background:none;}
+	.popDesign .itemInfo dl dd.path em.divide{background:url('http://www.jevisco.com/front/kr/asset/images/builders/bu_path_devide_m.png') no-repeat 6px 4px; background-size:1px 13px;}
+
+	.product_view .detail_info .thumb_info{float:none;  width:100%; border:1px solid #e1e1e1; padding:0 15px; background:#fff; margin:0 0 15px 0;  box-sizing: border-box;}
+	.product_view .detail_info .thumb_info .thumb{float:none; width:100%; text-align:center; padding:15px 0; border-right:0; border-bottom:1px solid #e1e1e1; vertical-align:middle; margin-right:0;}
+	.product_view .detail_info .thumb_info .thumb_txt{width:100%; height:auto;overflow:hidden;margin:15px 0;}
+
+	.product_view .detail_info .tech_document{width:100%; float:none;}
+	.product_view .detail_info .tech_document ul{margin-top:11px; width:100%; overflow:hidden; padding-bottom:10px;}
+	.product_view .detail_info .tech_document ul li{float:none; display:inline-block; margin:0 0 10px 10px;}
+	.product_view .detail_info .tech_document ul li:nth-child(2n){margin-right:0;}
+	.product_view .detail_info .tech_document .btn_down_l{height:32px; line-height:32px; padding-left:10px; background:url('http://www.jevisco.com/front/kr/asset/images/common/btn_download.gif') no-repeat 90% 50%;
+	background-size:11px auto;font-size:14px; color:#444;border:1px solid #666666;border-radius:5px;/*width:100%;*/box-sizing:border-box;}
+	.product_view .detail_info .tech_document .btn_down_r{height:32px; line-height:32px; padding:0 22px 0 0; background:none; min-width:66px; width:100%;}
+
+	.sch_msds{margin:15px 0;position:relative; padding:10px 60px 10px 10px;}
+	.sch_msds .tit_sch{display:inline-block; width:auto; line-height:20px;}
+	.sch_msds input[type="text"]{background:#cfd8dc url('http://www.jevisco.com/front/kr/asset/images/builders/bg_sch_msds_m.png') no-repeat 15px 50%; background-size:103px 12px; width:100%; height:40px; margin-top:10px;}
+	.sch_msds .btn_sch_blue{right:10px; bottom:10px; top:auto; position:absolute;}
+	.layer_close{background:none !important;}
+	.layer_close:after{display:block; width:1px; height:25px; background:#fff; position:absolute; border-radius:1px; left:50%; top:50%; margin-top:-12px; content:''; -webkit-transform:rotate(-45deg); transform:rotate(-45deg);}
+	.layer_close:before{display:block; width:1px; height:25px; background:#fff; position:absolute; border-radius:1px; left:50%; top:50%; margin-top:-12px; content:''; -webkit-transform:rotate(45deg); transform:rotate(45deg);}
+	
+	.info_bottom{padding:15px 20px 15px 37px; background:#f8f9fb url('http://www.jevisco.com/front/kr/asset/images/common/info_point_m.png') no-repeat 16px 16px;line-height:20px;background-size:16px auto;}
+	.info_bottom ul li{background:none; position:relative;}
+	.info_bottom ul li:after{content:''; display:block; width:5px; height:1px; background:#667381; position:absolute; left:0; top:8px;}
+
+	/* paging */
+	.paging{text-align:center; margin-top:10px;}
+	.paging .prev {margin-right:5px;background:url('http://www.jevisco.com/front/kr/asset/images/common/btn_prev.png') no-repeat 50% 50%; background-size:5px 9px;}
+	.paging .next {margin-left:10px;background:url('http://www.jevisco.com/front/kr/asset/images/common/btn_next.png') no-repeat 50% 50%; background-size:5px 9px;}
+	.paging .prev2{background:url('http://www.jevisco.com/front/kr/asset/images/common/btn_prev2.png') no-repeat 50% 50%; background-size:8px 9px;}
+	.paging .next2{background:url('http://www.jevisco.com/front/kr/asset/images/common/btn_next2.png') no-repeat 50% 50%; background-size:8px 9px;}
+	.paging a{margin-left:5px;width:24px;border:1px solid #e1e1e1; height:24px; line-height:24px; font-size:10px; text-align:center; vertical-align:middle; box-sizing:border-box;}
+	.paging .on{background:#858f9a;color:#fff;border:1px solid #858f9a; font-size:11px; font-weight:bold;}
+
+	.visual{margin-top:0;}
+
+	.tbl_basic tbody td .btn_down_l{border:0; background:none; padding:0;}
+	.tbl_basic tbody td .btn_down_r{background:url('http://www.jevisco.com/front/kr/asset/images/common/btn_download_m.png') no-repeat 0 0; width:35px; height:28px; background-size:35px 28px; color:transparent; overflow:hidden; padding:0;}
+	
+}

@@ -182,11 +182,10 @@
                     if (data.return == 'fail') {
                         alert("predict_fail");
                         $('#loading').hide();
-                    }
-                    else if(data.return == 'date_fail'){
+                    } else if (data.return == 'date_fail') {
                         alert("선택한 날짜에 데이터값이 없습니다.");
                         $('#loading').hide();
-                    }else {
+                    } else {
                         let water_arr = Array();
                         let graph_arr = Array();
 
@@ -232,6 +231,11 @@
         };
 
         function select_model(param) {
+            upload_df = "N";
+            $('#upload_active').show();
+            $('#upload_active_div').hide();
+            $('#acti').css('border', 'none');
+            $('#deacti').css('border', 'solid');
             select_column == '';
             $.ajax({
                 url: "{% url "call_model" %}",
@@ -256,46 +260,42 @@
                 }
 
 
-
-
                 var eBtn = $(".second_button");
-                eBtn.find(".toc").click(function(){
-                 $('.toc').addClass("active");
-                 $('.chl').removeClass("active");
-                 $('.do').removeClass("active");
-                 $('.tn').removeClass("active");
-                 $('.tp').removeClass("active");
+                eBtn.find(".toc").click(function () {
+                    $('.toc').addClass("active");
+                    $('.chl').removeClass("active");
+                    $('.do').removeClass("active");
+                    $('.tn').removeClass("active");
+                    $('.tp').removeClass("active");
                 })
-                eBtn.find(".chl").click(function(){
-                  $('.chl').addClass("active");
-                  $('.toc').removeClass("active");
-                  $('.do').removeClass("active");
-                  $('.tn').removeClass("active");
-                  $('.tp').removeClass("active");
+                eBtn.find(".chl").click(function () {
+                    $('.chl').addClass("active");
+                    $('.toc').removeClass("active");
+                    $('.do').removeClass("active");
+                    $('.tn').removeClass("active");
+                    $('.tp').removeClass("active");
                 })
-                eBtn.find(".do").click(function(){
-                  $('.do').addClass("active");
-                  $('.toc').removeClass("active");
-                  $('.chl').removeClass("active");
-                  $('.tn').removeClass("active");
-                  $('.tp').removeClass("active");
+                eBtn.find(".do").click(function () {
+                    $('.do').addClass("active");
+                    $('.toc').removeClass("active");
+                    $('.chl').removeClass("active");
+                    $('.tn').removeClass("active");
+                    $('.tp').removeClass("active");
                 })
-                eBtn.find(".tn").click(function(){
-                  $('.tn').addClass("active");
-                  $('.toc').removeClass("active");
-                  $('.chl').removeClass("active");
-                  $('.do').removeClass("active");
-                  $('.tp').removeClass("active");
+                eBtn.find(".tn").click(function () {
+                    $('.tn').addClass("active");
+                    $('.toc').removeClass("active");
+                    $('.chl').removeClass("active");
+                    $('.do').removeClass("active");
+                    $('.tp').removeClass("active");
                 })
-                eBtn.find(".tp").click(function(){
-                  $('.tp').addClass("active");
-                  $('.toc').removeClass("active");
-                  $('.chl').removeClass("active");
-                  $('.tn').removeClass("active");
-                  $('.do').removeClass("active");
+                eBtn.find(".tp").click(function () {
+                    $('.tp').addClass("active");
+                    $('.toc').removeClass("active");
+                    $('.chl').removeClass("active");
+                    $('.tn').removeClass("active");
+                    $('.do').removeClass("active");
                 })
-
-
 
 
                 $('.target_point').text(data.web_info.target_point);
@@ -364,7 +364,7 @@
                     console.log("ERROR : ", e);
                     $('#acti').css('border', 'none');
                     $('#deacti').css('border', 'solid');
-                    upload_df = "Y"
+                    upload_df = "N"
                     alert("fail");
                 }
             });
@@ -437,34 +437,34 @@
 
 
     <script>
-     $(function(){
-      var sBtn = $(".top_button");
-        sBtn.find(".top_button_01").click(function(){
-       $('.top_button_01').addClass("active");
-       $('.top_button_02').removeClass("active");
-       $('.top_button_03').removeClass("active");
-       $('.top_button_04').removeClass("active");
-      })
-      sBtn.find(".top_button_02").click(function(){
-       $('.top_button_02').addClass("active");
-       $('.top_button_01').removeClass("active");
-       $('.top_button_03').removeClass("active");
-       $('.top_button_04').removeClass("active");
-      })
-      sBtn.find(".top_button_03").click(function(){
-       $('.top_button_03').addClass("active");
-       $('.top_button_01').removeClass("active");
-       $('.top_button_02').removeClass("active");
-       $('.top_button_04').removeClass("active");
-      })
-      sBtn.find(".top_button_04").click(function(){
-       $('.top_button_04').addClass("active");
-       $('.top_button_01').removeClass("active");
-       $('.top_button_02').removeClass("active");
-       $('.top_button_03').removeClass("active");
-      })
+        $(function () {
+            var sBtn = $(".top_button");
+            sBtn.find(".top_button_01").click(function () {
+                $('.top_button_01').addClass("active");
+                $('.top_button_02').removeClass("active");
+                $('.top_button_03').removeClass("active");
+                $('.top_button_04').removeClass("active");
+            })
+            sBtn.find(".top_button_02").click(function () {
+                $('.top_button_02').addClass("active");
+                $('.top_button_01').removeClass("active");
+                $('.top_button_03').removeClass("active");
+                $('.top_button_04').removeClass("active");
+            })
+            sBtn.find(".top_button_03").click(function () {
+                $('.top_button_03').addClass("active");
+                $('.top_button_01').removeClass("active");
+                $('.top_button_02').removeClass("active");
+                $('.top_button_04').removeClass("active");
+            })
+            sBtn.find(".top_button_04").click(function () {
+                $('.top_button_04').addClass("active");
+                $('.top_button_01').removeClass("active");
+                $('.top_button_02').removeClass("active");
+                $('.top_button_03').removeClass("active");
+            })
 
-     })
+        })
     </script>
 
 

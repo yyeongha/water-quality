@@ -1,0 +1,69 @@
+{% extends "include/base.html" %}
+{% load static %}
+{% block content %}
+    <div class="sub_wrap">
+        <div class="sub_title">
+            <div class="inner">
+                <h1>이용 방법</h1>
+                <div class="page-navi">
+                    <span>수질 예측 시스템</span>
+                    <span class="active">이용 방법</span>
+                </div>
+            </div>
+        </div>
+        <div class="sub_content">
+            <div class="inner">
+                <div class="system-guide">
+                    <div class="row">
+                        <div class="left">
+                            <span class="tit">유역 선택</span>
+                        </div>
+                        <div class="right">
+                            <p>예측하고 싶은 유역(한강, 낙동강, 금강, 영산강)을 선택합니다.</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="left">
+                            <span class="tit">항목 선택</span>
+                        </div>
+                        <div class="right">
+                            <p>예측하고 싶은 항목(용존산소, 총유기탄소, 총인, 총질소, 클로로필-A)을 선택합니다.</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="left">
+                            <span class="tit">날짜 선택</span>
+                        </div>
+                        <div class="right">
+                            <p>예측하고 싶은 날짜를 선택 합니다.</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="left">
+                            <span class="tit">예측하기</span>
+                        </div>
+                        <div class="right">
+                            <p>선택한 유역, 항목, 날짜로 하여금 예측을 진행합니다.</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="left">
+                            <span class="tit">결과 확인</span>
+                        </div>
+                        <div class="right">
+                            <p>예측된 결과로 선택한 유역, 항목, 날짜의 그저께부터 모레까지의 결과를 차트 및 그래프로 나타냅니다.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block javascript %}
+    <script>
+
+    </script>
+
+{% endblock %}
