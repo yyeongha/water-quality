@@ -1,0 +1,159 @@
+.dropzone {
+  border: 2px dashed #0087F7;
+  border-radius: 5px;
+  background: white !important;
+}
+
+.debug {
+  border: solid 0px #aa97ff;
+}
+
+.pb-20 {
+  padding-bottom: 20px;
+}
+
+.pd-20 {
+  padding: 20px;
+}
+
+.pd-25 {
+  padding: 25px;
+}
+
+.pd-30 {
+  padding: 30px;
+}
+
+.pd-50 {
+  padding: 50px;
+}
+
+.mt-30 {
+  margin-top: 30px;
+}
+
+.pt-25 {
+  padding-top: 25px;
+}
+
+.mr-5 {
+  margin-right: 5px;
+}
+
+.mr-8 {
+  margin-right: 8px;
+}
+
+.fw-bold {
+  font-weight: bold;
+}
+
+.title {
+  font-weight: bold;
+  margin-bottom: 10px;
+  font-size: 22px;
+}
+
+.main-title {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.color-skyblue {
+  color: deepskyblue;
+}
+
+.main-title-sub {
+  color: #b9b9b9;
+}
+
+.btn-skyblue {
+  background: #ffffff;
+  width: 24%;
+  height: 70px;
+  font-weight: 600;
+  font-size: 20px;
+  color: #5d5d5d;
+  border: 2px solid #eee;
+}
+
+.top_button button.active {
+  border: 2px solid #0fa7ff;
+  background: #f1fbff;
+}
+
+
+.btn-gray {
+  background: #ffffff;
+  width: 19%;
+  height: 60px;
+  font-weight: 600;
+  font-size: 18px;
+  color: #5d5d5d;
+  border: 1px solid #eee;
+}
+
+
+.second_button button.active {
+  border: 2px solid #0fa7ff;
+  background: #f1fbff;
+}
+
+
+
+.btn-upload {
+      background: #ffffff;
+      font-weight: 600;
+      font-size: 20px;
+      color: #5d5d5d;
+      border: 1px solid #0fa7ff;
+      font-size: 15px;
+      padding: 5px 20px;
+      margin-left: 25px;
+      margin-top: -10px;
+}
+
+
+
+.btn-select-sub {
+  background: #ececec;
+  padding: 5px 20px;
+  border: none;
+}
+
+.to_where {
+  background-color: #ffe7e7;
+  margin-left: 117px;
+  width: 130px;
+  text-align: center;
+  padding-top: 3px;
+  vertical-align: middle;
+  height: 33px;
+  font-size: 18px;
+  border-radius: 5px;
+  border: 1px solid #ffb8b8;
+}
+
+.period-box {
+  border: 1px solid #dcdcdc;
+  padding: 25px;
+  margin: 5px;
+  border-radius: 5px;
+  background: #fbfbfb;
+}
+
+.table-hk tr {border:none! important; }
+.table-hk tr:nth-child(even)  {
+background-color:#fbfbfb;
+}
+.table-hk th {background: #d4e4f1;}
+.table-hk td {font-size:15px;}
+
+.table-rainbow tr{
+  height: 33px;
+}
+
+.rainbow-txt {
+  padding-left:10px;
+  font-size:15px;
+}

@@ -1,0 +1,396 @@
+{% extends "include/base.html" %}
+{% load static %}
+{% block content %}
+    <div class="sub_wrap">
+	    <div class="sub_title">
+	        <div class="inner">
+	            <h1>사업 소개</h1>
+	            <div class="page-navi">
+	                <span>수질 예측 시스템</span>
+	                <span class="active">데이터 획득</span>
+	            </div>
+	        </div>
+	    </div>
+	    <div class="sub_content">
+	        <div class="inner">
+
+	            <div class="intro_box">
+
+                <section style="display:inline-block; text-align:left;">
+                  <h4>데이터 획득 절차</h4>
+                  <section class="mt20">
+                      <div><img src="../static/assets/images/common/business0201.png" alt="OPEN API 데이터 활용 신청" /></div>
+                      <p style="padding-top: 120px;background: #f9f9f9;border: 1px solid #ccc;padding-left: 70px;padding-right: 70px;height: 140px;margin-top: 16px;border-radius: 15px">
+                         OPEN API 데이터 활용 신청
+                      </p>
+                  </section>
+                  <section class="mt70">
+                      <div><img src="../static/assets/images/common/business0202.png" alt="OPEN API를 통한 연계 구성 및 DB 수집 구축" /></div>
+                      <p style="padding-top: 96px;background: #f9f9f9;border: 1px solid #ccc;padding-left: 70px;padding-right: 70px;height: 140px;margin-top: 16px; width:186px;border-radius: 15px">
+                         OPEN API를 통한 연계 구성 및 DB 수집 구축
+                      </p>
+                  </section>
+                  <section class="mt70">
+                      <div><img src="../static/assets/images/common/business0203.png" alt="CSV(FILE DOWN) 데이터 획득 절차" /></div>
+                      <p style="padding-top: 50px;background: #f9f9f9;border: 1px solid #ccc;padding-left: 70px;padding-right: 70px;height: 108px;margin-top: 16px; width:186px;border-radius: 15px">
+                         CSV(FILE DOWN) 데이터<br />획득 절차
+                      </p>
+                  </section>
+              	 </section>
+
+                <section class="mt50">
+	            		<h4 class="cl">물환경측정망 (측정자료)</h4>
+	            	</section>
+	            	<section>
+            				<table class="tbl_basic">
+                      <colgroup>
+                           <col width="18%">
+                           <col width="22%">
+                           <col width="40%">
+                           <col width="10%">
+                           <col width="10%">
+                      </colgroup>
+								         <thead>
+                           <tr>
+                             <th>분류</th>
+                             <th>측정망 수</th>
+                             <th>항목</th>
+                             <th>원천데이터유형</th>
+                             <th>구축년도</th>
+                           </tr>
+								         </thead>
+                         <tbody>
+                           <tr>
+                             <td>수질측정망</td>
+                             <td>총:1945<br />한강권역:533, 낙동강권역 :584, 금강권역 :419, 영산강·섬진강권역:409</td>
+                             <td>측정일, 유량(㎥/sec), 수온(℃), pH, DO(mg/L), BOD(mg/L), COD(mg/L), SS(mg/L), EC(μS/cm),<br />T-N(mg/L), DTN(mg/L), NO₃-N(mg/L),<br />NH₃-N(mg/L), T-P(mg/L), DTP(mg/L), PO₄-P(mg/L), 클로로필-a, TOC(mg/L)</td>
+                             <td>JSON</td>
+                             <td>1985~2020</td>
+                           </tr>
+                           <tr>
+                             <td>총량측정망</td>
+                             <td>총:337<br />한강:126, 낙동강 : 93, 금강 : 61, 영산강·섬진강:57</td>
+                             <td>측정일, 수온(℃), pH, DO(mg/L), EC(μS/cm), BOD(mg/L), COD(mg/L), TN, TP, 유량</td>
+                             <td>CSV</td>
+                             <td>1985~2020</td>
+                           </tr>
+                           <tr>
+                             <td>자동측정망</td>
+                             <td>총:70<br />한강:23, 낙동강 : 24, 금강 : 13, 영산강 : 10</td>
+                             <td>측정일시, 수온(℃), pH, DO(mg/L), EC(μS/cm), TOC, 탁도, 클로로필-a, TN, TP, NH₃-N, NO₃-N, PO₄-P, VOCs(9종 10개), 페놀, 중금속(Cu,Zn, Pb,Cd)</td>
+                             <td>JSON</td>
+                             <td>2006~2020</td>
+                           </tr>
+                           <tr>
+                             <td>퇴적물측정망</td>
+                             <td>총:306<br />한강:78, 낙동강 : 94, 금강 : 65, 영산강 : 69</td>
+                             <td>측정일, 오염단계, 수심, 표층-수심, 표층-수온, 표층-DO, 표층-pH, 표층-EC, 저층-수심, 저층-수온, 저층-DO, 저층-pH, 저층-EC, 투명도, 입도-모래, 입토-실트, 입토-점토, 함수율</td>
+                             <td>CSV</td>
+                             <td>2012~2019</td>
+                           </tr>
+                           <tr>
+                             <td>방사성물질측정망</td>
+                             <td>물환경연구소 총 :90<br />한강:30, 낙동강 : 23, 금강 : 18, 영산강 : 19</td>
+                             <td>측정일, 134Cs,137Cs, 131I</td>
+                             <td>JSON</td>
+                             <td>2014~2019</td>
+                           </tr>
+                           <tr>
+                             <td>비점오염물질측정망</td>
+                             <td>5개</td>
+                             <td>측정일, 탁도,EC(μS/cm), 수온(℃),pH,DO(mg/L), BOD, TOC, SS, T-N, T-P</td>
+                             <td>CSV</td>
+                             <td>2019~2020</td>
+                           </tr>
+                           <tr>
+                             <td>KRF</td>
+                             <td>한강,낙동강, 금강,영산강대권역/중권역 하위 총괄</td>
+                             <td>길이, 면적,하천흐름선, 방향, 시종점</td>
+                             <td>CSV</td>
+                             <td>2020</td>
+                           </tr>
+                         </tbody>
+							        </table>
+                  </section>
+
+                  <section class="mt50">
+  	            		<h4 class="cl">인구, 가구, 주택 통계 (조사자료)</h4>
+  	            	</section>
+
+                  <section>
+                      <table class="tbl_basic">
+                          <colgroup>
+                               <col width="10%">
+                               <col width="37%">
+                               <col width="38%">
+                               <col width="10%">
+                               <col width="10%">
+                          </colgroup>
+                          <thead>
+                            <tr>
+                              <th>분류</th>
+                              <th>구분</th>
+                              <th>항목</th>
+                              <th>원천데이터유형</th>
+                              <th>구축년도</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>인구</td>
+                              <td>(조사항목)지역, 성별분류</td>
+                              <td>조사년도, 성별 통계, 연령 통계</td>
+                              <td>JSON</td>
+                              <td>2015</td>
+                            </tr>
+                            <tr>
+                              <td>가구</td>
+                              <td>(조사항목)가구구분, 사용방 수, 주거시설 형태, 난방시설</td>
+                              <td>조사년도, 가구 구분 통계, 주거시설 형태 통계, 난방시설 통계</td>
+                              <td>JSON</td>
+                              <td>2015</td>
+                            </tr>
+                            <tr>
+                              <td>주택</td>
+                              <td>거처의종류, 주거용연면적,건축연도, 대지면적, 총 방 수, 주거시설 수</td>
+                              <td>조사년도, 거처의 종류 통계, 주거용 연면적 통계,대지면적 통계, 주거시설 수 통계</td>
+                              <td>JSON</td>
+                              <td>2015</td>
+                            </tr>
+                          </tbody>
+  							        </table>
+	             </section>
+
+               <section class="mt50">
+                 <h4 class="cl">수질TMS (측정자료)</h4>
+               </section>
+
+               <section>
+                   <table class="tbl_basic">
+                       <colgroup>
+                            <col width="40%">
+                            <col width="40%">
+                            <col width="11%">
+                            <col width="9%">
+                       </colgroup>
+                       <thead>
+                         <tr>
+                           <th>측정망 수</th>
+                           <th>항목</th>
+                           <th>원천데이터유형</th>
+                           <th>구축년도</th>
+                         </tr>
+                       </thead>
+                       <tbody>
+                         <tr>
+                           <td>(시설종류) 하수종말처리장, 산업단지 폐수종말처리장, 농공단지 폐수종말처리장, 공동방지시설, 1종~4종 배출사업장</td>
+                           <td>측정일, BOD(mg/L), COD(mg/L), SS(mg/L),<br />T-N(mg/L), T-P(mg/L), pH, 적산유량(평균), TOC(mg/L)</td>
+                           <td>CSV</td>
+                           <td>2010~2019</td>
+                         </tr>
+                       </tbody>
+                     </table>
+                </section>
+
+
+                <section class="mt50">
+                  <h4 class="cl">녹조(조류) 모니터링 (측정자료)</h4>
+                </section>
+
+                <section>
+                    <table class="tbl_basic">
+                        <colgroup>
+                             <col width="23%">
+                             <col width="57%">
+                             <col width="11%">
+                             <col width="9%">
+                        </colgroup>
+                        <thead>
+                          <tr>
+                            <th>측정망 수</th>
+                            <th>항목</th>
+                            <th>원천데이터유형</th>
+                            <th>구축년도</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>23개 주요 호소 (팔당호, 대청호, 주암호, 충주호, 의암호)<br />4개 보 (강천, 칠곡, 강정고령, 창녕함안보)</td>
+                            <td>측정일, 수온(℃), pH(PH), DO(mg/L), BOD(mg/L), COD(mg/L), Microcystin-LR(PPB), Chlorophyll a(mg/㎥), 남조류-세포수(0)(개체수/ml), 지오스민(ng/L), MIB(ng/L), EC(μg/L), TM수위(m), 강우량(㎜), 투명도(m), 탁도, SS(mg/L), T-N(mg/L), DTN(mg/L), NO₃-N(mg/L), NH₃-N(mg/L), T-P(mg/L), DTP(mg/L), PO₄-P(mg/L), TOC(mg/L)</td>
+                            <td>CSV</td>
+                            <td>2000~2020</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                 </section>
+
+
+                 <section class="mt50">
+                   <h4 class="cl">수리, 수문, 기상 (측정자료)</h4>
+                 </section>
+
+                 <section>
+                     <table class="tbl_basic">
+                         <colgroup>
+                              <col width="22%">
+                              <col width="58%">
+                              <col width="11%">
+                              <col width="9%">
+                         </colgroup>
+                         <thead>
+                           <tr>
+                             <th>측정망 수</th>
+                             <th>항목</th>
+                             <th>원천데이터유형</th>
+                             <th>구축년도</th>
+                           </tr>
+                         </thead>
+                         <tbody>
+                           <tr>
+                             <td>우량관측소, 수위관측소,<br />유량관측소, 댐관측소,<br />AWS관측소, 보운영자료,<br />지상기상관측소</td>
+                             <td>측정일, 관측소명, 시군구명, 우량, 수위, 최고수위, 최저수위, 유량, 저 수위, 유입 량, 방류 량, 저수 량, 공용 량, AWS 위경도, 해발고도, 최대 풍향, 최대 풍속, 최저 기온(시분), 최고 기온(시분), 최고 습도(시분), 최저 기압(시분), 최고 기압(시분), 강수량, 보 명, 상류 수위, 하류 수위</td>
+                             <td>JSON CSV</td>
+                             <td>2000~2020</td>
+                           </tr>
+                         </tbody>
+                       </table>
+                  </section>
+
+
+                  <section class="mt50">
+                    <h4 class="cl">전국오염원 조사자료 (조사자료)</h4>
+                  </section>
+
+                  <section>
+                      <table class="tbl_basic">
+                          <colgroup>
+                               <col width="10%">
+                               <col width="69%">
+                               <col width="11%">
+                               <col width="10%">
+                          </colgroup>
+                          <thead>
+                            <tr>
+                              <th>구분</th>
+                              <th>항목</th>
+                              <th>원천데이터유형</th>
+                              <th>구축년도</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>생활계</td>
+                              <td>조사년도, 법정동·리별 물사용량, 인구현황, 개별처리시설현황 9개 기초자료 조사, 상수도사용량, 상수도 사용에 따른 하수도사용량, 지하수 사용에 따른 하수도사용량, 지하수 신고대장, 시가비, 오수처리시설, 정화조시설</td>
+                              <td rowspan="8">JSON</td>
+                              <td rowspan="8">2013~2018</td>
+                            </tr>
+                            <tr>
+                              <td>축산계</td>
+                              <td>조사년도, 가축분뇨 발생 및 처리현황, 가축분뇨 관련 영업자 현황 조사, 사육두수, 축사면적, 방류선(하천명 및 연계처리시설명), 개별처리방법, 위탁량, 수집운반업, 설계시공업, 가축분뇨처리업의 실적사항</td>
+                            </tr>
+                            <tr>
+                              <td>산업계</td>
+                              <td>조사년도, 허가나 신고 사항이 유효한 1~5종 폐수배출사업장의 현황 자료 조사, 업종, 소재지, 규모, 처리형태, 폐수발생량, 폐수방류량, 폐수오염도</td>
+                            </tr>
+                            <tr>
+                              <td>토지계</td>
+                              <td>조사년도, 법정동·리별 28개 지목별 토지이용 면적 조사(국토해양부 자료 활용)</td>
+                            </tr>
+                            <tr>
+                              <td>양식계</td>
+                              <td>조사년도, 기타수질오염원 중 수산물양식시설에 대해 현황 자료 조사, 분류, 양식장종류, 면적, 사료사용량, 방류수역</td>
+                            </tr>
+                            <tr>
+                              <td>매립계</td>
+                              <td>조사년도, 매립장 중 침출수가 발생하는 매립시설에 대해 현황 자료 조사, 매립장명, 소재지, 처리방법, 방류선-하천명 및 연계처리시설명, 운영일자별 침출수의 발생 및 방류의 유량 및 농도</td>
+                            </tr>
+                            <tr>
+                              <td>환경기초시설현황</td>
+                              <td>조사년도, 공공하수처리시설, 폐수종말처리시설, 분뇨처리시설, 가축분뇨공공처리시설, 기타 공공처리시설  환경기초시설의 현황자료 조사, 시설명, 소재지, 운영일자별 총유입량, 관거이송량, 직접이송량, 방류량의 유량 및 농도, 연계처리시설, 방류수역</td>
+                            </tr>
+                            <tr>
+                              <td>기타 수질오염원</td>
+                              <td>조사년도, 양식장을 제외한 기타수질오염원에 대한 현황 조사, 골프장, 운수장비정비 또는 폐차장시설, 농축수산물 단순가공시설, 사진처리 또는 X-Ray시설, 금은판매점의 세공시설 및 안경점, 분류, 소재지, 폐수방류량, 처리방법, 방류선(방류하천명 및 연계처리시설명)</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                   </section>
+
+
+                   <section class="mt50">
+                     <h4 class="cl">기상자료(AWS) (측정자료)</h4>
+                   </section>
+
+                   <section>
+                       <table class="tbl_basic">
+                           <colgroup>
+                                <col width="22%">
+                                <col width="53%">
+                                <col width="15%">
+                                <col width="9%">
+                           </colgroup>
+                           <thead>
+                             <tr>
+                               <th>측정망 수</th>
+                               <th>항목</th>
+                               <th>원천데이터유형</th>
+                               <th>구축년도</th>
+                             </tr>
+                           </thead>
+                           <tbody>
+                             <tr>
+                               <td>510개</td>
+                               <td>측정일시, 기온, 풍향, 풍속, 강수량, 습도, 현지기압, 해면기압</td>
+                               <td>JSON</td>
+                               <td>2015~2020</td>
+                             </tr>
+                           </tbody>
+                         </table>
+                    </section>
+
+
+                    <section class="mt50">
+                      <h4 class="cl">종관기상자료(ASOS) (측정자료)</h4>
+                    </section>
+
+                    <section>
+                        <table class="tbl_basic">
+                            <colgroup>
+                                 <col width="22%">
+                                 <col width="53%">
+                                 <col width="15%">
+                                 <col width="9%">
+                            </colgroup>
+                            <thead>
+                              <tr>
+                                <th>측정망 수</th>
+                                <th>항목</th>
+                                <th>원천데이터유형</th>
+                                <th>구축년도</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>102개</td>
+                                <td>측정일시, 기온, 강수량, 풍향, 습도, 일조, 일사, 운량(전, 중하층, 최저운고)</td>
+                                <td>JSON</td>
+                                <td>2015~2020</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                     </section>
+
+
+	            </div>
+	        </div>
+	    </div>
+  </div>
+{% endblock %}
+
+
+{% block javascript %}
+    <script>
+
+    </script>
+
+{% endblock %}

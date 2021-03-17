@@ -1,0 +1,298 @@
+{% extends "include/base.html" %}
+{% load static %}
+{% block content %}
+    <div class="sub_wrap">
+	    <div class="sub_title">
+	        <div class="inner">
+	            <h1>사업 소개</h1>
+	            <div class="page-navi">
+	                <span>수질 예측 시스템</span>
+	                <span class="active">데이터 가공</span>
+	            </div>
+	        </div>
+	    </div>
+	    <div class="sub_content">
+	        <div class="inner">
+
+	            <div class="intro_box">
+
+                <section>
+	            		<a href="#"><div style="background: linear-gradient(90deg, rgb(173 157 236) 0%, rgba(15,167,255,1) 50%, rgb(103 150 255) 100%);width: 312px;height: 100px;color: #fff;padding-top: 43px;box-sizing: border-box;font-size: 17px;border-radius: 10px">데이터 가공 API 다운로드</div></a>
+                  <div style="width:30px"></div>
+	            		<a href="#"><div style="background: linear-gradient(90deg, rgb(173 157 236) 0%, rgba(15,167,255,1) 50%, rgb(103 150 255) 100%);width: 312px;height: 100px;color: #fff;padding-top: 43px;box-sizing: border-box;font-size: 17px;border-radius: 10px;">데이터 가공 프로그램 다운로드</div></a>
+                  <div style="width:30px"></div>
+	            		<a href="http://water.nier.go.kr/publicFront/gisInfo/gisKrf.jsp?menuIdx=5_3" target="_blank"><div style="background: linear-gradient(90deg, rgb(173 157 236) 0%, rgba(15,167,255,1) 50%, rgb(103 150 255) 100%);width: 312px;height: 100px;color: #fff;padding-top: 43px;box-sizing: border-box;font-size: 17px;border-radius: 10px;">KRF 바로가기</div></a>
+	            	</section>
+
+                <section class="mt50">
+	            		<h4 class="cl">어노테이션/라벨링 가공</h4>
+	            	</section>
+	            	<section>
+            				<table class="tbl_basic">
+                        <colgroup>
+                             <col width="20%">
+                             <col width="20%">
+                             <col width="60%">
+                        </colgroup>
+								         <thead>
+								             <tr>
+								                 <th>가공 분류</th>
+								                 <th>방법</th>
+								                 <th>내용</th>
+								             </tr>
+								         </thead>
+								         <tbody>
+								             <tr>
+								                 <td rowspan="2">어노테이션<br />(공간매핑)</td>
+								                 <td>GIS변환</td>
+								                 <td>주소정보와 일치하는 GIS좌표정보를 대입</td>
+								            </tr>
+								            <tr>
+								                 <td>KRF매핑</td>
+								                 <td>GIS좌표정보를 활용하여 KRF ID 및 DID 매핑</td>
+								            </tr>
+								            <tr>
+                              <td>학습데이터셋 생성</td>
+                              <td>데이터조합</td>
+                              <td>다수의 수질 및 오염원 데이터 내 다양한 측정항목 간의 수질오염 상관관계 분석 및 가중치 분석 등을 거쳐 인공지능학습모델에 적용</td>
+								            </tr>
+								          </tbody>
+							        </table>
+                  </section>
+
+                  <section class="mt50" style="display:inline-block; text-align:left;">
+                    <h4>법정동 주소 데이터를 GIS(포인트)로 변환 가공</h4>
+                    <h5 style="font-size:17px; margin-bottom:10px;" class="mt50">가공 대상</h5>
+                    <table class="tbl_basic">
+                        <colgroup>
+                             <col width="14%">
+                             <col width="43%">
+                             <col width="43%">
+                        </colgroup>
+								         <thead>
+								             <tr>
+								                 <th>대상 여부</th>
+								                 <th>분류</th>
+								                 <th>내용</th>
+								             </tr>
+								         </thead>
+								         <tbody>
+								             <tr>
+								                 <td>대상</td>
+								                 <td>녹조(조류)모니터링, 인구가구주택통계, 수리수문기상, 전국오염원, 기상자료AWS, 종관기상관측ASOS</td>
+								                 <td>측정결과에 위/경도 값이 미존재하여 GIS 위치좌표 변환 가공</td>
+								            </tr>
+								            <tr>
+                              <td>제외</td>
+                              <td>수질측정망, 자동측정망, 퇴적물측정망, 방사성물질측정망, 비점오염물질측정망, 수질TMS, KRF</td>
+                              <td>측정결과에 기존 위/경도 값이 존재하여 대상에서 제외</td>
+								            </tr>
+								          </tbody>
+							        </table>
+                    <h5 style="font-size:17px; margin-bottom:10px;" class="mt50">가공 절차</h5>
+                    <img class="mt10" src="../static/assets/images/common/business0401.png" alt="가공 절차" />
+                    <h5 style="font-size:17px; margin-bottom:10px;" class="mt50">가공 방법</h5>
+                  </section>
+
+                  <section class="mt20" style="margin-left:20px;">
+                      <div><img src="../static/assets/images/common/business0402.png" alt="데이터 분석 및 GIS 관련정보 수집" /></div>
+                      <p style="padding-top: 60px;background: #f9f9f9;border: 1px solid #ccc;padding-left: 30px;padding-right: 38px;margin-top: 3px;border-radius: 15px;">
+                         데이터 분석 및 GIS 관련정보 수집
+                      </p>
+                  </section>
+                  <section class="mt50" style="margin-left:20px;">
+                      <div><img src="../static/assets/images/common/business0403.png" alt="데이터 주소 정보 오류 확인" /></div>
+                      <p style="padding-top: 75px;background: #f9f9f9;border: 1px solid #ccc;padding-left: 57px;padding-right: 38px;margin-top: 5px;border-radius: 15px;width: 192px;">
+                         데이터 주소 정보 오류 확인
+                      </p>
+                  </section>
+                  <section class="mt50" style="margin-left:20px;">
+                      <div><img src="../static/assets/images/common/business0404.png" alt="주소 데이터를 좌표로 변환" /></div>
+                      <p style="padding-top: 82px;background: #f9f9f9;border: 1px solid #ccc;padding-left: 57px;padding-right: 38px;margin-top: 6px;border-radius: 15px;width: 192px;height: 107px;">
+                         주소 데이터를 좌표로 변환
+                      </p>
+                  </section>
+                  <section class="mt50" style="margin-left:20px;">
+                      <div><img src="../static/assets/images/common/business0405.png" alt="원본데이터 좌표와 변환 좌표를 비교 확인" /></div>
+                      <p style="padding-top: 75px;background: #f9f9f9;border: 1px solid #ccc;padding-left: 46px;padding-right: 38px;margin-top: 6px;border-radius: 15px;width: 204px;height: 116px;">
+                         원본데이터 좌표와 변환 좌표를 비교 확인
+                      </p>
+                  </section>
+                  <section class="mt50" style="margin-left:20px;">
+                      <div><img src="../static/assets/images/common/business0406.png" alt="QGIS 레이어 추가 및 좌표계(EPSG:4326) 정의" /></div>
+                      <p style="padding-top: 120px;background: #f9f9f9;border: 1px solid #ccc;padding-left: 46px;padding-right: 38px;margin-top: 32px;border-radius: 15px;width: 204px;height: 168px;">
+                         QGIS 레이어 추가 및 좌표계(EPSG:4326) 정의
+                      </p>
+                  </section>
+                  <section class="mt50" style="margin-left:20px;">
+                      <div><img src="../static/assets/images/common/business0407.png" alt="좌표 맵에 표출하여 공간데이터 비교 분석" /></div>
+                      <p style="padding-top: 120px;background: #f9f9f9;border: 1px solid #ccc;padding-left: 46px;padding-right: 38px;margin-top: 32px;border-radius: 15px;width: 204px;height: 168px;">
+                         좌표 맵에 표출하여 공간데이터 비교 분석
+                      </p>
+                  </section>
+                  <section class="mt50" style="margin-left:20px;">
+                      <div><img src="../static/assets/images/common/business0408.png" alt="데이터와 KRF 집수구역 Intersect 공간매핑 작업" /></div>
+                      <p style="padding-top: 100px;background: #f9f9f9;border: 1px solid #ccc;padding-left: 46px;padding-right: 38px;margin-top: 16px;border-radius: 15px;width: 204px;height: 168px;">
+                         데이터와 KRF 집수구역 Intersect 공간매핑 작업
+                      </p>
+                  </section>
+                  <section class="mt50" style="margin-left:20px;">
+                      <div><img src="../static/assets/images/common/business0409.png" alt="KRF 집수구역 코드로 리치라인 데이터 Join 처리" /></div>
+                      <p style="padding-top: 100px;background: #f9f9f9;border: 1px solid #ccc;padding-left: 46px;padding-right: 38px;margin-top: 16px;border-radius: 15px;width: 204px;height: 148px;">
+                         KRF 집수구역 코드로 리치라인 데이터 Join 처리
+                      </p>
+                  </section>
+                  <section class="mt50" style="margin-left:20px;">
+                      <div><img src="../static/assets/images/common/business0410.png" alt="데이터와 KRF 집수구역 조인한 데이터 확인" /></div>
+                      <p style="padding-top: 100px;background: #f9f9f9;border: 1px solid #ccc;padding-left: 46px;padding-right: 38px;margin-top: 16px;border-radius: 15px;width: 204px;height: 148px;">
+                         데이터와 KRF 집수구역 조인한 데이터 확인
+                      </p>
+                  </section>
+                  <section class="mt50" style="margin-left:20px;">
+                      <div><img src="../static/assets/images/common/business0410.png" alt="데이터와 KRF 집수구역 조인한 데이터 확인" /></div>
+                      <p style="padding-top: 100px;background: #f9f9f9;border: 1px solid #ccc;padding-left: 46px;padding-right: 38px;margin-top: 16px;border-radius: 15px;width: 204px;height: 148px;">
+                         데이터와 KRF 집수구역 조인한 데이터 확인
+                      </p>
+                  </section>
+
+                  <section class="mt70" style="display:inline-block; text-align:left;">
+                    <h4>법정동 데이터를 GIS(면)로 변환 가공</h4>
+                    <h5 style="font-size:17px; margin-bottom:10px;" class="mt50">가공 절차</h5>
+                    <img class="mt10" src="../static/assets/images/common/business0411.png" alt="가공 절차" />
+                    <h5 style="font-size:17px; margin-bottom:10px;" class="mt50">가공 방법</h5>
+                    <img class="mt10" src="../static/assets/images/common/business0412.png" alt="가공 방법" />
+                    <div style="margin-left:8px; margin-top:5px; font-size:16px;">&lt; 오염원 데이터와 연속지적도 데이터 중첩(지적중첩 오염원 데이터) &gt;</div>
+                    <h5 style="font-size:17px; margin-bottom:10px;" class="mt50">지적중첩 오염원 데이터와 집수구역 데이터 중첩</h5>
+                    <img class="mt10" src="../static/assets/images/common/business0413.png" alt="지적중첩 오염원 데이터와 집수구역 데이터 중첩" />
+                    <img class="mt10" src="../static/assets/images/common/business0414.png" alt="지적중첩 오염원 데이터와 집수구역 데이터 중첩" />
+                  </section>
+
+
+                  <section class="mt70" style="display:inline-block; text-align:left;">
+                    <h4>GIS 데이터를 KRF 집수구역 매핑 변환 가공</h4>
+                    <h5 style="font-size:17px; margin-bottom:10px;" class="mt50">집수구역 단위 영향지역 분석을 위한 GIS 데이터 KRF 매핑 데이터 구축</h5>
+                    <img class="mt10" src="../static/assets/images/common/business0415.png" alt="집수구역 단위 영향지역 분석을 위한 GIS 데이터 KRF 매핑 데이터 구축" />
+                  </section>
+                  <section style="display:inline-block; text-align:left;">
+                    <h5 style="font-size:17px; margin-bottom:10px;" class="mt50">GIS Layer 기반에 DB를 적용한 GIS 표준 데이터 SHP파일 구축</h5>
+                        <ul style="background: #eee;padding: 20px;list-style: disc;font-size: 15px;padding-left: 40px !important;line-height: 23px; margin-top:20px;">
+                          <li>측정망 인스턴스별(수질측정망, 자동측정망, 총량측정망, 인구, 가구, 주택, 오염원 등)로 SHP파일을 별도로 구축</li>
+                          <li>인스턴스별 SHP 파일은 수질(측정소ID, 측정소명, 위도, 경도, CAT ID, CAT DID), 인구/가구/주택(행정구역코드, CAT ID, CAT DID), 오염원(법정동코드, CAT ID, CAT DID) 기상(측정소ID, 측정소명, 위도, 경도, CAT ID, CAT DID)로 구성</li>
+                        </ul>
+                	 </section>
+                   <section style="display:inline-block; text-align:left;">
+                     <h5 style="font-size:17px; margin-bottom:10px;" class="mt50">정량한계 미만 및 결측데이터 가공</h5>
+                         <ul style="background: #eee;padding: 20px;list-style: disc;font-size: 15px;padding-left: 40px !important;line-height: 23px; margin-top:20px;">
+                           <li>측정값 변환 : 원천데이터의 운영 기관별로 데이터 구축 과정 중 정량한계미만, 분석과정(검사)값, 결측에 대한 표시법이 존재하고 인공지능학습을 위한 학습데이터 가공 과정에서 이 대상에 속하는 측정값을 학습에 적합한 값으로 변환</li>
+                           <li>인공지능 AI모델에서 원활한 학습을 위하여 정량한계미만으로 정의되는 값은 ’0‘으로 정제 처리 및 분석중(검사) 데이터는 ’null’, 기존 null로 측정값에 정의된 값은 ‘0’으로 변경 처리</li>
+                         </ul>
+
+                         <table class="tbl_basic mt20">
+                             <colgroup>
+                                  <col width="20%">
+                                  <col width="25%">
+                                  <col width="55%">
+                             </colgroup>
+                              <thead>
+                                  <tr>
+                                      <th>구분</th>
+                                      <th>분류</th>
+                                      <th>데이터 정제 기준</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td rowspan="8">물환경측정망</td>
+                                  <td>수질측정망</td>
+                                  <td>정량한계미만 :999999999 → 0분석중(검사):888888888→ null</td>
+                                </tr>
+                                <tr>
+                                  <td>총량측정망</td>
+                                  <td>정량한계미만:999999999 → 0분석중(검사):888888888→ null</td>
+                                </tr>
+                                <tr>
+                                  <td>자동측정망</td>
+                                  <td>정량한계미만:-999 → 0</td>
+                                </tr>
+                                <tr>
+                                  <td>퇴적물측정망</td>
+                                  <td>정량한계미만:999999999 → 0분석중(검사):888888888→ null</td>
+                                </tr>
+                                <tr>
+                                  <td>방사성물질측정망</td>
+                                  <td>정량한계미만:999999999 → 0분석중(검사):888888888→ null</td>
+                                </tr>
+                                <tr>
+                                  <td>비점오염물질측정망</td>
+                                  <td>해당없음</td>
+                                </tr>
+                                <tr>
+                                  <td>녹조(조류)모니터링</td>
+                                  <td>정량한계미만:999999999 → 0분석중(검사):888888888→ null</td>
+                                </tr>
+                                <tr>
+                                  <td>KRF</td>
+                                  <td>해당없음</td>
+                                </tr>
+                                <tr>
+                                  <td>수질TMS</td>
+                                  <td>수질TMS</td>
+                                  <td>해당없음</td>
+                                </tr>
+                                <tr>
+                                  <td rowspan="3">조사자료</td>
+                                  <td>인구가구주택통계</td>
+                                  <td>해당없음</td>
+                                </tr>
+                                <tr>
+                                  <td>수리수문기상</td>
+                                  <td>해당없음</td>
+                                </tr>
+                                <tr>
+                                  <td>전국오염원</td>
+                                  <td>해당없음</td>
+                                </tr>
+                                <tr>
+                                  <td rowspan="2">기상</td>
+                                  <td>기상자료AWS</td>
+                                  <td>결측:-999 &amp; -990 → null기존null→ 0</td>
+                                </tr>
+                                <tr>
+                                  <td>종관기상관측ASOS</td>
+                                  <td>결측 :-999 &amp; -990 → null기존null→ 0</td>
+                                </tr>
+                              </tbody>
+                           </table>
+                 	 </section>
+
+                   <section class="mt70" style="display:inline-block; text-align:left;">
+                     <h4>어노테이션/라벨링 도구</h4>
+                     <h5 style="font-size:17px; margin-bottom:10px;" class="mt50">GeoServer(지오서버)를 활용한 공간데이터 좌표 변환 및 집수구역 매핑 진행</h5>
+                     <div style="margin-top:10px; font-size:16px;">GeoServer(지오서버)는 지리공간 데이터를 공유하고 편집할 수 있는 Java로 개발된 오픈 소스 GIS 소프트웨어</div>
+                     <img class="mt20" src="../static/assets/images/common/business0416.png" alt="GeoServer(지오서버)" />
+                     <h5 style="font-size:17px; margin-bottom:10px;" class="mt50">QGIS</h5>
+                     <div style="margin-top:20px; font-size:16px;">- 오픈소스 데스크탑 GIS 소프트웨어</div>
+                     <div style="margin-top:10px; font-size:16px;">- 데이터 가시화 및 편집(도형 추가 및 삭제, 속성 데이터 관리</div>
+                     <div style="margin-top:10px; font-size:16px;">- 공간 데이터 중첩</div>
+                     <div style="margin-top:10px; font-size:16px;">- 공간 데이터 레이어 관리 및 도면 제작</div>
+                     <h5 style="font-size:17px; margin-bottom:10px;" class="mt50">PostgreSQL + PostGISS</h5>
+                     <div style="margin-top:20px; font-size:16px;">- PostgreSQL :오픈소스 기반 RDBMS</div>
+                     <div style="margin-top:10px; font-size:16px;">- PostGIS : 공간데이터에 대한 처리, 공간퀄리 등을 수행하는 오픈소스 기반의 GIS DB 확장 소프트웨어</div>
+                     <h5 style="font-size:17px; margin-bottom:10px;" class="mt50">MariaDB</h5>
+                     <div style="margin-top:20px; font-size:16px;">- 오픈 소스의 관계형 데이터베이스 관리 시스템(RDBMS)</div>
+                   </section>
+
+
+	            </div>
+	        </div>
+	    </div>
+  </div>
+{% endblock %}
+
+
+{% block javascript %}
+    <script>
+
+    </script>
+
+{% endblock %}

@@ -1,0 +1,137 @@
+{% load static %}
+
+<html>
+<meta http-equiv="content-type" content="text/html;charset=utf-8"/>
+
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="Keywords" content="">
+<title>수질예측시스템</title>
+
+
+<link rel="stylesheet" href="../../static/assets/css/default.css"/>
+<link rel="stylesheet" href="../../static/assets/css/style.css"/>
+
+
+<!-- jQuery -->
+<script src="../../static/plugins/jquery/jquery.js"></script>
+
+<!-- Bootstrap 4 -->
+<script src="../../static/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<script type="text/javascript" src="../../static/assets/js/jquery-migrate-1.2.1.min.js"></script>
+<script type="text/javascript" src="../../static/assets/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="../../static/assets/js/jquery.form.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="../../static/assets/js/jquery.bxslider.min.js"></script>
+<script type="text/javascript" src="../../static/assets/js/common.js"></script>
+<script type="text/javascript" src="../../static/assets/js/common.function.js"></script>
+<script type="text/javascript" src="../../static/assets/js/placeholders.min.js"></script>
+<script type="text/javascript" src="../../static/assets/js/printThis.js"></script>
+<script type="text/javascript" src="../../static/assets/js/check.js"></script>
+<script type="text/javascript" src="../../static/assets/js/main.js"></script>
+
+<!-- Font Awesome -->
+{#<link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">#}
+{% include "include/css.html" %}
+<script type="text/javascript">
+    // <![CDATA[
+    $(document).ready(function () {
+        commonGallery.init($(".content_slide"));
+        mainInit.init($(".main_visual"));
+        $(".content_arrow").click(function () {
+            var anchor = $(this);
+            var target = $(this.hash).offset();
+            var headerH = $('#header_wrap').height();
+            $('html,body').stop().animate({scrollTop: target.top - headerH - 50});
+        });
+    });
+    // ]]>
+    $(".hover").mouseleave(
+        function () {
+            $(this).removeClass("hover");
+        }
+    );
+
+</script>
+
+</head>
+<body>
+{% include "include/js.html" %}
+
+<input id='csrf_token' value='{{ csrf_token }}' hidden>
+    <div id="header_wrap">
+        <div class="header">
+            <h1><a href="/" class="indent">수질예측시스템</a></h1>
+            <div class="gnb_wrap" style="left: -300px;">
+                <div class="gnb_head">
+                    <h2 class="logo">수질예측시스템</h2>
+                    <a href="" class="home">홈</a>
+                </div>
+                <ul class="depth1">
+                    <li>
+                        <a href="#">사업 소개</a>
+                        <ul class="depth2" style="display: none;">
+                            <li><a href="/business_01">사업 개요</a></li>
+                            <li><a href="/business_02">데이터 획득</a></li>
+                            <li><a href="/business_03">데이터 정제</a></li>
+                            <li><a href="/business_04">데이터 가공</a></li>
+                            <li><a href="/business_05">데이터 활용</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">수질예측시스템 이란?</a>
+                        <ul class="depth2" style="display: none;">
+                            <li><a href="/intro">사이트 소개</a></li>
+                            <li><a href="/produce">이용 방법</a></li>
+                            <li><a href="/river_intro">유역별 소개</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">수질 예측하기</a>
+                        <ul class="depth2" style="display: none;">
+                            <li><a href="{% url 'predict_set' 'A' %}">한강 유역</a></li>
+                            <li><a href="{% url 'predict_set' 'B' %}">금강 유역</a></li>
+                            <li><a href="{% url 'predict_set' 'C' %}">영산강 유역</a></li>
+                            <li><a href="{% url 'predict_set' 'D' %}">낙동강 유역</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% block content %}
+
+{% endblock %}
+    <div id="footer_wrap">
+        <div class="foot_util_wrap">
+            <div class="foot_util">
+                <!-- <ul class="foot_util_list">
+                    <li><a href="#">개인정보취급방침</a></li>
+                    <li><a href="#">이메일 수집 거부</a></li>
+                </ul> -->
+
+                <div class="family_site">
+                    <a href="#">Family site</a>
+                    <ul>
+                        <li><a style="color:#dcdcdc !important;" href="http://nia_life.kotech.kr" target="_blank">생활폐기물 자동감지 분류 서비스</a></li>
+                        <li><a style="color:#dcdcdc !important;" href="http://nia_industrial.kotech.kr" target="_blank">산업폐기물 자동감지 분류 서비스</a></li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+        <div class="footer">
+            <div class="foot_logo"><span class="indent">KOTECH SYSTEM</span></div>
+            <div class="foot_info">
+                <address>서울특별시 중구 다산로 19길 48 (신당동)<span style="margin-left:50px;">02-2253-7355</span> FAX 02-6971-8941
+                </address>
+                <span class="copyright">Copyright ⓒ KOTECH SYSTEM All Rights reserved.</span>
+            </div>
+
+        </div>
+
+    </div>
+{% block javascript %}
+{% endblock %}
+</body>
+</html>

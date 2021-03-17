@@ -1,0 +1,137 @@
+{% block content %}
+    <div class="pd-20 debug mt-30">
+        <div class="title">측정 및 예측 기간</div>
+        <span style="font-size:13px; float:right">예측일 선택시 시작일(-12 일) 종료일(시작일 10일 후) 및 예측기간(예측일 +- 2일 )은 자동 설정됩니다.</span>
+        <div class="AAA" style="font-size:15px; margin-top:10px;">한강유역 예측가능 기간: 2019.01.14 ~ 2020.07.29</div>
+        <div class="BBB" style="font-size:15px; margin-top:10px;">금강유역 예측가능 기간: 2019.01.14 ~ 2020.09.17</div>
+        <div class="CCC" style="font-size:15px; margin-top:10px;">영산강유역 예측가능 기간: 2019.01.14 ~ 2020.06.02</div>
+        <div class="DDD" style="font-size:15px; margin-top:10px;">낙동강유역 예측가능 기간: 2019.01.14 ~ 2020.07.11</div>
+        <div class="row period-box">
+            <div class="col">
+                <input type="text" class="form-control" id="target_date" placeholder="yyyy.mm.dd">
+                <div class="row" hidden>
+                    <div class="col-6">
+                        <label for="start-train" class="form-label">시작일</label>
+                        <input type="text" class="form-control" id="start-train" placeholder="yyyy.mm.dd" readonly>
+                    </div>
+                    <div class="col-6">
+                        <label for="end-train" class="form-label">종료일</label>
+                        <input type="text" class="form-control" id="end-train" placeholder="yyyy.mm.dd" readonly>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="row" hidden>
+                    <div class="col-6">
+                        <label for="start-predict" class="form-label">예측 시작일</label>
+                        <input type="text" class="form-control" id="start-predict" placeholder="yyyy.mm.dd">
+                    </div>
+                    <div class="col-6">
+                        <label for="end-predict" class="form-label">예측 종료일</label>
+                        <input type="text" class="form-control" id="end-predict" placeholder="yyyy.mm.dd" readonly>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <span id="date_view" style="font-size:13px;"></span>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        function formatDate(date) {
+            var d = new Date(date),
+                month = '' + (d.getMonth() + 1),
+                day = '' + d.getDate(),
+                year = d.getFullYear();
+            if (month.length < 2)
+                month = '0' + month;
+            if (day.length < 2)
+                day = '0' + day;
+            return [year, month, day].join('.');
+        }
+
+        var _target_date = new Date($("#target_date").val());
+        var _startTrain = new Date();
+        var _endTrain = new Date();
+        var _startPredict = new Date();
+        var _endPredict = new Date();
+
+        var MyApp = {};
+        function endDate_set(){
+        }
+
+        var model_activate = ''
+        model_activate = '{{ model }}';
+        if(model_activate == 'A'){
+            endDate = '2020.07.29'
+        } else if(model_activate == 'B'){
+            endDate = '2020.09.17'
+        } else if(model_activate == 'C'){
+            endDate = '2020.06.02'
+        } else if(model_activate == 'D'){
+            endDate = '2020.07.11'
+        }
+
+        $(function () {
+            var datepicker_param = {
+                dateFormat: 'yy.mm.dd',
+                prevText: '이전 달',
+                nextText: '다음 달',
+                monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+                monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+                dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+                dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+                dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+                showMonthAfterYear: true,
+                yearSuffix: '년',
+                minDate: "2019.01.14", //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
+                maxDate: endDate //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)
+            }
+            $("#target_date").datepicker(datepicker_param);
+            $("#start-train").datepicker(datepicker_param);
+            $("#end-train").datepicker(datepicker_param);
+            $("#start-predict").datepicker(datepicker_param);
+            $("#end-predict").datepicker(datepicker_param);
+
+            $('#target_date').datepicker('setDate', '2019.01.14'); //달력 초기값 설정
+
+            $('#target_date').change(function () {
+                let a = new Date('2019-01-11');
+                let b = new Date('2020-09-19');
+                _target_date = new Date($("#target_date").val());
+                //_startTrain = new Date($("#start-train").val());
+                if (a < _target_date && b > _target_date) {
+                    _startTrain = new Date($("#target_date").val());
+                    _endTrain = new Date($("#target_date").val());
+                    _startPredict = new Date($("#target_date").val());
+                    _endPredict = new Date($("#target_date").val());
+
+                    _startTrain.setDate(_target_date.getDate() - 12);
+                    _endTrain.setDate(_target_date.getDate() - 3);
+                    _startPredict.setDate(_target_date.getDate() - 2);
+                    _endPredict.setDate(_target_date.getDate() + 2);
+
+                    let AA = formatDate(_endTrain);
+                    $('#end-train').datepicker("setDate", AA);
+
+                    let BB = formatDate(_startPredict);
+                    $('#start-predict').datepicker("setDate", BB);
+
+                    let CC = formatDate(_endPredict);
+                    $('#end-predict').datepicker("setDate", CC);
+                    let DD = formatDate(_startTrain);
+                    $('#start-train').datepicker("setDate", DD);
+
+                    $('#date_view').text(formatDate(_startTrain) + '~' + formatDate(_endTrain) + ' / ' + formatDate(_startPredict) + '~' + formatDate(_endPredict))
+                } else {
+                    alert("2019-01-01 ~ 2020-09-19 사이의 날짜만 입력가능합니다.");
+                    $('#target_date').val('');
+                }
+
+
+            })
+
+        });
+    </script>
+{% endblock %}

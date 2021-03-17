@@ -1,0 +1,266 @@
+{% block content %}
+    <div style="display: flex;">
+        <div class="pd-20 debug" style="width: 80%;">
+            <div class="title">예측 수질</div>
+            <canvas id="predictWater" width="300" height="100"></canvas>
+        </div>
+        <div class="pd-20 debug" style="width: 20%; padding-top:130px;">
+            <table class="table-rainbow">
+                <tr>
+                    <td style="background-color: rgba(13,238,98,0.95); width: 50%;"></td>
+                    <td class="rainbow-txt">매우 좋음</td>
+                </tr>
+                <tr>
+                    <td style="background-color: rgba(153,235,127,0.95); width: 50%;"></td>
+                    <td class="rainbow-txt">좋음</td>
+                </tr>
+                <tr>
+                    <td style="background-color: rgba(223,238,153,0.95); width: 50%;"></td>
+                    <td class="rainbow-txt">약간 좋음</td>
+                </tr>
+                <tr>
+                    <td style="background-color: rgba(235,223,190,0.95); width: 50%;"></td>
+                    <td class="rainbow-txt">보통</td>
+                </tr>
+                <tr>
+                    <td style="background-color: rgba(235,172,133,0.95); width: 50%;"></td>
+                    <td class="rainbow-txt">약간 나쁨</td>
+                </tr>
+                <tr>
+                    <td style="background-color: rgba(235,80,51,0.95); width: 50%;"></td>
+                    <td class="rainbow-txt">나쁨</td>
+                </tr>
+                <tr>
+                    <td style="background-color: rgba(235,0,20,0.95); width: 50%;"></td>
+                    <td class="rainbow-txt">매우 나쁨</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <section class="mt20" style="margin-bottom:30px; margin-left:30px;">
+      <span style="color: #4b93ff;">- 예측 수질의 신뢰도는 0.5 &lt; NSE &lt; 0.7 기준에 따릅니다.<br />- NSE(Nash-Sutcliffe Efficiency)는 예측의 적합성을 정량적으로 평가하기 위한 지표로 예측값과 측정값의 경향성이 어느 정도 일치하는지 나타냅니다.
+        <br />- 일반적으로 NSE가 0 보다 작으면 unacceptable, 0.5 이상이면 satisfactory, 0.7 이상은 good으로 평가합니다.</span>
+    </section>
+
+    <section class="mt10" style="margin-bottom:10px; margin-left:30px;">
+      <span style="color: #555; font-weight:500;">※ 수질 등급 기준</span>
+    </section>
+    <section style="margin-left:30px; margin-bottom:40px; margin-right:50px;">
+        <table class="tbl_basic">
+          <thead>
+            <tr>
+              <th colspan="2">등급</th>
+              <th>총유기 탄소량<br />(TOC) (㎎/L)</th>
+              <th>클로로필-a<br />(chl-a)&nbsp;&nbsp;&nbsp;(㎎/㎥)</th>
+              <th>용존 산소량<br />(DO)&nbsp;&nbsp;&nbsp;(㎎/L)</th>
+              <th>총질소<br />(T-N)&nbsp;&nbsp;&nbsp;(㎎/L)</th>
+              <th>총인<br />(T-P)&nbsp;&nbsp;&nbsp;(㎎/L)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding:5px 20px;">매우 좋음</td>
+              <td style="padding:5px 20px;">Ia</td>
+              <td style="padding:5px 20px;">2 이하</td>
+              <td style="padding:5px 20px;">5 이하</td>
+              <td style="padding:5px 20px;">7.5 이상</td>
+              <td style="padding:5px 20px;">0.2 이하</td>
+              <td style="padding:5px 20px;">0.02 이하</td>
+            </tr>
+            <tr>
+              <td style="padding:5px 20px;">좋음</td>
+              <td style="padding:5px 20px;">Ib</td>
+              <td style="padding:5px 20px;">3 이하</td>
+              <td style="padding:5px 20px;">9 이하</td>
+              <td style="padding:5px 20px;">5.0 이상</td>
+              <td style="padding:5px 20px;">0.3 이하</td>
+              <td style="padding:5px 20px;">0.04 이하</td>
+            </tr>
+            <tr>
+              <td style="padding:5px 20px;">약간 좋음</td>
+              <td style="padding:5px 20px;">II</td>
+              <td style="padding:5px 20px;">4 이하</td>
+              <td style="padding:5px 20px;">14 이하</td>
+              <td style="padding:5px 20px;">5.0 이상</td>
+              <td style="padding:5px 20px;">0.4 이하</td>
+              <td style="padding:5px 20px;">0.1 이하</td>
+            </tr>
+            <tr>
+              <td style="padding:5px 20px;">보통</td>
+              <td style="padding:5px 20px;">III</td>
+              <td style="padding:5px 20px;">5 이하</td>
+              <td style="padding:5px 20px;">20 이하</td>
+              <td style="padding:5px 20px;">5.0 이상</td>
+              <td style="padding:5px 20px;">0.6 이하</td>
+              <td style="padding:5px 20px;">0.2 이하</td>
+            </tr>
+            <tr>
+              <td style="padding:5px 20px;">약간 나쁨</td>
+              <td style="padding:5px 20px;">IV</td>
+              <td style="padding:5px 20px;">6 이하</td>
+              <td style="padding:5px 20px;">42 이하</td>
+              <td style="padding:5px 20px;">2.0 이상</td>
+              <td style="padding:5px 20px;">1.0 이하</td>
+              <td style="padding:5px 20px;">0.3 이하</td>
+            </tr>
+            <tr>
+              <td style="padding:5px 20px;">나쁨</td>
+              <td style="padding:5px 20px;">V</td>
+              <td style="padding:5px 20px;">8 이하</td>
+              <td style="padding:5px 20px;">70 이하</td>
+              <td style="padding:5px 20px;">2.0 이상</td>
+              <td style="padding:5px 20px;">1.5 이하</td>
+              <td style="padding:5px 20px;">0.5 이하</td>
+            </tr>
+            <tr>
+              <td style="padding:5px 20px;">매우 나쁨</td>
+              <td style="padding:5px 20px;">VI</td>
+              <td style="padding:5px 20px;">8 초과</td>
+              <td style="padding:5px 20px;">70 초과</td>
+              <td style="padding:5px 20px;">2.0 미만</td>
+              <td style="padding:5px 20px;">1.5 초과</td>
+              <td style="padding:5px 20px;">0.5 초과</td>
+            </tr>
+          </tbody>
+        </table>
+    </section>
+
+
+
+    <div class="pd-20 debug mt10">
+        <div class="title">예측 그래프</div>
+        <canvas id="predictGraph" width="400" height="100"></canvas>
+        <div style="margin-top:10px; margin-left:40px; color:#777; font-size:15px;"><span style="background:rgb(255,224,230); width:40px; height:13px; display:inline-block; margin-right:10px; border:2px solid #ffc7d2;"></span>기준값: 예측하고자 하는 예측 시작시점 직전 10일간의 실제 예측 기준값</div>
+        <div style="margin-left:40px; color:#777; font-size:15px;"><span style="background:rgb(168,244,214); width:40px; height:13px; display:inline-block; margin-right:10px; border:2px solid #82efc4;"></span>실측값: 예측하고자 하는 5일간의 실제 측정되어진 값</div>
+        <div style="margin-left:40px; color:#777; font-size:15px;"><span style="background:rgb(157,162,246); width:40px; height:13px; display:inline-block; margin-right:10px; border:2px solid #8288f3;"></span>예측값: 예측하고자 하는 5일간의 수질예측 값</div>
+    </div>
+
+
+    <div class="pd-20 debug mt30">
+        <div class="title">강우량 및 기온</div>
+        <canvas id="predictData" width="400" height="100"></canvas>
+        <span style="margin-top:10px; margin-left:30px; display:inline-block; color:#4b93ff;">※ 강우량 및 기온은 선택한 기간의 예측지점에 대한 실측데이터 입니다.</span>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        var predictWater = document.getElementById('predictWater');
+        var _predictWater = new Chart(predictWater, {
+            type: 'bar',
+            data: {
+                labels: [],
+                datasets: [
+                    {
+                        label: '예측 수질',
+                        data: [],
+                        backgroundColor: ['rgba(66,238,46,0.95)',
+                            'rgb(152,235,78)',
+                            'rgb(218,238,99)',
+                            'rgb(235,183,114)',
+                            'rgb(235,20,37)']
+                    }
+                ]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: '수질 기준 (BOD mg/l)'
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+
+        var predictGraph = document.getElementById('predictGraph');
+        var _predictGraph = new Chart(predictGraph, {
+            type: 'bar',
+            data: {
+                labels: [],
+                datasets: [
+                    {
+                        label: '기준값',
+                        type: 'line',
+                        data: [],
+                        borderColor: 'rgba(255, 99, 132, 0.2)',
+                        fill: false,
+                        //lineTension: 0,
+                    },
+                    {
+                        label: '실측값',
+                        type: 'line',
+                        data: [],
+                        borderColor: 'rgba(99,235,181,0.56)',
+                        fill: false,
+                        //lineTension: 0,
+                    },
+                    {
+                        label: '예측값',
+                        type: 'line',
+                        data: [],
+                        borderColor: 'rgba(31,43,235,0.44)',
+                        fill: false,
+                        //lineTension: 0,
+                    },
+                ]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            //기준값을 0으로 설정
+                            beginAtZero: false,
+
+                        }
+                    }],
+                    xAxes: [{
+                        gridLines: {
+                            drawOnChartArea:true
+
+                        }
+                    }]
+                }
+            }
+        });
+
+        var rain_chart = document.getElementById('predictData');
+        var _rain_chart = new Chart(rain_chart, {
+            type: 'bar',
+            data: {
+                labels: [],
+                datasets: [
+                    {
+                        label: '강우량',
+                        data: [],
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        type: 'bar',
+                    },
+                    {
+                        label: '기온',
+                        data: [],
+                        type: 'line',
+                        borderColor: 'rgba(255, 99, 132, 0.2)',
+                        fill: false,
+                    },
+                ]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                        }
+                    }]
+                }
+            }
+        });
+
+
+    </script>
+{% endblock %}

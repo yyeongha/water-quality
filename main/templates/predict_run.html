@@ -1,0 +1,85 @@
+{#{% extends "include/base.html" %}#}
+{#{% load static %}#}
+{#{% block content %}#}
+{#    <div class="sub_wrap">#}
+{#        <div class="sub_title">#}
+{#            <div class="inner">#}
+{#                <h1>사이트 소개</h1>#}
+{#                <div class="page-navi">#}
+{#                    <span>수질 예측 시스템</span>#}
+{#                    <span class="active">사이트 소개</span>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#        <div class="sub_content">#}
+{#            <div class="inner">#}
+{#                {% include "include/map.html" %}#}
+{##}
+{#                {% include "include/table.html" %}#}
+{##}
+{#                {% include "include/chart.html" %}#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{#{% endblock %}#}
+{##}
+{##}
+{#{% block javascript %}#}
+{#    <script>#}
+{#    console.log('{{ return }}');#}
+{#    console.log({{color}});#}
+{#    console.log({{column}});#}
+{#    //-=---------------------------#}
+{#        if ('{{ return }}' == 'fail') {#}
+{#            alert("predict_fail");#}
+{#            $('#loading').hide();#}
+{#        } else if ('{{ return }}' == 'date_fail') {#}
+{#            alert("선택한 날짜에 데이터값이 없습니다.");#}
+{#            $('#loading').hide();#}
+{#        } else {#}
+{#            let water_arr = Array();#}
+{#            let graph_arr = Array();#}
+{##}
+{#            $('#loading').hide();#}
+{#            // chart_data#}
+{#            _predictWater.data.datasets[0].data = {{predict_water}};#}
+{#            _predictWater.data.datasets[0].backgroundColor = {{color}};#}
+{#            // chart_column#}
+{#            _predictWater.options.title.text = {{column}};#}
+{#            // chart_labels#}
+{#            for (let i = 10; i < 15; i++) {#}
+{#                tmp_date = new Date($("#start-train").val());#}
+{#                tmp_date.setDate(_startTrain.getDate() + i);#}
+{#                let A = formatDate(tmp_date);#}
+{#                water_arr.push(A)#}
+{#            }#}
+{#            _predictWater.data.labels = water_arr#}
+{#            _predictWater.update();#}
+{##}
+{#            for (let i = 0; i < 15; i++) {#}
+{#                tmp_date = new Date($("#start-train").val());#}
+{#                tmp_date.setDate(_startTrain.getDate() + i);#}
+{#                let A = formatDate(tmp_date);#}
+{#                graph_arr.push(A)#}
+{##}
+{#            }#}
+{#            _predictGraph.data.labels = graph_arr#}
+{#            _predictGraph.data.datasets[0].data = {{predict_cahrt.origin}};#}
+{#            _predictGraph.data.datasets[1].data = {{predict_cahrt.origin_2}};#}
+{#            _predictGraph.data.datasets[2].data = {{predict_cahrt.predict}};#}
+{#            _predictGraph.update();#}
+{##}
+{#            _rain_chart.data.labels = graph_arr#}
+{#            _rain_chart.data.datasets[0].data = {{rain_chart.rain_list}};#}
+{#            _rain_chart.data.datasets[1].data = {{rain_chart.temp_list}};#}
+{#            _rain_chart.update();#}
+{#        }#}
+{#            //-=---------------------------#}
+{#        var options = { //지도를 생성할 때 필요한 기본 옵션#}
+{#            center: new kakao.maps.LatLng(36.5, 127.5), //지도의 중심좌표.#}
+{#            level: 10//지도의 레벨(확대, 축소 정도)#}
+{#        };#}
+{#        var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴#}
+{#    </script>#}
+{##}
+{#{% endblock %}#}

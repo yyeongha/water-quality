@@ -1,0 +1,77 @@
+{
+  "gain": {
+    "data_dir": "data_after",
+    "data_file": [
+      [
+        "가평_2016.xlsx",
+        "가평_2017.xlsx",
+        "가평_2018.xlsx",
+        "가평_2019.xlsx"
+      ],
+      [
+        "의암호_2016.xlsx",
+        "의암호_2017.xlsx",
+        "의암호_2018.xlsx",
+        "의암호_2019.xlsx"
+      ]
+    ],
+    "max_epochs": 100,
+    "input_width": 120,
+    "label_width": 120,
+    "shift": 0,
+    "use_train": true,
+    "batch_size": 120,
+    "miss_pattern": true,
+    "miss_rate": 0.15,
+    "fill_no": 3,
+    "debug": true
+  },
+  "rnn": {
+    "max_epochs": 100,
+    "target_col": "not use",
+    "use_train": true,
+    "batch_size": 0,
+    "fill_no": 0
+  },
+  "web_info": {
+    "target_point": "예측지점: 도개",
+    "column": [
+      {
+        "toc": "총유기 탄소량(TOC)"
+      },
+      {
+        "chl": "클로로필-a(chl -a)"
+      },
+      {
+        "do": "용존 산소량(DO)"
+      },
+      {
+        "tn": "총질소(T-N)"
+      },
+      {
+        "tp": "총인(T-P)"
+      }
+    ],
+    "columns": {
+      "toc": "총유기 탄소량(TOC)",
+      "chl": "클로로필 -a(chl -a)",
+      "do": "용존 산소량(DO)",
+      "tn": "총질소(T-N)",
+      "tp": "총인(T-P)"
+    },
+    "map_info": [
+{"target": "target_a", "location": "도개", "y": 36.274288, "x": 128.346702, "rch_id": 20090203, "rch_did": 2009020302, "node_id": 20090203, "node_did": 2009020303, "cat_id": 20090203, "cat_did": 2009020302},
+{"target": "target_a", "location": "신암", "y": 36.405594, "x": 128.307024, "rch_id": 20070306, "rch_did": 2007030603, "node_id": 20070307, "node_did": 2007030700, "cat_id": 20070305, "cat_did": 2007030503},
+{"target": "target_a", "location": "풍양", "y": 36.552512, "x": 128.298197, "rch_id": "", "rch_did": "", "node_id": "", "node_did": "", "cat_id": 20070101, "cat_did": 2007010101},
+{"target": "target_c", "location": "병성천-1", "y": 36.431472, "x": 128.236697, "rch_id": "", "rch_did": "", "node_id": "", "node_did": "", "cat_id": 20070302, "cat_did": 2007030200},
+{"target": "target_c", "location": "상주3", "y": 36.351683, "x": 128.297097, "rch_id": 20090201, "rch_did": 2009020102, "node_id": 20090203, "node_did": 2009020301, "cat_id": 20090201, "cat_did": 2009020102},
+{"target": "target_c", "location": "위천6", "y": 36.402661, "x": 128.332044, "rch_id": 20081001, "rch_did": 2008100102, "node_id": 20090101, "node_did": 2009010100, "cat_id": 20081001, "cat_did": 2008100102},
+{"target": "target_b", "location": "병성천-1", "y": 36.431472, "x": 128.236697, "rch_id": "", "rch_did": "", "node_id": "", "node_did": "", "cat_id": 20070302, "cat_did": 2007030200},
+{"target": "target_b", "location": "상주2", "y": 36.400661, "x": 128.307238, "rch_id": 20070307, "rch_did": 2007030700, "node_id": 20090102, "node_did": 2009010200, "cat_id": 20070306, "cat_did": 2007030600},
+{"target": "target_b", "location": "상주3", "y": 36.351683, "x": 128.297097, "rch_id": 20090201, "rch_did": 2009020102, "node_id": 20090203, "node_did": 2009020301, "cat_id": 20090201, "cat_did": 2009020102},
+{"target": "target_d", "location": "낙단보", "y": 36.357777, "x": 128.307777, "rch_id": 20090201, "rch_did": 2009020101, "node_id": 20090201, "node_did": 2009020102, "cat_id": 20090201, "cat_did": 2009020101},
+{"target": "target_d", "location": "상주보", "y": 36.430833, "x": 128.251388, "rch_id": 20070204, "rch_did": 2007020402, "node_id": 20070301, "node_did": 2007030100, "cat_id": 20070203, "cat_did": 2007020302}
+
+    ]
+  }
+}

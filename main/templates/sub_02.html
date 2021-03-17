@@ -1,0 +1,191 @@
+{% extends "include/base.html" %}
+{% load static %}
+{% block content %}
+    <div class="sub_wrap">
+	    <div class="sub_title">
+	        <div class="inner">
+	            <h1>이용 방법</h1>
+	            <div class="page-navi">
+	                <span>수질 예측 시스템</span>
+	                <span class="active">이용 방법</span>
+	            </div>
+	        </div>
+	    </div>
+	    <div class="sub_content">
+	        <div class="inner">
+	            <div class="system-guide">
+	                <div class="row">
+	                    <div class="left">
+	                        <span class="tit">유역 선택</span>
+	                    </div>
+	                    <div class="right">
+	                        <p>예측하고 싶은 유역(한강, 낙동강, 금강, 영산강)을 선택합니다.</p>
+	                    </div>
+	                </div>
+	                <div class="row">
+	                    <div class="left">
+	                        <span class="tit">항목 선택</span>
+	                    </div>
+	                    <div class="right">
+	                        <p>예측하고 싶은 항목(용존산소, 총유기탄소, 총인, 총질소, 클로로필-A)을 선택합니다.</p>
+	                    </div>
+	                </div>
+	                <div class="row">
+	                    <div class="left">
+	                        <span class="tit">날짜 선택</span>
+	                    </div>
+	                    <div class="right">
+	                        <p>예측하고 싶은 날짜를 선택 합니다.</p>
+	                    </div>
+	                </div>
+	                <div class="row">
+	                    <div class="left">
+	                        <span class="tit">예측하기</span>
+	                    </div>
+	                    <div class="right">
+	                        <p>선택한 유역, 항목, 날짜로 하여금 예측을 진행합니다.</p>
+	                    </div>
+	                </div>
+	                <div class="row">
+	                    <div class="left">
+	                        <span class="tit">결과 확인</span>
+	                    </div>
+	                    <div class="right">
+	                        <p>예측된 결과로 선택한 유역, 항목, 날짜의 그저께부터 모레까지의 결과를 차트 및 그래프로 나타냅니다.</p>
+	                    </div>
+	                </div>
+	            </div>
+
+            	<section class="mt70">
+            		<h4 style="margin-left:160px;">샘플데이터 수동 업로드 방법</h4>
+            			<p class="notice" style="width:850px;">
+            				샘플데이터는 예측하기를 통해 진행을 하실 수 있으며, 예측하기의 항목에 수동 Data 업로드 버튼을 누르시면 샘플데이터버튼이 생성되며 누르시면 내려받기가 가능합니다. 본 수질예측 서비스에서는 제공되는 샘플데이터 형식으로 변경하여 이용 가능합니다.
+            				<img class="mt30" src="../static/assets/images/common/sample_box.png" alt="샘플데이터 수동 Data 업로드" />
+            			</p>
+            	</section>
+
+
+            	<section class="mt70">
+            		<h4 style="margin-left:160px;">샘플데이터 형식</h4>
+            			<p class="notice" style="width:850px;">
+            				측정소별 횡단, 시간은 종단으로 되어있는 데이터셋으로 이루어져있습니다. 아래 그림은 한강 유역을 예시로 표현되었습니다.
+            			</p>
+            			<img src="../static/assets/images/common/spots.png" style="margin-left:230px; margin-top:20px;" alt="샘플데이터 형식" />
+            	</section>
+
+
+            	<section class="mt70">
+            		<h4 style="margin-left:160px;">각 측정망별 컬럼의 형태<a class="tooltip" title="주기성이 명확한 시계열데이터를 처리할 수 있는 간단한 방법은 sin및 cos를 사용하여 시간을 명확한 '하루(Day)' 및 '연도(Year)' 주기 신호로 변환하여 사용하는 것으로, day sin, day cos, year sin, year cos은 날짜 데이터를 하루 및 년 주기로 변환하여 사용가능한 신호로 변환한 데이터 입니다."><img src="../static/assets/images/common/tooltip.png" width="21" style="margin-top:-2px; margin-left:10px;"></a></h4>
+            	</section>
+
+				<section class="mt30" style="margin-left:160px;">
+            		<span>자동측정망</span>
+            	</section>
+            	<section style="margin-left:160px; width: 880px;">
+        				<table class="tbl_basic mt10">
+							<thead>
+							  <tr>
+							    <th>날짜</th>
+							    <th>수온</th>
+							    <th>수온이온농도</th>
+							    <th>용존산소</th>
+							    <th>전기전도도</th>
+							    <th>총유기탄소</th>
+							    <th>총질소</th>
+							    <th>총인</th>
+							    <th>클로로필-A</th>
+							    <th>Day sin</th>
+							    <th>Day cos</th>
+							    <th>Year sin</th>
+							    <th>Year cos</th>
+							  </tr>
+							</thead>
+						</table>
+            	</section>
+
+
+				<section class="mt30" style="margin-left:160px;">
+            		<span>총량측정망</span>
+            	</section>
+            	<section style="margin-left:160px; width: 880px;">
+        				<table class="tbl_basic mt10">
+							<thead>
+							  <tr>
+							    <th>날짜</th>
+							    <th>유량</th>
+							    <th>수온이온농도</th>
+							    <th>용존산소</th>
+							    <th>총질소</th>
+							    <th>총인</th>
+							    <th>클로로필-A</th>
+							    <th>총유기탄소</th>
+							    <th>Day sin</th>
+							    <th>Day cos</th>
+							    <th>Year sin</th>
+							    <th>Year cos</th>
+							  </tr>
+							</thead>
+						</table>
+            	</section>
+
+
+
+				<section class="mt30" style="margin-left:160px;">
+            		<span>수질측정망</span>
+            	</section>
+            	<section style="margin-left:160px; width: 880px;">
+        				<table class="tbl_basic mt10">
+							<thead>
+							  <tr>
+							    <th>날짜</th>
+							    <th>수온이온농도</th>
+							    <th>용존산소</th>
+							    <th>총질소</th>
+							    <th>총인</th>
+							    <th>클로로필-A</th>
+							    <th>총유기탄소</th>
+							    <th>Day sin</th>
+							    <th>Day cos</th>
+							    <th>Year sin</th>
+							    <th>Year cos</th>
+							  </tr>
+							</thead>
+						</table>
+            	</section>
+
+
+
+				<section class="mt30" style="margin-left:160px;">
+            		<span>녹조조류 모니터링</span>
+            	</section>
+            	<section style="margin-left:160px; width: 880px;">
+        				<table class="tbl_basic mt10">
+							<thead>
+							  <tr>
+							    <th>날짜</th>
+							    <th>용존산소</th>
+							    <th>총인</th>
+							    <th>클로로필-A</th>
+							    <th>Day sin</th>
+							    <th>Day cos</th>
+							    <th>Year sin</th>
+							    <th>Year cos</th>
+							  </tr>
+							</thead>
+						</table>
+            	</section>
+
+	        </div>
+
+
+	    </div>
+	</div>
+{% endblock %}
+
+
+{% block javascript %}
+    <script>
+
+    </script>
+
+{% endblock %}

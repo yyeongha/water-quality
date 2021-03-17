@@ -1,0 +1,158 @@
+{% extends "include/base.html" %}
+{% load static %}
+{% block content %}
+    <div class="sub_wrap">
+	    <div class="sub_title">
+	        <div class="inner">
+	            <h1>사업 소개</h1>
+	            <div class="page-navi">
+	                <span>수질 예측 시스템</span>
+	                <span class="active">사업 개요</span>
+	            </div>
+	        </div>
+	    </div>
+	    <div class="sub_content">
+	        <div class="inner">
+
+	            <div class="intro_box">
+	            	<section>
+	            		<h4 class="cl">사업 개요 (데이터 정보 요약)</h4>
+	            	</section>
+	            	<section>
+            				<table class="tbl_basic">
+                        <colgroup>
+                             <col width="15%">
+                             <col width="85%">
+                        </colgroup>
+								         <thead>
+								             <tr>
+								                 <th>데이터 이름</th>
+								                 <th>수질측정 및 오염원 데이터</th>
+								             </tr>
+								         </thead>
+								         <tbody>
+								             <tr>
+								                 <td>활용 분야</td>
+								                 <td>수질 수치 및 공간기반 수질 오염원의 이동과 원인의 관계를 예측하고, 수생태계 복원기술 및 환경영향평가업 등 산업분야의 활성화를 위하여 수질 및 오염원에 대한 데이터를 활용한 AI 인공지능 분석을 통해 양질의 인공지능(AI) 데이터를 대규모로 구축 및 공개 활용하여 인공지능(AI) 데이터 선순환 생태계를 조성</td>
+								            </tr>
+								            <tr>
+								                 <td>데이터 요약</td>
+								                 <td>AI 학습용 데이터 확보를 위하여 수질/자동/총량/퇴적물/방사성물질/KRF 등이 포함된 물환경 측정망 수질 측정자료 및 수질 관련 측정자료(수질TMS/녹조(조류)모니터링/수리수문기상)과 인구·가구/전국오염원/환경기초시설의 오염원 관련 측정자료에 대한 데이터 수집 및 정제, 가공하여 수집된 데이터를 기준으로 AI 학습용 데이터로 설계 및 구축하기 위하여 데이터 표준화 및 정규화, 관계형 엔티티 등록 및 구축을 통해 AI 데이터 활용 응용서비스를 개발하여 전국 단위 수질측정 및 5대 오염원 데이터로 수질예측 AI 서비스</td>
+								            </tr>
+								            <tr>
+                                <td>데이터 출처</td>
+								                <td>수질관련분야 - 환경부 국립환경과학원, 한국수자원공사<br />기상관측분야 – 기상청<br />인구,가구,주택 등 오염원 분야 – 환경부 국립환경과학원, 통계청</td>
+								            </tr>
+								          </tbody>
+							        </table>
+                  </section>
+
+                  <section class="mt50">
+  	            		<h4 class="cl">데이터 구축 규모</h4>
+  	            	</section>
+
+                  <section>
+                      <table class="tbl_basic">
+                          <colgroup>
+                               <col width="20%">
+                               <col width="57%">
+                               <col width="10%">
+                               <col width="13%">
+                          </colgroup>
+                          <thead>
+                            <tr>
+                              <th>과제명</th>
+                              <th>구성</th>
+                              <th>구축목표(건)</th>
+                              <th>형식</th>
+
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>물환경측정망</td>
+                              <td>수질측정망,  총량측정망, 자동측정망,  퇴적물측정망,  방사성물질측정망,  비점오염물질측정망,  KRF지형지표</td>
+                              <td>264,147,400</td>
+                              <td>JSON CSV</td>
+                            </tr>
+                            <tr>
+                              <td>인구, 가구 및 주택 통계</td>
+                              <td>전국규모의인구, 가구, 주택 통계</td>
+                              <td>64,800</td>
+                              <td>JSON</td>
+                            </tr>
+                            <tr>
+                              <td>수질TMS</td>
+                              <td>수도권, 영남권,충청권,호남권의 공공하수,공공폐수,폐수배출 시설의 방류 수질 측정</td>
+                              <td>32,850,000</td>
+                              <td>CSV</td>
+                            </tr>
+                            <tr>
+                              <td>녹조(조류)모니터링</td>
+                              <td>강, 호수의 녹조 및 조류 측정 자료</td>
+                              <td>10,000,000</td>
+                              <td>CSV</td>
+                            </tr>
+                            <tr>
+                              <td>수리,수문,기상</td>
+                              <td>하천수면 높이, 하천물 부피 및 강우량 측정</td>
+                              <td>200,000,000</td>
+                              <td>JSON CSV</td>
+                            </tr>
+                            <tr>
+                              <td>전국오염원조사자료</td>
+                              <td>생활계, 축산계,산업계,토지계,양식계,매립계,환경기초시설현황,기타수질오염원 조사</td>
+                              <td>20,804,000</td>
+                              <td>JSON</td>
+                            </tr>
+                            <tr>
+                              <td>기상자료(AWS)</td>
+                              <td>기상관측장비로 관측한 시간 기상자료</td>
+                              <td>734,000</td>
+                              <td>JSON</td>
+                            </tr>
+                            <tr>
+                              <td>종관기상관측(ASOS)</td>
+                              <td>지역기상대의 모든 관측소에서 같은 시각에 실시하는 지상관측</td>
+                              <td>881,280</td>
+                              <td>JSON</td>
+                            </tr>
+                            <tr>
+                              <td>합계</td>
+                              <td></td>
+                              <td>529,481,480</td>
+                              <td></td>
+                            </tr>
+                          </tbody>
+  							        </table>
+	             </section>
+
+               <section class="mt50" style="display:inline-block; text-align:left;">
+                 <h4>데이터 구축 절차</h4>
+                 <img class="mt10" src="../static/assets/images/common/business0101.png" alt="데이터 구축 절차" />
+             	 </section>
+
+
+               <section class="mt50" style="display:inline-block; text-align:left;">
+                 <h4>데이터 구축 유의사항</h4>
+                     <ul style="background: #eee;padding: 20px;list-style: disc;font-size: 15px;padding-left: 40px !important;line-height: 23px; margin-top:20px;">
+                       <li>데이터를 수집 및 활용하기 위한 사항을 정의하였으며, 추가적인 데이터 수집이 필요한 경우, OpenAPI 연계 프로그램을 가이드대로 설치하여 데이터를 수집하여야 합니다.</li>
+                       <li>본 수질측정 및 오염원 데이터에는 공공기관에서 공개되어 있는 데이터를 기초로 구성하였으며, 개인정보 및 저작권에 위배가 되지 않는 데이터입니다.</li>
+                       <li>본 수질측정 및 오염원 데이터에는 성차별 및 정치적 성향, 종교 등 사회적 민감 정보를 포함하고 있지 않습니다.</li>
+                     </ul>
+             	 </section>
+
+
+	            </div>
+	        </div>
+	    </div>
+  </div>
+{% endblock %}
+
+
+{% block javascript %}
+    <script>
+
+    </script>
+
+{% endblock %}

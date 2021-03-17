@@ -1,0 +1,238 @@
+{% load static %}
+{% block content %}
+    <div class="pd-25 debug mt-30">
+        <div class="pb-20" id="after_div2">
+            {#            <div class="title">new_map</div>#}
+            <button class="btn-select-sub" id="allMenu" onclick="changeMarker('all')" style="height: 43px;">ALL</button>
+            <button class="btn-select-sub" id="a_Menu" onclick="changeMarker('target_a')">
+                <!--<i class="fas fa-square mr-8" style="color:#ff0000"></i>자동측정망-->
+                <span class="ico_comm1 ico"></span>
+                <span>자동측정망</span>
+            </button>
+            <button class="btn-select-sub" id="b_Menu" onclick="changeMarker('target_b')">
+                <!--<i class="fas fa-square mr-8" style="color:#0098f0"></i>수질측정망-->
+                <span class="ico_comm2 ico"></span>
+                <span>수질측정망</span>
+            </button>
+            <button class="btn-select-sub" id="c_Menu" onclick="changeMarker('target_c')">
+                <!--<i class="fas fa-square mr-8" style="color:#23a20f"></i>총량측정망-->
+                <span class="ico_comm3 ico"></span>
+                <span>총량측정망</span>
+            </button>
+            <button class="btn-select-sub" id="d_Menu" onclick="changeMarker('target_d')">
+                <!--<i class="fas fa-square mr-8" style="color:#ff8a00"></i>녹조 조류-->
+                <span class="ico_comm4 ico"></span>
+                <span>녹조 조류</span>
+            </button>
+        </div>
+
+        <div id="map" style="width:100%;height:500px;"></div>
+        <!-- 지도 위에 표시될 마커 카테고리 -->
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript"
+            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=411014b49760133574f1c56e4c7f9bd1&libraries=services,clusterer,drawing"></script>
+    <script type="text/javascript"
+            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=411014b49760133574f1c56e4c7f9bd1"></script>
+    <script>
+
+        //마커가 표시될 좌표 배열
+        var target_a_Positions = '';
+        var target_b_Positions = '';
+        var target_c_Positions = '';
+        var target_d_Positions = '';
+
+
+        var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+        /*
+        options = { //지도를 생성할 때 필요한 기본 옵션
+            center: new kakao.maps.LatLng(36.5, 127.5), //지도의 중심좌표.
+            level: 10//지도의 레벨(확대, 축소 정도)
+        };
+
+         */
+
+
+
+        //지형도 표시 주석
+        //map.addOverlayMapTypeId(kakao.maps.MapTypeId.TERRAIN);
+
+        var markerImageSrc1 = '../../../media/test_img.png';
+        var markerImageSrc2 = '../../../media/chrome_test.png';
+        //var markerImageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png';  // 마커이미지의 주소입니다. 스프라이트 이미지 입니다
+        // 마커 객체를 가지고 있을 배열
+        let target_a_Markers = [];
+        let target_b_Markers = [];
+        let target_c_Markers = [];
+        let target_d_Markers = [];
+
+        //create_all_Markers();
+        changeMarker('all'); // 지도에 커피숍 마커가 보이도록 설정합니다
+
+
+        // 마커이미지의 주소와, 크기, 옵션으로 마커 이미지를 생성하여 리턴하는 함수입니다
+        function createMarkerImage(src, size, options) {
+            var markerImage = new kakao.maps.MarkerImage(src, size, options);
+            return markerImage;
+        }
+
+        // 좌표와 마커이미지를 받아 마커를 생성하여 리턴하는 함수입니다
+        function createMarker(position, image) {
+            var marker = new kakao.maps.Marker({
+                position: position.latlng, // 마커의 위치
+                image: image
+            });
+            // 마커에 표시할 인포윈도우를 생성합니다
+            var infowindow = new kakao.maps.InfoWindow({
+                content: position.content // 인포윈도우에 표시할 내용
+            });
+            kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
+            kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
+            return marker;
+        }
+
+
+        //마커들의 지도 표시 여부를 설정하는 함수
+        function setMarkers(map, type) {
+            let marker_list = []
+            let all_Markers = []
+            all_Markers = all_Markers.concat(target_a_Markers, target_b_Markers, target_c_Markers,
+                target_d_Markers);
+            for (var i = 0; i < all_Markers.length; i++) {
+                all_Markers[i].setMap(null);
+            }
+            if (type == 'target_a') {
+                marker_list = target_a_Markers
+            } else if (type == 'target_b') {
+                marker_list = target_b_Markers
+            } else if (type == 'target_c') {
+                marker_list = target_c_Markers
+            } else if (type == 'target_d') {
+                marker_list = target_d_Markers
+            } else if (type == 'all') {
+                marker_list = all_Markers
+            }
+            for (var i = 0; i < marker_list.length; i++) {
+                marker_list[i].setMap(map);
+            }
+        }
+
+        function create_all_Markers() {
+            let arr = [
+                {
+                    'position': target_a_Positions,
+                    "markers": target_a_Markers,
+                    "img": "http://bookfruit.dothome.co.kr/water/assets/images/common/marker_01.png"
+                },
+                {
+                    'position': target_b_Positions,
+                    "markers": target_b_Markers,
+                    "img": "http://bookfruit.dothome.co.kr/water/assets/images/common/marker_02.png"
+                },
+                {
+                    'position': target_c_Positions,
+                    "markers": target_c_Markers,
+                    "img": "http://bookfruit.dothome.co.kr/water/assets/images/common/marker_03.png"
+                },
+                {
+                    'position': target_d_Positions,
+                    "markers": target_d_Markers,
+                    "img": "http://bookfruit.dothome.co.kr/water/assets/images/common/marker_04.png"
+                }];
+
+            arr.forEach(function (el, index) {
+                for (var i = 0; i < el.position.length; i++) {
+
+                    var imageSize = new kakao.maps.Size(22, 26),
+                        imageOptions = {
+                            spriteOrigin: new kakao.maps.Point(10, 36),
+                            spriteSize: new kakao.maps.Size(36, 98)
+                        };
+
+                    // 마커이미지와 마커를 생성합니다
+                    var markerImage = createMarkerImage(el.img, imageSize, imageOptions),
+                        marker = createMarker(el.position[i], markerImage);
+
+                    // 생성된 마커를 편의점 마커 배열에 추가합니다
+                    el.markers.push(marker);
+                }
+
+            })
+
+        }
+
+
+        function changeMarker(type) {
+
+
+            if (type === 'all') {
+                setMarkers(map, type);
+                load_table(model_activate, type);
+            } else if (type === 'target_a') {
+
+                setMarkers(map, type);
+                load_table(model_activate, type);
+
+            } else if (type === 'target_b') {
+                setMarkers(map, type);
+                load_table(model_activate, type);
+
+            } else if (type === 'target_c') {
+                setMarkers(map, type);
+                load_table(model_activate, type);
+            } else if (type === 'target_d') {
+
+                setMarkers(map, type);
+                load_table(model_activate, type);
+            }
+        }
+
+        function makeOverListener(map, marker, infowindow) {
+            return function () {
+                infowindow.open(map, marker);
+            };
+        }
+
+        // 인포윈도우를 닫는 클로저를 만드는 함수입니다
+        function makeOutListener(infowindow) {
+            return function () {
+                infowindow.close();
+            };
+        }
+
+        function load_map_data(data) {
+            target_a_Positions = [];
+            target_b_Positions = [];
+            target_c_Positions = [];
+            target_d_Positions = [];
+            for (let i = 0; i < data.length; i++) {
+                if (data[i]['target'] == 'target_a') {
+                    target_a_Positions.push({
+                        content: '<div>' + data[i]['location'] + '</div>',
+                        latlng: new kakao.maps.LatLng(data[i]['y'], data[i]['x'])
+                    })
+                } else if (data[i]['target'] == 'target_b') {
+                    target_b_Positions.push({
+                        content: '<div>' + data[i]['location'] + '</div>',
+                        latlng: new kakao.maps.LatLng(data[i]['y'], data[i]['x'])
+                    })
+                } else if (data[i]['target'] == 'target_c') {
+                    target_c_Positions.push({
+                        content: '<div>' + data[i]['location'] + '</div>',
+                        latlng: new kakao.maps.LatLng(data[i]['y'], data[i]['x'])
+                    })
+                } else if (data[i]['target'] == 'target_d') {
+                    target_d_Positions.push({
+                        content: '<div>' + data[i]['location'] + '</div>',
+                        latlng: new kakao.maps.LatLng(data[i]['y'], data[i]['x'])
+                    })
+                }
+
+            }
+            create_all_Markers()
+            changeMarker('all');
+        }
+    </script>
+{% endblock %}

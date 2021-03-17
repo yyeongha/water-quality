@@ -1,0 +1,147 @@
+{% extends "include/base.html" %}
+{% load static %}
+{% block content %}
+    <div class="sub_wrap">
+	    <div class="sub_title">
+	        <div class="inner">
+	            <h1>사이트 소개</h1>
+	            <div class="page-navi">
+	                <span>수질 예측 시스템</span>
+	                <span class="active">사이트 소개</span>
+	            </div>
+	        </div>
+	    </div>
+	    <div class="sub_content">
+	        <div class="inner">
+	            <div class="intro_box">
+	            	<section class="mt50">
+	            			<i class="fas fa-quote-left"></i>
+	            			<div><img src="../static/assets/images/common/savewater01.png"/></div>
+	            			<p style="padding-top:10px;">
+	            				<span class="point-txt">NIA의 인공지능 4대강 수질 예측 서비스</span>로, AI 기술을 통해 아래 나열된 환경오염 관련 데이터를 구축하고 이를 활용하여 미래 특정 기간 및 지점의 수질을 예측하는 서비스입니다.<br /><br />
+	            				<span class="list-txt">물환경 측정망 수질 측정자료</span>
+	            				<span class="list-txt">수질 관련 측정자료</span>
+	            				<span class="list-txt">인구 ·가구 주택통계</span><br />
+	            				<span class="list-txt">전국오염원 조사 자료</span>
+	            				<span class="list-txt">기상자료</span>
+	            			</p>
+	            	</section>
+	            </div>
+	            <div class="intro_box">
+	            	<section class="mt50">
+	            			<div><img src="../static/assets/images/common/savewater02.png"/></div>
+	            			<p style="padding-top:30px;">
+	            				시대와 사회가 발전함에 따라 우리가 마시고 씻고 놀 수 있는 물에 대한 인식이 바뀌고 수질 및 생태계 보전의 필요성이 대두 되었습니다. NIA의 수질예측시스템을 통해 <span class="point-txt">화학물질 오염원에 대한 수치를 미리 예상하고 그에 따른 오염원을 차단하여 건강한 4대강 환경을 유지</span>하는 데 그 목적이 있습니다.
+	            			</p>
+	            			<i class="fas fa-quote-right"></i>
+	            	</section>
+	            </div>
+
+	            <div class="intro_box">
+	            	<section class="mt50">
+	            			<p class="notice">
+	            				수질 예측 모델 데이터는 수질측정 정보 및 기상정보 등으로 구축된 데이터를 기반으로 한 시범모델이므로 실제와 차이가 발생할 수 있으며, 단순히 수질의 예측이 아닌 수질에 영향을 주는 화학물질의 수치를 예측합니다.
+	            			</p>
+	            	</section>
+	            	<section class="mt30">
+	            		<h4 class="cl">수질 등급 기준</h4>
+	            	</section>
+	            	<section>
+            				<table class="tbl_basic">
+								<thead>
+								  <tr>
+								    <th colspan="2">등급</th>
+								    <th>총유기 탄소량<br />(TOC) (㎎/L)</th>
+								    <th>클로로필-a<br />(chl-a)&nbsp;&nbsp;&nbsp;(㎎/㎥)</th>
+								    <th>용존 산소량<br />(DO)&nbsp;&nbsp;&nbsp;(㎎/L)</th>
+								    <th>총질소<br />(T-N)&nbsp;&nbsp;&nbsp;(㎎/L)</th>
+								    <th>총인<br />(T-P)&nbsp;&nbsp;&nbsp;(㎎/L)</th>
+								  </tr>
+								</thead>
+								<tbody>
+								  <tr>
+								    <td>매우 좋음</td>
+								    <td>Ia</td>
+								    <td>2 이하</td>
+								    <td>5 이하</td>
+								    <td>7.5 이상</td>
+								    <td>0.2 이하</td>
+								    <td>0.02 이하</td>
+								  </tr>
+								  <tr>
+								    <td>좋음</td>
+								    <td>Ib</td>
+								    <td>3 이하</td>
+								    <td>9 이하</td>
+								    <td>5.0 이상</td>
+								    <td>0.3 이하</td>
+								    <td>0.04 이하</td>
+								  </tr>
+								  <tr>
+								    <td>약간 좋음</td>
+								    <td>II</td>
+								    <td>4 이하</td>
+								    <td>14 이하</td>
+								    <td>5.0 이상</td>
+								    <td>0.4 이하</td>
+								    <td>0.1 이하</td>
+								  </tr>
+								  <tr>
+								    <td>보통</td>
+								    <td>III</td>
+								    <td>5 이하</td>
+								    <td>20 이하</td>
+								    <td>5.0 이상</td>
+								    <td>0.6 이하</td>
+								    <td>0.2 이하</td>
+								  </tr>
+								  <tr>
+								    <td>약간 나쁨</td>
+								    <td>IV</td>
+								    <td>6 이하</td>
+								    <td>42 이하</td>
+								    <td>2.0 이상</td>
+								    <td>1.0 이하</td>
+								    <td>0.3 이하</td>
+								  </tr>
+								  <tr>
+								    <td>나쁨</td>
+								    <td>V</td>
+								    <td>8 이하</td>
+								    <td>70 이하</td>
+								    <td>2.0 이상</td>
+								    <td>1.5 이하</td>
+								    <td>0.5 이하</td>
+								  </tr>
+								  <tr>
+								    <td>매우 나쁨</td>
+								    <td>VI</td>
+								    <td>8 초과</td>
+								    <td>70 초과</td>
+								    <td>2.0 미만</td>
+								    <td>1.5 초과</td>
+								    <td>0.5 초과</td>
+								  </tr>
+								</tbody>
+							</table>
+	            	</section>
+					<section class="mt10">
+	            		<span>출처: 환경정책기본법 생활환경 기준</span>
+	            	</section>
+
+
+
+	            </div>
+
+	        </div>
+	    </div>
+	</div>
+{% endblock %}
+
+
+{% block javascript %}
+    <script>
+
+    </script>
+
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "backend/layout/base.html" %}
+
+{% block content %}
+{#    <button onclick="table_btn()" style="float: right;">HIDE | SHOW</button>#}
+    <div id="show_table" style="padding: 0 20px 20px;" class="table-hk">
+
+    </div>
+
+{% endblock %}
+{% block javascript %}
+    <script>
+        function table_btn() {
+            var x = document.getElementById("show_table");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+
+        function load_table(model, target) {
+            $.ajax({
+                url: '{% url 'load_df' %}',
+                data: {
+                    "csrfmiddlewaretoken": $("#csrf_token").val(),
+                    "model": model,
+                    "target": target
+                },
+                type: "POST",
+                dataType: "json"
+            }).done(function (data) {
+                $('#show_table').html(data.data);
+            });
+
+        }
+
+    </script>
+{% endblock %}

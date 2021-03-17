@@ -1,0 +1,530 @@
+{% extends "include/base.html" %}
+{% load static %}
+<style>
+    #loading {
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        position: fixed;
+        display: block;
+        opacity: 0.7;
+        background-color: #fff;
+        z-index: 99;
+        text-align: center;
+    }
+
+    #loading-image {
+        position: absolute;
+        z-index: 100;
+        width: 50%;
+        height: 50%;
+    {#text-align: center;#} margin-left: -25vw;
+        margin-top: 15vw;
+    }
+</style>
+{% block content %}
+    <div id="loading">
+        <img id="loading-image" src='../../media/loading.svg' alt="Loading..."/>
+        <div style="position: absolute; z-index: 101; top: 56%; left: 50%; transform: translate(-50%, -50%); font-size:30px;">예측결과 진행 중</div>
+    </div>
+    <div class="sub_wrap">
+        <div class="sub_title">
+            <div class="inner">
+                <h1>수질 예측</h1>
+                <div class="page-navi">
+                    <span>수질 예측 시스템</span>
+                    <span class="active" id="river_text">수질 예측</span>
+                </div>
+            </div>
+        </div>
+        <div class="sub_content">
+            <div class="inner" id="before_div">
+                <div class="pd-20 debug">
+
+                    <div style="margin-top:30px;" class="top_button">
+                        <div class="title">수질 예측 유역</div>
+                        <div>
+                            <button class="btn btn-skyblue top_button_01 AAA" onclick="select_model('A')">
+                                <i class="fas fa-water mr-8" style="color:#0fa7ff;"></i>한강
+                                <div style="font-size:15px;"><span class="target_point"></span></div>
+                            </button>
+                            <button class="btn btn-skyblue top_button_02 BBB" onclick="select_model('B')">
+                                <i class="fas fa-water mr-8" style="color:#0fa7ff;"></i>금강
+                                <div style="font-size:15px;"><span class="target_point"></span></div>
+                            </button>
+                            <button class="btn btn-skyblue top_button_03 CCC" onclick="select_model('C')">
+                                <i class="fas fa-water mr-8" style="color:#0fa7ff;"></i>영산강
+                                <div style="font-size:15px;"><span class="target_point"></span></div>
+                            </button>
+                            <button class="btn btn-skyblue top_button_04 DDD" onclick="select_model('D')">
+                                <i class="fas fa-water mr-8" style="color:#0fa7ff;"></i>낙동강
+                                <div style="font-size:15px;"><span class="target_point"></span></div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pd-20 debug mt-30">
+                    <div class="second_button">
+                        <div class="title">측정항목 선택</div>
+                        <div style="display: flex; flex-direction: row; justify-content: space-around;"
+                             id="data_select">
+
+                        </div>
+                    </div>
+                    <div style="display: flex; flex-direction: row; display: none;">
+
+                        <div class="col-12">
+                            <div class="title" style="float:left; margin-right: 20px;">측정데이터 선택</div>
+                            <select id="column_list" style="margin-top:5px;">
+                                <option value="">유역을 먼저 선택해 주세요</option>
+                            </select>
+                        </div>
+
+                        <div hidden>
+                            <div class="title">Xsls Upload</div>
+                            <form method="post" enctype="multipart/form-data" id="fileUploadForms">
+                                {% csrf_token %}
+                                <input type="file" name="myfiles" multiple>
+                                <button type="submit" class="btn btn-light" id="btnSubmits">
+                                    <i class="fas fa-download mr-8"></i>Upload
+                                </button>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                {% include "include/datepicker.html" %}
+
+
+                <div>
+                    {% csrf_token %}
+                    <div id="upload_active">
+                        <button onclick="upload_show()" class="btn-upload">수동 Data 업로드</button>
+                    </div>
+                    <div id="upload_active_div" style="padding-left:20px; margin-top:-10px;">
+                        <form method="post" enctype="multipart/form-data" id="fileUploadForm" onSubmit="return false;">
+                            {% csrf_token %}
+                            <input type="file" name="myfile">
+                            <button type="button" type='submit' class="btn btn-light" onclick="file_download()"
+                                    download>
+                                <i class="fas fa-download mr-8"></i>샘플 파일 다운로드
+                            </button>
+                            <button type="submit" class="btn btn-light" id="acti" onclick="activate()">
+                                <i class="fas fa-check mr-8"></i>적용
+                            </button>
+                            <!-- <button type="button" class="btn btn-light" id="deacti" onclick="deactivate()">
+                                <i class="fas fa-ban mr-8"></i>취소
+                            </button> -->
+                        </form>
+
+                        <div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="pd-20 debug">
+                    <div style="display: flex; flex-direction: row; justify-content: space-around; ">
+                        {% csrf_token %}
+                        <div style="width:100%">
+                            <button type="button" class="btn btn-light" onclick="predict()" style="font-weight: 600;width: 100%;color: #fff;margin-top: 30px;height: 60px;font-size: 20px;background: linear-gradient(
+90deg, rgb(173 157 236) 0%, rgba(15,167,255,1) 50%, rgb(103 150 255) 100%);">
+                                <i class="fas fa-paper-plane mr-8"></i>예측하기
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="inner" id="after_div">
+                {% include "include/map.html" %}
+                {% include "include/table.html" %}
+                {% include "include/chart.html" %}
+                <div class="pd-20 debug">
+                    <div style="display: flex; flex-direction: row; justify-content: space-around; ">
+                        {% csrf_token %}
+                        <div style="width:100%">
+                            <button type="button" class="btn btn-light" onclick="set_page()" style="font-weight: 600;width: 100%;color: #fff;margin-top: 30px;height: 60px;font-size: 20px;background: linear-gradient(
+90deg, rgb(173 157 236) 0%, rgba(15,167,255,1) 50%, rgb(103 150 255) 100%);">
+                                <i class="fas fa-paper-plane mr-8"></i>예측하러 가기
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block javascript %}
+    <script>
+        $('#after_div').hide();
+        $('#after_div2').hide();
+        select_model('{{ model }}');
+        $('#upload_active_div').hide();
+        $('#loading').hide();
+        var upload_df = 'N';
+        var select_column = '';
+        <!-- model 별 위치를 위한 map setting-->
+        var options = '';
+        var map = '';
+
+        var model_activate = ''
+        model_activate = '{{ model }}';
+        if ('{{ model }}' == 'A') {
+            $('#river_text').text('한강 유역');
+            $('.top_button_01').addClass("active");
+        } else if ('{{ model }}' == 'B') {
+            $('#river_text').text('금강 유역');
+            $('.top_button_02').addClass("active");
+        } else if ('{{ model }}' == 'C') {
+            $('#river_text').text('영산강 유역');
+            $('.top_button_03').addClass("active");
+        } else if ('{{ model }}' == 'D') {
+            $('#river_text').text('낙동강 유역');
+            $('.top_button_04').addClass("active");
+        }
+
+        function predict() {
+            if (select_column == '') {
+                alert("측정 데이터 선택은 필수사항입니다");
+            } else if ($('#start-train').val() == "") {
+                alert("날짜 선택은 필수사항입니다");
+            } else {
+                $('#before_div').hide();
+                $('#after_div').show();
+                $('#after_div2').show();
+                $('#loading').show();
+                $.ajax({
+                    url: "{% url "predict" %}",
+                    data: {
+                        csrfmiddlewaretoken: $("#csrf_token").val(),
+                        "key": select_column,
+                        "model": model_activate,
+                        "start_date": formatDate(_startTrain),
+                        "end_date": formatDate(_endTrain),
+                        "predict_start_date": formatDate(_startPredict),
+                        "predict_end_date": formatDate(_endPredict),
+                        "upload_df": upload_df
+                    },
+                    type: "POST",
+                    dataType: "json"
+                }).done(function (data) {
+                    if (data.return == 'fail') {
+                        alert("predict_fail");
+                        $('#before_div').show();
+                        $('#after_div').hide();
+                        $('#after_div2').hide();
+                        $('#loading').hide();
+                    } else if (data.return == 'date_fail') {
+                        alert("선택한 날짜에 데이터값이 없습니다.");
+                        $('#before_div').show();
+                        $('#after_div').hide();
+                        $('#after_div2').hide();
+                        $('#loading').hide();
+                    } else {
+                        if (model_activate == 'A' || model_activate == 'B') {
+                            $('#d_Menu').hide();
+                        }
+                        var options = { //지도를 생성할 때 필요한 기본 옵션
+                            center: new kakao.maps.LatLng(36.5, 127.5), //지도의 중심좌표.
+                            level: 10//지도의 레벨(확대, 축소 정도)
+                        };
+                        var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+                        select_model(model_activate);
+                        let water_arr = Array();
+                        let graph_arr = Array();
+
+                        $('#loading').hide();
+                        // chart_data
+                        _predictWater.data.datasets[0].data = data.predict_water;
+                        _predictWater.data.datasets[0].backgroundColor = data.color;
+                        // chart_column
+                        _predictWater.options.title.text = data.column;
+                        // chart_labels
+                        for (let i = 10; i < 15; i++) {
+                            tmp_date = new Date($("#start-train").val());
+                            tmp_date.setDate(_startTrain.getDate() + i);
+                            let A = formatDate(tmp_date);
+                            water_arr.push(A)
+                        }
+                        _predictWater.data.labels = water_arr
+                        _predictWater.update();
+
+                        for (let i = 0; i < 15; i++) {
+                            tmp_date = new Date($("#start-train").val());
+                            tmp_date.setDate(_startTrain.getDate() + i);
+                            let A = formatDate(tmp_date);
+                            graph_arr.push(A)
+
+                        }
+                        _predictGraph.data.labels = graph_arr
+                        _predictGraph.data.datasets[0].data = data.predict_cahrt.origin;
+                        _predictGraph.data.datasets[1].data = data.predict_cahrt.origin_2;
+                        _predictGraph.data.datasets[2].data = data.predict_cahrt.predict;
+                        _predictGraph.update();
+
+                        _rain_chart.data.labels = graph_arr
+                        _rain_chart.data.datasets[0].data = data.rain_chart.rain_list;
+                        _rain_chart.data.datasets[1].data = data.rain_chart.temp_list;
+                        _rain_chart.update();
+
+
+                    }
+                })
+            }
+
+        };
+
+        function select_model(param) {
+            upload_df = "N";
+            $('#upload_active').show();
+            $('#upload_active_div').hide();
+            $('#acti').css('border', 'none');
+            $('#deacti').css('border', 'solid');
+            select_column == '';
+
+            $.ajax({
+                url: "{% url "call_model" %}",
+                data: {
+                    csrfmiddlewaretoken: $("#csrf_token").val(),
+                    "param": param
+                },
+                type: "POST",
+                dataType: "json"
+            }).done(function (data) {
+                model_activate = param
+                let map_info = data.web_info.map_info
+                $('#data_select').empty();
+                for (let i = 0; i < (data.web_info.column).length; i++) {
+                    let col_dict = data.web_info.column
+                    for (let key in col_dict[i]) {
+                        $('#data_select').append("<button class=\"btn btn-gray " + key + "\" onclick=\"select_col('" + key + "')\">\n" +
+                            "                        <i class=\"fas fa-flask mr-8\" style=\"color:#0fa7ff;\"></i>" + col_dict[i][key] + "\n" +
+                            "                    </button>")
+                        //$('#column_list').append("<option value=" + key + ">" + col_dict[i][key] + "</option>")
+                    }
+                }
+
+
+                var eBtn = $(".second_button");
+                eBtn.find(".toc").click(function () {
+                    $('.toc').addClass("active");
+                    $('.chl').removeClass("active");
+                    $('.do').removeClass("active");
+                    $('.tn').removeClass("active");
+                    $('.tp').removeClass("active");
+                })
+                eBtn.find(".chl").click(function () {
+                    $('.chl').addClass("active");
+                    $('.toc').removeClass("active");
+                    $('.do').removeClass("active");
+                    $('.tn').removeClass("active");
+                    $('.tp').removeClass("active");
+                })
+                eBtn.find(".do").click(function () {
+                    $('.do').addClass("active");
+                    $('.toc').removeClass("active");
+                    $('.chl').removeClass("active");
+                    $('.tn').removeClass("active");
+                    $('.tp').removeClass("active");
+                })
+                eBtn.find(".tn").click(function () {
+                    $('.tn').addClass("active");
+                    $('.toc').removeClass("active");
+                    $('.chl').removeClass("active");
+                    $('.do').removeClass("active");
+                    $('.tp').removeClass("active");
+                })
+                eBtn.find(".tp").click(function () {
+                    $('.tp').addClass("active");
+                    $('.toc').removeClass("active");
+                    $('.chl').removeClass("active");
+                    $('.tn').removeClass("active");
+                    $('.do').removeClass("active");
+                })
+
+
+                $('.target_point').text(data.web_info.target_point);
+
+                $('.BBB').hide();
+                $('.CCC').hide();
+                $('.DDD').hide();
+                $('.AAA').hide();
+                if (model_activate == 'A') {
+                    $('#river_text').text('한강 유역');
+                    $('.BBB').hide();
+                    $('.CCC').hide();
+                    $('.DDD').hide();
+                    $('.AAA').show();
+                } else if (model_activate == 'B') {
+                    $('#river_text').text('금강 유역');
+                    $('.AAA').hide();
+                    $('.CCC').hide();
+                    $('.DDD').hide();
+                    $('.BBB').show();
+                } else if (model_activate == 'C') {
+                    $('#river_text').text('영산강 유역');
+                    $('.AAA').hide();
+                    $('.BBB').hide();
+                    $('.DDD').hide();
+                    $('.CCC').show();
+                } else if (model_activate == 'D') {
+                    $('#river_text').text('낙동강 유역');
+                    $('.AAA').hide();
+                    $('.BBB').hide();
+                    $('.CCC').hide();
+                    $('.DDD').show();
+                }
+
+
+                options = { //지도를 생성할 때 필요한 기본 옵션
+                    center: new kakao.maps.LatLng(data.x, data.y), //지도의 중심좌표.
+                    level: 10//지도의 레벨(확대, 축소 정도)
+                };
+                // 모델별 지도 중심위치 지정
+                map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+                load_map_data(map_info);
+            })
+        };
+
+
+        function activate() {
+            var form = $('#fileUploadForm')[0];
+            var data = new FormData(form);
+            data.append('start_date', $('#start-train').val());
+            data.append('end_date', $('#end-predict').val());
+            $.ajax({
+                type: "POST",
+                enctype: 'multipart/form-data',
+                url: "{% url "file_upload" %}",
+                data: data,
+                processData: false,
+                contentType: false,
+                cache: false,
+                timeout: 600000,
+                success: function (data) {
+                    $('#acti').css('border', 'solid');
+                    $('#deacti').css('border', 'none');
+                    upload_df = "Y"
+                    alert("complete");
+
+                },
+                error: function (e) {
+                    console.log("ERROR : ", e);
+                    $('#acti').css('border', 'none');
+                    $('#deacti').css('border', 'solid');
+                    upload_df = "N"
+                    alert("fail");
+                }
+            });
+        }
+
+        function deactivate() {
+            upload_df = 'N'
+            $('#acti').css('border', 'none');
+            $('#deacti').css('border', 'solid black');
+            $('#upload_active_div').hide();
+        }
+
+        $("#btnSubmits").click(function (event) {
+            event.preventDefault();
+            var form = $('#fileUploadForms')[0];
+            var data = new FormData(form);
+
+            alert('data', data);
+            $.ajax({
+                type: "POST",
+                enctype: 'multipart/form-data',
+                url: "{% url "multi_file_upload" %}",
+                data: data,
+                processData: false,
+                contentType: false,
+                cache: false,
+                timeout: 600000,
+                success: function (data) {
+                    alert("complete");
+                },
+                error: function (e) {
+                    console.log("ERROR : ", e);
+                    alert("fail");
+                }
+            });
+
+        });
+
+
+        function file_download() {
+            if (model_activate == 'A') {
+                let url = "../../../media/river_han.xlsx";
+                location.href = url;
+            } else if (model_activate == 'B') {
+                let url = "../../../media/river_geum.xlsx";
+                location.href = url;
+            } else if (model_activate == 'C') {
+                let url = "../../../media/river_yeong.xlsx";
+                location.href = url;
+            } else if (model_activate == 'D') {
+                let url = "../../../media/river_nak.xlsx";
+                location.href = url;
+            } else {
+                alert("유역을 선택해주세요.");
+            }
+
+        }
+
+        function upload_show() {
+            $('#upload_active').hide();
+            $('#upload_active_div').show();
+        }
+
+        function select_col(key) {
+
+            select_column = key;
+        }
+
+
+        $(function () {
+            var sBtn = $(".top_button");
+            sBtn.find(".top_button_01").click(function () {
+                $('.top_button_01').addClass("active");
+                $('.top_button_02').removeClass("active");
+                $('.top_button_03').removeClass("active");
+                $('.top_button_04').removeClass("active");
+            })
+            sBtn.find(".top_button_02").click(function () {
+                $('.top_button_02').addClass("active");
+                $('.top_button_01').removeClass("active");
+                $('.top_button_03').removeClass("active");
+                $('.top_button_04').removeClass("active");
+            })
+            sBtn.find(".top_button_03").click(function () {
+                $('.top_button_03').addClass("active");
+                $('.top_button_01').removeClass("active");
+                $('.top_button_02').removeClass("active");
+                $('.top_button_04').removeClass("active");
+            })
+            sBtn.find(".top_button_04").click(function () {
+                $('.top_button_04').addClass("active");
+                $('.top_button_01').removeClass("active");
+                $('.top_button_02').removeClass("active");
+                $('.top_button_03').removeClass("active");
+            })
+
+        })
+
+        function set_page() {
+            $('#before_div').show();
+            $('#after_div').hide();
+        }
+    </script>
+
+{% endblock %}
