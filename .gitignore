@@ -3,3 +3,12 @@ venv
 *.pyc
 __pycache__
 db.sqlite3
+
+# root gitignore
+# 각 프로젝트 .gitignore 사용 권장합니다
+
+.DS_Store
+.vscode
+.idea
+webdb.sqlite3
+venv
