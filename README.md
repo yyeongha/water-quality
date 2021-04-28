@@ -10,15 +10,23 @@
 ```bash
 $ git clone https://github.com/kotechnia/water-quality
 ```
+## Development Environment
+
+```
+https://www.python.org/downloads/release/python-379/
+Windows x86-64 executable installer  install
+python 3.7.9 설치
+[python 은 버전을 맞춰 별도 설치필수(window 경우 32bit or 64bit 맞추지않으면 에러발생)]
+```
 
 #### set
 
 * in workspce not in water-quality *
 ```bash
 $ pip install virtualenv
-$ python3 -m venv venv
-or
 $ virtualenv venv
+or
+$ python3 -m venv venv
 or
 $ virtualenv venv --python=python3.7.9
 
@@ -28,22 +36,12 @@ $ . venv/bin/activate
 <window>
 $ call venv/script/activate
 $ pip install -r requirements.txt
-$ cd water-quality/web
+$ cd water-quality
 $ python manage.py runserver IP:PORT
 
 ex) $ python manage.py runserver 127.0.0.1:8000
-```
-
-``` bash
-python -m venv venv
-# for linux or macOS
-. venv/bin/activate
-
-$ for windows
-venv\Scripts\activate
-
-pip install -r requirements.txt
-python manage.py runserver 0.0.0.0:8000
+or
+$ python manage.py runserver 0.0.0.0:8000
 ```
 
 ### gain
@@ -66,14 +64,6 @@ rnn 프로젝트
 수질예측 웹 인터페이스 프로젝트
 ```
 -------------------------------
-
-## Development Environment
-
-```
-python 3.7.9
-[python 은 버전을 맞춰 별도 설치필수(window 경우 32bit or 64bit 맞추지않으면 에러발생)]
-```
-  
 
 
 
