@@ -1,8 +1,13 @@
+#####################################################################################
+# 시계열 데이터를 처리하고, 모델을 평가하는 다양한 유틸리티 함수들을 포함
+# 정규화, 샘플링, 보간, 일별 평균 계산 및 모델 평가 등이 포함됨
+#####################################################################################
+
 # -*- coding: utf-8 -*-
 import pandas as pd
 import numpy as np
 
-
+# 데이터프레임을 정규화
 def normalize(df):
     # normalize data
     df_all = pd.concat(df)
@@ -15,6 +20,7 @@ def normalize(df):
 
     return df_all, train_mean, train_std, df
 
+# 미니배치 인덱스 샘플링
 def sample_batch_index(total, batch_size):
     '''Sample index of the mini-batch.
 
@@ -31,6 +37,7 @@ def sample_batch_index(total, batch_size):
 
     return batch_idx
 
+# 이진 랜덤 변수 샘플링
 def binary_sampler(p, shape):
     '''Sample binary random variables.
 
@@ -45,6 +52,7 @@ def binary_sampler(p, shape):
     binary_random_matrix = 1 * (unif_random_matrix < p)
     return binary_random_matrix
 
+# 균등 랜덤 변수 샘플링
 def uniform_sampler(low, high, shape):
     '''Sample uniform random variables.
 
@@ -59,6 +67,7 @@ def uniform_sampler(low, high, shape):
     '''
     return np.random.uniform(low, high, size=shape)
 
+# 결측데이터를 보간
 def interpolate(np_data, max_gap=3):
 
     data = pd.DataFrame(np_data)
@@ -72,12 +81,14 @@ def interpolate(np_data, max_gap=3):
     data = data.interpolate(method='polynomial', order=5, limit=max_gap, axis=0).bfill()[mask]
     return data.to_numpy()
 
+# 시간별 데이터를 일별 평균으로 변환
 def hour_to_day_mean(array):
     time = 24
     array = array.reshape((array.shape[0], array.shape[1] // time, time, array.shape[2]))
     array = array.mean(2)
     return array
 
+# 모델 성능 평가하고 성능지표 계산
 def compa(model=None,df = None, plot_col=0, input_width=7*24, label_width=5*24, target_std=None, target_mean=None, predict_day=4):
     width = input_width + label_width
     length = df.shape[0] - width

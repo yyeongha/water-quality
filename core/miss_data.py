@@ -1,3 +1,9 @@
+#####################################################################################
+# 결측 데이터를 생성하고 이를 파일로 저장하거나 로드하는 기능
+# 이를 통해 GAIN 와 같은 모델이 결측 데이터를 학습하고 예측할 수 있도록 지원
+# 결측 패턴을 파일로 저장함으로써 동일한 패턴의 결측 데이터를 재생성할 수 있어 일관된 평가 및 학습이 가능
+#####################################################################################
+
 # -*- coding: utf-8 -*-
 import os
 import numpy as np
@@ -11,8 +17,9 @@ class MissData(object):
             self.idxarr = np.load(os.path.join(load_dir, 'idx.npy'))
             print('MissData : ', load_dir, " miss : ", self.missarr.shape)
 
+    # 주어진 데이터에 결측 데이터를 생성
     def make_missdata(self, data_x, missrate=0.2):
-        data = data_x.copy()
+        data = data_x.copy() 
         rows, cols = data_x.shape
         total_no = rows * cols
         total_miss_no = np.round(total_no * missrate).astype(int)
@@ -40,6 +47,7 @@ class MissData(object):
 
         return data
 
+    # 결측데이터의 결측 패턴을 저장
     def save(data, max_tseq, save_dir='save'):
         no, dim = data.shape
         isnan = np.isnan(data).astype(int)
@@ -90,6 +98,7 @@ class MissData(object):
 
         return True
 
+# 데이터의 결측 패턴을 저장
 def missdata_save(data, max_tseq, save_dir='save'):
     no, dim = data.shape
     isnan = np.isnan(data).astype(int)

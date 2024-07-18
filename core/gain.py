@@ -1,3 +1,8 @@
+#####################################################################################
+# GAIN을 사용하여 결측 데이터를 채우고, 이를 학습하기 위한 모델을 구현
+# GAIN 모델은 생성자(generator)와 판별자(discriminator)로 구성되어 있으며, 이 두 네트워크가 협력하여 결측값을 효과적으로 예측
+#####################################################################################
+
 # -*- coding: utf-8 -*-
 import pandas as pd
 import numpy as np
@@ -10,58 +15,60 @@ from tensorflow.keras.optimizers import Adam
 
 import os
 
+# GAIN 모델 클래스 정의
 class GAIN(tf.keras.Model):
     def __init__(self, shape, alpha=100., load=False, hint_rate=0.9, gen_sigmoid=True, **kwargs):
         super(GAIN, self).__init__(**kwargs)
-        self.shape = shape
-        self.dim = np.prod(shape).astype(int)
-        self.h_dim = self.dim
-        self.gen_sigmoid = gen_sigmoid
-        self.build_generator()
-        self.build_discriminator()
-        self.hint_rate = hint_rate
-        self.alpha = alpha
-        self.generator_optimizer = Adam()
-        self.discriminator_optimizer = Adam()
+        self.shape = shape # 입력 데이터의 모양
+        self.dim = np.prod(shape).astype(int) # 입력 데이터의 차원 수
+        self.h_dim = self.dim # 히든 레이어의 차원 수
+        self.gen_sigmoid = gen_sigmoid # 생성기 출력 활성화 함수로 시그모이드 사용할지 여부
+        self.build_generator() # 생성기 빌드
+        self.build_discriminator() # 판별기 빌드
+        self.hint_rate = hint_rate # 힌트 비율
+        self.alpha = alpha # 손실 함수의 가중치
+        self.generator_optimizer = Adam() # 생성기 옵티마이저
+        self.discriminator_optimizer = Adam() # 판별기 옵티마이저
 
-    ## GAIN models
+    ## GAIN 모델 빌드
     def build_generator(self):
-        last_activation = 'sigmoid' if self.gen_sigmoid else None
-        xavier_initializer = tf.keras.initializers.GlorotNormal()
+        last_activation = 'sigmoid' if self.gen_sigmoid else None # 마지막 활성화 함수 설정
+        xavier_initializer = tf.keras.initializers.GlorotNormal() # 가중치 초기화
 
         shape = self.shape
-        x = Input(shape=shape, name='generator_input_x')
-        m = Input(shape=shape, name='generator_input_m')
+        x = Input(shape=shape, name='generator_input_x') # 생성기 입력
+        m = Input(shape=shape, name='generator_input_m') # 마스크 입력
 
-        x_f = tf.keras.layers.Flatten()(x)
-        m_f = tf.keras.layers.Flatten()(m)
+        x_f = tf.keras.layers.Flatten()(x) # 입력 평탄화
+        m_f = tf.keras.layers.Flatten()(m) # 마스크 평탄화
 
-        a = Concatenate()([x_f, m_f])
+        a = Concatenate()([x_f, m_f]) # 입력과 마스크 결합
 
-        a = Dense(self.h_dim, activation='relu', kernel_initializer=xavier_initializer)(a)
-        a = Dense(self.h_dim, activation='relu', kernel_initializer=xavier_initializer)(a)
-        a = Dense(self.dim, activation=last_activation, kernel_initializer=xavier_initializer)(a)
-        G_prob = tf.keras.layers.Reshape(shape)(a)
-        self.generator = tf.keras.models.Model([x, m], G_prob, name='generator')
+        a = Dense(self.h_dim, activation='relu', kernel_initializer=xavier_initializer)(a) # 첫 번째 Dense 레이어
+        a = Dense(self.h_dim, activation='relu', kernel_initializer=xavier_initializer)(a) # 두 번째 Dense 레이어
+        a = Dense(self.dim, activation=last_activation, kernel_initializer=xavier_initializer)(a) # 출력 레이어
+        G_prob = tf.keras.layers.Reshape(shape)(a) # 원래 모양으로 변경
+        self.generator = tf.keras.models.Model([x, m], G_prob, name='generator') # 생성기 모델
 
     def build_discriminator(self):
-        xavier_initializer = tf.keras.initializers.GlorotNormal()
+        xavier_initializer = tf.keras.initializers.GlorotNormal() # 가중치 초기화
         shape = self.shape
 
-        x = Input(shape=shape, name='discriminator_input_x')
-        h = Input(shape=shape, name='discriminator_input_h')
+        x = Input(shape=shape, name='discriminator_input_x') # 판별기 입력
+        h = Input(shape=shape, name='discriminator_input_h') # 힌트 입력
 
-        x_f = tf.keras.layers.Flatten()(x)
-        h_f = tf.keras.layers.Flatten()(h)
+        x_f = tf.keras.layers.Flatten()(x) # 입력 평탄화
+        h_f = tf.keras.layers.Flatten()(h) # 힌트 평탄화
 
-        a = Concatenate()([x_f, h_f])
+        a = Concatenate()([x_f, h_f]) # 입력과 힌트 결합
 
-        a = Dense(self.h_dim, activation='relu', kernel_initializer=xavier_initializer)(a)
-        a = Dense(self.h_dim, activation='relu', kernel_initializer=xavier_initializer)(a)
-        a = Dense(self.dim, activation='sigmoid', kernel_initializer=xavier_initializer)(a)
-        D_prob = tf.keras.layers.Reshape(shape)(a)
-        self.discriminator = tf.keras.models.Model([x, h], D_prob, name='discriminator')
+        a = Dense(self.h_dim, activation='relu', kernel_initializer=xavier_initializer)(a) # 첫 번째 Dense 레이어
+        a = Dense(self.h_dim, activation='relu', kernel_initializer=xavier_initializer)(a) # 두 번째 Dense 레이어
+        a = Dense(self.dim, activation='sigmoid', kernel_initializer=xavier_initializer)(a) # 출력 레이어
+        D_prob = tf.keras.layers.Reshape(shape)(a) # 원래 모양으로 변경
+        self.discriminator = tf.keras.models.Model([x, h], D_prob, name='discriminator') # 판별기 모델
 
+    # GAIN 모델 호출될때 수행할 작업 정의
     def call(self, inputs):
         if isinstance(inputs, tuple):
             inputs = inputs[0]
@@ -78,17 +85,20 @@ class GAIN(tf.keras.Model):
 
         return imputed_data
 
+    # 판별자의 손실 함수 정의
     def D_loss(M, D_prob):
         ## GAIN loss
         return -tf.reduce_mean(M * tf.keras.backend.log(D_prob + 1e-8) \
                                + (1 - M) * tf.keras.backend.log(1. - D_prob + 1e-8))
 
+    # 생성자의 손실 함수 정의
     def G_loss(self, M, D_prob, X, G_sample):
         G_loss_temp = -tf.reduce_mean((1 - M) * tf.keras.backend.log(D_prob + 1e-8))
         MSE_loss = tf.reduce_mean((M * X - M * G_sample) ** 2) / (tf.reduce_mean(M) + 1e-8)
         G_loss = G_loss_temp + self.alpha * MSE_loss
         return G_loss
 
+    # RMSE 손실 함수 정의
     def RMSE_loss(y_true, y_pred):
         isnan = tf.math.is_nan(y_true)
         M = tf.where(isnan, 1., 0.)
@@ -127,7 +137,8 @@ class GAIN(tf.keras.Model):
             'disc_loss': disc_loss,
             'rmse': rmse,
         }
-
+        
+    
     def save(self, save_dir='save'):
         if not os.path.exists(save_dir):
             os.makedirs(save_dir)
@@ -145,13 +156,15 @@ class GAIN(tf.keras.Model):
            # print('model weights loaded')
         except:
             print('model loadinng error')
-
+     
+    # 학습 및 검증 데이터로 모델 학습
     def compile_and_fit(self, window, patience=10, epochs=100):
         early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=patience, mode='min')
         self.compile(loss=GAIN.RMSE_loss)
         history = self.fit(window.train, epochs=epochs, validation_data=window.val, callbacks=[early_stopping])
         return history
 
+# 데이터프레임을 학습, 검증, 테스트 데이터로 나누는 함수
 def dataset_slice(df, train_ratio, val_ratio, test_ratio):
     total_no = df.shape[0]
     train_no = int(total_no * train_ratio)
@@ -169,6 +182,7 @@ def dataset_slice(df, train_ratio, val_ratio, test_ratio):
 
     return train, val, test
 
+# GAIN 모델을 사용하여 결측 데이터를 채우는 함수
 def create_dataset_with_gain(gain, df, window = None, shape = None):
 
     if window == None:
@@ -210,6 +224,7 @@ def create_dataset_with_gain(gain, df, window = None, shape = None):
 
     return ori, gan
 
+# 주어진 데이터프레임을 시계열 데이터로 변환하는 함수
 def create_dataset_interpol(df, window=24*5):
 
     time_seq = window
@@ -225,6 +240,7 @@ def create_dataset_interpol(df, window=24*5):
 
     return ori
 
+# GAIN 모델을 생성하고 학습 또는 불러오는 함수
 def model_GAIN(shape, gen_sigmoid, window=None, training_flag=False, epochs = 100, model_save_path='../save'):
     gain = GAIN(shape=shape, gen_sigmoid=gen_sigmoid)
 

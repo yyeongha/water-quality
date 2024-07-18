@@ -1,3 +1,10 @@
+#####################################################################################
+# 시계열 데이터를 처리하고 모델 학습에 사용할 수 있도록 데이터를 준비하는 다양한 기능을 포함
+# 데이터 생성, 정규화, 모델 예측, 시각화 및 평가 등이 포함
+# WindowGenerator 클래스는 데이터 윈도우를 생성하고 이를 학습, 검증, 테스트 데이터셋으로 분할
+# 또한 GAIN 및 Water 데이터 생성기를 사용하여 데이터를 생성하는 메서드를 제공
+#####################################################################################
+
 # -*- coding: utf-8 -*-
 import pandas as pd
 import numpy as np
@@ -14,6 +21,7 @@ font_location = '/usr/share/fonts/truetype/nanum/NanumGothicCoding.ttf'
 
 fprop = fm.FontProperties(fname=font_location)
 
+# 시계열 데이터의 윈도우를 생성하고, 이를 학습, 검증, 테스트 데이터셋으로 분할
 class WindowGenerator():
     def __init__(self, input_width=24*5, label_width=24*5, shift=24*5,
             train_df=None, val_df=None, test_df=None, df=None, out_num_features=0,out_features=0,
@@ -63,6 +71,7 @@ class WindowGenerator():
             f'Label indices: {self.label_indices}',
             f'Label column name(s): {self.label_columns}'])
 
+    # 주어진 입력 데이터를 입력과 라벨 윈도우로 분할
     def split_window(self, features):
         inputs = features[:, self.input_slice, :]
         labels = features[:, self.labels_slice, :]
@@ -78,6 +87,7 @@ class WindowGenerator():
 
         return inputs, labels
 
+    # 입력데이터와 라벨, 예측값을 시각화
     def plot(self, model=None, plot_col='T (degC)', max_subplots=3):
         inputs, labels = self.example
         plt.figure(figsize=(10, 8))
@@ -242,6 +252,7 @@ class WindowGenerator():
 
         return nse, np.abs(pbias), pred_temp.numpy(), label_temp.numpy()
 
+# GAIN 데이터 생성기를 사용하여 데이터를 생성
 def make_dataset_gain(self, data, train=False):
     dg = GainDataGenerator(
         self.df,
@@ -268,6 +279,7 @@ def make_dataset_gain(self, data, train=False):
 
 WindowGenerator.make_dataset = make_dataset_gain
 
+# WATER 데이터 생성기를 사용하여 데이터를 생성
 def make_dataset_water(self, data, train=False):
 
     dg = WaterDataGenerator(

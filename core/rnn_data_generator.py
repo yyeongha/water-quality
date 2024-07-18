@@ -1,8 +1,13 @@
+#####################################################################################
+# WaterDataGenerator 클래스를 정의하여 시계열 데이터의 배치를 생성, 이를 학습에 사용할 수 있도록 준비
+# 이 클래스는 TensorFlow의 Sequence를 상속받아 구현되어, 모델 학습 중 데이터 생성기를 효율적으로 사용할 수 있게 함
+#####################################################################################
+
 # -*- coding: utf-8 -*-
 import tensorflow as tf
 import numpy as np
 
-
+# 데이터 생성기 초기화, 배치 생성을 위한 기본 설정을 수행함
 class WaterDataGenerator(tf.keras.utils.Sequence):
     'Generates data for water'
 
@@ -51,10 +56,12 @@ class WaterDataGenerator(tf.keras.utils.Sequence):
             self.batch_idx = np.arange(0, self.no)
         self.batch_id = 0
 
+    # 에폭당 배치 수를 반환
     def __len__(self):
         'Denotes the number of batches per epoch'
         return self.no//self.batch_size
 
+    # 인덱스에 해당하는 배치를 생성하여 반환
     def __getitem__(self, index):
         'Generate one batch of data'
         # Sample batch
@@ -83,6 +90,7 @@ class WaterDataGenerator(tf.keras.utils.Sequence):
 
         return x, y
 
+    # 에폭이 끝날 때 호출되는 함수, 인덱스를 업데이트함
     def on_epoch_end(self):
         'Updates indexes after each epoch'
         return
