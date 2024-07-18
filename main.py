@@ -233,7 +233,7 @@ val_nse['GRU'], val_pbias['GRU'], pred, label, val_mae['GRU'], val_rmse['GRU'], 
 
 print("watershed : ", watershed)
 print("year : " + start_year + " ~ "+ end_year)
-print('tatget : ', rnn_target_column)
+print('target : ', rnn_target_column)
 
 print('GAIN RMSE : ', gain_performance)
 print('GRU NSE : ', val_nse['GRU'])
